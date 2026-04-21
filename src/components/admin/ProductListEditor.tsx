@@ -13,7 +13,7 @@ export default function ProductListEditor({ products, onDelete }: Props) {
         {products.map((item) => (
           <li key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
             <span>
-              {item.name} ({item.specs.powerW}W)
+              {item.name} ({item.specs.powerW}W / {item.category})
             </span>
             <button onClick={() => onDelete(item.id)}>삭제</button>
           </li>

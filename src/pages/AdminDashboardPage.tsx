@@ -11,10 +11,12 @@ import type { Product } from '../types/product';
 interface AdminContext extends CmsState {
   setProducts: Dispatch<SetStateAction<Product[]>>;
   setContent: Dispatch<SetStateAction<SiteContent>>;
+  saveCmsState: () => void;
+  lastSavedAt: string | null;
 }
 
 export default function AdminDashboardPage() {
-  const { products, content, setProducts, setContent } = useOutletContext<AdminContext>();
+  const { products, content, setProducts, setContent, saveCmsState, lastSavedAt } = useOutletContext<AdminContext>();
   const [tab, setTab] = useState<'products' | 'content'>('products');
 
   const upsertProduct = (incoming: Product) => {
@@ -35,7 +37,7 @@ export default function AdminDashboardPage() {
             <ProductListEditor products={products} onDelete={(id) => setProducts((prev) => prev.filter((p) => p.id !== id))} />
           </div>
         ) : (
-          <ContentEditor content={content} onChange={setContent} />
+          <ContentEditor content={content} onChange={setContent} onSave={saveCmsState} lastSavedAt={lastSavedAt} />
         )}
       </section>
     </div>

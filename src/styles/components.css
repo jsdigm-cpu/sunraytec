@@ -1,19 +1,23 @@
+/* ── 레이아웃 ── */
 .container {
   width: min(1120px, 92%);
   margin: 0 auto;
 }
 
+/* ── 버튼 공통 ── */
 .btn {
-  padding: 0.95rem 1.6rem;
-  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   border: 1px solid transparent;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   cursor: pointer;
-  min-height: 48px;
+  min-height: 44px;
+  transition: background 0.2s, opacity 0.2s;
+  text-decoration: none;
 }
 
 .btn:focus-visible,
@@ -21,32 +25,46 @@ input:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #fdba74;
+  outline: 3px solid var(--amber2);
   outline-offset: 2px;
 }
 
+/* 빨간 채우기 버튼 */
 .btn-primary {
-  background: var(--color-accent);
+  background: var(--red);
   color: #fff;
 }
-
 .btn-primary:hover {
-  background: var(--color-accent-dark);
+  background: var(--red-dark);
 }
 
+/* 테두리 버튼 (흰 배경) */
 .btn-outline {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 흰색 채우기 버튼 (다크 배경 위에서 사용) */
+.btn-white {
   background: #fff;
+  color: var(--red);
+}
+.btn-white:hover {
+  background: var(--off);
 }
 
+/* ── 카드 ── */
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--white);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--sh);
 }
 
+/* ── 반응형 헬퍼 ── */
 @media (max-width: 900px) {
   .admin-grid {
     grid-template-columns: 1fr !important;

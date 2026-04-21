@@ -1,14 +1,40 @@
+/* ── Tailwind v4 ── */
+@import "tailwindcss";
+
+/* ── 브랜드 토큰 ── */
 @import './tokens.css';
 
-* {
+/* ── Tailwind 커스텀 테마 등록 (Tailwind 클래스로 사용 가능) ── */
+@theme {
+  --color-red:          #C8392B;
+  --color-red-dark:     #9B2C1F;
+  --color-red-light:    #E8574A;
+  --color-navy:         #0A1628;
+  --color-navy2:        #152035;
+  --color-blue-brand:   #1A3A6B;
+  --color-amber:        #E67E22;
+  --color-amber2:       #F39C12;
+  --color-off:          #F5F6F8;
+  --color-gray-brand:   #7F8C8D;
+  --color-text-brand:   #2C3E50;
+
+  --font-sans:    'Noto Sans KR', sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
+}
+
+/* ── 기본 리셋 & 전역 스타일 ── */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text);
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--off);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
 }
 
 a {

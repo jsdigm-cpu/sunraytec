@@ -5,6 +5,7 @@ import { router } from './app/routes';
 import './styles/globals.css';
 import './styles/components.css';
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />

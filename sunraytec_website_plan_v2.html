@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>썬레이텍 홈페이지 개발 기획서 v2.0 — 통합 최종본</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Noto+Serif+KR:wght@400;700&display=swap');
+
+:root {
+  --red:       #C8392B;
+  --red-dark:  #9B2C1F;
+  --red-light: #E8574A;
+  --navy:      #0A1628;
+  --navy2:     #152035;
+  --blue:      #1A3A6B;
+  --amber:     #E67E22;
+  --amber2:    #F39C12;
+  --gold:      #D4AC0D;
+  --white:     #FFFFFF;
+  --off:       #F5F6F8;
+  --light:     #EEF0F4;
+  --gray:      #7F8C8D;
+  --gray2:     #BDC3C7;
+  --text:      #2C3E50;
+  --border:    #D5D8DC;
+  --sh:        0 4px 20px rgba(0,0,0,.09);
+  --sh-lg:     0 12px 48px rgba(0,0,0,.16);
+  --sh-xl:     0 24px 80px rgba(0,0,0,.22);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Noto Sans KR', sans-serif;
+  background:#E8EAED;
+  color:var(--text);
+  line-height:1.75;
+  font-size:15px;
+}
+
+/* ══ COVER ══ */
+.cover {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 50%, #1C2E50 100%);
+  color:#fff;
+  padding:0;
+  overflow:hidden;
+  position:relative;
+}
+.cover-inner {
+  position:relative; z-index:2;
+  padding:72px 64px 60px;
+}
+.cover-bg {
+  position:absolute; inset:0; z-index:1;
+  background:
+    radial-gradient(ellipse 600px 400px at 80% 30%, rgba(200,57,43,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 10% 80%, rgba(230,126,34,.12) 0%, transparent 70%);
+}
+.cover-grid {
+  position:absolute; inset:0; z-index:1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.cover-label {
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:30px;
+  padding:5px 16px;
+  font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase;
+  margin-bottom:32px;
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.07);
+}
+.cover-label .dot { width:7px;height:7px;border-radius:50%;background:var(--amber2);animation:pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.cover h1 {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:66px; line-height:1.05; letter-spacing:2px;
+  margin-bottom:8px;
+}
+.cover h1 .hl { color:var(--red-light); }
+.cover-sub {
+  font-size:16px; font-weight:300; opacity:.8;
+  margin-bottom:16px; max-width:560px;
+}
+.cover-desc {
+  font-size:13px; opacity:.6; margin-bottom:48px; max-width:600px;
+}
+
+.cover-pills {
+  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:48px;
+}
+.cover-pill {
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:6px;
+  padding:6px 14px;
+  font-size:12px; font-weight:500;
+  backdrop-filter:blur(4px);
+}
+.cover-pill span { color:var(--amber2); margin-right:4px; }
+
+.cover-meta-row {
+  display:flex; flex-wrap:wrap; gap:32px;
+  padding-top:32px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.cover-meta-item strong { display:block; color:var(--amber2); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px; }
+.cover-meta-item span { font-size:14px; }
+
+/* ══ LAYOUT ══ */
+.page { max-width:1120px; margin:0 auto; padding:56px 36px; }
+
+/* ══ SECTION HEADER ══ */
+.sec {
+  margin-bottom:56px;
+}
+.sec-hd {
+  display:flex; align-items:flex-start; gap:16px;
+  margin-bottom:28px; padding-bottom:16px;
+  border-bottom:2px solid var(--red);
+}
+.sec-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:42px; line-height:1; color:var(--red);
+  opacity:.25; letter-spacing:1px; flex-shrink:0;
+  user-select:none;
+}
+.sec-txt-title { font-size:24px; font-weight:900; color:var(--navy); line-height:1.2; }
+.sec-txt-sub   { font-size:13px; color:var(--gray); margin-top:3px; }
+
+/* ══ CARDS ══ */
+.card {
+  background:#fff;
+  border-radius:16px;
+  padding:28px 30px;
+  box-shadow:var(--sh);
+  margin-bottom:18px;
+}
+.card-hd {
+  font-size:15px; font-weight:700; color:var(--navy);
+  margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.card-hd::before {
+  content:'';
+  width:4px; height:20px;
+  background:var(--red);
+  border-radius:2px; flex-shrink:0;
+}
+
+/* ══ GRID ══ */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:900px){ .g3,.g4{grid-template-columns:1fr 1fr;} }
+@media(max-width:640px){ .g2,.g3,.g4{grid-template-columns:1fr;} .cover h1{font-size:38px;} .cover-inner{padding:48px 24px 40px;} .page{padding:36px 18px;} }
+
+/* ══ TABLE ══ */
+.tbl { width:100%; border-collapse:collapse; font-size:13.5px; }
+.tbl th { background:var(--navy); color:#fff; padding:10px 14px; text-align:left; font-weight:600; font-size:12px; letter-spacing:.3px; }
+.tbl td { padding:9px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+.tbl tr:nth-child(even) td { background:var(--off); }
+.tbl tr:hover td { background:#FEF0EE; }
+
+/* ══ TAGS ══ */
+.tag { display:inline-block; padding:2px 9px; border-radius:10px; font-size:11.5px; font-weight:500; margin:2px; }
+.t-red    { background:#FDECEA; color:var(--red); }
+.t-blue   { background:#E8EEF8; color:var(--blue); }
+.t-amber  { background:#FEF5E7; color:var(--amber); }
+.t-green  { background:#E8F5E9; color:#2E7D32; }
+.t-purple { background:#F3E5F5; color:#6A1B9A; }
+.t-gray   { background:var(--light); color:var(--gray); }
+
+/* ══ PRIORITY ══ */
+.prio { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:.5px; }
+.p-now  { background:#FDECEA; color:var(--red); }
+.p-soon { background:#FEF5E7; color:var(--amber); }
+.p-later{ background:#E8F5E9; color:#2E7D32; }
+
+/* ══ CALLOUT ══ */
+.co {
+  border-left:5px solid var(--red);
+  background:#FDECEA;
+  border-radius:0 10px 10px 0;
+  padding:14px 18px; margin:14px 0;
+}
+.co.bl { border-color:var(--blue); background:#E8EEF8; }
+.co.am { border-color:var(--amber); background:#FEF5E7; }
+.co.gr { border-color:#2E7D32; background:#E8F5E9; }
+.co strong { display:block; margin-bottom:4px; font-size:14px; }
+.co p { font-size:13px; margin:0; }
+
+/* ══ STAT ══ */
+.stat {
+  background:#fff; border-radius:14px;
+  padding:22px; box-shadow:var(--sh);
+  text-align:center;
+}
+.stat-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:44px; line-height:1;
+  color:var(--red); margin-bottom:4px;
+}
+.stat-lbl { font-size:12.5px; color:var(--gray); }
+
+/* ══ MENU TREE ══ */
+.mtree { list-style:none; }
+.mtree > li { background:#fff; border-radius:14px; box-shadow:var(--sh); margin-bottom:14px; overflow:hidden; }
+.m-lv1 {
+  background:linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+  color:#fff; padding:14px 20px;
+  font-weight:700; font-size:15px;
+  display:flex; align-items:center; gap:10px;
+}
+.m-lv1 .ico {
+  width:30px; height:30px;
+  background:rgba(255,255,255,.14);
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; flex-shrink:0;
+}
+.m-body { padding:14px 18px; }
+.m-lv2-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.m-lv2-item {
+  background:var(--off); border-radius:9px; padding:10px 14px;
+  font-size:13px; font-weight:600;
+}
+.m-lv2-item .lv3 { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; font-weight:400; }
+.m-key {
+  display:inline-block; background:var(--red); color:#fff;
+  font-size:10px; font-weight:700; letter-spacing:.5px;
+  padding:1px 7px; border-radius:4px; margin-left:6px; vertical-align:middle;
+}
+
+/* ══ WIREFRAME ══ */
+.wf-browser {
+  background:var(--navy);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:var(--sh-lg);
+}
+.wf-bar {
+  background:var(--navy2);
+  padding:10px 16px;
+  display:flex; align-items:center; gap:8px;
+}
+.wf-dot { width:10px; height:10px; border-radius:50%; }
+.wf-url {
+  flex:1; background:rgba(255,255,255,.08);
+  border-radius:6px; padding:4px 12px;
+  font-size:11px; color:rgba(255,255,255,.5);
+  margin:0 10px;
+}
+.wf-screen {
+  background:#F0F2F5;
+  padding:0;
+}
+.wf-nav {
+  background:#fff;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+.wf-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--red); letter-spacing:1px; }
+.wf-navlinks { display:flex; gap:16px; color:var(--gray); font-size:11px; }
+.wf-navlinks .cta-nav {
+  background:var(--red); color:#fff;
+  padding:5px 14px; border-radius:6px; font-weight:700;
+}
+
+.wf-hero {
+  background:linear-gradient(160deg, var(--navy) 0%, var(--navy2) 60%, #1A2A40 100%);
+  color:#fff; padding:48px 32px;
+  text-align:center; position:relative; overflow:hidden;
+}
+.wf-hero-badge {
+  display:inline-block; background:rgba(200,57,43,.3);
+  border:1px solid rgba(200,57,43,.5);
+  padding:4px 14px; border-radius:20px;
+  font-size:11px; margin-bottom:16px; color:var(--red-light);
+}
+.wf-hero h2 {
+  font-family:'Bebas Neue',sans-serif; font-size:38px; letter-spacing:2px;
+  margin-bottom:8px;
+}
+.wf-hero h2 span { color:var(--amber2); }
+.wf-hero p { font-size:13px; opacity:.7; margin-bottom:24px; }
+.wf-hero-btns { display:flex; gap:12px; justify-content:center; }
+.wf-btn-p {
+  background:var(--red); color:#fff;
+  padding:10px 22px; border-radius:8px; font-size:13px; font-weight:700;
+}
+.wf-btn-s {
+  background:rgba(255,255,255,.12); color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  padding:10px 22px; border-radius:8px; font-size:13px;
+}
+.wf-badges-row {
+  display:flex; justify-content:center; gap:12px; margin-top:28px; flex-wrap:wrap;
+}
+.wf-badge-item {
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18);
+  border-radius:8px; padding:8px 14px;
+  font-size:11px; text-align:center;
+}
+.wf-badge-item strong { display:block; color:var(--amber2); font-size:13px; }
+
+.wf-section { background:#fff; padding:28px 32px; border-bottom:1px solid var(--border); }
+.wf-section-title { font-size:11px; font-weight:700; letter-spacing:1.5px; color:var(--gray); text-transform:uppercase; margin-bottom:14px; }
+
+.wf-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.wf-kpi {
+  background:var(--off); border-radius:10px; padding:14px;
+  text-align:center; border-top:3px solid var(--red);
+}
+.wf-kpi big { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--red); line-height:1; }
+.wf-kpi small { display:block; font-size:11px; color:var(--gray); margin-top:3px; }
+
+.wf-compare { display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:10px; overflow:hidden; }
+.wf-comp-a { background:var(--navy); color:#fff; padding:16px; }
+.wf-comp-b { background:var(--light); padding:16px; }
+.wf-comp-title { font-size:12px; font-weight:700; margin-bottom:10px; }
+.wf-comp-row { display:flex; justify-content:space-between; font-size:12px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.1); }
+.wf-comp-b .wf-comp-row { border-color:var(--border); }
+.wf-comp-row .val { font-weight:700; color:var(--amber2); }
+.wf-comp-b .wf-comp-row .val { color:var(--red); }
+
+.wf-case-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.wf-case-item { border-radius:8px; overflow:hidden; background:var(--navy); }
+.wf-case-img { height:70px; background:linear-gradient(135deg,#1a3a6b,#0a1628); display:flex; align-items:center; justify-content:center; font-size:22px; }
+.wf-case-lbl { padding:7px 10px; font-size:11px; color:rgba(255,255,255,.8); font-weight:600; }
+
+.wf-product-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.wf-prod { background:var(--off); border-radius:8px; padding:12px; text-align:center; border:1px solid var(--border); }
+.wf-prod .model { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--red); }
+.wf-prod .spec  { font-size:11px; color:var(--gray); margin-top:3px; }
+
+.wf-cta-section {
+  background:linear-gradient(90deg, var(--red-dark), var(--red));
+  color:#fff; padding:24px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.wf-cta-section h3 { font-size:18px; font-weight:900; }
+.wf-cta-section p  { font-size:12px; opacity:.8; margin-top:3px; }
+.wf-cta-btns { display:flex; gap:10px; }
+.wf-cta-btn {
+  background:#fff; color:var(--red);
+  padding:8px 18px; border-radius:7px; font-size:12px; font-weight:700;
+}
+.wf-cta-btn-s {
+  background:rgba(255,255,255,.18); color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+  padding:8px 18px; border-radius:7px; font-size:12px;
+}
+
+/* ══ FEATURE BLOCK ══ */
+.fb {
+  background:#fff; border-radius:14px; padding:22px;
+  box-shadow:var(--sh);
+  border-top:4px solid var(--red);
+  height:100%;
+}
+.fb.bl { border-top-color:var(--blue); }
+.fb.am { border-top-color:var(--amber); }
+.fb.gr { border-top-color:#2E7D32; }
+.fb h4 { font-size:15px; font-weight:700; margin-bottom:10px; color:var(--navy); }
+.fb ul { padding-left:16px; }
+.fb ul li { font-size:13px; margin-bottom:5px; }
+
+/* ══ TIMELINE ══ */
+.tl { position:relative; padding-left:28px; }
+.tl::before { content:''; position:absolute; left:10px; top:6px; bottom:6px; width:2px; background:var(--border); }
+.tl-item { position:relative; margin-bottom:24px; }
+.tl-item::before {
+  content:''; position:absolute; left:-22px; top:6px;
+  width:13px; height:13px; border-radius:50%;
+  background:var(--red); border:2px solid #fff;
+  box-shadow:0 0 0 2px var(--red);
+}
+.tl-phase { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin-bottom:4px; }
+.tl-title { font-size:15px; font-weight:700; margin-bottom:6px; }
+.tl-body  { font-size:13px; color:var(--gray); line-height:1.7; }
+
+/* ══ API BLOCK ══ */
+.api-block {
+  background:var(--navy); color:#fff;
+  border-radius:12px; padding:20px;
+  font-family:monospace; font-size:12.5px;
+  line-height:1.8;
+  box-shadow:var(--sh-lg);
+}
+.api-method { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; margin-right:8px; vertical-align:middle; }
+.m-get  { background:#27AE60; }
+.m-post { background:#2980B9; }
+.m-put  { background:#E67E22; }
+.m-del  { background:#E74C3C; }
+.api-path { color:#A9D3FF; }
+.api-desc { color:rgba(255,255,255,.5); margin-left:12px; font-size:11px; }
+.api-group { color:var(--amber2); font-weight:700; font-size:13px; margin:14px 0 6px; border-bottom:1px solid rgba(255,255,255,.1); padding-bottom:6px; }
+
+/* ══ CALC BLOCK ══ */
+.calc-box {
+  background:#fff; border-radius:14px; padding:24px; box-shadow:var(--sh);
+}
+.calc-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.calc-field { background:var(--off); border-radius:8px; padding:12px 14px; }
+.calc-field label { font-size:11px; color:var(--gray); display:block; margin-bottom:4px; }
+.calc-field .val { font-size:15px; font-weight:700; color:var(--navy); }
+.calc-result {
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff; border-radius:10px; padding:16px;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+  text-align:center;
+}
+.calc-result .r-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--amber2); }
+.calc-result .r-lbl { font-size:11px; opacity:.7; }
+
+/* ══ SEO BOX ══ */
+.seo-article {
+  background:#fff; border-radius:12px; padding:20px 22px;
+  box-shadow:var(--sh); border-left:4px solid var(--blue);
+  height:100%;
+}
+.seo-num { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--red); opacity:.25; line-height:1; }
+.seo-title { font-size:14px; font-weight:700; color:var(--navy); margin:-4px 0 6px; }
+.seo-kw { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
+.seo-desc { font-size:12.5px; color:var(--gray); }
+
+/* ══ IDEA CARD ══ */
+.idea {
+  background:linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  color:#fff; border-radius:14px; padding:22px; box-shadow:var(--sh-lg);
+  height:100%;
+}
+.idea .badge { display:inline-block; background:rgba(255,255,255,.15); font-size:11px; padding:2px 8px; border-radius:8px; margin-bottom:8px; }
+.idea h4 { font-size:15px; font-weight:700; color:var(--amber2); margin-bottom:8px; }
+.idea p  { font-size:13px; opacity:.85; line-height:1.7; }
+.idea .src { font-size:11px; opacity:.5; margin-top:8px; }
+
+/* ══ FOOTER ══ */
+.footer {
+  background:var(--navy); color:rgba(255,255,255,.45);
+  text-align:center; padding:32px;
+  font-size:13px; margin-top:64px;
+}
+.footer strong { color:#fff; }
+
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════ COVER ══════════════════════════════╗ -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-label">
+      <div class="dot"></div>
+      WEBSITE DEVELOPMENT MASTERPLAN · FINAL v2.0
+    </div>
+
+    <h1>(주)썬레이텍<br><span class="hl">홈페이지 개발 기획서</span></h1>
+    <p class="cover-sub">영업·신뢰·전환까지 만드는 "수주 플랫폼" — 3개 AI 검토 통합 최종본</p>
+    <p class="cover-desc">Claude · Gemini · ChatGPT 3개 AI 기획안을 교차 검증·통합하여 완성한 최종 기획서입니다.<br>
+    현행 GitHub 저장소(React+Vite+TypeScript) 기반으로 바로 개발 착수 가능한 수준으로 작성.</p>
+
+    <div class="cover-pills">
+      <div class="cover-pill"><span>✅</span> GitHub 저장소 직접 분석</div>
+      <div class="cover-pill"><span>✅</span> 카탈로그 전 페이지 참조</div>
+      <div class="cover-pill"><span>✅</span> 3개 AI 기획 교차 검증</div>
+      <div class="cover-pill"><span>✅</span> 와이어프레임 포함</div>
+      <div class="cover-pill"><span>✅</span> API 설계 포함</div>
+      <div class="cover-pill"><span>✅</span> 열량계산기 로직 포함</div>
+      <div class="cover-pill"><span>✅</span> SEO 글 전략 10개 포함</div>
+    </div>
+
+    <div class="cover-meta-row">
+      <div class="cover-meta-item"><strong>작성일</strong><span>2026년 4월</span></div>
+      <div class="cover-meta-item"><strong>버전</strong><span>v2.0 (통합 최종)</span></div>
+      <div class="cover-meta-item"><strong>기술스택</strong><span>React + Vite + TS + Supabase + Vercel</span></div>
+      <div class="cover-meta-item"><strong>타깃</strong><span>B2G (공공조달) · B2B (산업/물류) · 일반</span></div>
+      <div class="cover-meta-item"><strong>도메인</strong><span>sunraytec.co.kr → Vercel 전환</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════ CONTENT ══════════════════════════════╗ -->
+<div class="page">
+
+<!-- ══════════ 0. 3개 AI 비교 요약 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">00</div>
+    <div>
+      <div class="sec-txt-title">3개 AI 기획안 비교 분석 & 통합 근거</div>
+      <div class="sec-txt-sub">Claude · Gemini · ChatGPT 각 강점을 선별하여 이 기획서에 통합</div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr>
+      <th style="width:12%">구분</th>
+      <th style="width:28%">핵심 강점</th>
+      <th style="width:28%">아쉬운 점</th>
+      <th style="width:32%">이 기획서에 채택된 내용</th>
+    </tr>
+    <tr>
+      <td><strong>🟠 Claude</strong></td>
+      <td>GitHub 저장소·홈페이지 직접 접속 확인. Supabase DB 스키마까지 구체적. 현실적 Phase 로드맵.</td>
+      <td>드론 영상·패스트트랙 라운지 같은 "현장 감각" 아이디어 없음</td>
+      <td>전체 구조·DB 스키마·Admin CMS·로드맵 기반 채택</td>
+    </tr>
+    <tr>
+      <td><strong>🔵 Gemini</strong></td>
+      <td>DJI 드론 촬영 아이디어. 공공기관 패스트트랙 라운지. ESG 비전 강조. 혁신랩 코너.</td>
+      <td>실제 사이트 접속 없이 일반론적. 기술 구현 수준 미흡.</td>
+      <td>드론 영상, 패스트트랙 라운지, 혁신랩, ESG 강조 채택</td>
+    </tr>
+    <tr>
+      <td><strong>⚫ ChatGPT</strong></td>
+      <td>API 구조 설계. SEO 콘텐츠 전략. 와이어프레임 텍스트 구조화. ROI 계산기 로직.</td>
+      <td>파일 직접 접속 없음. 썬레이텍 특화 내용 부족.</td>
+      <td>API 구조 설계, SEO 10개 글, 와이어프레임, 계산기 로직 채택</td>
+    </tr>
+  </table>
+
+  <div class="co bl" style="margin-top:16px;">
+    <strong>📌 통합 결론</strong>
+    <p>세 AI가 공통으로 강조한 3가지: ① 열량 자동 계산기(ROI 포함), ② 설치사례 상세 페이지, ③ 복사난방 vs 대류난방 비교 페이지. → 이 3가지가 "수주를 만드는 핵심 기능"임을 3개 AI가 독립적으로 도출. 이 기획서의 최우선 구현 대상으로 확정.</p>
+  </div>
+</div>
+
+
+<!-- ══════════ 1. 프로젝트 목표 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">01</div>
+    <div>
+      <div class="sec-txt-title">프로젝트 목표 & 핵심 전략</div>
+      <div class="sec-txt-sub">"회사 소개 사이트"에서 "수주를 만드는 영업 플랫폼"으로 전환</div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="fb">
+      <h4>🏛️ 목표 ① B2G 조달 전환</h4>
+      <ul>
+        <li>조달청 우수제품·MAS 정보 전면 배치</li>
+        <li>나라장터 제품식별번호 카드 노출</li>
+        <li>공공기관 <strong>패스트트랙 라운지</strong> 전용 채널 <span class="tag t-blue">Gemini 아이디어</span></li>
+        <li>일위대가표·도면·제안서 원클릭 다운</li>
+        <li>공공기관 이메일 인증 전용 자료 접근</li>
+      </ul>
+    </div>
+    <div class="fb bl">
+      <h4>🏭 목표 ② B2B 프로젝트 수주</h4>
+      <ul>
+        <li>업종별 솔루션 페이지 (물류/산업/군/상업)</li>
+        <li>설치 사례 상세 스토리텔링</li>
+        <li>DJI 드론 촬영 압도적 영상 활용 <span class="tag t-blue">Gemini 아이디어</span></li>
+        <li>열량·ROI 계산기로 수주 설득 <span class="tag t-gray">3개 AI 공통</span></li>
+        <li>파트너·대리점 모집 채널</li>
+      </ul>
+    </div>
+    <div class="fb am">
+      <h4>📡 목표 ③ 디지털 경쟁력</h4>
+      <ul>
+        <li>SEO 최적화 (월 검색유입 확보)</li>
+        <li>모바일 퍼스트 SPA</li>
+        <li>AI 상담 챗봇 (Gemini API)</li>
+        <li>혁신랩 R&D 티저 코너 <span class="tag t-blue">Gemini 아이디어</span></li>
+        <li>카카오 알림 자동화</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="co am" style="margin-top:18px;">
+    <strong>🎯 한 줄 핵심 전략 (ChatGPT 표현 채택)</strong>
+    <p>"제품 소개 사이트가 아니라, <strong>수주를 만드는 사이트</strong>로 만들어야 합니다. 스크롤만 내려도 설득이 끝나는 구조." — 3개 AI 공통 방향성</p>
+  </div>
+</div>
+
+
+<!-- ══════════ 2. 사이트맵 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">02</div>
+    <div>
+      <div class="sec-txt-title">전체 사이트맵 & 메뉴 구성</div>
+      <div class="sec-txt-sub">정보 설계(IA) — 8개 주요 메뉴 + 패스트트랙 + Admin</div>
+    </div>
+  </div>
+
+  <ul class="mtree">
+    <li>
+      <div class="m-lv1"><div class="ico">🏠</div> HOME (메인 페이지)</div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">Hero 섹션 <span class="m-key">드론 배경영상</span></div>
+          <div class="m-lv2-item">신뢰 배지 롤링 <span class="m-key">우수제품·K마크</span></div>
+          <div class="m-lv2-item">4대 ZERO 캠페인</div>
+          <div class="m-lv2-item">복사 vs 대류 비교 섹션</div>
+          <div class="m-lv2-item">제품 라인업 프리뷰</div>
+          <div class="m-lv2-item">시공사례 갤러리 (6장)</div>
+          <div class="m-lv2-item">AI 계산기 입구 <span class="m-key">CTA</span></div>
+          <div class="m-lv2-item">문의/나라장터 CTA</div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">🏢</div> 회사소개</div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">CEO 메시지
+            <div class="lv3"><span class="tag t-blue">ESG 비전 강조</span></div>
+          </div>
+          <div class="m-lv2-item">회사 연혁
+            <div class="lv3"><span class="tag t-blue">2025 3차 우수제품 하이라이트</span></div>
+          </div>
+          <div class="m-lv2-item">인증서·특허 갤러리</div>
+          <div class="m-lv2-item">수상·언론보도</div>
+          <div class="m-lv2-item">주요 납품처 로고</div>
+          <div class="m-lv2-item">찾아오시는 길</div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">📦</div> 제품안내 <span style="font-size:12px;opacity:.6;margin-left:6px;">"양지처럼"</span></div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">🏆 조달청 우수제품 (3자단가)
+            <div class="lv3"><span class="tag t-red">SUR-3600D</span><span class="tag t-red">SUR-2400T/D</span><span class="tag t-red">SUR-1800T/D</span><span class="tag t-red">SUR-1200T/D</span><span class="tag t-red">SUR-600T/D</span></div>
+          </div>
+          <div class="m-lv2-item">MAS 다수공급자 제품
+            <div class="lv3"><span class="tag t-blue">SUR-3600-2 외 6종</span><span class="tag t-blue">SUR-D300A</span></div>
+          </div>
+          <div class="m-lv2-item">특수 제품
+            <div class="lv3"><span class="tag t-amber">방폭 EX emb II T1</span><span class="tag t-amber">방진방수 IP-65</span></div>
+          </div>
+          <div class="m-lv2-item">개인용·욕실형
+            <div class="lv3"><span class="tag t-gray">SUR-600 벽걸이</span><span class="tag t-gray">SUR-D300A 책상형</span></div>
+          </div>
+          <div class="m-lv2-item">스마트 제어 시스템
+            <div class="lv3"><span class="tag t-green">WiFi 원격조절기</span><span class="tag t-green">128회로 중앙제어</span></div>
+          </div>
+          <div class="m-lv2-item">제품 비교 (vs 대류난방)</div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">⚡</div> 기술·솔루션 <span class="m-key" style="background:var(--amber);">핵심 수주 페이지</span></div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">복사난방 원리 인포그래픽</div>
+          <div class="m-lv2-item">4대 ZERO 데이터 (항균 99.9% 등)</div>
+          <div class="m-lv2-item">교육·공공 솔루션</div>
+          <div class="m-lv2-item">산업·물류 솔루션</div>
+          <div class="m-lv2-item">국방·특수 솔루션</div>
+          <div class="m-lv2-item">스마트시티 솔루션</div>
+          <div class="m-lv2-item">IoT 중앙제어 시스템 <span class="m-key">미래 먹거리</span></div>
+          <div class="m-lv2-item">🔬 혁신랩 R&D 티저 <span class="m-key">Gemini 아이디어</span></div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">🖼️</div> 시공사례 <span class="m-key" style="background:var(--amber);">설득 핵심</span></div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">전체 포트폴리오 (필터)
+            <div class="lv3"><span class="tag t-gray">업종/지역/모델 다중 필터</span></div>
+          </div>
+          <div class="m-lv2-item">공공·교육 사례</div>
+          <div class="m-lv2-item">산업·물류 사례 (드론 영상)</div>
+          <div class="m-lv2-item">국방·특수 사례</div>
+          <div class="m-lv2-item">상업·라이프스타일 사례</div>
+          <div class="m-lv2-item">전국 시공 지도 <span class="m-key">카카오맵</span></div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">📐</div> 기술자료실</div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">🧮 AI 난방 계산기 <span class="m-key">3개AI 공통</span></div>
+          <div class="m-lv2-item">💰 에너지 ROI 계산기</div>
+          <div class="m-lv2-item">카탈로그 다운로드</div>
+          <div class="m-lv2-item">스펙시트·도면 CAD</div>
+          <div class="m-lv2-item">시방서·기술 제안서</div>
+          <div class="m-lv2-item">인증서·시험성적서</div>
+          <div class="m-lv2-item">연구·실험 자료</div>
+          <div class="m-lv2-item">동영상 자료</div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">🚀</div> 🔐 공공기관 패스트트랙 라운지 <span class="m-key" style="background:#6A1B9A;">Gemini 아이디어</span></div>
+      <div class="m-body">
+        <div class="co" style="margin:0;">
+          <strong>📌 개념</strong>
+          <p>공공기관 이메일(.go.kr / .mil.kr / .edu 등) 인증 후 전용 공간 접근. 일위대가표·도면 원본·제안서 양식 일괄 다운로드 + 다이렉트 상담 채널. 공공기관 주무관의 행정 편의성 극대화.</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="m-lv1"><div class="ico">📞</div> 고객센터</div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">견적 문의 (유형별: B2G/B2B/일반)</div>
+          <div class="m-lv2-item">FAQ (업종별 분류)</div>
+          <div class="m-lv2-item">공지사항</div>
+          <div class="m-lv2-item">대리점 모집</div>
+          <div class="m-lv2-item">나라장터 바로가기</div>
+          <div class="m-lv2-item">AI 상담 챗봇 <span class="m-key">Gemini API</span></div>
+        </div>
+      </div>
+    </li>
+    <li style="border:2px solid var(--red);">
+      <div class="m-lv1" style="background:linear-gradient(90deg,var(--red-dark),var(--red));"><div class="ico">🔐</div> 관리자 CMS — 비공개 /admin</div>
+      <div class="m-body">
+        <div class="m-lv2-grid">
+          <div class="m-lv2-item">제품 관리 (CRUD + 이미지)</div>
+          <div class="m-lv2-item">시공사례 관리</div>
+          <div class="m-lv2-item">문서 라이브러리</div>
+          <div class="m-lv2-item">문의 관리 + 상태</div>
+          <div class="m-lv2-item">공지·FAQ 관리</div>
+          <div class="m-lv2-item">SEO 글 관리</div>
+          <div class="m-lv2-item">패스트트랙 접근 승인</div>
+          <div class="m-lv2-item">사이트 설정</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+<!-- ══════════ 3. 와이어프레임 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">03</div>
+    <div>
+      <div class="sec-txt-title">메인 페이지 와이어프레임</div>
+      <div class="sec-txt-sub">실제 개발 화면 기준 — "스크롤만 내려도 설득이 끝나는 구조"</div>
+    </div>
+  </div>
+
+  <div class="wf-browser">
+    <div class="wf-bar">
+      <div class="wf-dot" style="background:#E74C3C;"></div>
+      <div class="wf-dot" style="background:#F39C12;"></div>
+      <div class="wf-dot" style="background:#2ECC71;"></div>
+      <div class="wf-url">https://www.sunraytec.co.kr</div>
+    </div>
+    <div class="wf-screen">
+
+      <!-- NAV -->
+      <div class="wf-nav">
+        <div class="wf-logo">SUNRAYTEC</div>
+        <div class="wf-navlinks">
+          <span>회사소개</span><span>제품안내</span><span>기술·솔루션</span>
+          <span>시공사례</span><span>자료실</span><span>고객센터</span>
+          <span class="cta-nav">🚀 견적문의</span>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="wf-hero">
+        <div class="wf-hero-badge">🏆 정부조달 우수제품 지정 (2013·2019·2025)</div>
+        <h2>대한민국 복사난방의 기준,<br><span>썬레이텍</span></h2>
+        <p>원적외선 방사 천장형 복사난방패널 · 미세먼지 Zero · 전자파 Zero · 세균 99.9% 제거</p>
+        <div class="wf-hero-btns">
+          <div class="wf-btn-p">📋 무료 견적 문의</div>
+          <div class="wf-btn-s">📥 카탈로그 다운로드</div>
+          <div class="wf-btn-s">🏛️ 나라장터 바로가기</div>
+        </div>
+        <div class="wf-badges-row">
+          <div class="wf-badge-item"><strong>조달청</strong>우수제품</div>
+          <div class="wf-badge-item"><strong>혁신제품</strong>2020년</div>
+          <div class="wf-badge-item"><strong>K마크</strong>성능인증</div>
+          <div class="wf-badge-item"><strong>방폭인증</strong>EX emb II T1</div>
+          <div class="wf-badge-item"><strong>ISO 9001</strong>/14001</div>
+          <div class="wf-badge-item"><strong>CE·RoHS</strong>유럽인증</div>
+        </div>
+      </div>
+
+      <!-- KPI -->
+      <div class="wf-section">
+        <div class="wf-section-title">핵심 성능 지표</div>
+        <div class="wf-kpi-row">
+          <div class="wf-kpi"><big>50~80%</big><small>에너지 절감 (vs 대류난방)</small></div>
+          <div class="wf-kpi"><big>100%</big><small>결로 방지</small></div>
+          <div class="wf-kpi"><big>99.9%</big><small>항균·탈취 (대장균·포도상구균)</small></div>
+          <div class="wf-kpi"><big>13년+</big><small>공공조달 납품 실적</small></div>
+        </div>
+      </div>
+
+      <!-- COMPARE -->
+      <div class="wf-section">
+        <div class="wf-section-title">복사난방 vs 대류난방 — 한눈에 비교</div>
+        <div class="wf-compare">
+          <div class="wf-comp-a">
+            <div class="wf-comp-title">☀️ 원적외선 복사난방 (썬레이텍)</div>
+            <div class="wf-comp-row"><span>에너지 절감</span><span class="val">50~80% 절감</span></div>
+            <div class="wf-comp-row"><span>미세먼지</span><span class="val">Zero</span></div>
+            <div class="wf-comp-row"><span>결로 방지</span><span class="val">100% 해결</span></div>
+            <div class="wf-comp-row"><span>세균 항균</span><span class="val">99.9%</span></div>
+            <div class="wf-comp-row"><span>대형 공장(8m↑)</span><span class="val">난방 가능</span></div>
+            <div class="wf-comp-row"><span>화재 위험</span><span class="val">Zero</span></div>
+          </div>
+          <div class="wf-comp-b">
+            <div class="wf-comp-title">💨 일반 대류난방</div>
+            <div class="wf-comp-row"><span>에너지 절감</span><span class="val">기준(100%)</span></div>
+            <div class="wf-comp-row"><span>미세먼지</span><span class="val">발생</span></div>
+            <div class="wf-comp-row"><span>결로 방지</span><span class="val">불가</span></div>
+            <div class="wf-comp-row"><span>세균</span><span class="val">증식 가능</span></div>
+            <div class="wf-comp-row"><span>대형 공장(8m↑)</span><span class="val">난방 불가</span></div>
+            <div class="wf-comp-row"><span>화재 위험</span><span class="val">위험</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASES -->
+      <div class="wf-section" style="background:var(--navy2);">
+        <div class="wf-section-title" style="color:rgba(255,255,255,.4);">검증된 시공 실적</div>
+        <div class="wf-case-grid">
+          <div class="wf-case-item"><div class="wf-case-img">🏭</div><div class="wf-case-lbl">인천공항 FedEx 물류센터</div></div>
+          <div class="wf-case-item"><div class="wf-case-img">⚔️</div><div class="wf-case-lbl">포항 00부대 정비창</div></div>
+          <div class="wf-case-item"><div class="wf-case-img">🎓</div><div class="wf-case-lbl">연무초등학교 식당</div></div>
+          <div class="wf-case-item"><div class="wf-case-img">🚌</div><div class="wf-case-lbl">한국도로공사 버스정류장</div></div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="wf-section">
+        <div class="wf-section-title">제품 라인업 (SUR 시리즈)</div>
+        <div class="wf-product-row">
+          <div class="wf-prod"><div class="model">SUR-3600D</div><div class="spec">3,600W · 대형공간</div></div>
+          <div class="wf-prod"><div class="model">SUR-2400T</div><div class="spec">2,400W · 중대형</div></div>
+          <div class="wf-prod"><div class="model">SUR-1800T</div><div class="spec">1,800W · 중형</div></div>
+          <div class="wf-prod"><div class="model">SUR-1200T</div><div class="spec">1,200W · 소~중형</div></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="wf-cta-section">
+        <div>
+          <h3>지금 바로 무료 난방 용량 계산 & 견적 문의</h3>
+          <p>면적·천장높이 입력 → 추천 모델 자동 제안 → 전문가 상담 연결</p>
+        </div>
+        <div class="wf-cta-btns">
+          <div class="wf-cta-btn">🧮 무료 계산하기</div>
+          <div class="wf-cta-btn-s">📞 1688-2520</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 4. 디자인 컨셉 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">04</div>
+    <div>
+      <div class="sec-txt-title">디자인 컨셉 & 비주얼 가이드</div>
+      <div class="sec-txt-sub">"산업적 따뜻함 (Industrial Warmth)" — 기술 신뢰 + 원적외선 온기</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-hd">컬러 팔레트 & 타이포그래피</div>
+      <table class="tbl">
+        <tr><th>역할</th><th>값</th><th>용도</th></tr>
+        <tr><td>메인 컬러</td><td><span style="background:#C8392B;color:#fff;padding:2px 8px;border-radius:4px;">#C8392B</span> 썬레이텍 레드</td><td>CTA·강조·배지</td></tr>
+        <tr><td>배경 다크</td><td><span style="background:#0A1628;color:#fff;padding:2px 8px;border-radius:4px;">#0A1628</span> 딥 네이비</td><td>Hero·다크 섹션</td></tr>
+        <tr><td>포인트</td><td><span style="background:#E67E22;color:#fff;padding:2px 8px;border-radius:4px;">#E67E22</span> 앰버 오렌지</td><td>수치·아이콘·열 느낌</td></tr>
+        <tr><td>배경 라이트</td><td><span style="background:#F5F6F8;color:#333;padding:2px 8px;border-radius:4px;">#F5F6F8</span></td><td>기본 배경</td></tr>
+        <tr><td>폰트 (제목)</td><td>Bebas Neue (영문 수치)</td><td>숫자 임팩트 강조</td></tr>
+        <tr><td>폰트 (본문)</td><td>Noto Sans KR 400/700</td><td>한글 가독성</td></tr>
+      </table>
+      <div class="co am" style="margin-top:12px;">
+        <strong>💡 컬러 선택 근거</strong>
+        <p>Gemini의 "웜 옐로우·테크 블루" + ChatGPT의 "딥블루·오렌지" + Claude의 "썬레이텍 레드·네이비" 3안을 검토. 브랜드 일관성 위해 기존 카탈로그 레드를 유지하되, 앰버 오렌지로 "열·에너지" 시각화. 공공기관 신뢰감을 위해 다크 네이비 배경 채택.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">UX 설계 원칙</div>
+      <table class="tbl">
+        <tr><th>원칙</th><th>구현 방법</th></tr>
+        <tr><td>B2G 첫 3초 신뢰</td><td>Hero 진입 즉시 우수제품 배지 6개 표시</td></tr>
+        <tr><td>스크롤=설득 구조</td><td>KPI → 비교 → 사례 → 제품 → CTA 순서 고정</td></tr>
+        <tr><td>모바일 퍼스트</td><td>하단 고정 CTA 바 (전화+계산기+문의)</td></tr>
+        <tr><td>숫자로 설득</td><td>50~80% / 100% / 99.9% 등 대형 폰트 강조</td></tr>
+        <tr><td>빠른 접근</td><td>조달담당자: 2클릭 내 나라장터 도달</td></tr>
+        <tr><td>드론 영상</td><td>물류센터 설치 현장 항공 촬영 배경 적용</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 5. Admin CMS ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">05</div>
+    <div>
+      <div class="sec-txt-title">관리자 CMS (Admin Mode)</div>
+      <div class="sec-txt-sub">박이사님 혼자서도 쉽게 — 드래그 앤 드롭 + 엑셀 업로드</div>
+    </div>
+  </div>
+
+  <div class="co bl" style="margin-bottom:20px;">
+    <strong>📌 핵심 설계 원칙 (Gemini + ChatGPT 아이디어 통합)</strong>
+    <p>① <strong>드래그 앤 드롭</strong>: 현장에서 찍은 사진을 끌어다 놓으면 자동 리사이징 후 갤러리 등록 (Gemini 아이디어) ② <strong>엑셀 일괄 업로드</strong>: MAS 제품 추가 시 엑셀 파일 1회 업로드로 홈페이지 스펙 자동 업데이트 (Gemini 아이디어) ③ 모바일에서도 관리 가능 ④ Supabase Auth + RLS 보안</p>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-hd">Admin 메뉴 & 기능</div>
+      <table class="tbl">
+        <tr><th>메뉴</th><th>주요 기능</th><th>Supabase 테이블</th></tr>
+        <tr><td>📊 대시보드</td><td>문의 현황·신규 알림·페이지 조회수</td><td>-</td></tr>
+        <tr><td>📦 제품 관리</td><td>추가·수정·삭제, 이미지 5장, 나라장터 식별번호, 노출 순서 드래그</td><td>products</td></tr>
+        <tr><td>🖼️ 시공사례</td><td>드래그 다중 업로드, 업종·지역·모델 태그, 드론 영상 URL</td><td>cases</td></tr>
+        <tr><td>📄 문서 라이브러리</td><td>PDF 업로드, 공개/비공개, 다운로드 카운트, 리드 수집 설정</td><td>documents</td></tr>
+        <tr><td>💬 문의 관리</td><td>목록·상태(신규/검토/완료)·메모·카카오 알림 발송</td><td>inquiries</td></tr>
+        <tr><td>📢 공지·FAQ</td><td>작성·수정·카테고리 분류</td><td>notices, faq</td></tr>
+        <tr><td>✍️ SEO 글 관리</td><td>블로그·기술 아티클 작성·수정 (마크다운 에디터)</td><td>articles</td></tr>
+        <tr><td>🔐 패스트트랙</td><td>공공기관 이메일 인증 승인·자료 접근 관리</td><td>fasttrack_access</td></tr>
+        <tr><td>⚙️ 사이트 설정</td><td>배너 영상 교체, 연락처, 팝업 ON/OFF, 메타태그</td><td>settings</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-hd">엑셀 일괄 업로드 기능 (Gemini 아이디어)</div>
+      <div class="co gr">
+        <strong>📋 동작 방식</strong>
+        <p>MAS·3자단가 갱신 시 나라장터에서 받은 엑셀 파일을 Admin에서 업로드 → 모델명·소비전력·발열량·사이즈·식별번호 자동 파싱 → 제품 DB 일괄 업데이트. 개발자 없이 30초 내 홈페이지 반영.</p>
+      </div>
+      <table class="tbl" style="margin-top:12px;">
+        <tr><th>엑셀 컬럼</th><th>DB 매핑</th></tr>
+        <tr><td>모델명</td><td>products.model_name</td></tr>
+        <tr><td>제품식별번호</td><td>products.spec_no</td></tr>
+        <tr><td>소비전력(W)</td><td>products.power_w</td></tr>
+        <tr><td>사이즈(LxWxH)</td><td>products.size</td></tr>
+        <tr><td>발열량(Kcal)</td><td>products.heat_kcal</td></tr>
+        <tr><td>카테고리</td><td>products.category</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 6. API 설계 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">06</div>
+    <div>
+      <div class="sec-txt-title">개발자용 API 구조</div>
+      <div class="sec-txt-sub">공개 API + 관리자 API 분리 설계 — Supabase REST + Edge Functions 기반</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="api-block">
+      <div class="api-group">📦 제품 API (공개)</div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/products</span><span class="api-desc">전체 제품 목록 (필터: category, active)</span></div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/products/:id</span><span class="api-desc">제품 상세 + 연관 사례</span></div>
+      <div class="api-group">🖼️ 시공사례 API (공개)</div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/cases</span><span class="api-desc">필터: industry, region, product_id</span></div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/cases/:id</span><span class="api-desc">사례 상세 + 이미지 배열</span></div>
+      <div class="api-group">📐 계산기 API</div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/calc/heating</span><span class="api-desc">난방 용량 계산 → 추천 모델 반환</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/calc/roi</span><span class="api-desc">에너지 ROI 계산 → 절감액·회수기간</span></div>
+      <div class="api-group">💬 문의 API</div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/inquiry</span><span class="api-desc">문의 접수 + 카카오 알림 트리거</span></div>
+      <div class="api-group">📄 문서 API (조건부 공개)</div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/documents</span><span class="api-desc">공개 문서 목록</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/documents/request</span><span class="api-desc">비공개 문서 접근 요청 (이름+연락처)</span></div>
+    </div>
+    <div class="api-block">
+      <div class="api-group">🔐 Admin API (인증 필수)</div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/admin/products</span><span class="api-desc">제품 생성</span></div>
+      <div><span class="api-method m-put">PUT</span><span class="api-path">/admin/products/:id</span><span class="api-desc">제품 수정</span></div>
+      <div><span class="api-method m-del">DEL</span><span class="api-path">/admin/products/:id</span><span class="api-desc">제품 삭제</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/admin/products/import</span><span class="api-desc">엑셀 일괄 업로드</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/admin/cases</span><span class="api-desc">시공사례 등록 (이미지 배열)</span></div>
+      <div><span class="api-method m-put">PUT</span><span class="api-path">/admin/inquiries/:id</span><span class="api-desc">문의 상태 변경</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/admin/documents</span><span class="api-desc">문서 업로드 (Supabase Storage)</span></div>
+      <div class="api-group">🤖 AI API (Edge Function)</div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/ai/chat</span><span class="api-desc">Gemini API 챗봇 응답</span></div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/ai/recommend</span><span class="api-desc">AI 제품 추천 (계산기 연동)</span></div>
+      <div class="api-group">🏛️ 패스트트랙 API</div>
+      <div><span class="api-method m-post">POST</span><span class="api-path">/api/fasttrack/verify</span><span class="api-desc">공공기관 이메일 인증 요청</span></div>
+      <div><span class="api-method m-get">GET</span><span class="api-path">/api/fasttrack/resources</span><span class="api-desc">인증 후 전용 자료 접근</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 7. 열량 계산기 로직 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">07</div>
+    <div>
+      <div class="sec-txt-title">열량 계산기 & ROI 계산기 로직 설계</div>
+      <div class="sec-txt-sub">3개 AI 공통 1순위 기능 — 설치 엑셀 기반 웹화</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-hd">🧮 난방 용량 계산기 입력/출력</div>
+      <table class="tbl">
+        <tr><th>입력 변수</th><th>범위</th><th>카탈로그 기준</th></tr>
+        <tr><td>공간 면적 (㎡)</td><td>1~5,000</td><td>3.3㎡ 기준표 활용</td></tr>
+        <tr><td>천장 높이 (m)</td><td>2.5~15</td><td>2.5m~ 기준, 30~40cm 증가 시 100W 추가</td></tr>
+        <tr><td>목표 온도</td><td>실내 18°C / 25°C / 동파방지</td><td>카탈로그 설계 기준표</td></tr>
+        <tr><td>단열 상태</td><td>양호/보통/불량</td><td>지역·주변환경 보정 +10~30%</td></tr>
+        <tr><td>외기온도 설정</td><td>기본 -5°C</td><td>카탈로그 주석 기준</td></tr>
+        <tr><td>결로 방지 필요</td><td>Y/N</td><td>동파방지(10~15°C) 200~300W/3.3㎡</td></tr>
+      </table>
+      <div class="co gr" style="margin-top:12px;">
+        <strong>⚙️ 계산 공식 (카탈로그 기준표 기반)</strong>
+        <p>기준 용량 = 면적(㎡) ÷ 3.3 × 단위용량(W) + 천장높이 보정 + 단열 보정<br>
+        추천 모델: 총 필요 전력 ÷ 모델 소비전력 → 반올림 수량 + 여유율 10%</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">💰 에너지 ROI 계산기 로직 (ChatGPT 아이디어)</div>
+      <table class="tbl">
+        <tr><th>입력</th><th>설명</th></tr>
+        <tr><td>기존 난방 방식</td><td>가스보일러 / 전기온풍기 / 기름보일러</td></tr>
+        <tr><td>월 난방비 (원)</td><td>현재 지출액</td></tr>
+        <tr><td>일 가동 시간 (h)</td><td>평균 사용시간</td></tr>
+        <tr><td>썬레이텍 설치비</td><td>추천 모델 × 단가 자동 계산</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:10px;">
+        <tr><th>출력</th><th>계산 방식</th></tr>
+        <tr><td>월 절감액</td><td>현재 난방비 × 절감율(50~80%)</td></tr>
+        <tr><td>연간 절감액</td><td>월 절감액 × 12</td></tr>
+        <tr><td>투자 회수기간</td><td>설치비 ÷ 연간 절감액 (년)</td></tr>
+        <tr><td>10년 총 절감액</td><td>연간 절감액 × 10 - 설치비</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 계산기 UI 미리보기 -->
+  <div class="calc-box" style="margin-top:18px;">
+    <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:16px;">🧮 계산기 UI 미리보기 — 입력 → 결과 즉시 표시</div>
+    <div class="calc-row">
+      <div class="calc-field"><label>공간 면적</label><div class="val">500 ㎡</div></div>
+      <div class="calc-field"><label>천장 높이</label><div class="val">5 m</div></div>
+      <div class="calc-field"><label>목표 온도</label><div class="val">실내 18°C 유지</div></div>
+      <div class="calc-field"><label>단열 상태</label><div class="val">보통</div></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="r-num">52,200W</div><div class="r-lbl">필요 총 용량</div></div>
+      <div><div class="r-num">SUR-3600D × 15대</div><div class="r-lbl">추천 모델 & 수량</div></div>
+      <div><div class="r-num">월 62만원↓</div><div class="r-lbl">예상 절감액 (vs 가스보일러)</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:14px;">
+      <div style="background:var(--red);color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">📋 무료 견적 요청</div>
+      <div style="background:var(--light);color:var(--navy);padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">📥 결과 PDF 다운로드</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 8. SEO 전략 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">08</div>
+    <div>
+      <div class="sec-txt-title">SEO 콘텐츠 전략 — 10개 핵심 글</div>
+      <div class="sec-txt-sub">검색 유입 + 영업 설득 동시 달성 (ChatGPT 아이디어 구체화)</div>
+    </div>
+  </div>
+
+  <div class="co" style="margin-bottom:20px;">
+    <strong>🎯 SEO 3대 타깃 키워드 그룹</strong>
+    <p>① <strong>문제 해결형</strong>: "결로 방지 난방", "물류센터 난방 방법" — 구매 의향 높음<br>
+    ② <strong>비교형</strong>: "복사난방 대류난방 차이", "천장형 난방 비교" — 의사결정 단계<br>
+    ③ <strong>조달 특화</strong>: "조달청 난방 우수제품", "공공기관 난방 조달" — B2G 직접 타깃</p>
+  </div>
+
+  <div class="g2">
+    <div class="seo-article">
+      <div class="seo-num">01</div>
+      <div class="seo-title">물류센터 천장 난방, 왜 복사난방이 정답인가?</div>
+      <div class="seo-kw"><span class="tag t-blue">물류센터 난방</span><span class="tag t-blue">천장형 난방</span><span class="tag t-gray">창고 난방</span></div>
+      <div class="seo-desc">높이 8m 이상 공간에서 대류난방이 실패하는 이유 + 복사난방 원리 설명 + FedEx·CJ대한통운 사례 연결</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">02</div>
+      <div class="seo-title">결로 문제 완전 해결 — 탄약고·정비창 난방 사례</div>
+      <div class="seo-kw"><span class="tag t-red">결로 방지</span><span class="tag t-red">군시설 난방</span><span class="tag t-gray">탄약고 결로</span></div>
+      <div class="seo-desc">결로 발생 원리 → 기존 방법 한계 → 원적외선 복사난방 100% 해결 원리 + 군 납품 사례</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">03</div>
+      <div class="seo-title">공장 난방비 50% 줄이는 방법 — 실제 절감 데이터</div>
+      <div class="seo-kw"><span class="tag t-amber">공장 난방비 절감</span><span class="tag t-gray">산업용 난방</span></div>
+      <div class="seo-desc">대류난방 vs 복사난방 에너지 소비 비교 데이터 + ROI 계산 사례 + 계산기 CTA</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">04</div>
+      <div class="seo-title">조달청 천장형 난방 우수제품 — 구매 절차 완전 가이드</div>
+      <div class="seo-kw"><span class="tag t-red">조달청 난방</span><span class="tag t-red">우수제품 구매</span><span class="tag t-gray">나라장터 난방</span></div>
+      <div class="seo-desc">공공기관 담당자 타깃 — MAS·3자단가 차이, 식별번호로 검색하는 법, 수의계약 기준 안내</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">05</div>
+      <div class="seo-title">학교 급식실 미세먼지 없는 난방, 어떻게 가능할까?</div>
+      <div class="seo-kw"><span class="tag t-green">학교 난방</span><span class="tag t-green">급식실 난방</span><span class="tag t-gray">미세먼지 제로</span></div>
+      <div class="seo-desc">교육부 미세먼지 기준 + 기존 난방 문제점 + 복사난방 항균 데이터 + 연무초등학교 사례</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">06</div>
+      <div class="seo-title">복사난방 vs 대류난방 — 전문가가 말하는 진짜 차이</div>
+      <div class="seo-kw"><span class="tag t-blue">복사난방 원리</span><span class="tag t-blue">대류난방 차이</span></div>
+      <div class="seo-desc">원적외선 물리 원리부터 인체 체감온도 차이까지 — 비교 인포그래픽 포함, 가장 많이 검색되는 키워드</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">07</div>
+      <div class="seo-title">세차장·수영장 난방 — IP-65 방진방수 인증의 의미</div>
+      <div class="seo-kw"><span class="tag t-amber">세차장 난방</span><span class="tag t-amber">방수 난방</span><span class="tag t-gray">IP65 난방기</span></div>
+      <div class="seo-desc">수분이 많은 환경에서 일반 난방기 사용의 위험성 + IP-65 인증 기준 + 기아자동차 세차장 사례</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">08</div>
+      <div class="seo-title">버스 정류장 동절기 온열 솔루션 — 스마트시티 적용 사례</div>
+      <div class="seo-kw"><span class="tag t-purple">버스정류장 난방</span><span class="tag t-purple">스마트시티</span><span class="tag t-gray">야외 난방</span></div>
+      <div class="seo-desc">지자체 스마트시티 예산 집행 트렌드 + 춘천·한국도로공사 버스정류장 사례 + 조달 연결</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">09</div>
+      <div class="seo-title">방폭 인증 난방기 완전 가이드 — EX emb II T1이란?</div>
+      <div class="seo-kw"><span class="tag t-red">방폭 난방기</span><span class="tag t-red">EX 인증</span><span class="tag t-gray">탄약고 난방</span></div>
+      <div class="seo-desc">방폭 인증 등급 체계 쉽게 설명 + 썬레이텍 방폭 제품 라인업 + 군·화학 시설 적용 사례</div>
+    </div>
+    <div class="seo-article">
+      <div class="seo-num">10</div>
+      <div class="seo-title">천장형 난방패널 스마트 중앙제어 — IoT 에너지 관리 가이드</div>
+      <div class="seo-kw"><span class="tag t-green">IoT 난방 제어</span><span class="tag t-green">중앙제어 난방</span><span class="tag t-gray">스마트 난방</span></div>
+      <div class="seo-desc">128회로 중앙제어 시스템 기능 + 에너지 관리 절감 사례 + ESG 경영 연계 (기업 타깃)</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 9. 경쟁력 강화 아이디어 (통합) ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">09</div>
+    <div>
+      <div class="sec-txt-title">경쟁력 강화 아이디어 — 3개 AI 통합 최선안 9개</div>
+      <div class="sec-txt-sub">출처 표기 — 어느 AI가 제안했는지 명확히 구분</div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="idea">
+      <div class="badge">🚁 Gemini 아이디어 ①</div>
+      <h4>DJI 드론 항공 촬영 영상</h4>
+      <p>대형 물류센터·산업시설 시공 현장 감독 시 DJI Neo로 항공 촬영. 천장에 끝없이 펼쳐진 썬레이텍 패널 장관을 메인 배경 영상으로 활용. 어떤 설명보다 압도적 규모감 전달. 추가 비용 없이 영업력 2배.</p>
+      <div class="src">→ 즉시 실행 가능. 현장 감독 시 촬영 습관화 권장.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">🏛️ Gemini 아이디어 ②</div>
+      <h4>공공기관 패스트트랙 라운지</h4>
+      <p>.go.kr / .mil.kr / .edu 이메일 인증 후 전용 공간 접근. 일위대가표·도면 원본·제안서 양식 일괄 다운로드 + 다이렉트 상담. 공공기관 주무관의 행정 편의성 극대화로 B2G 수주율 향상.</p>
+      <div class="src">→ Supabase Auth + Email OTP로 구현 가능.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">🔬 Gemini 아이디어 ③</div>
+      <h4>혁신랩 (Innovation Lab) 티저</h4>
+      <p>현재 R&D 중인 미래 제품(높이조절 천장패널·IoT 결합 등) 개발 비전을 스케치로 공개. 공공기관은 "머물러 있지 않고 발전하는 기업"을 선호. ESG 혁신 기업 이미지 강화.</p>
+      <div class="src">→ 구체적 스펙 없이 컨셉 비전만 공개해도 효과적.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">💰 ChatGPT 아이디어 ④</div>
+      <h4>에너지 ROI 계산기</h4>
+      <p>기존 난방 방식과 비용 입력 → 월/연 절감액·투자 회수기간·10년 총 절감액 즉시 계산. "3년 내 투자 회수" 수치가 화면에 뜨면 구매 결정이 빨라짐. PDF 출력 후 내부 보고서로 활용 가능.</p>
+      <div class="src">→ 3개 AI 공통 1순위 기능. Phase 1~2 필수 구현.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">🗺️ Claude 아이디어 ⑤</div>
+      <h4>전국 시공 현장 지도</h4>
+      <p>카카오맵 API로 전국 50+ 시공 현장을 지도 핀으로 표시. 지역·업종 필터 가능. "우리 지역에도 이미 설치됐구나"는 심리적 신뢰가 전환율을 높임. GOP·군부대 등은 위치 비공개 처리 가능.</p>
+      <div class="src">→ 카카오맵 무료 티어로 구현 가능.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">📊 Claude 아이디어 ⑥</div>
+      <h4>항균·탈취 데이터 시각화 섹션</h4>
+      <p>대장균·포도상구균 99.9% 항균, 89% 탈취율 공인 시험 성적 데이터를 인포그래픽으로 임팩트 있게 표현. 의료·식품·교육 시설 타깃 영업 강화. 카탈로그 p.3 내용의 웹 최적화.</p>
+      <div class="src">→ 카탈로그 내 데이터 이미 보유. 디자인만 추가.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">📱 Claude 아이디어 ⑦</div>
+      <h4>카카오 알림 자동화</h4>
+      <p>홈페이지 문의 접수 시 박이사님께 카카오 알림톡 즉시 발송. 고객에게는 접수 확인 문자 자동 발송. 빠른 응답이 B2B 신뢰도를 크게 높임. Make 또는 n8n 무료 플랜으로 구현.</p>
+      <div class="src">→ 개발 없이 노코드 툴로 1일 내 구현 가능.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">📝 ChatGPT 아이디어 ⑧</div>
+      <h4>문제 해결형 SEO 콘텐츠 블로그</h4>
+      <p>"결로 방지 방법", "공장 난방비 줄이는 법" 등 고객이 검색하는 문제를 먼저 해결해주는 글 10개 세트. 검색 유입 + 전문가 신뢰도 동시 달성. 영업사원 없이도 고객이 찾아오는 구조.</p>
+      <div class="src">→ Section 08의 SEO 10개 글 참조.</div>
+    </div>
+    <div class="idea">
+      <div class="badge">🌏 Claude 아이디어 ⑨</div>
+      <h4>해외 바이어 영문 페이지</h4>
+      <p>조달청 해외 바이어 상담 프로그램 연계, 영문 제품 소개·인증서·영문 카탈로그 다운로드 전용 페이지. CE·RoHS 유럽 인증 보유 강점 활용. 해외 수출 교두보 마련.</p>
+      <div class="src">→ 현재 보유한 영문 카탈로그·CE 인증서로 즉시 구성 가능.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 10. 개발 로드맵 ══════════ -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="sec-num">10</div>
+    <div>
+      <div class="sec-txt-title">개발 로드맵 & 기술 스택</div>
+      <div class="sec-txt-sub">Google Stitch → Claude Code → GitHub → Vercel 파이프라인 기준</div>
+    </div>
+  </div>
+
+  <div class="co bl" style="margin-bottom:20px;">
+    <strong>📌 박이사님 확정 개발 방식</strong>
+    <p><strong>① Google Stitch</strong>로 초기 디자인 컨셉 도출 → <strong>② Claude Code</strong>로 가져와서 실제 코드 개발 → <strong>③ 로컬 PC</strong>에서 실시간 확인하며 업데이트 → <strong>④ GitHub</strong> 커밋 → <strong>⑤ Vercel</strong> 자동 배포 → <strong>⑥ sunraytec.co.kr</strong> 도메인 연결</p>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-phase">Phase 1 — 2~3주 (최우선)</div>
+          <div class="tl-title">MVP 코어 구축 <span class="prio p-now">즉시 착수</span></div>
+          <div class="tl-body">
+            ① 메인 페이지 (Hero + 배지 + KPI + 비교 + CTA)<br>
+            ② 제품 목록·상세 (우수제품/MAS 필터)<br>
+            ③ Supabase DB 연동 + Admin 제품 CRUD<br>
+            ④ 이미지 드래그 업로드 + WebP 자동변환<br>
+            ⑤ 반응형 모바일 완성<br>
+            ⑥ sunraytec.co.kr 도메인 연결
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 2 — 2~3주</div>
+          <div class="tl-title">콘텐츠 확장 <span class="prio p-soon">중요</span></div>
+          <div class="tl-body">
+            ① 시공사례 갤러리 + 필터 + Admin<br>
+            ② 솔루션 페이지 (5개 업종별)<br>
+            ③ 문서 라이브러리 + 다운로드 센터<br>
+            ④ 문의 폼 + 카카오 알림 자동화<br>
+            ⑤ 회사소개 (연혁·인증 갤러리)<br>
+            ⑥ SEO 기본 (메타태그·sitemap)
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 3 — 2~3주</div>
+          <div class="tl-title">차별화 기능 <span class="prio p-later">고도화</span></div>
+          <div class="tl-body">
+            ① 열량 계산기 + ROI 계산기 (Gemini API)<br>
+            ② AI 상담 챗봇<br>
+            ③ 전국 시공 지도 (카카오맵)<br>
+            ④ 패스트트랙 라운지 (공공기관 전용)<br>
+            ⑤ 엑셀 일괄 업로드 기능<br>
+            ⑥ SEO 글 10개 발행
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 4 — 지속 운영</div>
+          <div class="tl-title">완성도 강화 <span class="prio p-later">장기</span></div>
+          <div class="tl-body">
+            ① 드론 영상 촬영 후 Hero 배경 교체<br>
+            ② 혁신랩 R&D 티저 코너<br>
+            ③ 영문 페이지 구성<br>
+            ④ Google Analytics 4 연동<br>
+            ⑤ Core Web Vitals 90+ 최적화
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">확정 기술 스택 요약</div>
+      <table class="tbl">
+        <tr><th>레이어</th><th>기술</th><th>근거</th></tr>
+        <tr><td>디자인 컨셉</td><td>Google Stitch</td><td>박이사님 확정</td></tr>
+        <tr><td>개발 도구</td><td>Claude Code CLI</td><td>박이사님 확정</td></tr>
+        <tr><td>프론트엔드</td><td>React + TypeScript + Vite</td><td>GitHub 기존 스택</td></tr>
+        <tr><td>스타일링</td><td>Tailwind CSS</td><td>3개 AI 공통 추천</td></tr>
+        <tr><td>라우팅</td><td>React Router v6</td><td>SPA 다중 페이지</td></tr>
+        <tr><td>DB</td><td>Supabase (PostgreSQL)</td><td>GitHub .env에 이미 설정</td></tr>
+        <tr><td>스토리지</td><td>Supabase Storage</td><td>이미지·PDF 관리</td></tr>
+        <tr><td>인증</td><td>Supabase Auth</td><td>Admin + 패스트트랙</td></tr>
+        <tr><td>AI</td><td>Gemini API</td><td>GitHub에 이미 연동</td></tr>
+        <tr><td>배포</td><td>Vercel</td><td>GitHub 기존 연동</td></tr>
+        <tr><td>버전관리</td><td>GitHub</td><td>박이사님 확정</td></tr>
+        <tr><td>알림</td><td>Make (노코드)</td><td>카카오 알림 자동화</td></tr>
+        <tr><td>지도</td><td>카카오맵 API</td><td>국내 최적화</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 우선순위 매트릭스 -->
+  <div class="card" style="margin-top:16px;">
+    <div class="card-hd">기능별 우선순위 매트릭스 — 최종 확정</div>
+    <table class="tbl">
+      <tr><th>기능</th><th>3개 AI 공통</th><th>임팩트</th><th>난이도</th><th>우선순위</th></tr>
+      <tr><td>메인 히어로 + 신뢰배지</td><td>✅✅✅</td><td>⭐⭐⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-now">즉시</span></td></tr>
+      <tr><td>제품 목록·상세 (우수제품/MAS)</td><td>✅✅✅</td><td>⭐⭐⭐⭐⭐</td><td>보통</td><td><span class="prio p-now">즉시</span></td></tr>
+      <tr><td>복사 vs 대류 비교 섹션</td><td>✅✅✅</td><td>⭐⭐⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-now">즉시</span></td></tr>
+      <tr><td>Admin CMS (제품·사례)</td><td>✅✅✅</td><td>⭐⭐⭐⭐⭐</td><td>보통</td><td><span class="prio p-now">즉시</span></td></tr>
+      <tr><td>열량·ROI 계산기</td><td>✅✅✅</td><td>⭐⭐⭐⭐⭐</td><td>보통</td><td><span class="prio p-soon">Phase 2~3</span></td></tr>
+      <tr><td>시공사례 갤러리 (필터)</td><td>✅✅✅</td><td>⭐⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-soon">Phase 2</span></td></tr>
+      <tr><td>드론 배경 영상</td><td>🟠 Gemini</td><td>⭐⭐⭐⭐</td><td>매우 쉬움</td><td><span class="prio p-soon">영상 확보 후</span></td></tr>
+      <tr><td>패스트트랙 라운지</td><td>🟠 Gemini</td><td>⭐⭐⭐⭐</td><td>보통</td><td><span class="prio p-soon">Phase 3</span></td></tr>
+      <tr><td>카카오 알림 자동화</td><td>✅Claude+GPT</td><td>⭐⭐⭐⭐</td><td>매우 쉬움</td><td><span class="prio p-soon">Phase 2</span></td></tr>
+      <tr><td>SEO 글 10개</td><td>⚫ GPT</td><td>⭐⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-soon">Phase 3</span></td></tr>
+      <tr><td>전국 시공 지도</td><td>✅Claude</td><td>⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-later">Phase 3</span></td></tr>
+      <tr><td>혁신랩 티저</td><td>🟠 Gemini</td><td>⭐⭐⭐</td><td>매우 쉬움</td><td><span class="prio p-later">Phase 4</span></td></tr>
+      <tr><td>영문 페이지</td><td>✅Claude</td><td>⭐⭐⭐</td><td>쉬움</td><td><span class="prio p-later">Phase 4</span></td></tr>
+    </table>
+  </div>
+
+</div>
+
+</div><!-- /page -->
+
+<div class="footer">
+  <strong>(주)썬레이텍 홈페이지 개발 기획서 v2.0 — 통합 최종본</strong><br>
+  Claude · Gemini · ChatGPT 3개 AI 교차 검증 | 2026년 4월 작성 | 박진석 이사<br>
+  기술스택: React + Vite + TypeScript + Supabase + Vercel | GitHub: jsdigm-cpu/sunraytec
+</div>
+
+</body>
+</html>

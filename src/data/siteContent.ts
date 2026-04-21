@@ -2,11 +2,16 @@ import type { SiteContent } from '../types/cms';
 
 export const initialSiteContent: SiteContent = {
   hero: {
-    headline: '대한민국 복사난방의 기준, 양지처럼 따스한 기술로 내일의 환경을 설계합니다!',
+    headline: '대한민국 복사난방의 기준,\n양지처럼 따스한 기술로\n내일의 환경을 설계합니다!',
     subcopy:
       '공공기관·교육시설·산업현장에서 검증된 원적외선 복사난방 기술로, 쾌적하고 안전한 열환경을 제공합니다.',
     primaryCta: '견적 문의',
-    secondaryCta: 'Contact Us',
+    secondaryCta: '우수제품 보기',
+    highlightText: '양지처럼',
+    highlightColor: '#F39C12',
+    headlineFontFamily: 'display',
+    headlineFontSize: 'xl',
+    headlineFontWeight: 'black',
   },
   certifications: [
     { title: '정부조달 우수제품 지정', year: '2013 · 2019 · 2025' },

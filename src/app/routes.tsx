@@ -3,6 +3,10 @@ import App from './App';
 import HomePage from '../pages/HomePage';
 import ProductPage from '../pages/ProductPage';
 import AdminDashboardPage from '../pages/AdminDashboardPage';
+import ExcellenceProductsPage from '../pages/products/ExcellenceProductsPage';
+import MasProductsPage from '../pages/products/MasProductsPage';
+import ProductDetailPage from '../pages/products/ProductDetailPage';
+import ComingSoonPage from '../pages/ComingSoonPage';
 
 export const router = createBrowserRouter([
   {
@@ -11,7 +15,11 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'products', element: <ProductPage /> },
+      { path: 'products/excellence', element: <ExcellenceProductsPage /> },
+      { path: 'products/mas', element: <MasProductsPage /> },
+      { path: 'products/:productId', element: <ProductDetailPage /> },
       { path: 'admin', element: <AdminDashboardPage /> },
+      { path: 'coming-soon', element: <ComingSoonPage /> },
     ],
   },
 ]);
