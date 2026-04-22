@@ -8,6 +8,7 @@ import MasProductsPage from '../pages/products/MasProductsPage';
 import ProductDetailPage from '../pages/products/ProductDetailPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import ContactPage from '../pages/ContactPage';
+import CasesPage from '../pages/CasesPage';
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: 'admin', element: <AdminDashboardPage /> },
       { path: 'coming-soon', element: <ComingSoonPage /> },
       { path: 'contact', element: <ContactPage /> },
+      { path: 'cases', element: <CasesPage /> },
     ],
   },
 ]);

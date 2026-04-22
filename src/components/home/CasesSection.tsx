@@ -46,20 +46,23 @@ export default function CasesSection() {
                 공공기관·산업현장에서 신뢰로 쌓아온 납품 실적
               </p>
             </div>
-            <motion.div
-              whileHover={{ scale: 1.04 }}
-              style={{
-                padding: '10px 20px',
-                borderRadius: '8px',
-                border: '1.5px solid rgba(255,255,255,.3)',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: '0.875rem',
-                whiteSpace: 'nowrap',
-                display: 'inline-block',
-              }}
-            >
-              시공사례 페이지 준비중
+            <motion.div whileHover={{ scale: 1.04 }}>
+              <Link
+                to="/cases"
+                style={{
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  border: '1.5px solid rgba(255,255,255,.3)',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '0.875rem',
+                  whiteSpace: 'nowrap',
+                  display: 'inline-block',
+                  textDecoration: 'none',
+                }}
+              >
+                시공사례 전체보기 →
+              </Link>
             </motion.div>
           </div>
         </ScrollReveal>
@@ -85,7 +88,7 @@ export default function CasesSection() {
                 cursor: 'pointer',
               }}
             >
-              <Link to="/products/excellence">
+              <Link to="/cases">
                 {/* 이미지 영역 — hover 시 이모지 확대 */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
