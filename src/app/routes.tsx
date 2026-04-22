@@ -11,6 +11,7 @@ import ContactPage from '../pages/ContactPage';
 import CasesPage from '../pages/CasesPage';
 import CatalogPage from '../pages/resources/CatalogPage';
 import CertificationsPage from '../pages/about/CertificationsPage';
+import HistoryPage from '../pages/about/HistoryPage';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { path: 'cases', element: <CasesPage /> },
       { path: 'resources/catalog', element: <CatalogPage /> },
       { path: 'about/certifications', element: <CertificationsPage /> },
+      { path: 'about/history', element: <HistoryPage /> },
     ],
   },
 ]);
