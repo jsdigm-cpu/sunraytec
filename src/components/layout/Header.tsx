@@ -20,12 +20,12 @@ interface NavItem {
 // 현재 실제 라우트 기준으로만 클릭 가능한 메뉴를 노출합니다.
 const NAV_ITEMS = [
   {
-    to: '/coming-soon?section=company',
+    to: '/about/history',
     label: '회사소개',
     subs: [
       { to: '/coming-soon?section=company', label: 'CEO 메시지', icon: '👤', comingSoon: true },
-      { to: '/coming-soon?section=company', label: '회사 연혁', icon: '📅', comingSoon: true },
-      { to: '/coming-soon?section=company', label: '인증서·특허', icon: '🏆', comingSoon: true },
+      { to: '/about/history', label: '회사 연혁', icon: '📅' },
+      { to: '/about/certifications', label: '인증서·특허', icon: '🏆' },
       { to: '/coming-soon?section=company', label: '수상·언론보도', icon: '📰', comingSoon: true },
       { to: '/coming-soon?section=company', label: '주요 납품처', icon: '🤝', comingSoon: true },
       { to: '/coming-soon?section=company', label: '찾아오시는 길', icon: '📍', comingSoon: true },
@@ -56,34 +56,34 @@ const NAV_ITEMS = [
     ],
   },
   {
-    to: '/coming-soon?section=cases',
+    to: '/cases',
     label: '시공사례',
     subs: [
-      { to: '/coming-soon?section=cases', label: '전체 포트폴리오', icon: '🗂️', comingSoon: true },
-      { to: '/coming-soon?section=cases', label: '공공·교육 사례', icon: '🏛️', comingSoon: true },
-      { to: '/coming-soon?section=cases', label: '산업·물류 사례', icon: '🏭', comingSoon: true },
-      { to: '/coming-soon?section=cases', label: '국방·특수 사례', icon: '⚔️', comingSoon: true },
-      { to: '/coming-soon?section=cases', label: '상업·라이프스타일', icon: '🏢', comingSoon: true },
+      { to: '/cases', label: '전체 포트폴리오', icon: '🗂️' },
+      { to: '/cases', label: '공공·교육 사례', icon: '🏛️' },
+      { to: '/cases', label: '산업·물류 사례', icon: '🏭' },
+      { to: '/cases', label: '국방·특수 사례', icon: '⚔️' },
+      { to: '/cases', label: '상업·라이프스타일', icon: '🏢' },
       { to: '/coming-soon?section=cases', label: '전국 시공 지도', icon: '🗺️', comingSoon: true },
     ],
   },
   {
-    to: '/coming-soon?section=resources',
+    to: '/resources/catalog',
     label: '자료실',
     subs: [
       { to: '/coming-soon?section=resources', label: '난방 용량 계산기', icon: '🧮', comingSoon: true },
       { to: '/coming-soon?section=resources', label: '에너지 ROI 계산기', icon: '💰', comingSoon: true },
-      { to: '/coming-soon?section=resources', label: '카탈로그 다운로드', icon: '📥', comingSoon: true },
+      { to: '/resources/catalog', label: '카탈로그 다운로드', icon: '📥' },
       { to: '/coming-soon?section=resources', label: '스펙·도면 CAD', icon: '📐', comingSoon: true },
-      { to: '/coming-soon?section=resources', label: '인증서·시험성적서', icon: '📄', comingSoon: true },
+      { to: '/about/certifications', label: '인증서·시험성적서', icon: '📄' },
       { to: '/coming-soon?section=resources', label: '동영상 자료', icon: '🎬', comingSoon: true },
     ],
   },
   {
-    to: '/coming-soon?section=contact',
+    to: '/contact',
     label: '고객센터',
     subs: [
-      { to: '/coming-soon?section=contact', label: '견적 문의', icon: '📋', comingSoon: true },
+      { to: '/contact', label: '견적 문의', icon: '📋' },
       { to: '/coming-soon?section=contact', label: 'FAQ', icon: '❓', comingSoon: true },
       { to: '/coming-soon?section=contact', label: '공지사항', icon: '📢', comingSoon: true },
       { to: '/coming-soon?section=contact', label: '대리점 모집', icon: '🤝', comingSoon: true },
