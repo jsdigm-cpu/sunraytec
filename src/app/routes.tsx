@@ -9,6 +9,7 @@ import ProductDetailPage from '../pages/products/ProductDetailPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import ContactPage from '../pages/ContactPage';
 import CasesPage from '../pages/CasesPage';
+import CatalogPage from '../pages/resources/CatalogPage';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: 'coming-soon', element: <ComingSoonPage /> },
       { path: 'contact', element: <ContactPage /> },
       { path: 'cases', element: <CasesPage /> },
+      { path: 'resources/catalog', element: <CatalogPage /> },
     ],
   },
 ]);
