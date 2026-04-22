@@ -34,11 +34,12 @@
 - GitHub 배포 + Vercel 배포 완료
 - AI 협업 역할 분담 문서화 완료
 - 공유 문서 4개 생성 및 정리
+- ✅ /contact 견적 문의 페이지 완성 (2026-04-22)
 
 ---
 
 ## 아직 진행 중인 것
-- /contact (견적 문의) 페이지 미완성 ← 최우선!
+- ✅ /contact (견적 문의) 페이지 완성
 - /cases (시공사례) 페이지 미완성
 - /resources/catalog (카탈로그) 미완성
 - Hero 외 홈 섹션 CMS 미연결
@@ -75,17 +76,14 @@
 ---
 
 ## 다음 AI가 바로 해야 할 1개 작업
-**견적 문의 페이지 (/contact) 제작**
+**시공사례 페이지 (/cases) 제작**
 
 구체적으로 해야 할 것:
-1. src/pages/ContactPage.tsx 새 파일 생성
-2. src/app/routes.tsx에 /contact 라우트 추가
-3. 문의 유형 4개 선택 UI (공공기관/기업/상업/자료요청)
-4. 입력 폼 (이름/연락처/이메일/설치공간/면적/문의내용)
-5. 전송 완료 성공 메시지 UI
-6. Header/Footer 기존 것 재사용 (수정 금지)
-7. Theme A 스타일 (Tailwind CSS, framer-motion)
-8. 타입 검사 + 빌드 확인
+1. src/pages/CasesPage.tsx 새 파일 생성
+2. src/app/routes.tsx에 /cases 라우트 추가
+3. 업종별 필터 탭 UI
+4. 갤러리 그리드 (이미지 + 제목 + 설명)
+5. Theme A 스타일 (Tailwind CSS, framer-motion)
 
 ---
 

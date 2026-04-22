@@ -68,13 +68,13 @@
 - /products/:productId
 - /admin
 - /coming-soon
+- /contact ✅ 2026-04-22 완성
 
 ## 현재 미구현 라우트 (모두 /coming-soon으로 연결)
 - /about/* (회사소개 하위 전체)
 - /technology/* (기술·솔루션 하위 전체)
 - /cases (시공사례)
 - /resources/* (자료실 하위 전체)
-- /contact (견적 문의) ← 최우선 구현 대상
 
 ## 현재 핵심 데이터 구조
 - src/app/App.tsx

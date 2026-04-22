@@ -7,6 +7,7 @@ import ExcellenceProductsPage from '../pages/products/ExcellenceProductsPage';
 import MasProductsPage from '../pages/products/MasProductsPage';
 import ProductDetailPage from '../pages/products/ProductDetailPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
+import ContactPage from '../pages/ContactPage';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: 'products/:productId', element: <ProductDetailPage /> },
       { path: 'admin', element: <AdminDashboardPage /> },
       { path: 'coming-soon', element: <ComingSoonPage /> },
+      { path: 'contact', element: <ContactPage /> },
     ],
   },
 ]);
