@@ -151,7 +151,7 @@ export default function Header() {
         {/* 로고 */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, minWidth: 0 }} className="header-logo-link">
           <img
-            src="http://www.sunraytec.co.kr/files/attach/images/107241/4427194d97e138bb8f7d811f45905f5f.gif"
+            src="/images/copmany_logo.png"
             alt="썬레이텍 로고"
             style={{ height: '52px', width: 'auto', display: 'block', maxWidth: '100%' }}
             className="header-logo"
