@@ -1,6 +1,6 @@
 # PROJECT STATUS
 
-마지막 업데이트: 2026-04-22
+마지막 업데이트: 2026-04-22 (저녁 세션 - Supabase 연동 완료)
 
 ## 프로젝트 한줄 설명
 썬레이텍 회사 홈페이지를 React + Vite + TypeScript로 구축 중이며,
@@ -91,17 +91,27 @@
 - src/data/siteContent.ts
   - Hero 및 사이트 콘텐츠 초기 데이터
 
+## Supabase 연동 현황 (2026-04-22 완료)
+- ✅ Supabase 프로젝트: sunraytec-dev (ID: dpyvabbxjgkxypafdrrp)
+- ✅ 테이블 4개 생성: products, site_content, case_studies, inquiries
+- ✅ RLS 정책 설정: anon 키 읽기/쓰기 허용
+- ✅ 시드 데이터 업로드: 제품 17개, Hero 콘텐츠
+- ✅ 로컬 .env.local 환경변수 설정 완료
+- ❌ Vercel 환경변수 미설정 (프로덕션 배포 전 추가 필요)
+- ❌ 프론트엔드 아직 정적 파일에서 읽는 중 (DB 연동 코드 교체 필요)
+
 ## 현재 임시 구현 사항 (Supabase 연동 후 교체 예정)
-- CMS 데이터 저장: localStorage 기반
+- CMS 데이터 저장: localStorage 기반 → Supabase로 교체 예정
 - Hero 외 홈 섹션: 하드코딩 중심
-- 제품 데이터: 정적 파일 (자동 동기화 없음)
+- 제품 데이터: 정적 파일 → Supabase products 테이블로 교체 예정
 - 제품 상세 페이지: 이미지/문서/다운로드 링크 미완성
 
 ## 현재 확인된 주요 이슈
 - Admin CMS 연결: Hero 영역만 연결됨 (다른 섹션 미연결)
 - 제품 상세: 다운로드/문서 연계 없음
 - Footer 정책 링크 일부 준비중 상태
-- Supabase 미연동 (계정 준비됨)
+- ⚠️ Vercel 환경변수에 Supabase 키 미등록 (배포 전 필수!)
+- 프론트엔드 Supabase 읽기 연동 미완성 (정적 파일 → DB 교체 필요)
 - 프로덕션 빌드 시 번들 500kB 경고 존재
 - README에 AI Studio/Gemini 흔적 남아있음 (정리 필요)
 

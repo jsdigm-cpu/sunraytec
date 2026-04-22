@@ -1,6 +1,6 @@
 # NEXT TASK
 
-마지막 업데이트: 2026-04-22
+마지막 업데이트: 2026-04-22 (저녁 세션)
 
 ## 사용 규칙
 - 이 파일에는 항상 "지금 바로 할 일"만 1~3개 유지합니다.
@@ -10,98 +10,78 @@
 
 ---
 
-## 현재 최우선 작업 1
-### 작업명
-견적 문의 페이지 (/contact) 제작
+## ⚠️ 세션 시작 전 필수 확인 사항
 
-### 담당 AI
-Claude Code (CLI) ← 폼 유효성 검사, 상태 관리 로직 포함
-
-### 목표
-수주로 직결되는 가장 중요한 페이지를 완성합니다.
-
-### 완료 조건
-- /contact 라우트가 동작한다.
-- 문의 유형 선택 (공공기관/기업/상업/자료요청) UI가 있다.
-- 이름/연락처/이메일/설치공간/면적/문의내용 입력 폼이 있다.
-- 전송 버튼 클릭 시 성공 메시지가 뜬다. (실제 전송은 Supabase 연동 시 추가)
-- 메인 페이지 Theme A 스타일과 일치한다.
-- 타입 검사 통과, 빌드 통과 확인.
-
-### 구현 전 확인 사항
-- Header/Footer는 기존 것 그대로 사용 (수정 금지)
-- Tailwind CSS만 사용 (별도 CSS 파일 생성 금지)
-- framer-motion 애니메이션 메인 페이지와 동일하게 적용
-- 완료 후 /coming-soon 연결에서 /contact로 교체
+> **Supabase 연동 완료** 되었으나, 아직 프론트엔드는 정적 파일에서 데이터를 읽고 있습니다.
+> 다음 세션 시작 시 사용자에게 아래 3가지 중 어느 것부터 할지 먼저 확인하세요!
 
 ---
 
-## 현재 최우선 작업 2
-### 작업명
-시공사례 갤러리 페이지 (/cases) 제작
+## 현재 최우선 작업 (다음 세션에서 선택)
 
-### 담당 AI
-Claude Code (CLI) ← 필터 로직, 갤러리 레이아웃 복잡
+### 선택지 ① 견적 문의 폼 → Supabase 저장 연동 (★ 추천!)
+**담당 AI**: Antigravity 또는 Claude Code
 
-### 목표
-신뢰도를 높이는 핵심 페이지를 완성합니다.
+**목표**: `/contact` 페이지 폼 제출 시 실제로 DB에 저장되도록 연동
 
-### 완료 조건
-- /cases 라우트가 동작한다.
-- 업종/지역/모델별 필터 기능이 있다.
-- 시공사례 카드 그리드가 있다. (현재 메인 페이지 사례 섹션 이미지 활용)
-- 각 카드 클릭 시 상세 내용이 보인다.
-- 타입 검사 통과, 빌드 통과 확인.
+**완료 조건**:
+- `src/pages/ContactPage.tsx`에서 폼 submit 시 `supabase.from('inquiries').insert()` 호출
+- 성공 시 "문의가 접수되었습니다" 메시지 표시
+- 실패 시 에러 메시지 표시
+- Supabase 대시보드 `inquiries` 테이블에서 실시간 확인 가능
 
-### 구현 전 확인 사항
-- 현재 메인 페이지 CasesSection.tsx의 이미지/데이터 재사용 가능한지 먼저 확인
-- case_studies 타입 src/types/에 추가 필요
+**구현 전 확인**:
+- `src/lib/supabase.ts` 클라이언트 이미 준비됨
+- `inquiries` 테이블 스키마: id, name, company, phone, email, project_type, space_size, message, status, created_at
+- RLS 정책: anon INSERT 허용 완료
 
 ---
 
-## 현재 최우선 작업 3
-### 작업명
-카탈로그 다운로드 페이지 (/resources/catalog) 제작
+### 선택지 ② 제품 목록 → Supabase에서 읽기
+**담당 AI**: Claude Code (복잡한 상태 관리 포함)
 
-### 담당 AI
-Codex ← 단순 카드 목록, 다운로드 링크만 필요
+**목표**: `App.tsx`의 initialProducts 정적 데이터를 Supabase DB에서 읽어오도록 교체
 
-### 목표
-자료 요청이 많은 담당자를 위한 원스톱 다운로드 허브를 완성합니다.
+**완료 조건**:
+- `supabase.from('products').select()` 결과를 products 상태에 저장
+- 로딩 상태(loading spinner) 추가
+- 에러 처리 추가
+- 기존 정적 파일은 fallback 용도로만 유지
 
-### 완료 조건
-- /resources/catalog 라우트가 동작한다.
-- 카테고리 탭 (전체/카탈로그/스펙시트/인증서/도면) UI가 있다.
-- 각 자료 카드에 파일명/크기/날짜/다운로드 버튼이 있다.
-- 준비중인 파일은 "준비 중입니다" 알림 표시.
-- 타입 검사 통과, 빌드 통과 확인.
+**구현 전 확인**:
+- `src/app/App.tsx`의 products 상태 구조 파악 필요
+- DB 컬럼명(snake_case) ↔ 프론트 타입(camelCase) 변환 필요
 
-### 구현 전 확인 사항
-- Codex는 반드시 CODEX_RULES.md를 먼저 읽고 시작
-- Header/Footer 수정 금지
-- 새 파일만 생성 (src/pages/resources/CatalogPage.tsx)
+---
+
+### 선택지 ③ Vercel 환경변수 등록 (⚠️ 배포 필수 조건!)
+**담당 AI**: 사용자 직접 또는 Antigravity 안내
+
+**목표**: Vercel 프로덕션 배포 시 Supabase 연동이 동작하도록 환경변수 등록
+
+**완료 조건**:
+- Vercel 대시보드 → Settings → Environment Variables 에 아래 2개 추가:
+  - `VITE_SUPABASE_URL` = `https://dpyvabbxjgkxypafdrrp.supabase.co`
+  - `VITE_SUPABASE_ANON_KEY` = `sb_publishable_FbU38FsKNWADLALwq3kucg_VurLdupO`
+- Vercel 재배포 후 동작 확인
+
+> ⚠️ 이 작업 없이는 배포 사이트에서 Supabase 연동이 동작하지 않습니다!
 
 ---
 
 ## 보류 작업
 
-### Admin CMS → Hero 외 섹션 확장
-보류 이유: 서브 페이지 핵심 3개 완성 후 진행 예정
+### 시공사례 갤러리 페이지 (/cases) 제작
+보류 이유: Supabase 연동 안정화 후 `case_studies` 테이블과 함께 진행 예정
 
-### Supabase 본격 연동
-보류 이유: 프론트 구조 안정화 우선. SUPABASE_PLAN.md 준비됨.
+### Admin CMS → Hero 외 섹션 확장
+보류 이유: Supabase 연동 완료 후 진행 예정
+
+### 카탈로그 다운로드 페이지 (/resources/catalog) 제작
+보류 이유: 실제 파일 Storage 업로드 전략 결정 후 진행
 
 ### 번들 크기 최적화 (500kB 경고)
 보류 이유: 기능 구현 완료 후 lazy loading으로 처리 예정
-
-### 제품 상세 페이지 고도화 (이미지/문서/다운로드)
-보류 이유: 실제 제품 사진 확보 후 진행 예정
-
-### SEO / 메타 / Sitemap
-보류 이유: 구조 안정화 후 진행 예정
-
-### README 정리 (AI Studio/Gemini 흔적 제거)
-보류 이유: 급하지 않음, 배포 후 여유 있을 때
 
 ---
 
