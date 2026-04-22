@@ -342,7 +342,7 @@ export default function Header() {
           {/* 견적문의 CTA */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
             <Link
-              to="/products/excellence"
+              to="/contact"
               style={{
                 padding: '0.55rem 1.1rem',
                 borderRadius: '7px',
@@ -481,7 +481,7 @@ export default function Header() {
                 <Phone size={14} /> 1688-2520
               </a>
               <Link
-                to="/products/excellence"
+                to="/contact"
                 onClick={() => setMobileOpen(false)}
                 style={{
                   flex: 1, display: 'flex', justifyContent: 'center', padding: '0.7rem',
