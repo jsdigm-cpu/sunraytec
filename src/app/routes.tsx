@@ -10,6 +10,7 @@ import ComingSoonPage from '../pages/ComingSoonPage';
 import ContactPage from '../pages/ContactPage';
 import CasesPage from '../pages/CasesPage';
 import CatalogPage from '../pages/resources/CatalogPage';
+import CertificationsPage from '../pages/about/CertificationsPage';
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
       { path: 'contact', element: <ContactPage /> },
       { path: 'cases', element: <CasesPage /> },
       { path: 'resources/catalog', element: <CatalogPage /> },
+      { path: 'about/certifications', element: <CertificationsPage /> },
     ],
   },
 ]);

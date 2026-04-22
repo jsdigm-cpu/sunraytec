@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { staggerContainer, staggerItem } from '../../utils/animations';
 import ScrollReveal from '../ui/ScrollReveal';
@@ -98,9 +99,9 @@ export default function CertSection() {
             <span style={{ fontSize: '1.5rem' }}>📄</span>
             <p style={{ fontSize: '13.5px', color: 'var(--gray)', lineHeight: 1.7 }}>
               인증서 원본·시험성적서는{' '}
-              <strong style={{ color: 'var(--navy)' }}>자료실 페이지</strong>에서 다운로드하실 수 있습니다.
+              <Link to="/resources/catalog" style={{ color: 'var(--navy)', fontWeight: 700 }}>자료실 페이지</Link>에서 다운로드하실 수 있습니다.
               공공기관 담당자는{' '}
-              <strong style={{ color: 'var(--red)' }}>패스트트랙 라운지</strong>를 통해 일위대가표·도면·제안서를 원클릭으로 받아보실 수 있습니다.
+              <Link to="/about/certifications" style={{ color: 'var(--red)', fontWeight: 700 }}>인증·특허 상세 페이지</Link>에서 전체 인증 현황을 확인하실 수 있습니다.
             </p>
           </div>
         </ScrollReveal>

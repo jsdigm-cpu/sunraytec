@@ -1,0 +1,384 @@
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const fadeInUp = {
+  hidden:  { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+const staggerContainer = {
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const cardVariant = {
+  hidden:  { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
+
+const MAIN_CERTS = [
+  {
+    icon: '🏆',
+    title: '정부조달 우수제품 지정',
+    detail: '2013 · 2019 · 2025 (3회 지정)',
+    description: '조달청이 기술력·품질·사후관리를 심사해 선정하는 최고 권위의 조달 인증. 수의계약으로 공공기관 납품 가능.',
+    badge: '핵심',
+    badgeColor: '#C0392B',
+  },
+  {
+    icon: '💡',
+    title: '혁신제품 지정',
+    detail: '2020년 조달청 지정',
+    description: '기존 제품 대비 혁신적 성능 개선을 인정받은 제품에 부여. 공공기관 시범구매 대상.',
+    badge: '핵심',
+    badgeColor: '#C0392B',
+  },
+  {
+    icon: '🔵',
+    title: 'K마크 성능인증',
+    detail: 'SUR-D300P ~ SUR-3600',
+    description: '산업통상자원부 산하 공인기관의 KS 기준 성능 시험을 통과한 제품에 부여되는 국가 인증.',
+    badge: '품질',
+    badgeColor: '#2563EB',
+  },
+  {
+    icon: '📋',
+    title: 'ISO 9001:2015',
+    detail: '품질경영시스템 인증',
+    description: '국제 표준화기구(ISO)의 품질경영 시스템 요구사항을 충족하는 기업에 부여되는 국제 인증.',
+    badge: '국제',
+    badgeColor: '#059669',
+  },
+  {
+    icon: '🌿',
+    title: 'ISO 14001:2015',
+    detail: '환경경영시스템 인증',
+    description: '환경 영향 최소화를 위한 경영 시스템을 갖춘 기업에 부여. 친환경 제조 공정 입증.',
+    badge: '국제',
+    badgeColor: '#059669',
+  },
+  {
+    icon: '🔥',
+    title: '방폭인증 EX emb II T1',
+    detail: '위험 환경 특수 제품',
+    description: '폭발 위험 환경(화학·석유화학 공장 등)에서 안전하게 사용 가능한 제품임을 인증.',
+    badge: '특수',
+    badgeColor: '#D97706',
+  },
+  {
+    icon: '💧',
+    title: '방진·방수 IP-65',
+    detail: '산업용 특수 제품',
+    description: '먼지 완전 차단(6등급)·저압 물 분사 보호(5등급)를 만족하는 산업용 제품 등급.',
+    badge: '특수',
+    badgeColor: '#D97706',
+  },
+  {
+    icon: '🇪🇺',
+    title: 'CE · RoHS',
+    detail: '유럽 안전·환경 인증',
+    description: 'EU 시장 출시 요건(CE)과 유해물질 제한지침(RoHS)을 충족. 해외 수출 기반 마련.',
+    badge: '해외',
+    badgeColor: '#7C3AED',
+  },
+];
+
+const PATENTS = [
+  { title: '복사히터 난방 장치', number: '제10-XXXXXX호', year: '등록' },
+  { title: '원적외선 복사 패널 제조방법', number: '제10-XXXXXX호', year: '등록' },
+  { title: '방폭형 복사히터', number: '제10-XXXXXX호', year: '등록' },
+  { title: '복사난방 제어 시스템', number: '제10-XXXXXX호', year: '등록' },
+];
+
+const TIMELINE = [
+  { year: '1994', event: '썬레이텍 설립 · 원적외선 복사난방 연구 시작' },
+  { year: '2013', event: '조달청 우수제품 1차 지정' },
+  { year: '2020', event: '혁신제품 지정 · ISO 9001/14001 인증 취득' },
+  { year: '2019', event: '조달청 우수제품 2차 지정' },
+  { year: '2025', event: '조달청 우수제품 3차 지정 (최신)' },
+];
+
+export default function CertificationsPage() {
+  return (
+    <main style={{ minHeight: '100vh', background: '#fff' }}>
+
+      {/* ① Sub-Hero */}
+      <section style={{
+        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
+        padding: '56px 0 64px',
+      }}>
+        <div className="container">
+          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
+              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
+              <span>›</span>
+              <span style={{ color: 'rgba(255,255,255,0.45)' }}>회사소개</span>
+              <span>›</span>
+              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>인증·특허</span>
+            </div>
+            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
+              인증 · 특허
+            </h1>
+            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
+              국내외 공인기관이 인정한 원적외선 복사난방 전문 기업
+            </p>
+          </motion.div>
+
+          {/* KPI */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            style={{ display: 'flex', gap: '32px', marginTop: '36px', flexWrap: 'wrap' }}
+          >
+            {[
+              { value: '8+',  label: '보유 인증' },
+              { value: '4+',  label: '등록 특허' },
+              { value: '3회', label: '우수제품 지정' },
+            ].map(kpi => (
+              <div key={kpi.label} style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                <span style={{ fontSize: '1.6rem', fontWeight: 900, color: '#fff' }}>{kpi.value}</span>
+                <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{kpi.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ② 인증 카드 그리드 */}
+      <section style={{ padding: '64px 0', background: '#F8FAFC' }}>
+        <div className="container">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            style={{ marginBottom: '40px' }}
+          >
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
+              Certifications
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 900, color: 'var(--navy)' }}>
+              보유 인증 현황
+            </h2>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}
+            className="cert-page-grid"
+          >
+            {MAIN_CERTS.map(cert => (
+              <motion.div
+                key={cert.title}
+                variants={cardVariant}
+                whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.1)', transition: { duration: 0.2 } }}
+                style={{
+                  background: '#fff',
+                  borderRadius: '16px',
+                  padding: '24px 20px',
+                  border: '1px solid #E5E7EB',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '2rem' }}>{cert.icon}</span>
+                  <span style={{
+                    fontSize: '10px', fontWeight: 700,
+                    background: cert.badgeColor + '1A',
+                    color: cert.badgeColor,
+                    padding: '2px 8px', borderRadius: '999px',
+                  }}>
+                    {cert.badge}
+                  </span>
+                </div>
+                <div>
+                  <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '0.875rem', marginBottom: '4px' }}>
+                    {cert.title}
+                  </p>
+                  <p style={{ fontSize: '11px', color: cert.badgeColor, fontWeight: 600, marginBottom: '8px' }}>
+                    {cert.detail}
+                  </p>
+                  <p style={{ fontSize: '0.78rem', color: '#6B7280', lineHeight: 1.6 }}>
+                    {cert.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ③ 특허 현황 */}
+      <section style={{ padding: '64px 0', background: '#fff' }}>
+        <div className="container">
+          <div style={{ display: 'flex', gap: '60px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+            {/* 특허 목록 */}
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+                <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
+                  Patents
+                </p>
+                <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 900, color: 'var(--navy)', marginBottom: '32px' }}>
+                  등록 특허
+                </h2>
+              </motion.div>
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+              >
+                {PATENTS.map((p, i) => (
+                  <motion.div
+                    key={i}
+                    variants={cardVariant}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '16px',
+                      padding: '16px 20px',
+                      background: '#F8FAFC',
+                      borderRadius: '12px',
+                      border: '1px solid #E5E7EB',
+                    }}
+                  >
+                    <div style={{
+                      width: '36px', height: '36px', borderRadius: '10px',
+                      background: 'var(--navy)', color: '#fff',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontWeight: 800, fontSize: '0.8rem', flexShrink: 0,
+                    }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '0.875rem', marginBottom: '2px' }}>
+                        {p.title}
+                      </p>
+                      <p style={{ fontSize: '11px', color: '#9CA3AF' }}>{p.number} · {p.year}</p>
+                    </div>
+                    <span style={{
+                      fontSize: '10px', fontWeight: 700,
+                      background: '#D1FAE5', color: '#065F46',
+                      padding: '2px 8px', borderRadius: '999px',
+                    }}>
+                      {p.year}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* 우수제품 타임라인 */}
+            <div style={{ width: '300px', flexShrink: 0 }}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+                <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
+                  History
+                </p>
+                <h2 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 900, color: 'var(--navy)', marginBottom: '32px' }}>
+                  인증 연혁
+                </h2>
+              </motion.div>
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                style={{ position: 'relative', paddingLeft: '28px' }}
+              >
+                {/* 세로선 */}
+                <div style={{
+                  position: 'absolute', left: '7px', top: '8px', bottom: '8px',
+                  width: '2px', background: '#E5E7EB',
+                }} />
+                {TIMELINE.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    variants={cardVariant}
+                    style={{ position: 'relative', marginBottom: '24px' }}
+                  >
+                    {/* 점 */}
+                    <div style={{
+                      position: 'absolute', left: '-24px', top: '4px',
+                      width: '12px', height: '12px', borderRadius: '50%',
+                      background: item.year === '2025' ? 'var(--red)' : 'var(--navy)',
+                      border: '2px solid #fff',
+                      boxShadow: '0 0 0 2px ' + (item.year === '2025' ? 'var(--red)' : 'var(--navy)'),
+                    }} />
+                    <p style={{
+                      fontSize: '12px', fontWeight: 800,
+                      color: item.year === '2025' ? 'var(--red)' : 'var(--navy)',
+                      marginBottom: '2px',
+                    }}>
+                      {item.year}
+                    </p>
+                    <p style={{ fontSize: '0.82rem', color: '#374151', lineHeight: 1.5 }}>
+                      {item.event}
+                    </p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ④ 하단 CTA */}
+      <section style={{ padding: '0 0 80px', background: '#fff' }}>
+        <div className="container">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            style={{
+              background: '#F1F5F9',
+              borderRadius: '20px',
+              padding: '40px 32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '20px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <span style={{ fontSize: '2rem' }}>📄</span>
+              <div>
+                <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '1rem', marginBottom: '4px' }}>
+                  인증서 원본이 필요하신가요?
+                </p>
+                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                  자료실에서 인증서 파일을 다운로드하거나, 직접 문의해 주세요.
+                </p>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <Link
+                to="/resources/catalog"
+                style={{
+                  padding: '12px 24px', borderRadius: '10px',
+                  border: '2px solid var(--navy)', color: 'var(--navy)',
+                  fontWeight: 700, fontSize: '0.875rem',
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                }}
+              >
+                자료실 바로가기
+              </Link>
+              <Link
+                to="/contact"
+                style={{
+                  padding: '12px 24px', borderRadius: '10px',
+                  background: 'var(--red)', color: '#fff',
+                  fontWeight: 700, fontSize: '0.875rem',
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                }}
+              >
+                📋 직접 문의하기
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <style>{`
+        @media (max-width: 900px) { .cert-page-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 480px) { .cert-page-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
+    </main>
+  );
+}
