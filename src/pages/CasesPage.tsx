@@ -13,14 +13,18 @@ interface CaseItem {
   featured?: boolean;
 }
 
-const CATEGORIES = ['전체', '산업·물류', '공공·교육', '국방·특수', '상업'];
+const CATEGORIES = ['전체', '교육 및 공공 복지', '국방 및 특수 시설', '산업 및 물류 거점', '스마트 시티 솔루션', '주거 및 라이프 스타일', '상업 및 서비스 공간'];
 
 const CATEGORY_COLOR: Record<string, string> = {
-  '산업·물류': '#F59E0B',
-  '국방·특수': '#EF4444',
-  '공공·교육': '#60A5FA',
-  '상업':       '#4ADE80',
+  '교육 및 공공 복지':    '#60A5FA',
+  '국방 및 특수 시설':    '#EF4444',
+  '산업 및 물류 거점':    '#F59E0B',
+  '스마트 시티 솔루션':   '#34D399',
+  '주거 및 라이프 스타일':'#F472B6',
+  '상업 및 서비스 공간':  '#A78BFA',
 };
+
+const CATEGORY_TEXT_DARK = new Set(['스마트 시티 솔루션', '주거 및 라이프 스타일']);
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 24 },
@@ -194,7 +198,7 @@ export default function CasesPage() {
                       position: 'absolute', top: '12px', left: '12px',
                       fontSize: '11px', fontWeight: 700,
                       background: CATEGORY_COLOR[item.category] || '#6B7280',
-                      color: item.category === '공공·교육' || item.category === '상업' ? '#1F2937' : '#fff',
+                      color: CATEGORY_TEXT_DARK.has(item.category) ? '#1F2937' : '#fff',
                       padding: '3px 10px', borderRadius: '999px',
                     }}>
                       {item.category}
