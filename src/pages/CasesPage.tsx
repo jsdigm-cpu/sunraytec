@@ -1,28 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 interface CaseItem {
-  id: number;
+  id: string;
   title: string;
   category: string;
-  model: string;
   location: string;
-  image: string;
+  image_url: string;
+  summary?: string;
+  featured?: boolean;
 }
-
-const CASES: CaseItem[] = [
-  { id: 1,  title: '인천공항 FedEx 물류센터',   category: '산업·물류', model: 'SUR-3600D', location: '인천',  image: '/images/hero/hero_1.jpg' },
-  { id: 2,  title: '대전 우편물류센터',          category: '산업·물류', model: 'SUR-2400T', location: '대전',  image: '/images/hero/hero_2.jpg' },
-  { id: 3,  title: '포항 00부대 정비창',          category: '국방·특수', model: 'SUR-3600D', location: '포항',  image: '/images/hero/hero_3.jpg' },
-  { id: 4,  title: '연무초등학교 급식실',         category: '공공·교육', model: 'SUR-1800T', location: '논산',  image: '/images/hero/hero_4.jpg' },
-  { id: 5,  title: '한국도로공사 버스정류장',     category: '공공·교육', model: 'SUR-1200T', location: '전국',  image: '/images/hero/hero_5.jpg' },
-  { id: 6,  title: '자동차 출고센터 세차장',      category: '상업',      model: 'SUR-2400T', location: '경기',  image: '/images/hero/hero_6.jpg' },
-  { id: 7,  title: '서울 공공기관 교육시설',      category: '공공·교육', model: 'SUR-1800D', location: '서울',  image: '/images/hero/hero_7.jpg' },
-  { id: 8,  title: '대형 물류창고 난방 시스템',   category: '산업·물류', model: 'SUR-3600T', location: '경기',  image: '/images/hero/hero_8.jpg' },
-  { id: 9,  title: '제조공장 작업장 난방',        category: '산업·물류', model: 'SUR-2400D', location: '충남',  image: '/images/hero/hero_9.jpg' },
-  { id: 10, title: '상업시설 매장 난방',          category: '상업',      model: 'SUR-1200D', location: '부산',  image: '/images/hero/hero_10.jpg' },
-];
 
 const CATEGORIES = ['전체', '산업·물류', '공공·교육', '국방·특수', '상업'];
 
@@ -49,11 +38,26 @@ const cardVariant = {
 };
 
 export default function CasesPage() {
+  const [cases, setCases] = useState<CaseItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('전체');
 
+  useEffect(() => {
+    async function fetchCases() {
+      if (!supabase) { setLoading(false); return; }
+      const { data, error } = await supabase
+        .from('case_studies')
+        .select('id, title, category, location, image_url, summary, featured')
+        .order('created_at', { ascending: true });
+      if (!error && data) setCases(data as CaseItem[]);
+      setLoading(false);
+    }
+    fetchCases();
+  }, []);
+
   const filtered = activeCategory === '전체'
-    ? CASES
-    : CASES.filter(c => c.category === activeCategory);
+    ? cases
+    : cases.filter(c => c.category === activeCategory);
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
@@ -102,6 +106,13 @@ export default function CasesPage() {
       {/* ② 필터 탭 + 갤러리 */}
       <section style={{ padding: '56px 0 80px', background: '#F8FAFC' }}>
         <div className="container">
+
+          {/* 로딩 상태 */}
+          {loading && (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#9CA3AF', fontSize: '0.95rem' }}>
+              불러오는 중...
+            </div>
+          )}
 
           {/* 필터 탭 */}
           <motion.div
@@ -160,7 +171,7 @@ export default function CasesPage() {
                   {/* 이미지 */}
                   <div style={{ height: '200px', overflow: 'hidden', position: 'relative' }}>
                     <motion.img
-                      src={item.image}
+                      src={item.image_url}
                       alt={item.title}
                       whileHover={{ scale: 1.06 }}
                       transition={{ duration: 0.4 }}
@@ -192,18 +203,15 @@ export default function CasesPage() {
 
                   {/* 텍스트 */}
                   <div style={{ padding: '18px 20px' }}>
-                    <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '0.95rem', marginBottom: '8px' }}>
+                    <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '0.95rem', marginBottom: '6px' }}>
                       {item.title}
                     </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{
-                        fontSize: '11px', background: '#F1F5F9',
-                        color: '#374151', padding: '3px 10px', borderRadius: '6px', fontWeight: 600,
-                      }}>
-                        {item.model}
-                      </span>
-                      <span style={{ fontSize: '12px', color: '#9CA3AF' }}>📍 {item.location}</span>
-                    </div>
+                    {item.summary && (
+                      <p style={{ fontSize: '0.78rem', color: '#6B7280', marginBottom: '8px', lineHeight: 1.4 }}>
+                        {item.summary}
+                      </p>
+                    )}
+                    <span style={{ fontSize: '12px', color: '#9CA3AF' }}>📍 {item.location}</span>
                   </div>
                 </motion.div>
               ))}
