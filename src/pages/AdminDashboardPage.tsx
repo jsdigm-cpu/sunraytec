@@ -7,6 +7,7 @@ import ProductListEditor from '../components/admin/ProductListEditor';
 import ContentEditor from '../components/admin/ContentEditor';
 import InquiryList from '../components/admin/InquiryList';
 import CaseEditor from '../components/admin/CaseEditor';
+import MemberManager from '../components/admin/MemberManager';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
 import { supabase } from '../lib/supabase';
@@ -55,6 +56,9 @@ export default function AdminDashboardPage() {
         )}
         {tab === 'cases' && (
           <CaseEditor />
+        )}
+        {tab === 'members' && (
+          <MemberManager />
         )}
         {tab === 'inquiries' && (
           <InquiryList />

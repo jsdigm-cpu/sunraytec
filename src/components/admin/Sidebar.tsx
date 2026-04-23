@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-export type AdminTab = 'products' | 'content' | 'inquiries' | 'cases';
+export type AdminTab = 'products' | 'content' | 'inquiries' | 'cases' | 'members';
 
 interface Props {
   tab: AdminTab;
@@ -35,6 +35,9 @@ export default function Sidebar({ tab, onTab, newInquiryCount = 0 }: Props) {
       </button>
       <button style={itemStyle(tab === 'cases')} onClick={() => onTab('cases')}>
         <span>🏗️ 시공사례 관리</span>
+      </button>
+      <button style={itemStyle(tab === 'members')} onClick={() => onTab('members')}>
+        <span>👥 회원 관리</span>
       </button>
       <button style={itemStyle(tab === 'inquiries')} onClick={() => onTab('inquiries')}>
         <span>📋 견적 문의</span>
