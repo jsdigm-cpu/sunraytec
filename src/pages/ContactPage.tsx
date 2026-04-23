@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Phone, Mail, Clock } from 'lucide-react';
+import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 type InquiryType = 'public' | 'industrial' | 'commercial' | 'document' | null;
 
@@ -55,6 +56,8 @@ const inputCls =
 export default function ContactPage() {
   const [selectedType, setSelectedType] = useState<InquiryType>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>({
     orgName: '', contactName: '', phone: '', email: '',
     spaceType: '', area: '', ceilingHeight: '', desiredDate: '',
@@ -69,11 +72,48 @@ export default function ContactPage() {
     }));
   };
 
-  const canSubmit = !!(form.orgName && form.contactName && form.phone && form.email && form.agreePrivacy);
+  const canSubmit = !!(form.orgName && form.contactName && form.phone && form.email && form.agreePrivacy) && !isSubmitting;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    // 세부 내용을 message 필드에 통합
+    const messageParts: string[] = [];
+    if (form.spaceType)     messageParts.push(`설치 공간: ${form.spaceType}`);
+    if (form.area)          messageParts.push(`면적: ${form.area}㎡`);
+    if (form.ceilingHeight) messageParts.push(`천장 높이: ${form.ceilingHeight}m`);
+    if (form.desiredDate)   messageParts.push(`희망 납기일: ${form.desiredDate}`);
+    if (form.details)       messageParts.push(`\n상세 문의:\n${form.details}`);
+
+    const payload = {
+      name:         form.contactName,
+      company:      form.orgName,
+      phone:        form.phone,
+      email:        form.email,
+      project_type: selectedType ?? 'general',
+      space_size:   form.area ? `${form.area}㎡` : null,
+      message:      messageParts.join('\n') || null,
+      status:       'new',
+    };
+
+    if (supabase) {
+      const { error } = await supabase.from('inquiries').insert(payload);
+      if (error) {
+        console.error('Supabase insert error:', error);
+        setSubmitError('전송 중 오류가 발생했습니다. 잠시 후 다시 시도하거나 전화로 문의해 주세요.');
+        setIsSubmitting(false);
+        return;
+      }
+    } else {
+      // Supabase 미연결 시에도 UI는 성공 처리 (로컬 개발 환경 등)
+      console.warn('Supabase not connected. Inquiry not saved to DB.');
+    }
+
+    setIsSubmitting(false);
     setSubmitted(true);
   };
 
@@ -263,6 +303,18 @@ export default function ContactPage() {
                       </label>
                     </div>
 
+                    {/* 에러 메시지 */}
+                    {submitError && (
+                      <div style={{
+                        display: 'flex', alignItems: 'flex-start', gap: '10px',
+                        background: '#FEF2F2', border: '1px solid #FECACA',
+                        borderRadius: '10px', padding: '14px 16px', marginBottom: '16px',
+                      }}>
+                        <AlertCircle style={{ width: 18, height: 18, color: '#DC2626', flexShrink: 0, marginTop: 1 }} />
+                        <p style={{ fontSize: '0.875rem', color: '#DC2626' }}>{submitError}</p>
+                      </div>
+                    )}
+
                     {/* 전송 버튼 */}
                     <button
                       type="submit"
@@ -273,12 +325,17 @@ export default function ContactPage() {
                         color: '#fff', fontWeight: 700, fontSize: '1rem',
                         border: 'none', cursor: canSubmit ? 'pointer' : 'not-allowed',
                         transition: 'background 0.2s',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       }}
                       onMouseEnter={e => { if (canSubmit) (e.currentTarget as HTMLButtonElement).style.background = '#9B2C1F'; }}
                       onMouseLeave={e => { if (canSubmit) (e.currentTarget as HTMLButtonElement).style.background = '#C0392B'; }}
                     >
-                      📋 견적 문의 전송하기
+                      {isSubmitting
+                        ? <><Loader2 style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} /> 전송 중...</>
+                        : '📋 견적 문의 전송하기'
+                      }
                     </button>
+                    <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
                   </form>
                 </motion.div>
               )}

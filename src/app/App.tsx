@@ -5,9 +5,34 @@ import Footer from '../components/layout/Footer';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { initialProducts } from '../data/products';
 import { initialSiteContent } from '../data/siteContent';
-import type { Product } from '../types/product';
+import type { Product, ProductLine, InstallationType } from '../types/product';
 import type { SiteContent } from '../types/cms';
 import { supabase } from '../lib/supabase';
+
+// Supabase DB row (snake_case) → Product (camelCase) 변환
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function dbRowToProduct(row: Record<string, any>): Product {
+  return {
+    id:                row.id,
+    name:              row.name,
+    category:          row.category,
+    summary:           row.summary ?? '',
+    applications:      Array.isArray(row.applications) ? row.applications : [],
+    specs: {
+      powerW:      row.power_w     ?? 0,
+      sizeMm:      row.size_mm     ?? '',
+      voltage:     row.voltage     ?? '',
+      heatingArea: row.heating_area ?? '',
+    },
+    productLine:       (row.product_line     as ProductLine)      ?? undefined,
+    installationType:  (row.installation_type as InstallationType) ?? undefined,
+    procurementId:     row.procurement_id    ?? undefined,
+    thumbnailImage:    row.thumbnail_image   ?? undefined,
+    detailImage:       row.detail_image      ?? undefined,
+    detailDescription: row.detail_description ?? undefined,
+    featureBullets:    Array.isArray(row.feature_bullets) ? row.feature_bullets : undefined,
+  };
+}
 
 const STORAGE_KEY = 'sunraytec-cms-state-v1';
 const PRODUCTS_SCHEMA_VERSION = '2026-04-21-products-v4';
@@ -59,9 +84,9 @@ export default function App() {
           ]);
 
           if (!pErr && !cErr && pData && cData) {
-            // Mapping DB products to state
+            // Mapping DB products to state (snake_case → camelCase)
             if (pData.length > 0) {
-              setProducts(pData as Product[]);
+              setProducts(pData.map(dbRowToProduct));
             }
 
             // Mapping DB site_content to state

@@ -8,9 +8,9 @@
 ---
 
 ## 현재 세션 상태
-- 상태: **Supabase DB 연동 완료** (로컬 환경 + 클라우드 모두)
+- 상태: **ContactPage Supabase 저장 연동 완료**
 - 배포 상태: https://sunraytec.vercel.app ✅ 운영 중
-- 현재 활성 작업: Supabase 프론트엔드 연동 시작 단계
+- 현재 활성 작업: Phase 1-2 진행 중 (products DB 컬럼 매핑 검증)
 - 현재 기준 문서:
   - PROJECT_STATUS.md (현황 전체)
   - NEXT_TASK.md (지금 할 일)
@@ -20,41 +20,46 @@
 
 ---
 
-## 방금 끝낸 것 (2026-04-22 저녁)
+## 방금 끝낸 것 (2026-04-23)
 
-### Supabase DB 연동 완료 ✅
-1. **Vercel CLI 로컬 로그인 완료** (npx vercel link → jsdigm-cpus-projects/sunraytec 연결)
-2. **.env.local 환경변수 설정 완료**
-   - `VITE_SUPABASE_URL=https://dpyvabbxjgkxypafdrrp.supabase.co`
-   - `VITE_SUPABASE_ANON_KEY=sb_publishable_FbU38FsKNWADLALwq3kucg_VurLdupO`
-3. **Supabase 테이블 4개 생성 완료** (supabase_schema.sql 실행)
-   - `products` - 제품 데이터
-   - `site_content` - 사이트 콘텐츠
-   - `case_studies` - 시공사례
-   - `inquiries` - 견적 문의
-4. **RLS 정책 설정 완료** (anon 키로 읽기/쓰기 허용)
-5. **시드(Seed) 데이터 업로드 완료**
-   - products: 17개 제품 모두 업로드 완료
-   - site_content: Hero 데이터 업로드 완료
-6. **seedSupabase.ts 필드명 버그 수정 완료**
-   - productLine → `p.productLine` (카멜케이스로 수정)
-   - specs.powerW → `p.specs?.powerW` 로 수정
+### Phase 1-2: Products DB 컬럼 매핑 변환 ✅
+- `src/app/App.tsx` 수정
+  - `dbRowToProduct()` 변환 함수 추가 (snake_case → camelCase)
+  - `pData.map(dbRowToProduct)` 로 교체 (기존 잘못된 캐스팅 수정)
+  - specs 객체 재조립: power_w→powerW, size_mm→sizeMm, heating_area→heatingArea
+- 빌드 성공 확인 ✅
+
+### Phase 1-1: ContactPage Supabase 저장 연동 ✅
+- `src/pages/ContactPage.tsx` 수정
+  - `supabase` import 추가
+  - `handleSubmit` → async로 변경
+  - `supabase.from('inquiries').insert()` 연결
+  - 로딩 상태(`isSubmitting`) + 스피너 UI 추가
+  - 에러 상태(`submitError`) + 에러 메시지 UI 추가
+  - Supabase 미연결 시 UI 성공 처리 (로컬 개발 환경 대비)
+- 빌드 성공 확인 (npm run build ✅)
+- 필드 매핑: name, company, phone, email, project_type, space_size, message, status
+
+### 이전 세션 (2026-04-22 저녁)
+- Supabase DB 4개 테이블 생성 + 시드 데이터 업로드 완료
+- App.tsx에서 products/site_content DB 읽기 연동 완료
+- Vercel + .env.local 환경변수 설정 완료
 
 ---
 
-## 아직 진행 중인 것 (다음 세션에서 시작)
+## 아직 진행 중인 것 (다음 세션에서 계속)
 
-### 🔴 프론트엔드 Supabase 연결 (아직 안 함!)
-- **현재 상태**: 앱이 여전히 `products.ts`, `siteContent.ts` 정적 파일에서 데이터를 읽고 있음
-- **해야 할 것**: DB에서 읽어오도록 코드 교체
+### 🟠 Phase 1-2: Products DB 컬럼 매핑 검증
+- **현재 상태**: App.tsx에서 `pData as Product[]`로 캐스팅만 하고 있음
+- **문제**: DB는 snake_case (product_line, power_w 등), 프론트 타입은 camelCase
+- **해야 할 것**: 실제 화면에서 제품 데이터가 정상 표시되는지 확인 후 변환 로직 추가
 
-### 다음 세션 작업 우선순위 (다음 AI에게 질문한 내용)
-1. ① **제품 목록을 Supabase에서 읽기** → `/products` 페이지가 DB 기반으로 동작
-2. ② **견적 문의 폼 → DB 저장** → `/contact` 폼 실제 저장 완성 (수주 직결!)
-3. ③ **Hero 콘텐츠 → DB에서 읽기** → Admin CMS 수정사항이 DB에 저장
-
-> ⚠️ **중요**: 어느 것부터 할지 사용자에게 먼저 확인해야 함!
-> 추천 순서: ② 견적 문의 저장 → ① 제품 DB 연동 → ③ Hero DB 연동
+### 🟠 Phase 2-1 이후 작업 순서
+1. CasesPage → Supabase case_studies 테이블 연동
+2. 특허번호 실제 번호로 교체 (CertificationsPage)
+3. 자료실 PDF 파일 Storage 업로드 + 다운로드 연결
+4. Admin 문의 목록 확인 기능
+5. 번들 크기 최적화 (현재 793kB, 500kB 경고 존재)
 
 ---
 
@@ -70,23 +75,15 @@
 ---
 
 ## 다음 AI가 바로 해야 할 작업
-**사용자에게 먼저 확인: 어느 것부터 할지?**
 
+**Phase 2-1: CasesPage → Supabase case_studies 테이블 연동**
 ```
-①번: 제품 목록 Supabase 연동
-→ src/app/App.tsx에서 initialProducts 대신 supabase.from('products').select() 로 교체
-→ 로딩 상태(loading) 추가
+→ src/pages/CasesPage.tsx 에서 하드코딩된 CASES 배열을 제거하고
+  supabase.from('case_studies').select() 로 읽어오도록 교체
+→ 로딩 상태 추가
 → 에러 처리 추가
-
-②번: 견적 문의 폼 DB 저장 (추천!)
-→ src/pages/ContactPage.tsx 에서 폼 submit 시
-  supabase.from('inquiries').insert({...}) 호출
-→ 성공/실패 메시지 처리
-→ Supabase 대시보드에서 실시간 확인 가능
-
-③번: Hero 콘텐츠 DB 연동
-→ App.tsx에서 site_content 읽어오기
-→ Admin 수정 시 supabase.from('site_content').upsert() 저장
+→ case_studies 테이블 컬럼: id, title, category, location, summary, content, image_url, featured, created_at
+관련 파일: src/pages/CasesPage.tsx
 ```
 
 ---

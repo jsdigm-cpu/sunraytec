@@ -60,7 +60,7 @@
 - Footer
 - ComingSoonPage (미구현 메뉴 연결용)
 
-## 현재 살아있는 라우트
+## 현재 살아있는 라우트 (2026-04-23 기준, 11개)
 - /
 - /products
 - /products/excellence
@@ -68,13 +68,11 @@
 - /products/:productId
 - /admin
 - /coming-soon
-- /contact ✅ 2026-04-22 완성
-
-## 현재 미구현 라우트 (모두 /coming-soon으로 연결)
-- /about/* (회사소개 하위 전체)
-- /technology/* (기술·솔루션 하위 전체)
-- /cases (시공사례)
-- /resources/* (자료실 하위 전체)
+- /contact ✅ Supabase inquiries 저장 연동 완료 (2026-04-23)
+- /cases ✅ UI 완성 (정적 데이터 10건, case_studies DB 연동 예정)
+- /about/certifications ✅ UI 완성
+- /about/history ✅ UI 완성
+- /resources/catalog ✅ UI 완성 (파일 준비중)
 
 ## 현재 핵심 데이터 구조
 - src/app/App.tsx
