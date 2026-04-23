@@ -128,15 +128,16 @@ export default function CasesPage() {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 style={{
-                  padding: '8px 20px',
+                  padding: '5px 12px',
                   borderRadius: '999px',
                   border: `2px solid ${activeCategory === cat ? 'var(--navy)' : '#E5E7EB'}`,
                   background: activeCategory === cat ? 'var(--navy)' : '#fff',
                   color: activeCategory === cat ? '#fff' : '#6B7280',
                   fontWeight: activeCategory === cat ? 700 : 500,
-                  fontSize: '0.875rem',
+                  fontSize: '0.775rem',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {cat}
