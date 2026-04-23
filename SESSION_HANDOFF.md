@@ -1,156 +1,105 @@
 # SESSION HANDOFF
 
-마지막 업데이트: 2026-04-22 (저녁 세션)
+마지막 업데이트: 2026-04-23 (저녁 세션 - Claude Code CLI)
 
-이 파일은 세션이 갑자기 종료되거나 AI를 바꿔야 할 때
-바로 이어서 작업하기 위한 인계 메모입니다.
-
----
-
-## 현재 세션 상태
-- 상태: **ContactPage Supabase 저장 연동 완료**
-- 배포 상태: https://sunraytec.vercel.app ✅ 운영 중
-- 현재 활성 작업: Phase 1-2 진행 중 (products DB 컬럼 매핑 검증)
-- 현재 기준 문서:
-  - PROJECT_STATUS.md (현황 전체)
-  - NEXT_TASK.md (지금 할 일)
-  - DECISIONS.md (결정 기록)
-  - SESSION_HANDOFF.md (이 파일, 인수인계)
-  - SUPABASE_PLAN.md (DB 설계)
+이 파일은 세션이 중단되거나 AI가 바뀔 때 바로 이어서 작업하기 위한 인수인계 메모입니다.
+**실제 코드와 문서가 다르면 항상 코드가 정답입니다.**
 
 ---
 
-## 방금 끝낸 것 (2026-04-23)
-
-### Phase 3-2: 번들 크기 최적화 ✅
-- `routes.tsx`: 모든 페이지 React.lazy + Suspense 적용, PageLoader 스피너 추가
-- `vite.config.ts`: manualChunks 4개 추가 (react, motion, supabase, icons)
-- 결과: 800kB 단일 파일 → 최대 217kB, 500kB 경고 완전 제거
-- 빌드 성공 ✅
-
-
-### Phase 3-1: Admin 견적 문의 목록 탭 ✅
-- `Sidebar.tsx`: 📋 견적 문의 탭 추가, 신규 문의 수 빨간 뱃지
-- `InquiryList.tsx` 신규 생성
-  - Supabase inquiries 조회, 필터(전체/신규/확인/답변완료)
-  - 클릭 펼침: 연락처·면적·문의내용 상세 표시
-  - 상태 변경 버튼, 이메일 답변 바로가기
-  - 신규 클릭 시 자동 read 처리
-- `AdminDashboardPage.tsx`: inquiries 탭 연결, 신규 문의 수 실시간 로드
-- 빌드 성공 ✅
-
-
-### Phase 2-2: 인증서 관리 대장 + CertificationsPage 실제 데이터 반영 ✅
-- `CERT_INVENTORY.md` 신규 생성 (프로젝트 루트)
-  - 41개 문서 8개 분류 (BIZ/GOV/CERT/SAFE/PAT/TEST/EU/SPEC)
-  - 파일명 규칙, Supabase Storage 폴더 구조, 업로드 체크리스트 포함
-- `CertificationsPage.tsx` 업데이트
-  - 특허번호 10건 실제 번호 반영
-  - KPI 수정: 보유 인증 15+, 등록 특허 10건
-  - 인증 카드 추가: 시험성적서, 조달청장 표창장
-- 빌드 성공 ✅
-
-
-### Phase 2-1: CasesPage Supabase 연동 ✅
-- Supabase MCP로 case_studies 10건 직접 삽입
-- RLS 정책 추가: case_studies INSERT, inquiries SELECT
-- `src/pages/CasesPage.tsx`: 하드코딩 제거 → supabase SELECT 연동
-- 로딩 상태 UI, image_url 필드, summary 표시 개선
-- 빌드 성공 확인 ✅
-
-
-### Phase 1-2: Products DB 컬럼 매핑 변환 ✅
-- `src/app/App.tsx` 수정
-  - `dbRowToProduct()` 변환 함수 추가 (snake_case → camelCase)
-  - `pData.map(dbRowToProduct)` 로 교체 (기존 잘못된 캐스팅 수정)
-  - specs 객체 재조립: power_w→powerW, size_mm→sizeMm, heating_area→heatingArea
-- 빌드 성공 확인 ✅
-
-### Phase 1-1: ContactPage Supabase 저장 연동 ✅
-- `src/pages/ContactPage.tsx` 수정
-  - `supabase` import 추가
-  - `handleSubmit` → async로 변경
-  - `supabase.from('inquiries').insert()` 연결
-  - 로딩 상태(`isSubmitting`) + 스피너 UI 추가
-  - 에러 상태(`submitError`) + 에러 메시지 UI 추가
-  - Supabase 미연결 시 UI 성공 처리 (로컬 개발 환경 대비)
-- 빌드 성공 확인 (npm run build ✅)
-- 필드 매핑: name, company, phone, email, project_type, space_size, message, status
-
-### 이전 세션 (2026-04-22 저녁)
-- Supabase DB 4개 테이블 생성 + 시드 데이터 업로드 완료
-- App.tsx에서 products/site_content DB 읽기 연동 완료
-- Vercel + .env.local 환경변수 설정 완료
+## 현재 사이트 상태
+- URL: https://sunraytec.vercel.app ✅ 운영 중
+- Supabase: ✅ 완전 연동 (Vercel 환경변수 포함)
+- 빌드: ✅ 경고 없음, 최대 청크 218kB
 
 ---
 
-## 아직 진행 중인 것 (다음 세션에서 계속)
+## 이번 세션(2026-04-23)에 완료한 것
 
-### 🟠 Phase 1-2: Products DB 컬럼 매핑 검증
-- **현재 상태**: App.tsx에서 `pData as Product[]`로 캐스팅만 하고 있음
-- **문제**: DB는 snake_case (product_line, power_w 등), 프론트 타입은 camelCase
-- **해야 할 것**: 실제 화면에서 제품 데이터가 정상 표시되는지 확인 후 변환 로직 추가
+### Hero 섹션 개선
+- 배경 오버레이 밝기 조정 (너무 어두움 → 적절히 밝힘)
+- 버튼 테두리/가독성 개선 (2px border, 85% opacity, textShadow)
+- 하단 배지 배경: 흰색 반투명 → 네이비 rgba(10,22,40,0.72) (가독성)
+- 슬라이드 캡션 추가 (A): 현장명 + 설명, 슬라이드마다 fade-in
+- 고정 배지 추가 (B): 좌상단 "📍 실제 납품·시공 현장"
+- SLIDE_INFO 10개 실제 현장 정보로 확정
 
-### 🟠 Phase 2-1 이후 작업 순서
-1. CasesPage → Supabase case_studies 테이블 연동
-2. 특허번호 실제 번호로 교체 (CertificationsPage)
-3. 자료실 PDF 파일 Storage 업로드 + 다운로드 연결
-4. Admin 문의 목록 확인 기능
-5. 번들 크기 최적화 (현재 793kB, 500kB 경고 존재)
+### 시공사례 전면 개편
+- Supabase case_studies 10건 실제 현장 정보로 전면 교체
+- 카테고리 4개 → 6개 (카탈로그 기준):
+  교육 및 공공 복지 / 국방 및 특수 시설 / 산업 및 물류 거점 /
+  스마트 시티 솔루션 / 주거 및 라이프 스타일 / 상업 및 서비스 공간
+- CasesPage 필터 배지 사이즈 축소 (줄바꿈 방지)
+- CasesPage 코드 버그 수정 (CASES → cases)
+- **CaseDetailPage.tsx 신규 생성**: 게시판 형식 상세 페이지
+  - 메인 이미지 + 좌우 화살표 슬라이드
+  - 썸네일 스트립 (images[] 배열)
+  - 이미지 클릭 → 라이트박스 (전체화면)
+  - 시공 내용 본문 (description)
+  - 이전글/다음글 네비게이션
+  - 목록으로 버튼
+- routes.tsx: /cases/:id 추가
+- DB 마이그레이션: case_studies에 description(text), images(text[]), installed_at(date) 추가
+
+### 인프라
+- Vercel 환경변수 추가 (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY) → 재배포 완료
+  → 이전까지 프로덕션에서 Supabase 미연동 상태였음!
 
 ---
 
-## 마지막으로 확인한 핵심 파일
-- src/lib/supabase.ts → Supabase 클라이언트 (환경변수 기반)
-- src/data/seedSupabase.ts → 시드 스크립트 (수정 완료)
-- src/data/products.ts → 현재 정적 데이터 (Supabase 연동 후 대체 예정)
-- src/data/siteContent.ts → Hero 등 정적 콘텐츠 (연동 후 대체 예정)
-- src/app/App.tsx → 현재 products/content 상태 보관 중
-- .env.local → Supabase 키 포함 (로컬 전용, git에 올라가지 않음)
-- supabase_schema.sql → DB 스키마 초기 SQL (참고용)
+## 현재 미완성 (상세 내용이 비어 있는 것들)
+
+### case_studies 상세 내용 없음
+- 10개 사례 모두 description, images[] 컬럼이 비어있음
+- /cases/:id 접속 시 "상세 내용이 준비 중입니다" 표시됨
+- **해결 방법**: Admin에 CaseEditor 탭 추가 → DB에 직접 입력 (NEXT_TASK.md 참조)
+
+### 제품 상세 이미지 없음
+- products 테이블의 thumbnail_image, detail_image 대부분 null
+- /products/:productId에서 이미지 영역이 비어있음
+
+### CatalogPage PDF 없음
+- /resources/catalog 페이지 UI는 완성, ready: false 상태
+- 실제 PDF 파일 준비 후 Supabase Storage 업로드 필요
 
 ---
 
 ## 다음 AI가 바로 해야 할 작업
 
-**Phase 2-3: 자료실 PDF 파일 Supabase Storage 업로드 + CatalogPage 연결**
+**Admin: 시공사례 관리 탭 (CaseEditor)**
 ```
-→ 사용자에게 실제 PDF 파일 준비 여부 확인 필요
-→ Supabase Storage 'downloads' 버킷에 카테고리 폴더 구조 생성
-→ CERT_INVENTORY.md 파일명 규칙대로 업로드
-→ CatalogPage: ready: false → true, 실제 URL 연결
-관련 파일: src/pages/resources/CatalogPage.tsx, CERT_INVENTORY.md
-```
-
-**Phase 3-2: 번들 크기 최적화 (500kB → 목표 300kB 이하)**
-```
-→ vite.config.ts에 dynamic import (lazy loading) 적용
-→ React.lazy + Suspense로 페이지 컴포넌트 분리
-→ 현재 번들: 800kB (gzip 228kB)
-관련 파일: src/app/routes.tsx, vite.config.ts
-```
-
-**Phase 3-3: 제품 상세 페이지 이미지 연결**
-```
-→ Supabase Storage에 제품 이미지 업로드 후 thumbnail_image URL 연결
-→ ProductDetailPage에서 이미지 표시
-관련 파일: src/pages/products/ProductDetailPage.tsx
+목표: Admin에서 각 시공사례의 설명과 추가 사진 URL을 입력/저장
+신규 파일: src/components/admin/CaseEditor.tsx
+수정 파일:
+  - src/components/admin/Sidebar.tsx (탭 추가: 'cases')
+  - src/pages/AdminDashboardPage.tsx (탭 연결)
+기능:
+  1. case_studies 목록 표시 (제목 + 카테고리)
+  2. 항목 클릭 → 우측에 편집 폼 표시
+  3. description 텍스트 편집 (textarea)
+  4. images[] URL 추가/삭제 (input + 버튼)
+  5. installed_at 날짜 입력
+  6. Supabase UPDATE 저장
 ```
 
 ---
 
-## 다음 작업 시작 전 체크
-1. PROJECT_STATUS.md에서 살아있는 라우트 목록 확인
-2. DECISIONS.md에서 스타일/구조 원칙 확인
-3. Header.tsx / Footer.tsx 절대 수정 금지
-4. Tailwind CSS만 사용 (별도 CSS 파일 생성 금지)
-5. 완료 후 이 파일(SESSION_HANDOFF.md) 업데이트
+## 핵심 파일 경로
+- src/lib/supabase.ts → Supabase 클라이언트
+- src/app/App.tsx → products / content 상태, Supabase hydrate()
+- src/app/routes.tsx → 전체 라우트 (lazy loading)
+- src/pages/CasesPage.tsx → 시공사례 목록
+- src/pages/CaseDetailPage.tsx → 시공사례 상세
+- src/components/admin/Sidebar.tsx → 탭: products / content / inquiries
+- src/components/admin/InquiryList.tsx → 견적 문의 목록
+- .env.local → Supabase 키 (로컬 전용)
+- CERT_INVENTORY.md → 인증서 41개 관리 목록
 
 ---
 
-## 남은 리스크 / 주의점
-- `.env.local`은 git에 포함되지 않아 로컬에서만 동작 (Vercel에는 별도 설정 필요)
-- Vercel 환경변수 대시보드에 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` 추가 필요!
-  → 현재 Vercel 프로덕션에는 키가 없어서 배포된 사이트에서 Supabase 연동이 안 될 수 있음
-- 빌드 번들 500kB 경고 존재 (나중에 lazy loading으로 처리)
-- README에 AI Studio/Gemini 흔적 남아있음
+## 작업 시작 전 필수 확인
+1. PROJECT_STATUS.md 라우트 목록 확인
+2. Header.tsx / Footer.tsx 절대 수정 금지
+3. Tailwind CSS만 사용 (별도 CSS 파일 생성 금지)
+4. 완료 후 npm run build 성공 확인
+5. 이 파일(SESSION_HANDOFF.md) 업데이트
