@@ -32,16 +32,16 @@ const HERO_IMAGES = [
 ];
 
 const SLIDE_INFO = [
-  { location: '인천공항 FedEx 물류센터', desc: '천장형 복사난방 시스템', icon: '🏭' },
-  { location: '대전 우편물류센터', desc: '우편물류 처리시설 복사난방', icon: '🏭' },
-  { location: '포항 군부대 정비창', desc: '특수환경 복사난방 설치', icon: '🔧' },
-  { location: '연무초등학교 급식실', desc: '위생·효율 중심 복사난방', icon: '🎓' },
-  { location: '한국도로공사 버스정류장', desc: '전국 고속도로 버스정류장 난방', icon: '🏛️' },
-  { location: '자동차 출고센터 세차장', desc: '차량 출고센터 복사난방 설치', icon: '🚗' },
-  { location: '서울 공공기관 교육시설', desc: '실내 쾌적 환경 조성', icon: '🏛️' },
-  { location: '대형 물류창고', desc: '물류창고 복사난방 설계 및 시공', icon: '🏭' },
-  { location: '제조공장 작업장', desc: '작업자 환경 개선 복사난방', icon: '🔧' },
-  { location: '상업시설 매장', desc: '매장 쾌적 환경 복사난방', icon: '🏪' },
+  { location: '수원 연무초등학교', desc: '학생식당 복사난방', icon: '🎓' },
+  { location: '영월 동강시스타 리조트', desc: '사무실 복사난방', icon: '🏨' },
+  { location: '서울 양재 하나로마트', desc: '계산대 국소 복사난방', icon: '🛒' },
+  { location: '광주시 퇴촌읍 토마토카페', desc: '카페 실내 복사난방', icon: '☕' },
+  { location: '천안시청 실내 배드민턴장', desc: '관중석 복사난방', icon: '🏸' },
+  { location: '함안군청 자동차 거점소독시설', desc: '동파방지 복사난방', icon: '🚗' },
+  { location: '2018 평창 동계올림픽', desc: 'VIP 라운지 복사난방', icon: '🏅' },
+  { location: '부천 샹그릴라 옥상 화원', desc: '온실 복사난방', icon: '🌿' },
+  { location: '영종도 인천공항 FedEx 물류센터', desc: '작업자 복사난방', icon: '🏭' },
+  { location: '포항 해병대 정비대 정비창', desc: '작업자 복사난방', icon: '🔧' },
 ];
 
 const SLIDE_DURATION = 6000;
