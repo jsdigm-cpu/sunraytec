@@ -116,7 +116,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(160deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.65) 60%, rgba(10,22,40,0.75) 100%)',
+            background: 'linear-gradient(160deg, rgba(10,22,40,0.60) 0%, rgba(10,22,40,0.40) 60%, rgba(10,22,40,0.52) 100%)',
           }}
         />
 
@@ -285,16 +285,17 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             <Link
               to="/products/excellence"
               style={{
-                background: 'rgba(255,255,255,.25)',
+                background: 'rgba(255,255,255,.15)',
                 color: '#fff',
-                border: '1px solid rgba(255,255,255,.55)',
-                padding: '12px 24px',
+                border: '2px solid rgba(255,255,255,.85)',
+                padding: '11px 24px',
                 borderRadius: '8px',
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '0.95rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
+                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
               }}
             >
               📦 {heroContent.secondaryCta}
@@ -307,16 +308,17 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: 'rgba(255,255,255,.25)',
+                background: 'rgba(255,255,255,.15)',
                 color: '#fff',
-                border: '1px solid rgba(255,255,255,.55)',
-                padding: '12px 24px',
+                border: '2px solid rgba(255,255,255,.85)',
+                padding: '11px 24px',
                 borderRadius: '8px',
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '0.95rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
+                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
               }}
             >
               🏛️ 나라장터 바로가기
@@ -341,10 +343,10 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.65 + index * 0.07 }}
-              whileHover={{ y: -3, background: 'rgba(255,255,255,.35)' }}
+              whileHover={{ y: -3, background: 'rgba(255,255,255,.32)' }}
               style={{
-                background: 'rgba(255,255,255,.22)',
-                border: '1px solid rgba(255,255,255,.45)',
+                background: 'rgba(255,255,255,.18)',
+                border: '1px solid rgba(255,255,255,.70)',
                 borderRadius: '8px',
                 padding: '8px 16px',
                 textAlign: 'center',
