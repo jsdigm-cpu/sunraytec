@@ -1,74 +1,51 @@
-# Sunraytec Website
+# 썬레이텍 (Sunraytec) 공식 홈페이지
 
-썬레이텍 회사 홈페이지 프로젝트입니다. 현재는 React + Vite + TypeScript 기반 프론트엔드와 관리자 초안, 제품 데이터 구조, 제품 상세 페이지 초안까지 정리된 상태입니다.
+주식회사 썬레이텍의 공식 웹사이트 프론트엔드 프로젝트입니다.
+React(Vite), TypeScript 기반의 최신 스택으로 구축되었으며, Supabase 백엔드와 연동되어 라이브 운영 중입니다.
 
-## 현재 상태
+## 🚀 실시간 라이브 URL
+- **Production**: [https://sunraytec.vercel.app](https://sunraytec.vercel.app)
 
-- 메인 페이지 주요 섹션 구현
-- 제품안내 메인 페이지 구현
-- 조달청 우수제품 페이지 구현
-- MAS 다수공급자계약 제품 페이지 구현
-- 제품 상세 페이지 초안 구현
-- 관리자 페이지 초안 구현
-- Hero CMS 편집 및 로컬 저장 지원
-- 제품 데이터는 현재 정적 데이터 + `localStorage` 기반
+## 🛠 기술 스택
+- **Frontend**: React 19, Vite 6, TypeScript
+- **Routing**: React Router v6 (Lazy Loading 적용)
+- **Styling**: Tailwind CSS
+- **Animation**: Framer Motion
+- **Backend / DB**: Supabase (PostgreSQL, Auth, Storage)
+- **Deployment**: Vercel 자동 배포
 
-## 기술 스택
+## 📦 로컬 실행 가이드
 
-- React 19
-- Vite 6
-- TypeScript
-- React Router
-- motion
-- Supabase JS SDK (연동 준비)
+1. **저장소 클론 및 패키지 설치**
+   ```bash
+   git clone https://github.com/jsdigm-cpu/sunraytec.git
+   cd sunraytec
+   npm install
+   ```
 
-## 로컬 실행
+2. **환경 변수 설정**
+   루트 디렉토리에 `.env.local` 파일을 생성하고 Supabase 키를 입력하세요.
+   ```text
+   VITE_SUPABASE_URL=당신의_SUPABASE_URL
+   VITE_SUPABASE_ANON_KEY=당신의_SUPABASE_ANON_KEY
+   ```
 
-1. 의존성 설치
+3. **로컬 개발 서버 실행**
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm install
-```
+## 📁 주요 폴더 구조
+- `/src/pages`: 개별 라우트 페이지 컴포넌트
+- `/src/components`: 레이아웃, 재사용 가능한 UI 컴포넌트
+- `/src/lib/supabase.ts`: Supabase 클라이언트 초기화
+- `/src/contexts`: 전역 상태 관리 (AuthContext 등)
 
-2. 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-3. 타입 체크
-
-```bash
-npm run lint
-```
-
-4. 프로덕션 빌드
-
-```bash
-npm run build
-```
-
-## 환경변수
-
-실제 배포 시 아래 값을 설정합니다.
-
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-
-필요 시 참고 파일:
-
-- [.env.example](/C:/projects/sunraytec/.env.example)
-
-## 배포 계획
-
-- GitHub: 소스 기준 저장소
-- Vercel: 프론트엔드 배포
-- Supabase: 제품, 페이지 콘텐츠, 시공사례, 문의, 파일 저장소 연동 예정
-
-## 협업 문서
-
-- [PROJECT_STATUS.md](/C:/projects/sunraytec/PROJECT_STATUS.md)
-- [NEXT_TASK.md](/C:/projects/sunraytec/NEXT_TASK.md)
-- [DECISIONS.md](/C:/projects/sunraytec/DECISIONS.md)
-- [SESSION_HANDOFF.md](/C:/projects/sunraytec/SESSION_HANDOFF.md)
-- [AI_HANDOFF_PROMPTS.md](/C:/projects/sunraytec/AI_HANDOFF_PROMPTS.md)
+## 🤖 AI 협업 문서 (Workspace Documents)
+프로젝트의 아키텍처 및 작업 상태는 아래 마크다운 파일들을 통해 관리됩니다.
+- `PROJECT_STATUS.md`: 프로젝트 전체 상태, 구조 및 DB 현황 (Single Source of Truth)
+- `MENU_STATUS.md`: 웹사이트 전체 메뉴 구조 및 신호등 진척도(대기중/진행중/완료)
+- `NEXT_TASK.md`: 대기 중인 우선순위 작업 목록
+- `SESSION_HANDOFF.md`: AI 세션 간 인수인계 노트
+- `AI_HANDOFF_PROMPTS.md`: AI 에이전트들을 위한 공통 작업 규칙 및 프롬프트
+- `CERT_INVENTORY.md`: 인증서/특허 목록 데이터 베이스

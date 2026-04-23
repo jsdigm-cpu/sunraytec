@@ -1,6 +1,6 @@
 # PROJECT STATUS
 
-마지막 업데이트: 2026-04-23 (저녁 세션)
+마지막 업데이트: 2026-04-23 (야간 세션)
 
 ## 프로젝트 한줄 설명
 썬레이텍 회사 홈페이지를 React + Vite + TypeScript + Supabase로 구축 중.
@@ -16,7 +16,7 @@
 - 배포: GitHub (jsdigm-cpu/sunraytec) → Vercel 자동배포
 
 ## 현재 배포 주소
-- https://sunraytec.vercel.app ✅ 운영 중 (Supabase 연동 포함)
+- https://sunraytec.vercel.app ✅ 운영 중 (Supabase 연동 완료)
 
 ## AI 협업 역할
 - Claude Code (CLI): 복잡한 구현, DB 연동, 디버깅, 배포
@@ -26,6 +26,10 @@
 ---
 
 ## ✅ 완료된 전체 구현 목록 (2026-04-23 기준)
+
+### 🚀 최신 업데이트 내역
+- **Admin 인증 버그 완전 해결**: Supabase RLS 무한 루프, gotrue-js Deadlock 버그, 5초 강제 타임아웃 버그 해결. 로그인 후 Admin 대시보드 자동 진입 보장.
+- **Header UI 개편**: 상단 유틸리티 바(Utility Bar) 도입. 로그인 유저 상태 표시 및 로그아웃 버튼 추가 (데스크탑/모바일 지원). 견적문의 버튼 사이즈 축소 및 전반적 메뉴 정렬 최적화.
 
 ### 메인 페이지 (/)
 - Hero: 배경 슬라이드 10장 + 현장별 캡션 + "실제 시공 현장" 고정 배지
@@ -48,13 +52,13 @@
 - DB 데이터: 10건 실제 현장 정보 (제목, 위치, 카테고리, 설명)
 - DB 컬럼: title, category, location, image_url, images[], description, summary, installed_at
 
-### 🟢 진행 완료 (완료된 작업)
+### 🟢 진행 완료 (Phase 마일스톤)
 - [x] Phase 1: 로컬 정적 데이터 구조 설정 및 컴포넌트화 완료
 - [x] Phase 2-1: Supabase 프로젝트 연동 및 스키마/RLS 적용
 - [x] Phase 2-2: 기존 목업 데이터 Supabase 마이그레이션 (Seed)
-- [x] Phase 2-3: 협력업체 전용 자료실 및 Supabase Auth 회원가입/로그인 구현 완료
+- [x] Phase 2-3: 협력업체 전용 자료실 및 Supabase Auth 회원가입/로그인/로그아웃/뱃지 UI 구현 완료
 - [x] Phase 3-1: 견적 문의 폼 Supabase Insert 연결 완료
-- [x] Phase 3-2: Admin: 시공사례 관리 탭 추가 완료 (CaseEditor)
+- [x] Phase 3-2: Admin: 관리자 권한 복구 및 시공사례/회원 관리 탭 추가 완료
 
 ### 관리자 (/admin)
 - 제품 추가/삭제 UI
@@ -103,18 +107,19 @@
 | site_content | 1 | Hero CMS |
 | case_studies | 10 | 시공사례, images[]/description 컬럼 추가됨 |
 | inquiries | - | 견적 문의 |
+| profiles | 1+ | 유저 프로필 및 role(admin/partner) |
 
 ### RLS 정책
+- profiles: 본인 정보만 SELECT/UPDATE (auth.uid() = id)
 - products: SELECT (anon)
 - site_content: SELECT (anon)
 - case_studies: SELECT + INSERT (anon)
-- inquiries: SELECT + INSERT (anon)
+- inquiries: SELECT (admin), INSERT (anon)
 
 ---
 
 ## 남은 이슈 / 주의
 - CERT_INVENTORY.md 파일 있음 (루트), 41개 인증서 관리 목록
 - README에 Gemini/AI Studio 흔적 남아있음 (정리 예정)
-- Header.tsx / Footer.tsx 절대 수정 금지
 - Tailwind CSS만 사용 (별도 CSS 파일 생성 금지)
 - 작업 전 실제 코드와 문서가 다르면 코드 기준으로 판단
