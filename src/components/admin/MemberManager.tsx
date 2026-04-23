@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import emailjs from '@emailjs/browser';
 
 interface Profile {
   id: string;
@@ -37,13 +38,33 @@ export default function MemberManager() {
 
   useEffect(() => { load(); }, []);
 
-  async function updateStatus(id: string, status: 'approved' | 'rejected') {
+  async function updateStatus(member: Profile, status: 'approved' | 'rejected') {
     if (!supabase) return;
-    setSaving(id);
-    await supabase.from('profiles').update({
+    setSaving(member.id);
+    const { error } = await supabase.from('profiles').update({
       status,
       approved_at: status === 'approved' ? new Date().toISOString() : null,
-    }).eq('id', id);
+    }).eq('id', member.id);
+
+    // DB 업데이트가 성공했고, 상태가 '승인(approved)'인 경우에만 이메일 발송
+    if (!error && status === 'approved') {
+      try {
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID',
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID',
+          {
+            to_email: member.email,
+            to_name: member.full_name,
+            company_name: member.company_name,
+          },
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY'
+        );
+        console.log(`승인 안내 메일 발송 성공: ${member.email}`);
+      } catch (err) {
+        console.error('승인 안내 메일 발송 실패:', err);
+      }
+    }
+
     setSaving(null);
     load();
   }
@@ -113,14 +134,14 @@ export default function MemberManager() {
                 {member.status === 'pending' && (
                   <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                     <button
-                      onClick={() => updateStatus(member.id, 'approved')}
+                      onClick={() => updateStatus(member, 'approved')}
                       disabled={saving === member.id}
                       style={{ padding: '7px 16px', background: '#059669', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                     >
                       ✓ 승인
                     </button>
                     <button
-                      onClick={() => updateStatus(member.id, 'rejected')}
+                      onClick={() => updateStatus(member, 'rejected')}
                       disabled={saving === member.id}
                       style={{ padding: '7px 16px', background: '#EF4444', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                     >
@@ -130,7 +151,7 @@ export default function MemberManager() {
                 )}
                 {member.status === 'approved' && (
                   <button
-                    onClick={() => updateStatus(member.id, 'rejected')}
+                    onClick={() => updateStatus(member, 'rejected')}
                     style={{ padding: '6px 14px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
                   >
                     승인 취소
@@ -138,7 +159,7 @@ export default function MemberManager() {
                 )}
                 {member.status === 'rejected' && (
                   <button
-                    onClick={() => updateStatus(member.id, 'approved')}
+                    onClick={() => updateStatus(member, 'approved')}
                     style={{ padding: '6px 14px', background: 'none', border: '1px solid #6EE7B7', color: '#059669', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
                   >
                     재승인
