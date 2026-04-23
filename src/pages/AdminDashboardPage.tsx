@@ -6,6 +6,7 @@ import ProductForm from '../components/admin/ProductForm';
 import ProductListEditor from '../components/admin/ProductListEditor';
 import ContentEditor from '../components/admin/ContentEditor';
 import InquiryList from '../components/admin/InquiryList';
+import CaseEditor from '../components/admin/CaseEditor';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
 import { supabase } from '../lib/supabase';
@@ -51,6 +52,9 @@ export default function AdminDashboardPage() {
         )}
         {tab === 'content' && (
           <ContentEditor content={content} onChange={setContent} onSave={saveCmsState} lastSavedAt={lastSavedAt} />
+        )}
+        {tab === 'cases' && (
+          <CaseEditor />
         )}
         {tab === 'inquiries' && (
           <InquiryList />
