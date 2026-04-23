@@ -343,16 +343,17 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.65 + index * 0.07 }}
-              whileHover={{ y: -3, background: 'rgba(255,255,255,.32)' }}
+              whileHover={{ y: -3, background: 'rgba(10,22,40,0.88)' }}
               style={{
-                background: 'rgba(255,255,255,.18)',
-                border: '1px solid rgba(255,255,255,.70)',
+                background: 'rgba(10,22,40,0.72)',
+                border: '1px solid rgba(230,126,34,0.55)',
                 borderRadius: '8px',
                 padding: '8px 16px',
                 textAlign: 'center',
                 minWidth: '90px',
                 cursor: 'default',
                 transition: 'background 0.2s',
+                backdropFilter: 'blur(4px)',
               }}
             >
               <strong
@@ -365,7 +366,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               >
                 {badge.label}
               </strong>
-              <span style={{ fontSize: '11px', opacity: 0.7 }}>{badge.sub}</span>
+              <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.75)' }}>{badge.sub}</span>
             </motion.div>
           ))}
         </motion.div>
