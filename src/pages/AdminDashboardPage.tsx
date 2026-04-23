@@ -1,12 +1,14 @@
 import { useOutletContext } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import Sidebar from '../components/admin/Sidebar';
+import Sidebar, { type AdminTab } from '../components/admin/Sidebar';
 import ProductForm from '../components/admin/ProductForm';
 import ProductListEditor from '../components/admin/ProductListEditor';
 import ContentEditor from '../components/admin/ContentEditor';
+import InquiryList from '../components/admin/InquiryList';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
+import { supabase } from '../lib/supabase';
 
 interface AdminContext extends CmsState {
   setProducts: Dispatch<SetStateAction<Product[]>>;
@@ -17,7 +19,17 @@ interface AdminContext extends CmsState {
 
 export default function AdminDashboardPage() {
   const { products, content, setProducts, setContent, saveCmsState, lastSavedAt } = useOutletContext<AdminContext>();
-  const [tab, setTab] = useState<'products' | 'content'>('products');
+  const [tab, setTab] = useState<AdminTab>('products');
+  const [newInquiryCount, setNewInquiryCount] = useState(0);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase
+      .from('inquiries')
+      .select('id', { count: 'exact' })
+      .eq('status', 'new')
+      .then(({ count }) => setNewInquiryCount(count ?? 0));
+  }, []);
 
   const upsertProduct = (incoming: Product) => {
     setProducts((prev) => {
@@ -29,15 +41,19 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ display: 'flex', minHeight: '70vh' }}>
-      <Sidebar tab={tab} onTab={setTab} />
-      <section style={{ flex: 1, padding: '1rem' }}>
-        {tab === 'products' ? (
+      <Sidebar tab={tab} onTab={setTab} newInquiryCount={newInquiryCount} />
+      <section style={{ flex: 1, padding: '1rem', minWidth: 0 }}>
+        {tab === 'products' && (
           <div className="admin-grid" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr' }}>
             <ProductForm onSubmit={upsertProduct} />
             <ProductListEditor products={products} onDelete={(id) => setProducts((prev) => prev.filter((p) => p.id !== id))} />
           </div>
-        ) : (
+        )}
+        {tab === 'content' && (
           <ContentEditor content={content} onChange={setContent} onSave={saveCmsState} lastSavedAt={lastSavedAt} />
+        )}
+        {tab === 'inquiries' && (
+          <InquiryList />
         )}
       </section>
     </div>
