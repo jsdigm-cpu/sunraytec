@@ -22,6 +22,14 @@
 
 ## 방금 끝낸 것 (2026-04-23)
 
+### Phase 2-1: CasesPage Supabase 연동 ✅
+- Supabase MCP로 case_studies 10건 직접 삽입
+- RLS 정책 추가: case_studies INSERT, inquiries SELECT
+- `src/pages/CasesPage.tsx`: 하드코딩 제거 → supabase SELECT 연동
+- 로딩 상태 UI, image_url 필드, summary 표시 개선
+- 빌드 성공 확인 ✅
+
+
 ### Phase 1-2: Products DB 컬럼 매핑 변환 ✅
 - `src/app/App.tsx` 수정
   - `dbRowToProduct()` 변환 함수 추가 (snake_case → camelCase)
@@ -76,14 +84,22 @@
 
 ## 다음 AI가 바로 해야 할 작업
 
-**Phase 2-1: CasesPage → Supabase case_studies 테이블 연동**
+**Phase 2-2: CertificationsPage 특허번호 실제 번호로 교체**
 ```
-→ src/pages/CasesPage.tsx 에서 하드코딩된 CASES 배열을 제거하고
-  supabase.from('case_studies').select() 로 읽어오도록 교체
-→ 로딩 상태 추가
-→ 에러 처리 추가
-→ case_studies 테이블 컬럼: id, title, category, location, summary, content, image_url, featured, created_at
-관련 파일: src/pages/CasesPage.tsx
+→ src/pages/about/CertificationsPage.tsx
+→ PATENTS 배열의 number 필드: '제10-XXXXXX호' → 실제 특허번호로 교체
+→ 사용자에게 실제 특허번호 4개를 받아서 입력
+관련 파일: src/pages/about/CertificationsPage.tsx:87~91
+```
+
+OR
+
+**Phase 2-3: 자료실 PDF 파일 Supabase Storage 업로드**
+```
+→ 사용자에게 실제 PDF 파일 준비 여부 확인 필요
+→ Supabase Storage 'downloads' 버킷 생성
+→ CatalogPage의 ready: false → true + 실제 URL 연결
+관련 파일: src/pages/resources/CatalogPage.tsx
 ```
 
 ---
