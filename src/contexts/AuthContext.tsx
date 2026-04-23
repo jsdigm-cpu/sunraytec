@@ -34,25 +34,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchProfile(userId: string) {
     if (!supabase) return;
-    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
-    setProfile(data as Profile | null);
+    console.log('[Auth] fetchProfile start for userId:', userId);
+    
+    try {
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
+      
+      console.log('[Auth] fetchProfile result:', data, 'error:', error);
+      console.log('[Auth] role:', data?.role, 'status:', data?.status);
+      setProfile(data as Profile | null);
+    } catch (err) {
+      console.error('[Auth] fetchProfile exception:', err);
+    }
   }
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('[Auth] getSession user:', session?.user?.email ?? 'none');
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) await fetchProfile(session.user.id); // profile 로드 완료 후 loading 해제
-      setLoading(false);
+      if (session?.user) {
+        fetchProfile(session.user.id).finally(() => {
+          setLoading(false);
+          console.log('[Auth] loading set to false from getSession fetchProfile');
+        });
+      } else {
+        setLoading(false);
+        console.log('[Auth] loading set to false from getSession (no user)');
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[Auth] onAuthStateChange event:', event, 'user:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      else setProfile(null);
+
+      if (session?.user) {
+        // 절대 await 하지 않음 (Deadlock 방지)
+        fetchProfile(session.user.id).finally(() => {
+          setLoading(false);
+          console.log('[Auth] loading set to false from onAuthStateChange fetchProfile');
+        });
+      } else {
+        setProfile(null);
+        setLoading(false);
+        console.log('[Auth] loading set to false from onAuthStateChange (no user)');
+      }
     });
 
     return () => subscription.unsubscribe();

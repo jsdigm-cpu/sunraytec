@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginPage() {
-  const { signIn, profile } = useAuth();
+  const { signIn, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loginAttempted, setLoginAttempted] = useState(false);
+
+  // profile이 완전히 로드된 후 역할에 맞는 페이지로 이동
+  useEffect(() => {
+    if (!loginAttempted) return;
+    if (authLoading) return;      // 아직 로딩 중
+    if (!profile) return;          // profile이 아직 없음
+    if (profile.role === 'admin') navigate('/admin');
+    else navigate('/partner');
+  }, [loginAttempted, authLoading, profile, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,12 +30,8 @@ export default function LoginPage() {
       setError('이메일 또는 비밀번호가 올바르지 않습니다.');
       return;
     }
-    // 로그인 성공 후 역할에 따라 이동
-    // profile이 아직 로드 중일 수 있으므로 잠시 후 리다이렉트
-    setTimeout(() => {
-      if (profile?.role === 'admin') navigate('/admin');
-      else navigate('/partner');
-    }, 300);
+    // 로그인 성공 플래그 설정 → useEffect가 profile 로드 완료 후 이동
+    setLoginAttempted(true);
   }
 
   return (

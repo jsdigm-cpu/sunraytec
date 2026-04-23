@@ -20,7 +20,7 @@ export default function PartnerPendingPage() {
             : `${profile?.company_name ?? ''} 담당자님, 신청해주셔서 감사합니다.\n관리자 확인 후 승인이 완료되면 자료실 접근이 가능합니다.`
           }
         </p>
-        <p style={{ color: '#9CA3AF', fontSize: '0.82rem', marginBottom: '28px' }}>📞 1688-2520 | ✉️ sunraytec@sunraytec.co.kr</p>
+        <p style={{ color: '#9CA3AF', fontSize: '0.82rem', marginBottom: '28px' }}>📞 1688-2520 | ✉️ master@sunraytec.net</p>
 
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link to="/" style={{ padding: '10px 22px', background: 'var(--navy)', color: '#fff', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '0.875rem' }}>

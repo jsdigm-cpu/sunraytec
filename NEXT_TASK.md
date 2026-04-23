@@ -10,14 +10,8 @@
 ---
 
 ## 🔴 최우선 (지금 바로)
-
-### Admin: 관리자 계정(master@sunraytec.net) 생성 재작업
-**담당**: 사용자 (Supabase 대시보드 직접 조작)
-**이유**: 이전 작업에서 auth.users 테이블에만 데이터가 들어가고 auth.identities 테이블에 누락되어 로그인이 안되는 현상
-**조치 방법**:
-1. Supabase 대시보드 -> Authentication -> Users 이동
-2. `master@sunraytec.net` 계정 삭제 (Delete user)
-3. 삭제 완료 후, 아래 채팅창에 "삭제 완료"라고 남겨주시면 바로 API를 통해 정상 회원가입 및 Admin 권한 부여를 진행하겠습니다.
+- 현재 모든 치명적인 인증(Admin 접속 불가) 버그 수정 완료.
+- 추가 우선 작업 발견 시 여기에 기재.
 
 ---
 
