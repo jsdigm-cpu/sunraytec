@@ -22,6 +22,13 @@
 
 ## 방금 끝낸 것 (2026-04-23)
 
+### Phase 3-2: 번들 크기 최적화 ✅
+- `routes.tsx`: 모든 페이지 React.lazy + Suspense 적용, PageLoader 스피너 추가
+- `vite.config.ts`: manualChunks 4개 추가 (react, motion, supabase, icons)
+- 결과: 800kB 단일 파일 → 최대 217kB, 500kB 경고 완전 제거
+- 빌드 성공 ✅
+
+
 ### Phase 3-1: Admin 견적 문의 목록 탭 ✅
 - `Sidebar.tsx`: 📋 견적 문의 탭 추가, 신규 문의 수 빨간 뱃지
 - `InquiryList.tsx` 신규 생성
