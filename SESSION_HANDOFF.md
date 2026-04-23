@@ -22,6 +22,17 @@
 
 ## 방금 끝낸 것 (2026-04-23)
 
+### Phase 3-1: Admin 견적 문의 목록 탭 ✅
+- `Sidebar.tsx`: 📋 견적 문의 탭 추가, 신규 문의 수 빨간 뱃지
+- `InquiryList.tsx` 신규 생성
+  - Supabase inquiries 조회, 필터(전체/신규/확인/답변완료)
+  - 클릭 펼침: 연락처·면적·문의내용 상세 표시
+  - 상태 변경 버튼, 이메일 답변 바로가기
+  - 신규 클릭 시 자동 read 처리
+- `AdminDashboardPage.tsx`: inquiries 탭 연결, 신규 문의 수 실시간 로드
+- 빌드 성공 ✅
+
+
 ### Phase 2-2: 인증서 관리 대장 + CertificationsPage 실제 데이터 반영 ✅
 - `CERT_INVENTORY.md` 신규 생성 (프로젝트 루트)
   - 41개 문서 8개 분류 (BIZ/GOV/CERT/SAFE/PAT/TEST/EU/SPEC)
@@ -104,12 +115,19 @@
 관련 파일: src/pages/resources/CatalogPage.tsx, CERT_INVENTORY.md
 ```
 
-**Phase 3-1: Admin 문의 목록 조회 기능**
+**Phase 3-2: 번들 크기 최적화 (500kB → 목표 300kB 이하)**
 ```
-→ src/pages/AdminDashboardPage.tsx 에 inquiries 탭 추가
-→ supabase.from('inquiries').select() 로 문의 목록 표시
-→ 상태(new/read) 변경 기능
-관련 파일: src/pages/AdminDashboardPage.tsx
+→ vite.config.ts에 dynamic import (lazy loading) 적용
+→ React.lazy + Suspense로 페이지 컴포넌트 분리
+→ 현재 번들: 800kB (gzip 228kB)
+관련 파일: src/app/routes.tsx, vite.config.ts
+```
+
+**Phase 3-3: 제품 상세 페이지 이미지 연결**
+```
+→ Supabase Storage에 제품 이미지 업로드 후 thumbnail_image URL 연결
+→ ProductDetailPage에서 이미지 표시
+관련 파일: src/pages/products/ProductDetailPage.tsx
 ```
 
 ---
