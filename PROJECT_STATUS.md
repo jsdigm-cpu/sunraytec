@@ -48,6 +48,14 @@
 - DB 데이터: 10건 실제 현장 정보 (제목, 위치, 카테고리, 설명)
 - DB 컬럼: title, category, location, image_url, images[], description, summary, installed_at
 
+### 🟢 진행 완료 (완료된 작업)
+- [x] Phase 1: 로컬 정적 데이터 구조 설정 및 컴포넌트화 완료
+- [x] Phase 2-1: Supabase 프로젝트 연동 및 스키마/RLS 적용
+- [x] Phase 2-2: 기존 목업 데이터 Supabase 마이그레이션 (Seed)
+- [x] Phase 2-3: 협력업체 전용 자료실 및 Supabase Auth 회원가입/로그인 구현 완료
+- [x] Phase 3-1: 견적 문의 폼 Supabase Insert 연결 완료
+- [x] Phase 3-2: Admin: 시공사례 관리 탭 추가 완료 (CaseEditor)
+
 ### 관리자 (/admin)
 - 제품 추가/삭제 UI
 - Hero 콘텐츠 편집 (headline, subcopy, CTA, 폰트, 강조색)

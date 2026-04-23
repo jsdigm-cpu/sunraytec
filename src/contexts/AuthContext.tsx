@@ -41,10 +41,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
+      if (session?.user) await fetchProfile(session.user.id); // profile 로드 완료 후 loading 해제
       setLoading(false);
     });
 

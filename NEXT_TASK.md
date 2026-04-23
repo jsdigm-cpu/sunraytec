@@ -11,18 +11,13 @@
 
 ## 🔴 최우선 (지금 바로)
 
-### Admin: 시공사례 관리 탭 추가
-**담당**: Claude Code
-**목표**: Admin 대시보드에서 각 시공사례의 추가 사진(images[])과 상세 설명(description)을 입력할 수 있는 편집 UI 추가
-**관련 파일**:
-- src/pages/AdminDashboardPage.tsx
-- src/components/admin/Sidebar.tsx (탭 추가)
-- src/components/admin/CaseEditor.tsx (신규 생성)
-**완료 조건**:
-- 시공사례 목록 표시 + 항목 선택
-- description 텍스트 편집 + Supabase UPDATE
-- images[] URL 추가/삭제 + Supabase UPDATE
-- installed_at 날짜 입력
+### Admin: 관리자 계정(master@sunraytec.net) 생성 재작업
+**담당**: 사용자 (Supabase 대시보드 직접 조작)
+**이유**: 이전 작업에서 auth.users 테이블에만 데이터가 들어가고 auth.identities 테이블에 누락되어 로그인이 안되는 현상
+**조치 방법**:
+1. Supabase 대시보드 -> Authentication -> Users 이동
+2. `master@sunraytec.net` 계정 삭제 (Delete user)
+3. 삭제 완료 후, 아래 채팅창에 "삭제 완료"라고 남겨주시면 바로 API를 통해 정상 회원가입 및 Admin 권한 부여를 진행하겠습니다.
 
 ---
 

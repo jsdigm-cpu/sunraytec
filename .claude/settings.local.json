@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Supabase__execute_sql",
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Vercel__get_project",
+      "mcp__claude_ai_Supabase__get_publishable_keys",
+      "mcp__kapture__list_tabs",
+      "mcp__kapture__new_tab",
+      "WebFetch(domain:www.sunraytec.co.kr)",
+      "mcp__claude_ai_Supabase__apply_migration"
+    ]
+  }
+}
