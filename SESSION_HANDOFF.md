@@ -22,6 +22,17 @@
 
 ## 방금 끝낸 것 (2026-04-23)
 
+### Phase 2-2: 인증서 관리 대장 + CertificationsPage 실제 데이터 반영 ✅
+- `CERT_INVENTORY.md` 신규 생성 (프로젝트 루트)
+  - 41개 문서 8개 분류 (BIZ/GOV/CERT/SAFE/PAT/TEST/EU/SPEC)
+  - 파일명 규칙, Supabase Storage 폴더 구조, 업로드 체크리스트 포함
+- `CertificationsPage.tsx` 업데이트
+  - 특허번호 10건 실제 번호 반영
+  - KPI 수정: 보유 인증 15+, 등록 특허 10건
+  - 인증 카드 추가: 시험성적서, 조달청장 표창장
+- 빌드 성공 ✅
+
+
 ### Phase 2-1: CasesPage Supabase 연동 ✅
 - Supabase MCP로 case_studies 10건 직접 삽입
 - RLS 정책 추가: case_studies INSERT, inquiries SELECT
@@ -84,22 +95,21 @@
 
 ## 다음 AI가 바로 해야 할 작업
 
-**Phase 2-2: CertificationsPage 특허번호 실제 번호로 교체**
-```
-→ src/pages/about/CertificationsPage.tsx
-→ PATENTS 배열의 number 필드: '제10-XXXXXX호' → 실제 특허번호로 교체
-→ 사용자에게 실제 특허번호 4개를 받아서 입력
-관련 파일: src/pages/about/CertificationsPage.tsx:87~91
-```
-
-OR
-
-**Phase 2-3: 자료실 PDF 파일 Supabase Storage 업로드**
+**Phase 2-3: 자료실 PDF 파일 Supabase Storage 업로드 + CatalogPage 연결**
 ```
 → 사용자에게 실제 PDF 파일 준비 여부 확인 필요
-→ Supabase Storage 'downloads' 버킷 생성
-→ CatalogPage의 ready: false → true + 실제 URL 연결
-관련 파일: src/pages/resources/CatalogPage.tsx
+→ Supabase Storage 'downloads' 버킷에 카테고리 폴더 구조 생성
+→ CERT_INVENTORY.md 파일명 규칙대로 업로드
+→ CatalogPage: ready: false → true, 실제 URL 연결
+관련 파일: src/pages/resources/CatalogPage.tsx, CERT_INVENTORY.md
+```
+
+**Phase 3-1: Admin 문의 목록 조회 기능**
+```
+→ src/pages/AdminDashboardPage.tsx 에 inquiries 탭 추가
+→ supabase.from('inquiries').select() 로 문의 목록 표시
+→ 상태(new/read) 변경 기능
+관련 파일: src/pages/AdminDashboardPage.tsx
 ```
 
 ---
