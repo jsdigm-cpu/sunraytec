@@ -12,6 +12,7 @@ const AdminDashboardPage   = lazy(() => import('../pages/AdminDashboardPage'));
 const ComingSoonPage       = lazy(() => import('../pages/ComingSoonPage'));
 const ContactPage          = lazy(() => import('../pages/ContactPage'));
 const CasesPage            = lazy(() => import('../pages/CasesPage'));
+const CaseDetailPage       = lazy(() => import('../pages/CaseDetailPage'));
 const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage'));
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
@@ -60,6 +61,7 @@ export const router = createBrowserRouter([
       { path: 'coming-soon',           element: <S><ComingSoonPage /></S> },
       { path: 'contact',               element: <S><ContactPage /></S> },
       { path: 'cases',                 element: <S><CasesPage /></S> },
+      { path: 'cases/:id',             element: <S><CaseDetailPage /></S> },
       { path: 'resources/catalog',     element: <S><CatalogPage /></S> },
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 
@@ -42,6 +42,7 @@ const cardVariant = {
 };
 
 export default function CasesPage() {
+  const navigate = useNavigate();
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('전체');
@@ -165,12 +166,14 @@ export default function CasesPage() {
                   key={item.id}
                   variants={cardVariant}
                   whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                  onClick={() => navigate(`/cases/${item.id}`)}
                   style={{
                     borderRadius: '16px',
                     overflow: 'hidden',
                     background: '#fff',
                     boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                     border: '1px solid #E5E7EB',
+                    cursor: 'pointer',
                   }}
                 >
                   {/* 이미지 */}
