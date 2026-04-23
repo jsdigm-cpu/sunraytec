@@ -138,7 +138,7 @@ export default function CasesPage() {
                 {cat}
                 {cat !== '전체' && (
                   <span style={{ marginLeft: '6px', fontSize: '0.75rem', opacity: 0.7 }}>
-                    {CASES.filter(c => c.category === cat).length}
+                    {cases.filter(c => c.category === cat).length}
                   </span>
                 )}
               </button>
