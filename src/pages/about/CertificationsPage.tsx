@@ -76,18 +76,40 @@ const MAIN_CERTS = [
   {
     icon: '🇪🇺',
     title: 'CE · RoHS',
-    detail: '유럽 안전·환경 인증',
+    detail: 'SUR-1200 / 2400 / 3600',
     description: 'EU 시장 출시 요건(CE)과 유해물질 제한지침(RoHS)을 충족. 해외 수출 기반 마련.',
     badge: '해외',
     badgeColor: '#7C3AED',
   },
+  {
+    icon: '🌡️',
+    title: '원적외선 방사율 · 항균 · 탈취 성적서',
+    detail: '한국원적외선협회',
+    description: '원적외선 방사율, 대장균·포도상구균 항균 시험, 탈취율 측정 성적서 보유. 기능성 난방 입증.',
+    badge: '시험',
+    badgeColor: '#0891B2',
+  },
+  {
+    icon: '🏅',
+    title: '조달청장 표창장',
+    detail: '2016 · 2019 (2회)',
+    description: '조달청장(2016) 및 서울지방조달청장(2019) 표창장 수상. 공공조달 기여 공식 인정.',
+    badge: '수상',
+    badgeColor: '#B45309',
+  },
 ];
 
 const PATENTS = [
-  { title: '복사히터 난방 장치', number: '제10-XXXXXX호', year: '등록' },
-  { title: '원적외선 복사 패널 제조방법', number: '제10-XXXXXX호', year: '등록' },
-  { title: '방폭형 복사히터', number: '제10-XXXXXX호', year: '등록' },
-  { title: '복사난방 제어 시스템', number: '제10-XXXXXX호', year: '등록' },
+  { title: '원적외선 난방장치',                                   number: '제10-1028910호', year: '등록' },
+  { title: '원적외선 방열패널 및 그 제조방법을 이용한 난방장치', number: '제10-1043542호', year: '등록' },
+  { title: '책상에 설치되는 난방 패널',                          number: '제10-1378499호', year: '등록' },
+  { title: '난방장치',                                           number: '제10-1625578호', year: '등록' },
+  { title: '천장부착형 복사난방히터',                            number: '제10-1640866호', year: '등록' },
+  { title: '원적외선 방열패널 코팅용 조성물 및 방열패널',        number: '제10-1651925호', year: '등록' },
+  { title: '협소공간에 설치되는 난방시스템',                     number: '제10-2137929호', year: '등록' },
+  { title: '열처리 광물 포함 원적외선 방열패널 코팅 조성물',     number: '제10-2299104호', year: '등록' },
+  { title: '버스 정류장용 원적외선 난방장치',                    number: '제10-2640644호', year: '등록' },
+  { title: '전기히터 (디자인)',                                  number: '디자인 제30-0856398호', year: '등록' },
 ];
 
 const TIMELINE = [
@@ -132,8 +154,8 @@ export default function CertificationsPage() {
             style={{ display: 'flex', gap: '32px', marginTop: '36px', flexWrap: 'wrap' }}
           >
             {[
-              { value: '8+',  label: '보유 인증' },
-              { value: '4+',  label: '등록 특허' },
+              { value: '15+', label: '보유 인증·성적서' },
+              { value: '10건', label: '등록 특허·디자인' },
               { value: '3회', label: '우수제품 지정' },
             ].map(kpi => (
               <div key={kpi.label} style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
