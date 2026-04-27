@@ -15,12 +15,13 @@ import { supabase } from '../lib/supabase';
 interface AdminContext extends CmsState {
   setProducts: Dispatch<SetStateAction<Product[]>>;
   setContent: Dispatch<SetStateAction<SiteContent>>;
-  saveCmsState: () => void;
+  saveCmsState: () => Promise<string | null>;
   lastSavedAt: string | null;
+  lastSaveError: string | null;
 }
 
 export default function AdminDashboardPage() {
-  const { products, content, setProducts, setContent, saveCmsState, lastSavedAt } = useOutletContext<AdminContext>();
+  const { products, content, setProducts, setContent, saveCmsState, lastSavedAt, lastSaveError } = useOutletContext<AdminContext>();
   const [tab, setTab] = useState<AdminTab>('products');
   const [newInquiryCount, setNewInquiryCount] = useState(0);
   const [productNotice, setProductNotice] = useState('');
@@ -120,7 +121,7 @@ export default function AdminDashboardPage() {
           </>
         )}
         {tab === 'content' && (
-          <ContentEditor content={content} onChange={setContent} onSave={saveCmsState} lastSavedAt={lastSavedAt} />
+          <ContentEditor content={content} onChange={setContent} onSave={saveCmsState} lastSavedAt={lastSavedAt} lastSaveError={lastSaveError} />
         )}
         {tab === 'cases' && (
           <CaseEditor />

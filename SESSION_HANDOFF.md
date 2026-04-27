@@ -14,6 +14,9 @@
 
 ## 이번 세션에서 확인한 내용
 
+- 2026-04-27 추가 확인: 웹 검토 중 회원가입에서 `profiles` RLS insert 오류가 발생했습니다.
+- 2026-04-27 추가 확인: Admin Hero 문구/폰트/굵기 변경이 현재 세션에서는 보이나 로그아웃/재접속 후 이전 상태로 돌아갔습니다.
+- 원인: `profiles` 생성과 `site_content` upsert가 Supabase RLS에 막혀 DB에 영구 저장되지 않았습니다.
 - 회원가입은 Supabase Auth 가입 후 `profiles` 생성 실패를 확인하지 않아 가입 성공처럼 보일 수 있었습니다.
 - 로그인은 프로필 조회 실패 시 사용자에게 안내 없이 멈춘 것처럼 보일 수 있었습니다.
 - 관리자 제품 관리는 기존에 React state만 바꾸고 Supabase `products` 테이블에 저장하지 않았습니다.
@@ -55,6 +58,13 @@
   - 로고 경로 수정
 - `src/vite-env.d.ts`
   - Vite 환경변수 타입 선언 추가
+- `supabase_fix_auth_cms_policies.sql`
+  - 회원가입 시 `profiles` 자동 생성을 위한 Auth trigger 추가
+  - 관리자 CMS 쓰기 권한을 위한 RLS 정책 추가
+- `src/app/App.tsx`, `src/components/admin/ContentEditor.tsx`
+  - Hero 저장 실패를 관리자 화면에 표시하도록 보강
+- `supabase_schema.sql`
+  - 운영 DB 정책 기준을 최신 구조로 보강
 
 ---
 
@@ -79,6 +89,10 @@
 검증 완료:
 - `npm run lint` 성공
 - `npm run build` 성공
+
+운영 DB 적용 필요:
+- Supabase Dashboard > SQL Editor에서 `supabase_fix_auth_cms_policies.sql` 전체 실행 필요
+- 이 SQL이 적용되어야 회원가입 프로필 생성과 Hero/CMS 영구 저장이 실제 운영 DB에서 정상 작동합니다.
 
 ---
 

@@ -42,6 +42,7 @@ export default function App() {
   const [content, setContent] = useState<SiteContent>(initialSiteContent);
   const [isHydrated, setIsHydrated] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [lastSaveError, setLastSaveError] = useState<string | null>(null);
 
   const persistCmsState = async (nextProducts: Product[], nextContent: SiteContent) => {
     // 1. Save to Local Storage as a resilient fallback
@@ -53,22 +54,35 @@ export default function App() {
         content: nextContent,
       }),
     );
-    setLastSavedAt(new Date().toISOString());
+    setLastSaveError(null);
 
     // 2. Try to save to Supabase if connected
     if (supabase) {
       try {
-        await supabase.from('site_content').upsert(
-          { section_key: 'hero', payload: nextContent.hero },
+        const { error } = await supabase.from('site_content').upsert(
+          { section_key: 'hero', payload: nextContent.hero, updated_at: new Date().toISOString() },
           { onConflict: 'section_key' }
         );
+
+        if (error) {
+          setLastSaveError(error.message);
+          return error.message;
+        }
+
+        setLastSavedAt(new Date().toISOString());
         // Note: Products upsert logic would require looping through all products
         // and mapping all properties exactly to match the DB columns. 
         // For admin sync, usually specialized API calls are used, but we save hero for now.
       } catch (error) {
-        console.warn('Failed to save to Supabase:', error);
+        const message = error instanceof Error ? error.message : '알 수 없는 저장 오류';
+        setLastSaveError(message);
+        return message;
       }
+    } else {
+      setLastSavedAt(new Date().toISOString());
     }
+
+    return null;
   };
 
   useEffect(() => {
@@ -159,6 +173,7 @@ export default function App() {
             setContent,
             saveCmsState: () => persistCmsState(products, content),
             lastSavedAt,
+            lastSaveError,
           }}
         />
       </main>

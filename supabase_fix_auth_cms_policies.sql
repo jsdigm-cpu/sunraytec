@@ -1,68 +1,9 @@
 -- ============================================
--- 썬레이텍 Supabase 초기 스키마 생성 SQL
--- Supabase Dashboard > SQL Editor 에서 실행
+-- Sunraytec production fix: profiles signup + admin CMS writes
+-- Run in Supabase Dashboard > SQL Editor
 -- ============================================
 
--- 1. products 테이블
-CREATE TABLE IF NOT EXISTS public.products (
-  id text PRIMARY KEY,
-  name text NOT NULL,
-  category text NOT NULL,
-  product_line text NOT NULL,
-  installation_type text,
-  summary text,
-  detail_description text,
-  applications jsonb,
-  power_w integer,
-  size_mm text,
-  voltage text,
-  heating_area text,
-  procurement_id text,
-  thumbnail_image text,
-  detail_image text,
-  feature_bullets jsonb,
-  sort_order integer DEFAULT 0,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-
--- 2. site_content 테이블
-CREATE TABLE IF NOT EXISTS public.site_content (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  section_key text UNIQUE NOT NULL,
-  payload jsonb NOT NULL,
-  updated_at timestamptz DEFAULT now()
-);
-
--- 3. case_studies 테이블
-CREATE TABLE IF NOT EXISTS public.case_studies (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  title text NOT NULL,
-  category text,
-  location text,
-  summary text,
-  content text,
-  image_url text,
-  featured boolean DEFAULT false,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-
--- 4. inquiries 테이블
-CREATE TABLE IF NOT EXISTS public.inquiries (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text NOT NULL,
-  company text,
-  phone text,
-  email text,
-  project_type text,
-  space_size text,
-  message text,
-  status text DEFAULT 'new',
-  created_at timestamptz DEFAULT now()
-);
-
--- 5. profiles 테이블
+-- 1. profiles table for Auth users
 CREATE TABLE IF NOT EXISTS public.profiles (
   id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email text NOT NULL,
@@ -75,14 +16,9 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   approved_at timestamptz
 );
 
--- 6. RLS(Row Level Security) 정책
-ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.site_content ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.case_studies ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- 관리자 확인 함수
+-- Helper: admin check without recursive profiles RLS lookups.
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean
 LANGUAGE sql
@@ -98,7 +34,7 @@ AS $$
   );
 $$;
 
--- 회원가입 시 프로필 자동 생성
+-- Helper: create profile automatically when a user signs up.
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -139,62 +75,56 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- products: 누구나 읽기 가능
-CREATE POLICY "Anyone can read products"
-  ON public.products FOR SELECT
-  USING (true);
-
--- site_content: 누구나 읽기 가능
-CREATE POLICY "Anyone can read site_content"
-  ON public.site_content FOR SELECT
-  USING (true);
-
--- case_studies: 누구나 읽기 가능
-CREATE POLICY "Anyone can read case_studies"
-  ON public.case_studies FOR SELECT
-  USING (true);
-
--- inquiries: 누구나 삽입 가능 (견적 문의 폼)
-CREATE POLICY "Anyone can insert inquiries"
-  ON public.inquiries FOR INSERT
-  WITH CHECK (true);
-
--- profiles: 본인 또는 관리자만 조회/수정
+-- 2. profiles policies
+DROP POLICY IF EXISTS "Users can read own profile" ON public.profiles;
 CREATE POLICY "Users can read own profile"
   ON public.profiles FOR SELECT
   USING (auth.uid() = id OR public.is_admin());
 
+DROP POLICY IF EXISTS "Users can update own basic profile" ON public.profiles;
 CREATE POLICY "Users can update own basic profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id OR public.is_admin())
   WITH CHECK (auth.uid() = id OR public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can manage profiles" ON public.profiles;
 CREATE POLICY "Admins can manage profiles"
   ON public.profiles FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 
--- 관리자 CMS 쓰기 권한
+-- 3. Admin CMS write policies
+ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.site_content ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.case_studies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Admins can manage products" ON public.products;
 CREATE POLICY "Admins can manage products"
   ON public.products FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can manage site_content" ON public.site_content;
 CREATE POLICY "Admins can manage site_content"
   ON public.site_content FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can manage case_studies" ON public.case_studies;
 CREATE POLICY "Admins can manage case_studies"
   ON public.case_studies FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can read inquiries" ON public.inquiries;
 CREATE POLICY "Admins can read inquiries"
   ON public.inquiries FOR SELECT
   USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update inquiries" ON public.inquiries;
 CREATE POLICY "Admins can update inquiries"
   ON public.inquiries FOR UPDATE
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
+

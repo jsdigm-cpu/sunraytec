@@ -142,6 +142,7 @@
 | 우선순위 | 이슈 | 상태 |
 |---|---|---|
 | P1 | `/technology/principle` 복사난방 원리 페이지 신설 | 대기 |
+| P1 | `supabase_fix_auth_cms_policies.sql` 운영 DB 적용 | 대기 |
 | P1 | 제품 상세 이미지 업로드 및 URL 연결 | 파일 대기 |
 | P1 | 카탈로그/지명원 PDF Storage 업로드 및 다운로드 연결 | 파일 대기 |
 | P1 | 시공사례 상세 설명/추가 이미지 보강 | 데이터 대기 |

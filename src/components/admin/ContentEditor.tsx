@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { SiteContent } from '../../types/cms';
 
 interface Props {
   content: SiteContent;
   onChange: (content: SiteContent) => void;
-  onSave: () => void;
+  onSave: () => Promise<string | null>;
   lastSavedAt: string | null;
+  lastSaveError: string | null;
 }
 
 const FIELD_STYLE: CSSProperties = {
@@ -17,9 +19,17 @@ const FIELD_STYLE: CSSProperties = {
   background: '#fff',
 };
 
-export default function ContentEditor({ content, onChange, onSave, lastSavedAt }: Props) {
+export default function ContentEditor({ content, onChange, onSave, lastSavedAt, lastSaveError }: Props) {
+  const [notice, setNotice] = useState('');
+
   const updateHero = <K extends keyof SiteContent['hero']>(key: K, value: SiteContent['hero'][K]) => {
     onChange({ ...content, hero: { ...content.hero, [key]: value } });
+  };
+
+  const saveNow = async () => {
+    setNotice('저장 중입니다...');
+    const error = await onSave();
+    setNotice(error ? `저장 실패: ${error}` : '저장됐습니다. 새로고침/로그아웃 후에도 유지됩니다.');
   };
 
   return (
@@ -49,10 +59,16 @@ export default function ContentEditor({ content, onChange, onSave, lastSavedAt }
           {lastSavedAt
             ? `마지막 저장: ${new Date(lastSavedAt).toLocaleString('ko-KR')}`
             : '아직 저장 기록이 없습니다.'}
+          {lastSaveError && (
+            <>
+              <br />
+              <span style={{ color: '#DC2626', fontWeight: 700 }}>최근 DB 저장 실패: {lastSaveError}</span>
+            </>
+          )}
         </div>
         <button
           type="button"
-          onClick={onSave}
+          onClick={saveNow}
           style={{
             border: 'none',
             background: 'var(--red)',
@@ -67,6 +83,23 @@ export default function ContentEditor({ content, onChange, onSave, lastSavedAt }
           지금 저장
         </button>
       </div>
+
+      {notice && (
+        <div
+          style={{
+            marginBottom: '1rem',
+            padding: '0.75rem 0.9rem',
+            borderRadius: '10px',
+            background: notice.includes('실패') ? '#FEF2F2' : '#ECFDF5',
+            color: notice.includes('실패') ? '#B91C1C' : '#047857',
+            border: notice.includes('실패') ? '1px solid #FCA5A5' : '1px solid #A7F3D0',
+            fontSize: '0.86rem',
+            fontWeight: 700,
+          }}
+        >
+          {notice}
+        </div>
+      )}
 
       <div style={{ display: 'grid', gap: '0.9rem' }}>
         <div>

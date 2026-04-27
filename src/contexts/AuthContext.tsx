@@ -97,21 +97,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     meta: { full_name: string; company_name: string; phone: string }
   ): Promise<string | null> {
     if (!supabase) return '서버 연결 오류';
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: meta.full_name,
+          company_name: meta.company_name,
+          phone: meta.phone,
+          role: 'partner',
+          status: 'pending',
+        },
+      },
+    });
     if (error) return error.message;
-    if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email,
-        full_name: meta.full_name,
-        company_name: meta.company_name,
-        phone: meta.phone,
-        role: 'partner',
-        status: 'pending',
-      });
-
-      if (profileError) return `프로필 생성 실패: ${profileError.message}`;
-    }
     return null;
   }
 

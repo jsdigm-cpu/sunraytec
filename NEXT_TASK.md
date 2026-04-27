@@ -13,7 +13,18 @@
 
 ## 최우선
 
-### 1. `/technology/principle` 복사난방 원리 페이지 신설
+### 1. Supabase 운영 DB 정책 SQL 적용
+
+- 담당 후보: 사용자 또는 Supabase 관리자 권한이 있는 AI/도구
+- 목표: 회원가입 `profiles` 자동 생성과 Admin CMS 쓰기 권한 정상화
+- 실행 파일:
+  - `supabase_fix_auth_cms_policies.sql`
+- 완료 기준:
+  - Supabase Dashboard > SQL Editor에서 SQL 전체 실행 성공
+  - 신규 회원가입 시 `profiles` RLS 오류가 발생하지 않음
+  - Admin Hero 폰트/굵기/강조색 저장 후 로그아웃/재접속해도 유지됨
+
+### 2. `/technology/principle` 복사난방 원리 페이지 신설
 
 - 담당 후보: Codex 또는 Antigravity
 - 목표: 현재 `/coming-soon?section=solutions`로 연결된 복사난방 원리 메뉴를 실제 페이지로 전환
@@ -30,7 +41,7 @@
 
 ## 다음 우선순위
 
-### 2. 제품 상세 페이지 이미지 연결
+### 3. 제품 상세 페이지 이미지 연결
 
 - 담당 후보: Claude CLI
 - 전제: 사용자가 제품 이미지 파일 또는 URL 제공
@@ -40,7 +51,7 @@
   - `src/components/product/ProductGrid.tsx`
   - Supabase `products`
 
-### 3. 자료실 PDF 업로드 및 다운로드 연결
+### 4. 자료실 PDF 업로드 및 다운로드 연결
 
 - 담당 후보: Claude CLI
 - 전제: 사용자가 카탈로그/지명원/PDF 파일 제공
