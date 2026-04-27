@@ -13,34 +13,7 @@
 
 ## 최우선
 
-### 1. 관리자 업로드/정렬/CRUD 운영 DB 적용 및 웹 검증
-
-- 담당 후보: Codex 주도, Claude CLI 보조 가능
-- 목표: 2026-04-27 코드에 반영된 관리자 파일 업로드/정렬 구조를 운영 Supabase DB에 적용하고 실제 업로드를 확인
-- 코드 반영 완료:
-  - 제품 여러 장 이미지 업로드, 첫 이미지 썸네일/상세 대표 이미지 자동 사용
-  - 제품 목록 드래그앤드롭 및 위/아래 버튼 정렬, `sort_order` 저장
-  - 시공사례 이미지 파일 업로드와 대표 이미지 저장
-  - 자료실 관리 탭의 파일 업로드/수정/삭제/위아래 정렬
-  - `/resources/catalog`의 `resource_documents` 공개 자료 연동
-  - `product-images`, `case-images`, `resource-files` Storage 버킷 SQL 설계
-- 먼저 확인할 파일:
-  - `src/pages/AdminDashboardPage.tsx`
-  - `src/components/admin/ProductForm.tsx`
-  - `src/components/admin/ProductListEditor.tsx`
-  - `src/components/admin/CaseEditor.tsx`
-  - `src/components/admin/ResourceDocumentEditor.tsx`
-  - `src/pages/resources/CatalogPage.tsx`
-  - `src/app/App.tsx`
-  - `supabase_schema.sql`
-  - `supabase_storage_uploads_delta.sql`
-- 완료 기준:
-  - `supabase_storage_uploads_delta.sql` 신규 컬럼/테이블/Storage 버킷/RLS 정책 운영 DB 적용
-  - `/admin`에서 제품 이미지 업로드, 제품 정렬 저장, 시공사례 이미지 업로드, 자료실 파일 업로드 확인
-  - 사용자 화면이 관리자 지정 `sort_order`대로 노출됨
-  - `npm run lint`, `npm run build` 성공
-
-### 2. `/technology/principle` 복사난방 원리 페이지 신설
+### 1. `/technology/principle` 복사난방 원리 페이지 신설
 
 - 담당 후보: Codex 또는 Antigravity
 - 목표: 현재 `/coming-soon?section=solutions`로 연결된 복사난방 원리 메뉴를 실제 페이지로 전환
@@ -57,6 +30,24 @@
 
 ## 다음 우선순위
 
+### 2. 파트너 전용 자료실 관리 구조 통합
+
+- 담당 후보: Codex 주도
+- 목표: 현재 `/partner`가 조회하는 `partner_files`와 관리자 `자료실 관리(resource_documents)`의 관계를 정리
+- 현재 메모:
+  - 공개 자료실 `/resources/catalog`는 `resource_documents`와 연동 완료
+  - 파트너 포털 `/partner`는 아직 별도 `partner_files` 테이블을 조회 중
+  - 관리자 자료실에 `파트너 자료` 카테고리는 추가됐지만 파트너 포털과는 미연동
+- 관련 파일:
+  - `src/pages/partner/PartnerPortalPage.tsx`
+  - `src/components/admin/ResourceDocumentEditor.tsx`
+  - `src/pages/resources/CatalogPage.tsx`
+  - `supabase_schema.sql`
+- 완료 기준:
+  - 관리자에서 파트너 전용 자료 등록 가능
+  - 승인된 파트너가 `/partner`에서 해당 자료 다운로드 가능
+  - 공개 자료와 파트너 전용 자료 노출 범위가 분리됨
+
 ### 3. Supabase 운영 DB 정책 SQL 상태 최종 확인
 
 - 담당 후보: 사용자 또는 Supabase 관리자 권한이 있는 AI/도구
@@ -67,35 +58,37 @@
   - `supabase_member_profile_enhancements.sql`
 - 현재 메모:
   - `supabase_member_profile_enhancements.sql`은 2026-04-27 화면상 `Success. No rows returned` 확인됨
+  - `supabase_storage_uploads_delta.sql`은 2026-04-27 사용자 화면상 적용 성공 확인됨
 - 완료 기준:
   - 신규 회원가입, 이메일 인증, 관리자 회원 상세, 파트너 내 정보 수정, 로그인/자료실 방문 카운트 정상 확인
 
-### 4. 제품 상세 페이지 이미지 연결
+### 4. 제품 상세 페이지 자료 연결
 
 - 담당 후보: Claude CLI
-- 전제: 1번 업로드/Storage 설계 완료
-- 목표: 제품별 대표/상세 이미지가 사용자 제품 카드와 상세 페이지에 반영
+- 전제: 제품 이미지 업로드/갤러리 구조 완료
+- 목표: 제품별 카탈로그, 시방서, 인증서 등 관련 자료 다운로드 연결
 - 관련 파일:
   - `src/pages/products/ProductDetailPage.tsx`
   - `src/components/product/ProductGrid.tsx`
   - `src/components/ui/ExcellenceProductCard.tsx`
   - Supabase `products`
 
-### 5. 자료실 PDF 업로드 및 다운로드 연결
+### 5. 시공사례 상세 데이터 보강
 
 - 담당 후보: Claude CLI
-- 전제: 1번 업로드/Storage 설계 완료
-- 목표: Supabase Storage 파일 업로드 후 `CatalogPage` 다운로드 연결
+- 전제: 시공사례 이미지 업로드 구조 완료
+- 목표: 사례별 상세 설명, 대표/추가 이미지, 적용 제품, 지역/업종 데이터를 보강
 - 관련 파일:
-  - `src/pages/resources/CatalogPage.tsx`
-  - `CERT_INVENTORY.md`
+  - `src/components/admin/CaseEditor.tsx`
+  - `src/pages/CaseDetailPage.tsx`
+  - Supabase `case_studies`
 
 ---
 
 ## 장기 과제
 
 - 시공사례/제품/자료실 파일 업로드 구조 공통화
-- 관리자 목록 드래그앤드롭 순서 관리 공통 컴포넌트화
+- 관리자 목록 정렬 UI 공통 컴포넌트화
 - 시공사례 상세 설명과 추가 현장 사진 보강
 - 인증서/특허/시험성적서 파일 다운로드 연결
 - 파트너 전용 자료실 실자료 연결

@@ -14,6 +14,11 @@
 
 ## 이번 세션에서 확인한 내용
 
+- 2026-04-27 최종 확인: `supabase_storage_uploads_delta.sql` 운영 DB 적용 성공.
+- 2026-04-27 최종 확인: 관리자 자료실에서 한글 파일명 업로드 시 Storage key 오류가 있었고, 내부 저장 경로를 영문 안전 slug로 변환하도록 수정했습니다.
+- 2026-04-27 최종 확인: 공개 자료실 `/resources/catalog`는 `resource_documents` 공개 자료를 표시하고, 이미지 파일은 썸네일로 표시합니다.
+- 2026-04-27 최종 확인: 제품/시공사례/자료실 관리자 목록은 분류 필터, 작성일 표시, 위/아래 이동, 좌표 기반 드래그 정렬까지 배포 후 사용자 확인 완료.
+- 2026-04-27 최종 확인: HTML5 drag/drop 방식은 운영 화면에서 안정적으로 작동하지 않아 pointer 좌표 기반 정렬 방식으로 대체했습니다.
 - 2026-04-27 추가 확인: 웹 검토 중 회원가입에서 `profiles` RLS insert 오류가 발생했습니다.
 - 2026-04-27 추가 확인: Admin Hero 문구/폰트/굵기 변경이 현재 세션에서는 보이나 로그아웃/재접속 후 이전 상태로 돌아갔습니다.
 - 원인: `profiles` 생성과 `site_content` upsert가 Supabase RLS에 막혀 DB에 영구 저장되지 않았습니다.
@@ -50,16 +55,18 @@
   - 첫 번째 이미지를 썸네일/상세 대표 이미지로 자동 사용
   - 이미지 미리보기, 삭제, 위/아래 순서 변경 추가
 - `src/components/admin/ProductListEditor.tsx`
-  - 네이티브 드래그앤드롭과 위/아래 버튼으로 제품 노출 순서 변경
+  - 분류 필터, 작성일 표시, 위/아래 버튼, 좌표 기반 드래그 정렬로 제품 노출 순서 변경
   - `순서 저장` 버튼 추가
 - `src/components/admin/CaseEditor.tsx`
   - 시공사례 이미지 URL 입력을 Storage 파일 업로드 방식으로 전환
   - 첫 이미지가 `image_url` 대표 이미지로 저장되도록 보강
+  - 목록을 우측으로 배치하고 분류 필터, 작성일 표시, 좌표 기반 드래그 정렬 추가
 - `src/components/admin/Sidebar.tsx`, `src/components/admin/ResourceDocumentEditor.tsx`
   - 관리자 `자료실 관리` 탭 추가
-  - 자료 파일 업로드, 추가/수정/삭제, 공개 여부, 위/아래 정렬 구현
+  - 자료 파일 업로드, 추가/수정/삭제, 공개 여부, 위/아래 정렬, 좌표 기반 드래그 정렬 구현
 - `src/pages/resources/CatalogPage.tsx`
   - `resource_documents` 공개 자료를 Supabase에서 읽어 표시하고 파일 URL 다운로드 연결
+  - 이미지 파일은 카드에 썸네일 미리보기 표시
 - `src/pages/products/ProductDetailPage.tsx`
   - 제품 상세에서 다중 이미지 갤러리 표시
 - `supabase_schema.sql`
@@ -67,6 +74,7 @@
   - `product-images`, `case-images`, `resource-files` Storage 버킷 및 관리자 정책 추가
 - `supabase_storage_uploads_delta.sql`
   - Supabase SQL Editor에 바로 붙여넣을 수 있는 이번 변경분 전용 SQL 추가
+  - 2026-04-27 운영 DB 적용 성공 확인
 
 - `src/contexts/AuthContext.tsx`
   - 운영 콘솔 로그 정리
@@ -135,30 +143,19 @@
 
 ## 이번 세션에서 갱신한 문서
 
-- `SESSION_HANDOFF.md`: 관리자/회원가입 안정화 작업 내역 반영
-- `PROJECT_STATUS.md`: 관리자/인증 안정화 완료 내역 반영
+- `SESSION_HANDOFF.md`: 관리자 업로드/정렬/자료실 작업 내역 반영
+- `PROJECT_STATUS.md`: 관리자 업로드/정렬/자료실 완료 상태 반영
+- `MENU_STATUS.md`: 관리자 자료실/제품/시공사례 상태 반영
+- `NEXT_TASK.md`: 다음 작업을 복사난방 원리 페이지와 파트너 자료실 통합으로 정리
 
 ---
 
 ## 다음 AI가 바로 할 일
 
-1. 다음 작업은 `supabase_storage_uploads_delta.sql`의 신규 컬럼/테이블/Storage 버킷/정책을 운영 Supabase DB에 적용하는 것입니다.
-2. 운영 DB 적용 후 `/admin`에서 제품 이미지 업로드, 제품 순서 저장, 시공사례 이미지 업로드, 자료실 파일 업로드를 브라우저로 확인합니다.
-3. 시공사례 목록의 드래그 정렬 저장 UI는 아직 미구현입니다. DB 조회 기준은 `sort_order`로 바꿨으므로, 필요 시 제품 목록 UI를 공통화해 붙입니다.
-4. 먼저 다음 파일을 확인합니다.
-   - `src/pages/AdminDashboardPage.tsx`
-   - `src/components/admin/ProductForm.tsx`
-   - `src/components/admin/ProductListEditor.tsx`
-   - `src/components/admin/CaseEditor.tsx`
-   - `src/components/admin/ResourceDocumentEditor.tsx`
-   - `src/pages/resources/CatalogPage.tsx`
-   - `src/app/App.tsx`
-   - `supabase_schema.sql`
-   - `supabase_storage_uploads_delta.sql`
-5. 작업 완료 후 `MENU_STATUS.md`, `PROJECT_STATUS.md`, `SESSION_HANDOFF.md`, `NEXT_TASK.md`를 갱신하고 `npm run lint`, `npm run build`를 실행합니다.
-
-그 다음 작업:
-- `/technology/principle` 복사난방 원리 페이지 신설
+1. 다음 최우선 작업은 `/technology/principle` 복사난방 원리 페이지 신설입니다.
+2. 그 다음은 파트너 전용 자료실(`/partner`)과 관리자 `resource_documents` 구조 통합입니다.
+3. 작업 전 `NEXT_TASK.md`, `PROJECT_STATUS.md`, `MENU_STATUS.md`를 확인하고 코드 기준으로 판단합니다.
+4. 작업 완료 후 `npm run lint`, `npm run build`, 커밋, push까지 진행하고 배포된 화면 기준으로 검증합니다.
 
 검증 완료:
 - `npm run lint` 성공
@@ -166,18 +163,17 @@
 
 운영 DB 적용 참고:
 - `supabase_member_profile_enhancements.sql`은 2026-04-27 박이사님 화면에서 `Success. No rows returned` 확인됨
+- `supabase_storage_uploads_delta.sql`은 2026-04-27 운영 DB 적용 성공 확인됨
 - `supabase_fix_auth_cms_policies.sql`, `supabase_create_signup_requests_table.sql` 적용 상태는 다음 세션에서 필요 시 Table Editor/API 동작으로 재확인합니다.
 
 ---
 
 ## 남은 주요 대기 작업
 
-- 운영 Supabase DB에 Storage/자료실/이미지 컬럼 SQL 적용
-- 관리자 업로드/정렬/CRUD 실제 브라우저 업로드 검증
-- 시공사례 목록 드래그앤드롭 순서 저장 UI 보강
 - `/technology/principle` 실제 페이지 구현
-- 제품 이미지 업로드 후 상세 페이지 연결
-- 카탈로그/지명원 PDF 업로드 후 자료실 다운로드 연결
+- 파트너 전용 자료실과 관리자 자료실 관리 통합
+- 제품 상세 자료 다운로드 연결
+- 카탈로그/지명원 PDF 추가 업로드
 - 시공사례 상세 텍스트와 추가 사진 보강
 - 인증서/시험성적서 파일 업로드 및 다운로드 연결
 - Supabase 대시보드에서 `products` insert/update/delete RLS 정책 확인

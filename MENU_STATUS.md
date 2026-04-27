@@ -39,7 +39,7 @@
 | 제품 목록 | `/products` | 완료 | Supabase 제품 테이블 연동 |
 | 조달청 우수제품 | `/products/excellence` | 완료 | |
 | MAS 다수공급자 | `/products/mas` | 완료 | |
-| 제품 상세 페이지 | `/products/:productId` | 진행중 | UI 구현, 실제 이미지/자료 연결 대기 |
+| 제품 상세 페이지 | `/products/:productId` | 진행중 | 이미지 갤러리 연결, 상세자료 다운로드 연결 대기 |
 | 방폭·특수 제품 | `/coming-soon?section=special` | 대기중 | |
 | 개인용·욕실형 | `/coming-soon?section=products` | 대기중 | |
 | 스마트 제어 시스템 | `/coming-soon?section=products` | 대기중 | |
@@ -77,7 +77,7 @@
 | 파트너 승인 대기 | `/partner/pending` | 완료 | |
 | 난방 용량 계산기 | `/coming-soon?section=resources` | 대기중 | |
 | 에너지 ROI 계산기 | `/coming-soon?section=resources` | 대기중 | |
-| 카탈로그 다운로드 | `/resources/catalog` | 진행중 | `resource_documents` 공개 자료 연동, 실제 파일 업로드 확인 대기 |
+| 카탈로그 다운로드 | `/resources/catalog` | 진행중 | 공개 자료 DB 연동 및 다운로드 가능, 자료 보강 대기 |
 | 스펙·도면 CAD | `/coming-soon?section=resources` | 대기중 | |
 | 인증서·시험성적서 | `/about/certifications` | 진행중 | 페이지 구현, 파일 다운로드 대기 |
 | 동영상 자료 | `/coming-soon?section=resources` | 대기중 | |
@@ -99,10 +99,10 @@
 |---|---|:---:|---|
 | 로그인 | `/login` | 완료 | Supabase Auth |
 | 관리자 대시보드 | `/admin` | 완료 | 보호 라우트 |
-| 제품 관리 | `/admin` | 완료 | 추가/수정/삭제, 이미지 업로드, 노출 순서 저장 |
+| 제품 관리 | `/admin` | 완료 | 추가/수정/삭제, 이미지 업로드, 분류 필터, 작성일, 좌표 기반 정렬 |
 | Hero 텍스트 편집 | `/admin` | 완료 | `site_content` 일부 연동 |
 | 견적 문의 관리 | `/admin` | 완료 | |
 | 회원 관리 | `/admin` | 완료 | |
-| 시공사례 관리 | `/admin` | 완료 | 이미지 업로드 편집 구조 포함 |
-| 자료실 관리 | `/admin` | 진행중 | 파일 업로드/수정/삭제/정렬 구현, 운영 DB 적용 대기 |
+| 시공사례 관리 | `/admin` | 완료 | 이미지 업로드, 분류 필터, 작성일, 좌표 기반 정렬 |
+| 자료실 관리 | `/admin` | 완료 | 파일 업로드/수정/삭제/정렬, 공개 자료 연동 |
 | 홈 기타 영역 CMS | `/admin` | 대기중 | KPI 등 Hero 외 섹션 편집 |
