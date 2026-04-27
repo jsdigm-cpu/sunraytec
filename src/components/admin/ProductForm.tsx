@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type React from 'react';
 import type { Product } from '../../types/product';
 import { positiveNumber, required } from '../../utils/validators';
 
@@ -86,71 +87,98 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
         </button>
       </div>
       <div style={{ display: 'grid', gap: '0.6rem' }}>
-        <input placeholder="id" value={form.id} onChange={(e) => update('id', e.target.value)} disabled={Boolean(selectedProduct)} />
-        <input placeholder="모델명" value={form.name} onChange={(e) => update('name', e.target.value)} />
-        <input placeholder="카테고리" value={form.category} onChange={(e) => update('category', e.target.value)} />
+        <FormRow label="id" help="제품 상세 URL에 사용됩니다. 저장 후에는 변경할 수 없습니다.">
+          <input value={form.id} onChange={(e) => update('id', e.target.value)} disabled={Boolean(selectedProduct)} />
+        </FormRow>
+        <FormRow label="모델명">
+          <input value={form.name} onChange={(e) => update('name', e.target.value)} />
+        </FormRow>
+        <FormRow label="카테고리">
+          <input value={form.category} onChange={(e) => update('category', e.target.value)} />
+        </FormRow>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
-          <select value={form.productLine ?? 'excellent'} onChange={(e) => update('productLine', e.target.value as Product['productLine'])}>
-            <option value="excellent">우수제품</option>
-            <option value="mas">MAS</option>
-            <option value="personal">개인용/특수형</option>
-          </select>
-          <select value={form.installationType ?? 'embedded'} onChange={(e) => update('installationType', e.target.value as Product['installationType'])}>
-            <option value="embedded">매립형</option>
-            <option value="exposed">노출형</option>
-            <option value="wall-mounted">벽걸이형</option>
-            <option value="desk">책상형</option>
-          </select>
+          <FormRow label="제품 구분">
+            <select value={form.productLine ?? 'excellent'} onChange={(e) => update('productLine', e.target.value as Product['productLine'])}>
+              <option value="excellent">우수제품</option>
+              <option value="mas">MAS</option>
+              <option value="personal">개인용/특수형</option>
+            </select>
+          </FormRow>
+          <FormRow label="설치 방식">
+            <select value={form.installationType ?? 'embedded'} onChange={(e) => update('installationType', e.target.value as Product['installationType'])}>
+              <option value="embedded">매립형</option>
+              <option value="exposed">노출형</option>
+              <option value="wall-mounted">벽걸이형</option>
+              <option value="desk">책상형</option>
+            </select>
+          </FormRow>
         </div>
-        <input placeholder="조달 식별번호" value={form.procurementId ?? ''} onChange={(e) => update('procurementId', e.target.value)} />
-        <input placeholder="요약" value={form.summary} onChange={(e) => update('summary', e.target.value)} />
-        <textarea
-          placeholder="상세 설명"
-          value={form.detailDescription ?? ''}
-          onChange={(e) => update('detailDescription', e.target.value)}
-          rows={4}
-        />
-        <input
-          placeholder="적용 분야(쉼표 구분)"
-          value={form.applications.join(',')}
-          onChange={(e) => update('applications', e.target.value.split(',').map((v) => v.trim()))}
-        />
-        <input
-          placeholder="상세 포인트(쉼표 구분)"
-          value={(form.featureBullets ?? []).join(',')}
-          onChange={(e) => update('featureBullets', e.target.value.split(',').map((v) => v.trim()).filter(Boolean))}
-        />
-        <input
-          type="number"
-          placeholder="소비전력"
-          value={form.specs.powerW || ''}
-          onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, powerW: Number(e.target.value) } }))}
-        />
-        <input
-          placeholder="크기"
-          value={form.specs.sizeMm}
-          onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, sizeMm: e.target.value } }))}
-        />
-        <input
-          placeholder="전압"
-          value={form.specs.voltage}
-          onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, voltage: e.target.value } }))}
-        />
-        <input
-          placeholder="난방면적"
-          value={form.specs.heatingArea}
-          onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, heatingArea: e.target.value } }))}
-        />
-        <input
-          placeholder="썸네일 이미지 URL"
-          value={form.thumbnailImage ?? ''}
-          onChange={(e) => update('thumbnailImage', e.target.value)}
-        />
-        <input
-          placeholder="상세 이미지 URL"
-          value={form.detailImage ?? ''}
-          onChange={(e) => update('detailImage', e.target.value)}
-        />
+        <FormRow label="조달 식별번호">
+          <input value={form.procurementId ?? ''} onChange={(e) => update('procurementId', e.target.value)} />
+        </FormRow>
+        <FormRow label="요약">
+          <input value={form.summary} onChange={(e) => update('summary', e.target.value)} />
+        </FormRow>
+        <FormRow label="상세 설명">
+          <textarea
+            value={form.detailDescription ?? ''}
+            onChange={(e) => update('detailDescription', e.target.value)}
+            rows={4}
+          />
+        </FormRow>
+        <FormRow label="적용 분야" help="쉼표로 구분해 입력합니다. 예: 대형공장, 물류센터, 체육관">
+          <input
+            value={form.applications.join(',')}
+            onChange={(e) => update('applications', e.target.value.split(',').map((v) => v.trim()))}
+          />
+        </FormRow>
+        <FormRow label="상세 포인트" help="쉼표로 구분해 입력합니다. 제품 상세 페이지의 핵심 bullet로 표시됩니다.">
+          <input
+            value={(form.featureBullets ?? []).join(',')}
+            onChange={(e) => update('featureBullets', e.target.value.split(',').map((v) => v.trim()).filter(Boolean))}
+          />
+        </FormRow>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
+          <FormRow label="소비전력">
+            <input
+              type="number"
+              value={form.specs.powerW || ''}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, powerW: Number(e.target.value) } }))}
+            />
+          </FormRow>
+          <FormRow label="난방면적">
+            <input
+              value={form.specs.heatingArea}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, heatingArea: e.target.value } }))}
+            />
+          </FormRow>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
+          <FormRow label="크기">
+            <input
+              value={form.specs.sizeMm}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, sizeMm: e.target.value } }))}
+            />
+          </FormRow>
+          <FormRow label="전압">
+            <input
+              value={form.specs.voltage}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, voltage: e.target.value } }))}
+            />
+          </FormRow>
+        </div>
+        <FormRow label="썸네일 이미지 URL" help="임시 URL 입력 방식입니다. 다음 단계에서 파일 업로드 방식으로 전환 예정입니다.">
+          <input
+            value={form.thumbnailImage ?? ''}
+            onChange={(e) => update('thumbnailImage', e.target.value)}
+          />
+        </FormRow>
+        <FormRow label="상세 이미지 URL" help="임시 URL 입력 방식입니다. 다음 단계에서 여러 장 업로드 방식으로 전환 예정입니다.">
+          <input
+            value={form.detailImage ?? ''}
+            onChange={(e) => update('detailImage', e.target.value)}
+          />
+        </FormRow>
         {message && (
           <div style={{ fontSize: '0.82rem', color: message.includes('실패') || message.includes('확인') ? '#DC2626' : '#047857', fontWeight: 700 }}>
             {message}
@@ -160,6 +188,22 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
           {saving ? '저장 중...' : '저장'}
         </button>
       </div>
+    </div>
+  );
+}
+
+function FormRow({ label, help, children }: { label: string; help?: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label style={{ display: 'block', marginBottom: '0.35rem', color: '#374151', fontSize: '0.8rem', fontWeight: 800 }}>
+        {label}
+      </label>
+      {children}
+      {help && (
+        <p style={{ margin: '0.25rem 0 0', color: '#9CA3AF', fontSize: '0.72rem', lineHeight: 1.5 }}>
+          {help}
+        </p>
+      )}
     </div>
   );
 }
