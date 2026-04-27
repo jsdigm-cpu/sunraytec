@@ -21,6 +21,7 @@ const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
 // 인증
 const LoginPage            = lazy(() => import('../pages/auth/LoginPage'));
 const SignupPage            = lazy(() => import('../pages/auth/SignupPage'));
+const SignupVerifiedPage    = lazy(() => import('../pages/auth/SignupVerifiedPage'));
 // 파트너 전용
 const PartnerPortalPage    = lazy(() => import('../pages/partner/PartnerPortalPage'));
 const PartnerPendingPage   = lazy(() => import('../pages/partner/PartnerPendingPage'));
@@ -87,4 +88,5 @@ export const router = createBrowserRouter([
   // 인증 페이지 (App 레이아웃 밖 — Header/Footer 없음)
   { path: '/login',  element: <S><LoginPage /></S> },
   { path: '/signup', element: <S><SignupPage /></S> },
+  { path: '/signup/verified', element: <S><SignupVerifiedPage /></S> },
 ]);

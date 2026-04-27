@@ -12,6 +12,13 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [loginAttempted, setLoginAttempted] = useState(false);
+  const isVerifiedRedirect = searchParams.get('verified') === '1';
+
+  useEffect(() => {
+    if (isVerifiedRedirect) {
+      navigate('/signup/verified', { replace: true });
+    }
+  }, [isVerifiedRedirect, navigate]);
 
   // profile이 완전히 로드된 후 역할에 맞는 페이지로 이동
   useEffect(() => {
