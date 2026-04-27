@@ -8,7 +8,46 @@
       "mcp__kapture__list_tabs",
       "mcp__kapture__new_tab",
       "WebFetch(domain:www.sunraytec.co.kr)",
-      "mcp__claude_ai_Supabase__apply_migration"
+      "mcp__claude_ai_Supabase__apply_migration",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run dev)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(git restore:*)",
+      "Bash(git stash:*)",
+      "Bash(git show:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/user/sunraytec && if [ -d node_modules ]; then npm run lint && npm run build; else echo '{\"systemMessage\":\"Stop hook skipped: run npm install first\"}'; fi",
+            "timeout": 300,
+            "statusMessage": "Verifying lint + build"
+          }
+        ]
+      }
     ]
   }
 }
