@@ -69,10 +69,18 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   full_name text,
   company_name text,
   phone text,
+  organization text,
+  position text,
+  interest_area text,
+  login_count integer NOT NULL DEFAULT 0,
+  last_login_at timestamptz,
+  portal_visit_count integer NOT NULL DEFAULT 0,
+  last_portal_visited_at timestamptz,
   role text NOT NULL DEFAULT 'partner' CHECK (role IN ('admin', 'partner')),
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at timestamptz DEFAULT now(),
-  approved_at timestamptz
+  approved_at timestamptz,
+  updated_at timestamptz DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
@@ -82,6 +90,9 @@ CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
   full_name text NOT NULL,
   company_name text NOT NULL,
   phone text NOT NULL,
+  organization text,
+  position text,
+  interest_area text,
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
@@ -128,6 +139,9 @@ BEGIN
     full_name,
     company_name,
     phone,
+    organization,
+    position,
+    interest_area,
     role,
     status
   )
@@ -137,6 +151,9 @@ BEGIN
     NULLIF(NEW.raw_user_meta_data->>'full_name', ''),
     NULLIF(NEW.raw_user_meta_data->>'company_name', ''),
     NULLIF(NEW.raw_user_meta_data->>'phone', ''),
+    NULLIF(NEW.raw_user_meta_data->>'organization', ''),
+    NULLIF(NEW.raw_user_meta_data->>'position', ''),
+    NULLIF(NEW.raw_user_meta_data->>'interest_area', ''),
     COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'partner'),
     COALESCE(NULLIF(NEW.raw_user_meta_data->>'status', ''), 'pending')
   )
@@ -144,7 +161,11 @@ BEGIN
     email = EXCLUDED.email,
     full_name = COALESCE(public.profiles.full_name, EXCLUDED.full_name),
     company_name = COALESCE(public.profiles.company_name, EXCLUDED.company_name),
-    phone = COALESCE(public.profiles.phone, EXCLUDED.phone);
+    phone = COALESCE(public.profiles.phone, EXCLUDED.phone),
+    organization = COALESCE(public.profiles.organization, EXCLUDED.organization),
+    position = COALESCE(public.profiles.position, EXCLUDED.position),
+    interest_area = COALESCE(public.profiles.interest_area, EXCLUDED.interest_area),
+    updated_at = now();
 
   RETURN NEW;
 END;
@@ -177,6 +198,66 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.admin_delete_auth_user(uuid) TO authenticated;
 
+CREATE OR REPLACE FUNCTION public.track_profile_login()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  UPDATE public.profiles
+  SET login_count = COALESCE(login_count, 0) + 1,
+      last_login_at = now(),
+      updated_at = now()
+  WHERE id = auth.uid();
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.track_partner_portal_visit()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  UPDATE public.profiles
+  SET portal_visit_count = COALESCE(portal_visit_count, 0) + 1,
+      last_portal_visited_at = now(),
+      updated_at = now()
+  WHERE id = auth.uid();
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.update_own_partner_profile(
+  new_full_name text,
+  new_company_name text,
+  new_phone text,
+  new_organization text,
+  new_position text,
+  new_interest_area text
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  UPDATE public.profiles
+  SET full_name = NULLIF(new_full_name, ''),
+      company_name = NULLIF(new_company_name, ''),
+      phone = NULLIF(new_phone, ''),
+      organization = NULLIF(new_organization, ''),
+      position = NULLIF(new_position, ''),
+      interest_area = NULLIF(new_interest_area, ''),
+      updated_at = now()
+  WHERE id = auth.uid();
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.track_profile_login() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.track_partner_portal_visit() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.update_own_partner_profile(text, text, text, text, text, text) TO authenticated;
+
 -- 기존 Auth 사용자 중 profiles가 없는 사용자 복구
 INSERT INTO public.profiles (
   id,
@@ -184,6 +265,9 @@ INSERT INTO public.profiles (
   full_name,
   company_name,
   phone,
+  organization,
+  position,
+  interest_area,
   role,
   status,
   created_at
@@ -194,6 +278,9 @@ SELECT
   NULLIF(u.raw_user_meta_data->>'full_name', ''),
   NULLIF(u.raw_user_meta_data->>'company_name', ''),
   NULLIF(u.raw_user_meta_data->>'phone', ''),
+  NULLIF(u.raw_user_meta_data->>'organization', ''),
+  NULLIF(u.raw_user_meta_data->>'position', ''),
+  NULLIF(u.raw_user_meta_data->>'interest_area', ''),
   COALESCE(NULLIF(u.raw_user_meta_data->>'role', ''), 'partner'),
   COALESCE(NULLIF(u.raw_user_meta_data->>'status', ''), 'pending'),
   COALESCE(u.created_at, now())

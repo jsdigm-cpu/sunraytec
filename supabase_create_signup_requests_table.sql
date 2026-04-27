@@ -10,10 +10,19 @@ CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
   full_name text NOT NULL,
   company_name text NOT NULL,
   phone text NOT NULL,
+  organization text,
+  position text,
+  interest_area text,
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
+
+ALTER TABLE public.partner_signup_requests
+  ADD COLUMN IF NOT EXISTS organization text,
+  ADD COLUMN IF NOT EXISTS position text,
+  ADD COLUMN IF NOT EXISTS interest_area text,
+  ADD COLUMN IF NOT EXISTS updated_at timestamptz DEFAULT now();
 
 ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
 
@@ -51,4 +60,3 @@ CREATE POLICY "Admins can manage signup requests"
   WITH CHECK (public.is_admin());
 
 NOTIFY pgrst, 'reload schema';
-

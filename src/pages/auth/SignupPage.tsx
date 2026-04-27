@@ -4,9 +4,20 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 
+const INTEREST_OPTIONS = [
+  '공공기관 조달/나라장터',
+  '교육시설 난방',
+  '산업/물류 현장',
+  '국방/특수시설',
+  '방폭/위험물 시설',
+  '전기요금/에너지 절감',
+  '제품 견적/대리점 협력',
+  '기타 상담',
+];
+
 export default function SignupPage() {
   const { signUp } = useAuth();
-  const [form, setForm] = useState({ email: '', password: '', password2: '', full_name: '', company_name: '', phone: '' });
+  const [form, setForm] = useState({ email: '', password: '', password2: '', full_name: '', company_name: '', phone: '', organization: '', position: '', interest_area: INTEREST_OPTIONS[0] });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -27,6 +38,9 @@ export default function SignupPage() {
       full_name: form.full_name.trim(),
       company_name: form.company_name.trim(),
       phone: form.phone.trim(),
+      organization: form.organization.trim(),
+      position: form.position.trim(),
+      interest_area: form.interest_area,
     });
     setLoading(false);
     if (err) { setError('가입 오류: ' + err); return; }
@@ -71,8 +85,26 @@ export default function SignupPage() {
             <Row label="회사명">
               <input style={inputStyle} required placeholder="(주)협력업체" value={form.company_name} onChange={set('company_name')} />
             </Row>
+            <Row label="조직(부서명)">
+              <input style={inputStyle} placeholder="예: 시설관리팀, 조달영업팀" value={form.organization} onChange={set('organization')} />
+            </Row>
+            <Row label="직책(직위)">
+              <input style={inputStyle} placeholder="예: 팀장, 대리, 대표" value={form.position} onChange={set('position')} />
+            </Row>
             <Row label="연락처">
               <input style={inputStyle} required placeholder="010-0000-0000" value={form.phone} onChange={set('phone')} />
+            </Row>
+            <Row label="관심 사항">
+              <select
+                style={inputStyle}
+                required
+                value={form.interest_area}
+                onChange={(e) => setForm((f) => ({ ...f, interest_area: e.target.value }))}
+              >
+                {INTEREST_OPTIONS.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
             </Row>
             <Row label="이메일 (로그인 ID)">
               <input style={inputStyle} type="email" required placeholder="example@company.com" value={form.email} onChange={set('email')} />

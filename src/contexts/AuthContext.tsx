@@ -9,6 +9,13 @@ interface Profile {
   full_name: string | null;
   company_name: string | null;
   phone: string | null;
+  organization: string | null;
+  position: string | null;
+  interest_area: string | null;
+  login_count: number | null;
+  last_login_at: string | null;
+  portal_visit_count: number | null;
+  last_portal_visited_at: string | null;
   role: 'admin' | 'partner';
   status: 'pending' | 'approved' | 'rejected';
 }
@@ -21,7 +28,7 @@ interface AuthContextValue {
   isAdmin: boolean;
   isApprovedPartner: boolean;
   signIn: (email: string, password: string) => Promise<string | null>;
-  signUp: (email: string, password: string, meta: { full_name: string; company_name: string; phone: string }) => Promise<string | null>;
+  signUp: (email: string, password: string, meta: { full_name: string; company_name: string; phone: string; organization: string; position: string; interest_area: string }) => Promise<string | null>;
   signOut: () => Promise<void>;
 }
 
@@ -88,13 +95,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function signIn(email: string, password: string): Promise<string | null> {
     if (!supabase) return '서버 연결 오류';
     const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!error) supabase.rpc('track_profile_login').then(({ error: rpcError }) => {
+      if (rpcError) console.warn('[Auth] track_profile_login failed:', rpcError.message);
+    });
     return error ? error.message : null;
   }
 
   async function signUp(
     email: string,
     password: string,
-    meta: { full_name: string; company_name: string; phone: string }
+    meta: { full_name: string; company_name: string; phone: string; organization: string; position: string; interest_area: string }
   ): Promise<string | null> {
     if (!supabase) return '서버 연결 오류';
     const { data, error } = await supabase.auth.signUp({
@@ -106,6 +116,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           full_name: meta.full_name,
           company_name: meta.company_name,
           phone: meta.phone,
+          organization: meta.organization,
+          position: meta.position,
+          interest_area: meta.interest_area,
           role: 'partner',
           status: 'pending',
         },
@@ -117,14 +130,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return '이미 가입된 이메일입니다. 기존 계정으로 로그인하거나 비밀번호 재설정을 이용해 주세요.';
     }
 
-    const { error: requestError } = await supabase.from('partner_signup_requests').insert({
-        auth_user_id: data.user?.id ?? null,
-        email,
-        full_name: meta.full_name,
-        company_name: meta.company_name,
-        phone: meta.phone,
-        status: 'pending',
+    const signupRequest = {
+      auth_user_id: data.user?.id ?? null,
+      email,
+      full_name: meta.full_name,
+      company_name: meta.company_name,
+      phone: meta.phone,
+      organization: meta.organization,
+      position: meta.position,
+      interest_area: meta.interest_area,
+      status: 'pending',
+    };
+    let { error: requestError } = await supabase.from('partner_signup_requests').insert(signupRequest);
+
+    if (requestError?.code === 'PGRST204' || requestError?.message.includes('schema cache')) {
+      const { error: fallbackError } = await supabase.from('partner_signup_requests').insert({
+        auth_user_id: signupRequest.auth_user_id,
+        email: signupRequest.email,
+        full_name: signupRequest.full_name,
+        company_name: signupRequest.company_name,
+        phone: signupRequest.phone,
+        status: signupRequest.status,
       });
+      if (!fallbackError) return null;
+      requestError = fallbackError;
+    }
 
     if (requestError) {
       if (requestError.code === '23505') {

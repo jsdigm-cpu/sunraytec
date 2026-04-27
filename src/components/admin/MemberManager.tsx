@@ -8,6 +8,13 @@ interface Profile {
   full_name: string;
   company_name: string;
   phone: string;
+  organization: string | null;
+  position: string | null;
+  interest_area: string | null;
+  login_count: number | null;
+  last_login_at: string | null;
+  portal_visit_count: number | null;
+  last_portal_visited_at: string | null;
   role: 'admin' | 'partner';
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
@@ -21,6 +28,9 @@ interface SignupRequest {
   full_name: string;
   company_name: string;
   phone: string;
+  organization: string | null;
+  position: string | null;
+  interest_area: string | null;
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
 }
@@ -38,6 +48,7 @@ const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }>
 export default function MemberManager() {
   const [members, setMembers] = useState<Profile[]>([]);
   const [requests, setRequests] = useState<SignupRequest[]>([]);
+  const [selectedRow, setSelectedRow] = useState<MemberRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [saving, setSaving] = useState<string | null>(null);
@@ -74,6 +85,15 @@ export default function MemberManager() {
     }
     if (profileData) setMembers(profileData as Profile[]);
     if (requestData) setRequests(requestData as SignupRequest[]);
+    setSelectedRow((current) => {
+      if (!current) return null;
+      if (current.kind === 'profile') {
+        const next = (profileData as Profile[] | null)?.find((item) => item.id === current.item.id);
+        return next ? { kind: 'profile', item: next } : null;
+      }
+      const next = (requestData as SignupRequest[] | null)?.find((item) => item.id === current.item.id);
+      return next ? { kind: 'request', item: next } : null;
+    });
     setLoading(false);
   }
 
@@ -190,6 +210,9 @@ export default function MemberManager() {
   });
   const filtered = filter === 'all' ? rows : rows.filter((row) => row.item.status === filter);
   const pendingCount = rows.filter((row) => row.item.status === 'pending').length;
+  const formatDateTime = (value?: string | null) => value ? new Date(value).toLocaleString('ko-KR') : '-';
+  const selected = selectedRow?.item ?? null;
+  const selectedProfile = selectedRow?.kind === 'profile' ? selectedRow.item : null;
 
   return (
     <div>
@@ -234,104 +257,129 @@ export default function MemberManager() {
       ) : filtered.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px', color: '#9CA3AF', fontSize: '0.9rem' }}>해당 상태의 회원이 없습니다.</div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {filtered.map((row) => {
-            const member = row.item;
-            const st = STATUS_LABEL[member.status];
-            const profile = row.kind === 'profile' ? row.item : null;
-            return (
-              <div
-                key={`${row.kind}-${member.id}`}
-                style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '10px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}
-              >
-                {/* 상태 배지 */}
-                <span style={{ flexShrink: 0, fontSize: '11px', fontWeight: 700, color: st.color, background: st.bg, padding: '3px 10px', borderRadius: '999px' }}>
-                  {st.label}
-                </span>
+        <div style={{ display: 'grid', gridTemplateColumns: selectedRow ? 'minmax(0, 1fr) 360px' : '1fr', gap: '16px', alignItems: 'start' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {filtered.map((row) => {
+              const member = row.item;
+              const st = STATUS_LABEL[member.status];
+              const profile = row.kind === 'profile' ? row.item : null;
+              const isSelected = selectedRow?.kind === row.kind && selectedRow.item.id === member.id;
+              return (
+                <div
+                  key={`${row.kind}-${member.id}`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedRow(row)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') setSelectedRow(row); }}
+                  style={{ background: '#fff', border: isSelected ? '2px solid var(--navy)' : '1px solid #E5E7EB', borderRadius: '10px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer' }}
+                >
+                  <span style={{ flexShrink: 0, fontSize: '11px', fontWeight: 700, color: st.color, background: st.bg, padding: '3px 10px', borderRadius: '999px' }}>
+                    {st.label}
+                  </span>
 
-                {/* 정보 */}
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1F2937', marginBottom: '2px' }}>
-                    {member.company_name} · {member.full_name}
-                    {row.kind === 'request' && (
-                      <span style={{ marginLeft: '8px', fontSize: '11px', color: '#92400E', background: '#FEF3C7', padding: '2px 7px', borderRadius: '999px' }}>
-                        접수 대장
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1F2937', marginBottom: '2px' }}>
+                      {member.company_name} · {member.full_name}
+                      {row.kind === 'request' && (
+                        <span style={{ marginLeft: '8px', fontSize: '11px', color: '#92400E', background: '#FEF3C7', padding: '2px 7px', borderRadius: '999px' }}>
+                          접수 대장
+                        </span>
+                      )}
+                    </p>
+                    <p style={{ fontSize: '0.78rem', color: '#6B7280' }}>
+                      {member.email} · {member.phone}
+                    </p>
+                    <p style={{ fontSize: '0.72rem', color: '#9CA3AF', marginTop: '2px' }}>
+                      신청: {new Date(member.created_at).toLocaleDateString('ko-KR')}
+                      {member.interest_area && ` · 관심: ${member.interest_area}`}
+                      {profile?.approved_at && ` · 승인: ${new Date(profile.approved_at).toLocaleDateString('ko-KR')}`}
+                      {profile && ` · 로그인 ${profile.login_count ?? 0}회 · 자료실 ${profile.portal_visit_count ?? 0}회`}
+                      {row.kind === 'request' && ' · Auth/profile 생성 확인 필요'}
+                    </p>
+                  </div>
+
+                  {profile && profile.status === 'pending' && (
+                    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+                      <button onClick={() => updateStatus(profile, 'approved')} disabled={saving === profile.id} style={{ padding: '7px 16px', background: '#059669', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
+                        ✓ 승인
+                      </button>
+                      <button onClick={() => updateStatus(profile, 'rejected')} disabled={saving === profile.id} style={{ padding: '7px 16px', background: '#EF4444', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
+                        ✕ 거절
+                      </button>
+                    </div>
+                  )}
+                  {row.kind === 'request' && (
+                    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+                      <span style={{ fontSize: '0.78rem', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', padding: '6px 10px', borderRadius: '7px' }}>
+                        이메일 인증/프로필 대기
                       </span>
-                    )}
-                  </p>
-                  <p style={{ fontSize: '0.78rem', color: '#6B7280' }}>
-                    {member.email} · {member.phone}
-                  </p>
-                  <p style={{ fontSize: '0.72rem', color: '#9CA3AF', marginTop: '2px' }}>
-                    신청: {new Date(member.created_at).toLocaleDateString('ko-KR')}
-                    {profile?.approved_at && ` · 승인: ${new Date(profile.approved_at).toLocaleDateString('ko-KR')}`}
-                    {row.kind === 'request' && ' · Auth/profile 생성 확인 필요'}
-                  </p>
+                      <button onClick={() => deleteSignupRequest(row.item)} disabled={saving === row.item.id} style={{ padding: '6px 12px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}>
+                        접수 삭제
+                      </button>
+                    </div>
+                  )}
+                  {profile && profile.status === 'approved' && (
+                    <button onClick={(e) => { e.stopPropagation(); updateStatus(profile, 'rejected'); }} style={{ padding: '6px 14px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}>
+                      승인 취소
+                    </button>
+                  )}
+                  {profile && profile.status === 'rejected' && (
+                    <button onClick={(e) => { e.stopPropagation(); updateStatus(profile, 'approved'); }} style={{ padding: '6px 14px', background: 'none', border: '1px solid #6EE7B7', color: '#059669', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}>
+                      재승인
+                    </button>
+                  )}
+                  {profile && profile.role !== 'admin' && (
+                    <button onClick={(e) => { e.stopPropagation(); deleteProfile(profile); }} disabled={saving === profile.id} style={{ padding: '6px 12px', background: '#FFF1F2', border: '1px solid #FDA4AF', color: '#BE123C', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}>
+                      탈퇴/삭제
+                    </button>
+                  )}
                 </div>
+              );
+            })}
+          </div>
 
-                {/* 액션 버튼 */}
-                {profile && profile.status === 'pending' && (
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <button
-                      onClick={() => updateStatus(profile, 'approved')}
-                      disabled={saving === profile.id}
-                      style={{ padding: '7px 16px', background: '#059669', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
-                    >
-                      ✓ 승인
-                    </button>
-                    <button
-                      onClick={() => updateStatus(profile, 'rejected')}
-                      disabled={saving === profile.id}
-                      style={{ padding: '7px 16px', background: '#EF4444', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
-                    >
-                      ✕ 거절
-                    </button>
-                  </div>
-                )}
-                {row.kind === 'request' && (
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <span style={{ fontSize: '0.78rem', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', padding: '6px 10px', borderRadius: '7px' }}>
-                      이메일 인증/프로필 대기
-                    </span>
-                    <button
-                      onClick={() => deleteSignupRequest(row.item)}
-                      disabled={saving === row.item.id}
-                      style={{ padding: '6px 12px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
-                    >
-                      접수 삭제
-                    </button>
-                  </div>
-                )}
-                {profile && profile.status === 'approved' && (
-                  <button
-                    onClick={() => updateStatus(profile, 'rejected')}
-                    style={{ padding: '6px 14px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
-                  >
-                    승인 취소
-                  </button>
-                )}
-                {profile && profile.status === 'rejected' && (
-                  <button
-                    onClick={() => updateStatus(profile, 'approved')}
-                    style={{ padding: '6px 14px', background: 'none', border: '1px solid #6EE7B7', color: '#059669', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
-                  >
-                    재승인
-                  </button>
-                )}
-                {profile && profile.role !== 'admin' && (
-                  <button
-                    onClick={() => deleteProfile(profile)}
-                    disabled={saving === profile.id}
-                    style={{ padding: '6px 12px', background: '#FFF1F2', border: '1px solid #FDA4AF', color: '#BE123C', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
-                  >
-                    탈퇴/삭제
-                  </button>
+          {selected && (
+            <aside style={{ position: 'sticky', top: '92px', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '12px', padding: '18px', boxShadow: '0 8px 24px rgba(15,34,65,0.08)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'start', marginBottom: '14px' }}>
+                <div>
+                  <p style={{ fontSize: '0.76rem', color: '#6B7280', marginBottom: '4px' }}>{selectedRow?.kind === 'profile' ? '회원 상세' : '가입 신청 상세'}</p>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F2241', margin: 0 }}>{selected.company_name}</h3>
+                </div>
+                <button onClick={() => setSelectedRow(null)} style={{ border: 'none', background: '#F3F4F6', borderRadius: '7px', padding: '5px 8px', cursor: 'pointer', color: '#4B5563' }}>닫기</button>
+              </div>
+
+              <div style={{ display: 'grid', gap: '9px', fontSize: '0.82rem' }}>
+                <Detail label="상태" value={STATUS_LABEL[selected.status].label} />
+                <Detail label="담당자" value={selected.full_name} />
+                <Detail label="이메일" value={selected.email} />
+                <Detail label="연락처" value={selected.phone} />
+                <Detail label="조직(부서)" value={selected.organization} />
+                <Detail label="직책(직위)" value={selected.position} />
+                <Detail label="관심 사항" value={selected.interest_area} />
+                <Detail label="신청일" value={formatDateTime(selected.created_at)} />
+                {selectedProfile && (
+                  <>
+                    <Detail label="승인일" value={formatDateTime(selectedProfile.approved_at)} />
+                    <Detail label="로그인 횟수" value={`${selectedProfile.login_count ?? 0}회`} />
+                    <Detail label="마지막 로그인" value={formatDateTime(selectedProfile.last_login_at)} />
+                    <Detail label="자료실 방문" value={`${selectedProfile.portal_visit_count ?? 0}회`} />
+                    <Detail label="마지막 자료실 방문" value={formatDateTime(selectedProfile.last_portal_visited_at)} />
+                  </>
                 )}
               </div>
-            );
-          })}
+            </aside>
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+function Detail({ label, value }: { label: string; value?: string | number | null }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '104px minmax(0, 1fr)', gap: '8px', borderBottom: '1px solid #F3F4F6', paddingBottom: '8px' }}>
+      <span style={{ color: '#6B7280', fontWeight: 700 }}>{label}</span>
+      <span style={{ color: '#111827', wordBreak: 'break-word' }}>{value || '-'}</span>
     </div>
   );
 }
