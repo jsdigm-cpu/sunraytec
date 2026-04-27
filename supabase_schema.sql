@@ -75,12 +75,25 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   approved_at timestamptz
 );
 
+CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  auth_user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
+  email text UNIQUE NOT NULL,
+  full_name text NOT NULL,
+  company_name text NOT NULL,
+  phone text NOT NULL,
+  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
 -- 6. RLS(Row Level Security) 정책
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.case_studies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
 
 -- 관리자 확인 함수
 CREATE OR REPLACE FUNCTION public.is_admin()
@@ -191,6 +204,19 @@ CREATE POLICY "Users can read own profile"
 
 CREATE POLICY "Admins can manage profiles"
   ON public.profiles FOR ALL
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Anyone can create signup requests"
+  ON public.partner_signup_requests FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Admins can read signup requests"
+  ON public.partner_signup_requests FOR SELECT
+  USING (public.is_admin());
+
+CREATE POLICY "Admins can manage signup requests"
+  ON public.partner_signup_requests FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 

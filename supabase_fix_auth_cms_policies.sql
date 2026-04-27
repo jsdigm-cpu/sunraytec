@@ -18,6 +18,21 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+-- Signup request ledger: keeps applications visible even before email confirmation/profile sync.
+CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  auth_user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
+  email text UNIQUE NOT NULL,
+  full_name text NOT NULL,
+  company_name text NOT NULL,
+  phone text NOT NULL,
+  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
+
 -- Helper: admin check without recursive profiles RLS lookups.
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean
@@ -110,6 +125,23 @@ DROP POLICY IF EXISTS "Users can update own basic profile" ON public.profiles;
 DROP POLICY IF EXISTS "Admins can manage profiles" ON public.profiles;
 CREATE POLICY "Admins can manage profiles"
   ON public.profiles FOR ALL
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+DROP POLICY IF EXISTS "Anyone can create signup requests" ON public.partner_signup_requests;
+CREATE POLICY "Anyone can create signup requests"
+  ON public.partner_signup_requests FOR INSERT
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone can update own signup request by email" ON public.partner_signup_requests;
+DROP POLICY IF EXISTS "Admins can read signup requests" ON public.partner_signup_requests;
+CREATE POLICY "Admins can read signup requests"
+  ON public.partner_signup_requests FOR SELECT
+  USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admins can manage signup requests" ON public.partner_signup_requests;
+CREATE POLICY "Admins can manage signup requests"
+  ON public.partner_signup_requests FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
 

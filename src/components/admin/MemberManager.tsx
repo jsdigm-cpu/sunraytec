@@ -14,6 +14,21 @@ interface Profile {
   approved_at: string | null;
 }
 
+interface SignupRequest {
+  id: string;
+  auth_user_id: string | null;
+  email: string;
+  full_name: string;
+  company_name: string;
+  phone: string;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+}
+
+type MemberRow =
+  | { kind: 'profile'; item: Profile }
+  | { kind: 'request'; item: SignupRequest };
+
 const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }> = {
   pending:  { label: '대기',   color: '#92400E', bg: '#FEF3C7' },
   approved: { label: '승인',   color: '#065F46', bg: '#D1FAE5' },
@@ -22,6 +37,7 @@ const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }>
 
 export default function MemberManager() {
   const [members, setMembers] = useState<Profile[]>([]);
+  const [requests, setRequests] = useState<SignupRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [saving, setSaving] = useState<string | null>(null);
@@ -32,12 +48,21 @@ export default function MemberManager() {
       setLoading(false);
       return;
     }
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) setNotice(`회원 목록을 불러오지 못했습니다: ${error.message}`);
-    if (data) setMembers(data as Profile[]);
+    const [{ data: profileData, error: profileError }, { data: requestData, error: requestError }] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('partner_signup_requests')
+        .select('*')
+        .order('created_at', { ascending: false }),
+    ]);
+
+    if (profileError) setNotice(`회원 목록을 불러오지 못했습니다: ${profileError.message}`);
+    if (requestError) setNotice(`가입 신청 목록을 불러오지 못했습니다: ${requestError.message}`);
+    if (profileData) setMembers(profileData as Profile[]);
+    if (requestData) setRequests(requestData as SignupRequest[]);
     setLoading(false);
   }
 
@@ -95,8 +120,20 @@ export default function MemberManager() {
     load();
   }
 
-  const filtered = filter === 'all' ? members : members.filter((m) => m.status === filter);
-  const pendingCount = members.filter((m) => m.status === 'pending').length;
+  const memberEmails = new Set(members.map((m) => m.email.toLowerCase()));
+  const requestOnlyRows: MemberRow[] = requests
+    .filter((request) => !memberEmails.has(request.email.toLowerCase()))
+    .map((request) => ({ kind: 'request', item: request }));
+  const rows: MemberRow[] = [
+    ...members.map((member) => ({ kind: 'profile' as const, item: member })),
+    ...requestOnlyRows,
+  ].sort((a, b) => {
+    const aDate = new Date(a.item.created_at).getTime();
+    const bDate = new Date(b.item.created_at).getTime();
+    return bDate - aDate;
+  });
+  const filtered = filter === 'all' ? rows : rows.filter((row) => row.item.status === filter);
+  const pendingCount = rows.filter((row) => row.item.status === 'pending').length;
 
   return (
     <div>
@@ -136,11 +173,13 @@ export default function MemberManager() {
         <div style={{ textAlign: 'center', padding: '60px', color: '#9CA3AF', fontSize: '0.9rem' }}>해당 상태의 회원이 없습니다.</div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {filtered.map((member) => {
+          {filtered.map((row) => {
+            const member = row.item;
             const st = STATUS_LABEL[member.status];
+            const profile = row.kind === 'profile' ? row.item : null;
             return (
               <div
-                key={member.id}
+                key={`${row.kind}-${member.id}`}
                 style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '10px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}
               >
                 {/* 상태 배지 */}
@@ -152,46 +191,57 @@ export default function MemberManager() {
                 <div style={{ flex: 1 }}>
                   <p style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1F2937', marginBottom: '2px' }}>
                     {member.company_name} · {member.full_name}
+                    {row.kind === 'request' && (
+                      <span style={{ marginLeft: '8px', fontSize: '11px', color: '#92400E', background: '#FEF3C7', padding: '2px 7px', borderRadius: '999px' }}>
+                        접수 대장
+                      </span>
+                    )}
                   </p>
                   <p style={{ fontSize: '0.78rem', color: '#6B7280' }}>
                     {member.email} · {member.phone}
                   </p>
                   <p style={{ fontSize: '0.72rem', color: '#9CA3AF', marginTop: '2px' }}>
                     신청: {new Date(member.created_at).toLocaleDateString('ko-KR')}
-                    {member.approved_at && ` · 승인: ${new Date(member.approved_at).toLocaleDateString('ko-KR')}`}
+                    {profile?.approved_at && ` · 승인: ${new Date(profile.approved_at).toLocaleDateString('ko-KR')}`}
+                    {row.kind === 'request' && ' · Auth/profile 생성 확인 필요'}
                   </p>
                 </div>
 
                 {/* 액션 버튼 */}
-                {member.status === 'pending' && (
+                {profile && profile.status === 'pending' && (
                   <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                     <button
-                      onClick={() => updateStatus(member, 'approved')}
-                      disabled={saving === member.id}
+                      onClick={() => updateStatus(profile, 'approved')}
+                      disabled={saving === profile.id}
                       style={{ padding: '7px 16px', background: '#059669', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                     >
                       ✓ 승인
                     </button>
                     <button
-                      onClick={() => updateStatus(member, 'rejected')}
-                      disabled={saving === member.id}
+                      onClick={() => updateStatus(profile, 'rejected')}
+                      disabled={saving === profile.id}
                       style={{ padding: '7px 16px', background: '#EF4444', color: '#fff', border: 'none', borderRadius: '7px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                     >
                       ✕ 거절
                     </button>
                   </div>
                 )}
-                {member.status === 'approved' && (
+                {row.kind === 'request' && (
+                  <span style={{ fontSize: '0.78rem', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', padding: '6px 10px', borderRadius: '7px' }}>
+                    이메일 인증/프로필 대기
+                  </span>
+                )}
+                {profile && profile.status === 'approved' && (
                   <button
-                    onClick={() => updateStatus(member, 'rejected')}
+                    onClick={() => updateStatus(profile, 'rejected')}
                     style={{ padding: '6px 14px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
                   >
                     승인 취소
                   </button>
                 )}
-                {member.status === 'rejected' && (
+                {profile && profile.status === 'rejected' && (
                   <button
-                    onClick={() => updateStatus(member, 'approved')}
+                    onClick={() => updateStatus(profile, 'approved')}
                     style={{ padding: '6px 14px', background: 'none', border: '1px solid #6EE7B7', color: '#059669', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
                   >
                     재승인

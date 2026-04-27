@@ -22,6 +22,7 @@
 - 완료 기준:
   - Supabase Dashboard > SQL Editor에서 SQL 전체 실행 성공
   - SQL 실행 전 생성된 Auth 사용자도 `profiles`에 backfill됨
+  - `partner_signup_requests` 테이블이 생성되고 신규 가입 신청이 관리자 회원 관리에 표시됨
   - 신규 회원가입 시 `profiles` RLS 오류가 발생하지 않음
   - Admin Hero 폰트/굵기/강조색 저장 후 로그아웃/재접속해도 유지됨
 

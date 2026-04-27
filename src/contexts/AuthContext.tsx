@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     meta: { full_name: string; company_name: string; phone: string }
   ): Promise<string | null> {
     if (!supabase) return '서버 연결 오류';
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -112,6 +112,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
     });
     if (error) return error.message;
+
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      return '이미 가입된 이메일입니다. 기존 계정으로 로그인하거나 비밀번호 재설정을 이용해 주세요.';
+    }
+
+    const { error: requestError } = await supabase.from('partner_signup_requests').insert({
+        auth_user_id: data.user?.id ?? null,
+        email,
+        full_name: meta.full_name,
+        company_name: meta.company_name,
+        phone: meta.phone,
+        status: 'pending',
+      });
+
+    if (requestError) {
+      if (requestError.code === '23505') {
+        return '이미 가입 신청이 접수된 이메일입니다. 메일함을 확인하거나 관리자에게 문의해 주세요.';
+      }
+      return `가입 신청 접수 저장 실패: ${requestError.message}`;
+    }
+
     return null;
   }
 
