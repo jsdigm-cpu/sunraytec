@@ -122,10 +122,12 @@ export default function ResourceDocumentEditor() {
     loadDocuments();
   }
 
-  async function move(index: number, direction: -1 | 1) {
-    const target = index + direction;
-    if (target < 0 || target >= documents.length || !supabase) return;
-    await saveOrderedDocuments(reorder(documents, index, target));
+  async function move(id: string, direction: -1 | 1) {
+    const visibleItems = activeCategory === '전체' ? documents : documents.filter((item) => item.category === activeCategory);
+    const visibleIndex = visibleItems.findIndex((item) => item.id === id);
+    const targetVisible = visibleItems[visibleIndex + direction];
+    if (!targetVisible || !supabase) return;
+    await saveOrderedDocuments(reorderById(documents, id, targetVisible.id));
   }
 
   function handleDragStart(event: React.DragEvent, id: string) {
@@ -138,10 +140,8 @@ export default function ResourceDocumentEditor() {
     event.preventDefault();
     const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
     if (!sourceId || sourceId === targetId) return;
-    const from = documents.findIndex((item) => item.id === sourceId);
-    const to = documents.findIndex((item) => item.id === targetId);
     setDraggedId(null);
-    await saveOrderedDocuments(reorder(documents, from, to));
+    await saveOrderedDocuments(reorderById(documents, sourceId, targetId));
   }
 
   async function saveOrderedDocuments(next: ResourceDocument[]) {
@@ -200,11 +200,10 @@ export default function ResourceDocumentEditor() {
           ))}
         </div>
         <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.35rem' }}>
-          {visibleDocuments.map((item) => {
-            const index = documents.findIndex((doc) => doc.id === item.id);
-            return (
+          {visibleDocuments.map((item, visibleIndex) => (
             <li
               key={item.id}
+              draggable
               onDragStart={(event) => handleDragStart(event, item.id)}
               onDragOver={(event) => event.preventDefault()}
               onDrop={(event) => handleDrop(event, item.id)}
@@ -220,7 +219,7 @@ export default function ResourceDocumentEditor() {
                 opacity: draggedId === item.id ? 0.45 : 1,
               }}
             >
-              <span draggable style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab' }}>☰</span>
+              <span style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab', userSelect: 'none' }}>☰</span>
               <button type="button" onClick={() => selectDocument(item)} style={{ flex: 1, border: 'none', background: 'transparent', padding: 0, textAlign: 'left', cursor: 'pointer' }}>
                 <strong style={{ display: 'block', fontSize: '0.84rem' }}>{item.title}</strong>
                 <div style={{ color: '#6B7280', fontSize: '0.72rem' }}>
@@ -228,12 +227,12 @@ export default function ResourceDocumentEditor() {
                 </div>
               </button>
               <div style={{ display: 'flex', gap: '0.3rem' }}>
-                <button type="button" onClick={() => move(index, -1)} disabled={index === 0}>↑</button>
-                <button type="button" onClick={() => move(index, 1)} disabled={index === documents.length - 1}>↓</button>
+                <button type="button" onClick={() => move(item.id, -1)} disabled={visibleIndex === 0}>↑</button>
+                <button type="button" onClick={() => move(item.id, 1)} disabled={visibleIndex === visibleDocuments.length - 1}>↓</button>
                 <button type="button" onClick={() => remove(item)}>삭제</button>
               </div>
             </li>
-          )})}
+          ))}
         </ul>
       </section>
     </div>
@@ -260,6 +259,12 @@ function reorder<T>(items: T[], from: number, to: number) {
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
   return next;
+}
+
+function reorderById(items: ResourceDocument[], sourceId: string, targetId: string) {
+  const from = items.findIndex((item) => item.id === sourceId);
+  const to = items.findIndex((item) => item.id === targetId);
+  return reorder(items, from, to);
 }
 
 function filterButtonStyle(active: boolean): React.CSSProperties {

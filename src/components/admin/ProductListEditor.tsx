@@ -26,8 +26,14 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
     if (error) window.alert(error);
   };
 
-  const move = (index: number, direction: -1 | 1) => {
-    setDraft((prev) => reorder(prev, index, index + direction));
+  const move = (id: string, direction: -1 | 1) => {
+    setDraft((prev) => {
+      const visibleItems = activeLine === 'all' ? prev : prev.filter((item) => item.productLine === activeLine);
+      const visibleIndex = visibleItems.findIndex((item) => item.id === id);
+      const targetVisible = visibleItems[visibleIndex + direction];
+      if (!targetVisible) return prev;
+      return reorderById(prev, id, targetVisible.id);
+    });
   };
 
   const handleDragStart = (event: React.DragEvent, id: string) => {
@@ -41,9 +47,7 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
     const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
     if (!sourceId || sourceId === targetId) return;
     setDraft((prev) => {
-      const from = prev.findIndex((item) => item.id === sourceId);
-      const to = prev.findIndex((item) => item.id === targetId);
-      return reorder(prev, from, to);
+      return reorderById(prev, sourceId, targetId);
     });
     setDraggedId(null);
   };
@@ -88,11 +92,10 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
         ))}
       </div>
       <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.35rem' }}>
-        {visible.map((item) => {
-          const index = draft.findIndex((draftItem) => draftItem.id === item.id);
-          return (
+        {visible.map((item, visibleIndex) => (
           <li
             key={item.id}
+            draggable
             onDragStart={(event) => handleDragStart(event, item.id)}
             onDragOver={(event) => event.preventDefault()}
             onDrop={(event) => handleDrop(event, item.id)}
@@ -109,7 +112,7 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
               opacity: draggedId === item.id ? 0.45 : 1,
             }}
           >
-            <span draggable style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab' }}>☰</span>
+            <span style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab', userSelect: 'none' }}>☰</span>
             <button
               type="button"
               onClick={() => onSelect(item)}
@@ -128,11 +131,11 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
                 {item.category} · 작성일 {formatDate(item.createdAt)}
               </span>
             </button>
-            <button type="button" onClick={() => move(index, -1)} disabled={index === 0}>↑</button>
-            <button type="button" onClick={() => move(index, 1)} disabled={index === draft.length - 1}>↓</button>
+            <button type="button" onClick={() => move(item.id, -1)} disabled={visibleIndex === 0}>↑</button>
+            <button type="button" onClick={() => move(item.id, 1)} disabled={visibleIndex === visible.length - 1}>↓</button>
             <button type="button" onClick={() => remove(item.id, item.name)}>삭제</button>
           </li>
-        )})}
+        ))}
       </ul>
     </div>
   );
@@ -144,6 +147,12 @@ function reorder(items: Product[], from: number, to: number) {
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
   return next;
+}
+
+function reorderById(items: Product[], sourceId: string, targetId: string) {
+  const from = items.findIndex((item) => item.id === sourceId);
+  const to = items.findIndex((item) => item.id === targetId);
+  return reorder(items, from, to);
 }
 
 function filterButtonStyle(active: boolean): React.CSSProperties {

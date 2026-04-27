@@ -128,8 +128,14 @@ export default function CaseEditor() {
     }
   }
 
-  function moveCase(index: number, direction: -1 | 1) {
-    setCases((prev) => reorder(prev, index, index + direction));
+  function moveCase(id: string, direction: -1 | 1) {
+    setCases((prev) => {
+      const visibleItems = activeCategory === '전체' ? prev : prev.filter((item) => item.category === activeCategory);
+      const visibleIndex = visibleItems.findIndex((item) => item.id === id);
+      const targetVisible = visibleItems[visibleIndex + direction];
+      if (!targetVisible) return prev;
+      return reorderById(prev, id, targetVisible.id);
+    });
   }
 
   function handleDragStart(event: React.DragEvent, id: string) {
@@ -143,9 +149,7 @@ export default function CaseEditor() {
     const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
     if (!sourceId || sourceId === targetId) return;
     setCases((prev) => {
-      const from = prev.findIndex((item) => item.id === sourceId);
-      const to = prev.findIndex((item) => item.id === targetId);
-      return reorder(prev, from, to);
+      return reorderById(prev, sourceId, targetId);
     });
     setDraggedId(null);
   }
@@ -260,11 +264,10 @@ export default function CaseEditor() {
           ))}
         </div>
         <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.35rem', maxHeight: '72vh', overflowY: 'auto' }}>
-          {visibleCases.map((item) => {
-            const index = cases.findIndex((caseItem) => caseItem.id === item.id);
-            return (
+          {visibleCases.map((item, visibleIndex) => (
               <li
                 key={item.id}
+                draggable
                 onDragStart={(event) => handleDragStart(event, item.id)}
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={(event) => handleDrop(event, item.id)}
@@ -280,7 +283,7 @@ export default function CaseEditor() {
                   opacity: draggedId === item.id ? 0.45 : 1,
                 }}
               >
-                <span draggable style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab' }}>☰</span>
+                <span style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab', userSelect: 'none' }}>☰</span>
                 <button
                   type="button"
                   onClick={() => selectCase(item)}
@@ -291,11 +294,10 @@ export default function CaseEditor() {
                     {item.category} · 작성일 {formatDate(item.created_at)}
                   </span>
                 </button>
-                <button type="button" onClick={() => moveCase(index, -1)} disabled={index === 0}>↑</button>
-                <button type="button" onClick={() => moveCase(index, 1)} disabled={index === cases.length - 1}>↓</button>
+                <button type="button" onClick={() => moveCase(item.id, -1)} disabled={visibleIndex === 0}>↑</button>
+                <button type="button" onClick={() => moveCase(item.id, 1)} disabled={visibleIndex === visibleCases.length - 1}>↓</button>
               </li>
-            );
-          })}
+          ))}
         </ul>
         {savedMsg && <p style={{ color: savedMsg.includes('실패') ? '#DC2626' : '#047857', fontWeight: 700, fontSize: '0.82rem' }}>{savedMsg}</p>}
       </div>
@@ -313,6 +315,12 @@ function reorder<T>(items: T[], from: number, to: number) {
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
   return next;
+}
+
+function reorderById(items: CaseItem[], sourceId: string, targetId: string) {
+  const from = items.findIndex((item) => item.id === sourceId);
+  const to = items.findIndex((item) => item.id === targetId);
+  return reorder(items, from, to);
 }
 
 function filterButtonStyle(active: boolean): React.CSSProperties {
