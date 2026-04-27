@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { supabase } from '../../lib/supabase';
 import { uploadPublicFile } from '../../lib/storageUploads';
@@ -36,25 +36,41 @@ export default function ResourceDocumentEditor() {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const draggedIdRef = useRef<string | null>(null);
+  const documentsRef = useRef<ResourceDocument[]>([]);
+
+  useEffect(() => {
+    documentsRef.current = documents;
+  }, [documents]);
 
   useEffect(() => {
     loadDocuments();
   }, []);
 
   useEffect(() => {
-    const stopDrag = () => {
-      if (draggedId) {
-        setDraggedId(null);
-        saveOrderedDocuments(documents);
-      }
+    const moveDrag = (event: PointerEvent) => {
+      const sourceId = draggedIdRef.current;
+      if (!sourceId) return;
+      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-admin-order-id]');
+      const targetId = target?.getAttribute('data-admin-order-id');
+      if (!targetId || targetId === sourceId) return;
+      setDocuments((prev) => reorderById(prev, sourceId, targetId));
     };
+    const stopDrag = () => {
+      if (!draggedIdRef.current) return;
+      draggedIdRef.current = null;
+      setDraggedId(null);
+      saveOrderedDocuments(documentsRef.current);
+    };
+    window.addEventListener('pointermove', moveDrag);
     window.addEventListener('pointerup', stopDrag);
     window.addEventListener('pointercancel', stopDrag);
     return () => {
+      window.removeEventListener('pointermove', moveDrag);
       window.removeEventListener('pointerup', stopDrag);
       window.removeEventListener('pointercancel', stopDrag);
     };
-  }, [draggedId, documents]);
+  }, []);
 
   async function loadDocuments() {
     if (!supabase) return;
@@ -147,12 +163,8 @@ export default function ResourceDocumentEditor() {
 
   function handlePointerStart(event: React.PointerEvent, id: string) {
     event.preventDefault();
+    draggedIdRef.current = id;
     setDraggedId(id);
-  }
-
-  function handlePointerEnter(targetId: string) {
-    if (!draggedId || draggedId === targetId) return;
-    setDocuments((prev) => reorderById(prev, draggedId, targetId));
   }
 
   async function saveOrderedDocuments(next: ResourceDocument[]) {
@@ -214,7 +226,7 @@ export default function ResourceDocumentEditor() {
           {visibleDocuments.map((item, visibleIndex) => (
             <li
               key={item.id}
-              onPointerEnter={() => handlePointerEnter(item.id)}
+              data-admin-order-id={item.id}
               style={{
                 display: 'flex',
                 alignItems: 'center',

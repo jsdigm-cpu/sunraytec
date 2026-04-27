@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import type { Product } from '../../types/product';
 
@@ -15,16 +15,30 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [activeLine, setActiveLine] = useState<'all' | 'excellent' | 'mas' | 'personal'>('all');
   const [saving, setSaving] = useState(false);
+  const draggedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     setDraft(products);
   }, [products]);
 
   useEffect(() => {
-    const stopDrag = () => setDraggedId(null);
+    const moveDrag = (event: PointerEvent) => {
+      const sourceId = draggedIdRef.current;
+      if (!sourceId) return;
+      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-admin-order-id]');
+      const targetId = target?.getAttribute('data-admin-order-id');
+      if (!targetId || targetId === sourceId) return;
+      setDraft((prev) => reorderById(prev, sourceId, targetId));
+    };
+    const stopDrag = () => {
+      draggedIdRef.current = null;
+      setDraggedId(null);
+    };
+    window.addEventListener('pointermove', moveDrag);
     window.addEventListener('pointerup', stopDrag);
     window.addEventListener('pointercancel', stopDrag);
     return () => {
+      window.removeEventListener('pointermove', moveDrag);
       window.removeEventListener('pointerup', stopDrag);
       window.removeEventListener('pointercancel', stopDrag);
     };
@@ -48,14 +62,8 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
 
   const handlePointerStart = (event: React.PointerEvent, id: string) => {
     event.preventDefault();
+    draggedIdRef.current = id;
     setDraggedId(id);
-  };
-
-  const handlePointerEnter = (targetId: string) => {
-    if (!draggedId || draggedId === targetId) return;
-    setDraft((prev) => {
-      return reorderById(prev, draggedId, targetId);
-    });
   };
 
   const saveOrder = async () => {
@@ -101,7 +109,7 @@ export default function ProductListEditor({ products, selectedId, onSelect, onDe
         {visible.map((item, visibleIndex) => (
           <li
             key={item.id}
-            onPointerEnter={() => handlePointerEnter(item.id)}
+            data-admin-order-id={item.id}
             style={{
               display: 'flex',
               justifyContent: 'space-between',

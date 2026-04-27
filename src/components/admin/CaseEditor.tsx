@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type React from 'react';
 import { supabase } from '../../lib/supabase';
 import { isImageFile, uploadPublicFile } from '../../lib/storageUploads';
@@ -54,6 +54,7 @@ export default function CaseEditor() {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedMsg, setSavedMsg] = useState('');
+  const draggedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!supabase) return;
@@ -65,10 +66,23 @@ export default function CaseEditor() {
   }, []);
 
   useEffect(() => {
-    const stopDrag = () => setDraggedId(null);
+    const moveDrag = (event: PointerEvent) => {
+      const sourceId = draggedIdRef.current;
+      if (!sourceId) return;
+      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-admin-order-id]');
+      const targetId = target?.getAttribute('data-admin-order-id');
+      if (!targetId || targetId === sourceId) return;
+      setCases((prev) => reorderById(prev, sourceId, targetId));
+    };
+    const stopDrag = () => {
+      draggedIdRef.current = null;
+      setDraggedId(null);
+    };
+    window.addEventListener('pointermove', moveDrag);
     window.addEventListener('pointerup', stopDrag);
     window.addEventListener('pointercancel', stopDrag);
     return () => {
+      window.removeEventListener('pointermove', moveDrag);
       window.removeEventListener('pointerup', stopDrag);
       window.removeEventListener('pointercancel', stopDrag);
     };
@@ -150,14 +164,8 @@ export default function CaseEditor() {
 
   function handlePointerStart(event: React.PointerEvent, id: string) {
     event.preventDefault();
+    draggedIdRef.current = id;
     setDraggedId(id);
-  }
-
-  function handlePointerEnter(targetId: string) {
-    if (!draggedId || draggedId === targetId) return;
-    setCases((prev) => {
-      return reorderById(prev, draggedId, targetId);
-    });
   }
 
   async function saveOrder() {
@@ -273,7 +281,7 @@ export default function CaseEditor() {
           {visibleCases.map((item, visibleIndex) => (
               <li
                 key={item.id}
-                onPointerEnter={() => handlePointerEnter(item.id)}
+                data-admin-order-id={item.id}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
