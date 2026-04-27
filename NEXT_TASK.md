@@ -25,6 +25,7 @@
   - `partner_signup_requests` 테이블이 생성되고 신규 가입 신청이 관리자 회원 관리에 표시됨
   - 신규 회원가입 시 `profiles` RLS 오류가 발생하지 않음
   - Admin Hero 폰트/굵기/강조색 저장 후 로그아웃/재접속해도 유지됨
+  - 관리자 회원 관리에서 파트너 회원 탈퇴/삭제 RPC가 정상 동작함
 
 ### 2. `/technology/principle` 복사난방 원리 페이지 신설
 

@@ -120,6 +120,51 @@ export default function MemberManager() {
     load();
   }
 
+  async function deleteProfile(member: Profile) {
+    if (!supabase) return;
+    if (member.role === 'admin') {
+      setNotice('관리자 계정은 이 화면에서 삭제할 수 없습니다.');
+      return;
+    }
+    if (!window.confirm(`${member.email} 회원을 탈퇴(삭제) 처리할까요? Auth 계정과 프로필이 함께 삭제됩니다.`)) return;
+
+    setSaving(member.id);
+    setNotice('');
+    const { error } = await supabase.rpc('admin_delete_auth_user', { target_user_id: member.id });
+
+    if (error) {
+      setNotice(`회원 삭제 실패: ${error.message}`);
+      setSaving(null);
+      return;
+    }
+
+    setNotice('회원 계정이 삭제됐습니다.');
+    setSaving(null);
+    load();
+  }
+
+  async function deleteSignupRequest(request: SignupRequest) {
+    if (!supabase) return;
+    if (!window.confirm(`${request.email} 가입 신청 접수를 삭제할까요?`)) return;
+
+    setSaving(request.id);
+    setNotice('');
+    const { error } = await supabase
+      .from('partner_signup_requests')
+      .delete()
+      .eq('id', request.id);
+
+    if (error) {
+      setNotice(`가입 신청 삭제 실패: ${error.message}`);
+      setSaving(null);
+      return;
+    }
+
+    setNotice('가입 신청 접수가 삭제됐습니다.');
+    setSaving(null);
+    load();
+  }
+
   const memberEmails = new Set(members.map((m) => m.email.toLowerCase()));
   const requestOnlyRows: MemberRow[] = requests
     .filter((request) => !memberEmails.has(request.email.toLowerCase()))
@@ -227,9 +272,18 @@ export default function MemberManager() {
                   </div>
                 )}
                 {row.kind === 'request' && (
-                  <span style={{ fontSize: '0.78rem', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', padding: '6px 10px', borderRadius: '7px' }}>
-                    이메일 인증/프로필 대기
-                  </span>
+                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                    <span style={{ fontSize: '0.78rem', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', padding: '6px 10px', borderRadius: '7px' }}>
+                      이메일 인증/프로필 대기
+                    </span>
+                    <button
+                      onClick={() => deleteSignupRequest(row.item)}
+                      disabled={saving === row.item.id}
+                      style={{ padding: '6px 12px', background: 'none', border: '1px solid #FCA5A5', color: '#EF4444', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
+                    >
+                      접수 삭제
+                    </button>
+                  </div>
                 )}
                 {profile && profile.status === 'approved' && (
                   <button
@@ -245,6 +299,15 @@ export default function MemberManager() {
                     style={{ padding: '6px 14px', background: 'none', border: '1px solid #6EE7B7', color: '#059669', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
                   >
                     재승인
+                  </button>
+                )}
+                {profile && profile.role !== 'admin' && (
+                  <button
+                    onClick={() => deleteProfile(profile)}
+                    disabled={saving === profile.id}
+                    style={{ padding: '6px 12px', background: '#FFF1F2', border: '1px solid #FDA4AF', color: '#BE123C', borderRadius: '7px', fontSize: '0.78rem', cursor: 'pointer' }}
+                  >
+                    탈퇴/삭제
                   </button>
                 )}
               </div>

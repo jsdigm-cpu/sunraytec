@@ -152,6 +152,28 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
+CREATE OR REPLACE FUNCTION public.admin_delete_auth_user(target_user_id uuid)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+BEGIN
+  IF NOT public.is_admin() THEN
+    RAISE EXCEPTION 'Only approved admins can delete users';
+  END IF;
+
+  IF target_user_id = auth.uid() THEN
+    RAISE EXCEPTION 'Admins cannot delete their own account';
+  END IF;
+
+  DELETE FROM auth.users
+  WHERE id = target_user_id;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.admin_delete_auth_user(uuid) TO authenticated;
+
 -- 기존 Auth 사용자 중 profiles가 없는 사용자 복구
 INSERT INTO public.profiles (
   id,

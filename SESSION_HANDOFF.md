@@ -20,6 +20,7 @@
 - 2026-04-27 추가 확인: 이메일 인증 후 관리자 회원 목록에 가입 신청이 보이지 않는 사례가 있었습니다. trigger 적용 전 생성된 Auth 사용자를 복구하기 위해 `supabase_fix_auth_cms_policies.sql`에 backfill 쿼리를 추가했습니다.
 - 2026-04-27 추가 확인: 관리자 제품 목록은 DB에서 로드된 목록이므로, 목록 클릭 시 좌측 폼에 값을 불러와 수정할 수 있도록 개선했습니다.
 - 2026-04-27 추가 확인: 가입 신청이 Auth/profile 생성 전 단계에서 유실되어 관리자 화면에 보이지 않는 문제가 있어 `partner_signup_requests` 접수 대장 테이블과 관리자 표시 로직을 추가했습니다.
+- 2026-04-27 추가 확인: 관리자 회원 관리에 탈퇴/삭제 메뉴가 필요하여, 일반 파트너 Auth 계정 삭제 RPC와 접수 대장 삭제 기능을 추가했습니다.
 - 회원가입은 Supabase Auth 가입 후 `profiles` 생성 실패를 확인하지 않아 가입 성공처럼 보일 수 있었습니다.
 - 로그인은 프로필 조회 실패 시 사용자에게 안내 없이 멈춘 것처럼 보일 수 있었습니다.
 - 관리자 제품 관리는 기존에 React state만 바꾸고 Supabase `products` 테이블에 저장하지 않았습니다.
@@ -77,6 +78,9 @@
   - 가입 신청 정보를 `partner_signup_requests`에도 저장하도록 보강
 - `src/components/admin/MemberManager.tsx`
   - `profiles`와 `partner_signup_requests`를 함께 불러와 관리자 회원 관리에 표시
+  - 파트너 회원 탈퇴/삭제 및 접수 대장 삭제 버튼 추가
+- `supabase_fix_auth_cms_policies.sql`, `supabase_schema.sql`
+  - 관리자 전용 `admin_delete_auth_user` RPC 추가
 
 ---
 
@@ -104,7 +108,7 @@
 
 운영 DB 적용 필요:
 - Supabase Dashboard > SQL Editor에서 `supabase_fix_auth_cms_policies.sql` 전체 실행 필요
-- 이 SQL이 적용되어야 회원가입 프로필 생성과 Hero/CMS 영구 저장이 실제 운영 DB에서 정상 작동합니다.
+- 이 SQL이 적용되어야 회원가입 프로필 생성, 가입 접수 대장, 회원 탈퇴/삭제, Hero/CMS 영구 저장이 실제 운영 DB에서 정상 작동합니다.
 
 ---
 
