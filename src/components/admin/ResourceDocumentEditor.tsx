@@ -41,6 +41,21 @@ export default function ResourceDocumentEditor() {
     loadDocuments();
   }, []);
 
+  useEffect(() => {
+    const stopDrag = () => {
+      if (draggedId) {
+        setDraggedId(null);
+        saveOrderedDocuments(documents);
+      }
+    };
+    window.addEventListener('pointerup', stopDrag);
+    window.addEventListener('pointercancel', stopDrag);
+    return () => {
+      window.removeEventListener('pointerup', stopDrag);
+      window.removeEventListener('pointercancel', stopDrag);
+    };
+  }, [draggedId, documents]);
+
   async function loadDocuments() {
     if (!supabase) return;
     const { data, error } = await supabase
@@ -130,18 +145,14 @@ export default function ResourceDocumentEditor() {
     await saveOrderedDocuments(reorderById(documents, id, targetVisible.id));
   }
 
-  function handleDragStart(event: React.DragEvent, id: string) {
+  function handlePointerStart(event: React.PointerEvent, id: string) {
+    event.preventDefault();
     setDraggedId(id);
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', id);
   }
 
-  async function handleDrop(event: React.DragEvent, targetId: string) {
-    event.preventDefault();
-    const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
-    if (!sourceId || sourceId === targetId) return;
-    setDraggedId(null);
-    await saveOrderedDocuments(reorderById(documents, sourceId, targetId));
+  function handlePointerEnter(targetId: string) {
+    if (!draggedId || draggedId === targetId) return;
+    setDocuments((prev) => reorderById(prev, draggedId, targetId));
   }
 
   async function saveOrderedDocuments(next: ResourceDocument[]) {
@@ -203,11 +214,7 @@ export default function ResourceDocumentEditor() {
           {visibleDocuments.map((item, visibleIndex) => (
             <li
               key={item.id}
-              draggable
-              onDragStart={(event) => handleDragStart(event, item.id)}
-              onDragOver={(event) => event.preventDefault()}
-              onDrop={(event) => handleDrop(event, item.id)}
-              onDragEnd={() => setDraggedId(null)}
+              onPointerEnter={() => handlePointerEnter(item.id)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -219,7 +226,13 @@ export default function ResourceDocumentEditor() {
                 opacity: draggedId === item.id ? 0.45 : 1,
               }}
             >
-              <span style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab', userSelect: 'none' }}>☰</span>
+              <span
+                onPointerDown={(event) => handlePointerStart(event, item.id)}
+                style={{ color: '#9CA3AF', fontWeight: 800, cursor: draggedId === item.id ? 'grabbing' : 'grab', userSelect: 'none', touchAction: 'none', padding: '0 0.15rem' }}
+                title="끌어서 순서 변경"
+              >
+                ☰
+              </span>
               <button type="button" onClick={() => selectDocument(item)} style={{ flex: 1, border: 'none', background: 'transparent', padding: 0, textAlign: 'left', cursor: 'pointer' }}>
                 <strong style={{ display: 'block', fontSize: '0.84rem' }}>{item.title}</strong>
                 <div style={{ color: '#6B7280', fontSize: '0.72rem' }}>

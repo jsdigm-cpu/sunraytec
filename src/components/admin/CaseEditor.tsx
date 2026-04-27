@@ -64,6 +64,16 @@ export default function CaseEditor() {
       .then(({ data }) => { if (data) setCases(data as CaseItem[]); });
   }, []);
 
+  useEffect(() => {
+    const stopDrag = () => setDraggedId(null);
+    window.addEventListener('pointerup', stopDrag);
+    window.addEventListener('pointercancel', stopDrag);
+    return () => {
+      window.removeEventListener('pointerup', stopDrag);
+      window.removeEventListener('pointercancel', stopDrag);
+    };
+  }, []);
+
   function selectCase(item: CaseItem) {
     setSelected(item);
     setForm({
@@ -138,20 +148,16 @@ export default function CaseEditor() {
     });
   }
 
-  function handleDragStart(event: React.DragEvent, id: string) {
+  function handlePointerStart(event: React.PointerEvent, id: string) {
+    event.preventDefault();
     setDraggedId(id);
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', id);
   }
 
-  function handleDrop(event: React.DragEvent, targetId: string) {
-    event.preventDefault();
-    const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
-    if (!sourceId || sourceId === targetId) return;
+  function handlePointerEnter(targetId: string) {
+    if (!draggedId || draggedId === targetId) return;
     setCases((prev) => {
-      return reorderById(prev, sourceId, targetId);
+      return reorderById(prev, draggedId, targetId);
     });
-    setDraggedId(null);
   }
 
   async function saveOrder() {
@@ -267,11 +273,7 @@ export default function CaseEditor() {
           {visibleCases.map((item, visibleIndex) => (
               <li
                 key={item.id}
-                draggable
-                onDragStart={(event) => handleDragStart(event, item.id)}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => handleDrop(event, item.id)}
-                onDragEnd={() => setDraggedId(null)}
+                onPointerEnter={() => handlePointerEnter(item.id)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -283,7 +285,13 @@ export default function CaseEditor() {
                   opacity: draggedId === item.id ? 0.45 : 1,
                 }}
               >
-                <span style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab', userSelect: 'none' }}>☰</span>
+                <span
+                  onPointerDown={(event) => handlePointerStart(event, item.id)}
+                  style={{ color: '#9CA3AF', fontWeight: 800, cursor: draggedId === item.id ? 'grabbing' : 'grab', userSelect: 'none', touchAction: 'none', padding: '0 0.15rem' }}
+                  title="끌어서 순서 변경"
+                >
+                  ☰
+                </span>
                 <button
                   type="button"
                   onClick={() => selectCase(item)}
