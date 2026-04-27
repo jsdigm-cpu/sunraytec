@@ -95,6 +95,9 @@ ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.partner_signup_requests TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.profiles TO authenticated;
+
 -- 관리자 확인 함수
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean
@@ -266,3 +269,5 @@ CREATE POLICY "Admins can update inquiries"
   ON public.inquiries FOR UPDATE
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
+
+NOTIFY pgrst, 'reload schema';

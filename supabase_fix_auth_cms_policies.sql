@@ -33,6 +33,9 @@ CREATE TABLE IF NOT EXISTS public.partner_signup_requests (
 
 ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.partner_signup_requests TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.profiles TO authenticated;
+
 -- Helper: admin check without recursive profiles RLS lookups.
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean
@@ -202,3 +205,6 @@ CREATE POLICY "Admins can update inquiries"
   ON public.inquiries FOR UPDATE
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
+
+-- Force PostgREST/Supabase API to reload newly created tables/functions.
+NOTIFY pgrst, 'reload schema';

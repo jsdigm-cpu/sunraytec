@@ -42,6 +42,7 @@ export default function MemberManager() {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [saving, setSaving] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
+  const [requestLedgerReady, setRequestLedgerReady] = useState(true);
 
   async function load() {
     if (!supabase) {
@@ -60,7 +61,17 @@ export default function MemberManager() {
     ]);
 
     if (profileError) setNotice(`회원 목록을 불러오지 못했습니다: ${profileError.message}`);
-    if (requestError) setNotice(`가입 신청 목록을 불러오지 못했습니다: ${requestError.message}`);
+    if (requestError) {
+      setRequestLedgerReady(false);
+      const isMissingTable = requestError.message.includes('partner_signup_requests') || requestError.code === 'PGRST205';
+      setNotice(
+        isMissingTable
+          ? '가입 신청 접수 대장 테이블이 아직 API에 반영되지 않았습니다. SQL 파일 재실행 후 1분 뒤 새로고침해 주세요.'
+          : `가입 신청 목록을 불러오지 못했습니다: ${requestError.message}`,
+      );
+    } else {
+      setRequestLedgerReady(true);
+    }
     if (profileData) setMembers(profileData as Profile[]);
     if (requestData) setRequests(requestData as SignupRequest[]);
     setLoading(false);
@@ -185,6 +196,12 @@ export default function MemberManager() {
       {notice && (
         <div style={{ marginBottom: '14px', padding: '10px 14px', borderRadius: '8px', background: notice.includes('실패') || notice.includes('못했습니다') ? '#FEF2F2' : '#EFF6FF', color: notice.includes('실패') || notice.includes('못했습니다') ? '#B91C1C' : '#1E40AF', fontSize: '0.84rem', fontWeight: 700 }}>
           {notice}
+        </div>
+      )}
+
+      {!requestLedgerReady && (
+        <div style={{ marginBottom: '14px', padding: '10px 14px', borderRadius: '8px', background: '#FFFBEB', color: '#92400E', border: '1px solid #FDE68A', fontSize: '0.84rem', fontWeight: 700 }}>
+          Supabase SQL Editor에서 <code>supabase_fix_auth_cms_policies.sql</code> 전체 실행 후, SQL 맨 아래의 schema reload까지 적용되어야 가입 신청 접수 대장이 표시됩니다.
         </div>
       )}
 
