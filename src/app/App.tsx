@@ -29,8 +29,10 @@ function dbRowToProduct(row: Record<string, any>): Product {
     procurementId:     row.procurement_id    ?? undefined,
     thumbnailImage:    row.thumbnail_image   ?? undefined,
     detailImage:       row.detail_image      ?? undefined,
+    imageGallery:      Array.isArray(row.image_gallery) ? row.image_gallery : undefined,
     detailDescription: row.detail_description ?? undefined,
     featureBullets:    Array.isArray(row.feature_bullets) ? row.feature_bullets : undefined,
+    sortOrder:         row.sort_order ?? undefined,
   };
 }
 

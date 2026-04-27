@@ -20,11 +20,16 @@ CREATE TABLE IF NOT EXISTS public.products (
   procurement_id text,
   thumbnail_image text,
   detail_image text,
+  image_gallery jsonb DEFAULT '[]'::jsonb,
   feature_bullets jsonb,
   sort_order integer DEFAULT 0,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
+
+ALTER TABLE public.products
+  ADD COLUMN IF NOT EXISTS image_gallery jsonb DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
 
 -- 2. site_content 테이블
 CREATE TABLE IF NOT EXISTS public.site_content (
@@ -44,6 +49,27 @@ CREATE TABLE IF NOT EXISTS public.case_studies (
   content text,
   image_url text,
   featured boolean DEFAULT false,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE public.case_studies
+  ADD COLUMN IF NOT EXISTS images jsonb DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS description text,
+  ADD COLUMN IF NOT EXISTS installed_at date,
+  ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+
+-- 3-1. 자료실 문서 테이블
+CREATE TABLE IF NOT EXISTS public.resource_documents (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  title text NOT NULL,
+  description text,
+  category text NOT NULL,
+  file_url text,
+  file_path text,
+  file_size text,
+  is_public boolean DEFAULT true,
+  sort_order integer DEFAULT 0,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
@@ -105,9 +131,11 @@ ALTER TABLE public.case_studies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.partner_signup_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.resource_documents ENABLE ROW LEVEL SECURITY;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.partner_signup_requests TO anon, authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.profiles TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.resource_documents TO anon, authenticated;
 
 -- 관리자 확인 함수
 CREATE OR REPLACE FUNCTION public.is_admin()
@@ -304,6 +332,10 @@ CREATE POLICY "Anyone can read case_studies"
   ON public.case_studies FOR SELECT
   USING (true);
 
+CREATE POLICY "Anyone can read public resource_documents"
+  ON public.resource_documents FOR SELECT
+  USING (is_public = true OR public.is_admin());
+
 -- inquiries: 누구나 삽입 가능 (견적 문의 폼)
 CREATE POLICY "Anyone can insert inquiries"
   ON public.inquiries FOR INSERT
@@ -347,6 +379,46 @@ CREATE POLICY "Admins can manage case_studies"
   ON public.case_studies FOR ALL
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
+
+CREATE POLICY "Admins can manage resource_documents"
+  ON public.resource_documents FOR ALL
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+-- Supabase Storage 버킷과 정책
+INSERT INTO storage.buckets (id, name, public)
+VALUES
+  ('product-images', 'product-images', true),
+  ('case-images', 'case-images', true),
+  ('resource-files', 'resource-files', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Anyone can read public product images"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'product-images');
+
+CREATE POLICY "Anyone can read public case images"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'case-images');
+
+CREATE POLICY "Anyone can read public resource files"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'resource-files');
+
+CREATE POLICY "Admins can manage product images"
+  ON storage.objects FOR ALL
+  USING (bucket_id = 'product-images' AND public.is_admin())
+  WITH CHECK (bucket_id = 'product-images' AND public.is_admin());
+
+CREATE POLICY "Admins can manage case images"
+  ON storage.objects FOR ALL
+  USING (bucket_id = 'case-images' AND public.is_admin())
+  WITH CHECK (bucket_id = 'case-images' AND public.is_admin());
+
+CREATE POLICY "Admins can manage resource files"
+  ON storage.objects FOR ALL
+  USING (bucket_id = 'resource-files' AND public.is_admin())
+  WITH CHECK (bucket_id = 'resource-files' AND public.is_admin());
 
 CREATE POLICY "Admins can read inquiries"
   ON public.inquiries FOR SELECT

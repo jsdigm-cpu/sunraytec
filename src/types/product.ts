@@ -20,6 +20,8 @@ export interface Product {
   procurementId?: string;
   thumbnailImage?: string;
   detailImage?: string;
+  imageGallery?: string[];
   detailDescription?: string;
   featureBullets?: string[];
+  sortOrder?: number;
 }

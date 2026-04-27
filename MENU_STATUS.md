@@ -77,7 +77,7 @@
 | 파트너 승인 대기 | `/partner/pending` | 완료 | |
 | 난방 용량 계산기 | `/coming-soon?section=resources` | 대기중 | |
 | 에너지 ROI 계산기 | `/coming-soon?section=resources` | 대기중 | |
-| 카탈로그 다운로드 | `/resources/catalog` | 진행중 | UI 구현, 실제 PDF 연결 대기 |
+| 카탈로그 다운로드 | `/resources/catalog` | 진행중 | `resource_documents` 공개 자료 연동, 실제 파일 업로드 확인 대기 |
 | 스펙·도면 CAD | `/coming-soon?section=resources` | 대기중 | |
 | 인증서·시험성적서 | `/about/certifications` | 진행중 | 페이지 구현, 파일 다운로드 대기 |
 | 동영상 자료 | `/coming-soon?section=resources` | 대기중 | |
@@ -99,10 +99,10 @@
 |---|---|:---:|---|
 | 로그인 | `/login` | 완료 | Supabase Auth |
 | 관리자 대시보드 | `/admin` | 완료 | 보호 라우트 |
-| 제품 관리 | `/admin` | 완료 | 추가/삭제 UI |
+| 제품 관리 | `/admin` | 완료 | 추가/수정/삭제, 이미지 업로드, 노출 순서 저장 |
 | Hero 텍스트 편집 | `/admin` | 완료 | `site_content` 일부 연동 |
 | 견적 문의 관리 | `/admin` | 완료 | |
 | 회원 관리 | `/admin` | 완료 | |
-| 시공사례 관리 | `/admin` | 완료 | |
+| 시공사례 관리 | `/admin` | 완료 | 이미지 업로드 편집 구조 포함 |
+| 자료실 관리 | `/admin` | 진행중 | 파일 업로드/수정/삭제/정렬 구현, 운영 DB 적용 대기 |
 | 홈 기타 영역 CMS | `/admin` | 대기중 | KPI 등 Hero 외 섹션 편집 |
-

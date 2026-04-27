@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type React from 'react';
 import type { Product } from '../../types/product';
 import { positiveNumber, required } from '../../utils/validators';
+import { isImageFile, uploadPublicFile } from '../../lib/storageUploads';
 
 interface Props {
   onSubmit: (product: Product) => Promise<string | null> | string | null | void;
@@ -21,6 +22,7 @@ const empty: Product = {
   procurementId: '',
   thumbnailImage: '',
   detailImage: '',
+  imageGallery: [],
   detailDescription: '',
   featureBullets: [],
 };
@@ -37,6 +39,7 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
       applications: [...selectedProduct.applications],
       specs: { ...selectedProduct.specs },
       featureBullets: selectedProduct.featureBullets ? [...selectedProduct.featureBullets] : [],
+      imageGallery: selectedProduct.imageGallery ? [...selectedProduct.imageGallery] : compactImages(selectedProduct),
     });
     setMessage(`${selectedProduct.name} 정보를 불러왔습니다. 수정 후 저장하세요.`);
   }, [selectedProduct]);
@@ -57,6 +60,9 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
       ...form,
       applications: form.applications.filter(Boolean),
       featureBullets: form.featureBullets?.filter(Boolean),
+      imageGallery: compactImages(form),
+      thumbnailImage: compactImages(form)[0] ?? form.thumbnailImage,
+      detailImage: compactImages(form)[0] ?? form.detailImage,
     });
     setSaving(false);
     if (error) {
@@ -72,6 +78,70 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
     setForm(empty);
     setMessage('');
     onClearSelection?.();
+  };
+
+  const uploadImages = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    if (!required(form.id)) {
+      setMessage('이미지 업로드 전 제품 id를 먼저 입력해주세요.');
+      return;
+    }
+
+    const imageFiles = Array.from(files).filter(isImageFile);
+    if (imageFiles.length !== files.length) {
+      setMessage('이미지 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    setSaving(true);
+    setMessage('이미지를 업로드하는 중입니다...');
+
+    try {
+      const uploaded = await Promise.all(
+        imageFiles.map((file) => uploadPublicFile('product-images', form.id, file)),
+      );
+      setForm((prev) => {
+        const gallery = [...compactImages(prev), ...uploaded];
+        return {
+          ...prev,
+          imageGallery: gallery,
+          thumbnailImage: gallery[0] ?? '',
+          detailImage: gallery[0] ?? '',
+        };
+      });
+      setMessage('이미지가 업로드됐습니다. 첫 번째 이미지가 썸네일과 상세 대표 이미지로 사용됩니다.');
+    } catch (error) {
+      setMessage(`이미지 업로드 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setForm((prev) => {
+      const gallery = compactImages(prev).filter((_, i) => i !== index);
+      return {
+        ...prev,
+        imageGallery: gallery,
+        thumbnailImage: gallery[0] ?? '',
+        detailImage: gallery[0] ?? '',
+      };
+    });
+  };
+
+  const moveImage = (index: number, direction: -1 | 1) => {
+    setForm((prev) => {
+      const gallery = compactImages(prev);
+      const target = index + direction;
+      if (target < 0 || target >= gallery.length) return prev;
+      [gallery[index], gallery[target]] = [gallery[target], gallery[index]];
+      return {
+        ...prev,
+        imageGallery: gallery,
+        thumbnailImage: gallery[0] ?? '',
+        detailImage: gallery[0] ?? '',
+      };
+    });
   };
 
   return (
@@ -123,7 +193,8 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
           <textarea
             value={form.detailDescription ?? ''}
             onChange={(e) => update('detailDescription', e.target.value)}
-            rows={4}
+            rows={10}
+            style={{ minHeight: '220px', resize: 'vertical', lineHeight: 1.7 }}
           />
         </FormRow>
         <FormRow label="적용 분야" help="쉼표로 구분해 입력합니다. 예: 대형공장, 물류센터, 체육관">
@@ -167,17 +238,38 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
             />
           </FormRow>
         </div>
-        <FormRow label="썸네일 이미지 URL" help="임시 URL 입력 방식입니다. 다음 단계에서 파일 업로드 방식으로 전환 예정입니다.">
-          <input
-            value={form.thumbnailImage ?? ''}
-            onChange={(e) => update('thumbnailImage', e.target.value)}
-          />
-        </FormRow>
-        <FormRow label="상세 이미지 URL" help="임시 URL 입력 방식입니다. 다음 단계에서 여러 장 업로드 방식으로 전환 예정입니다.">
-          <input
-            value={form.detailImage ?? ''}
-            onChange={(e) => update('detailImage', e.target.value)}
-          />
+        <FormRow label="제품 이미지" help="여러 장 업로드할 수 있으며, 첫 번째 이미지가 썸네일과 상세 대표 이미지로 사용됩니다.">
+          <input type="file" accept="image/*" multiple onChange={(e) => uploadImages(e.target.files)} />
+          <div style={{ display: 'grid', gap: '0.5rem', marginTop: '0.65rem' }}>
+            {compactImages(form).map((url, index) => (
+              <div
+                key={`${url}-${index}`}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '58px 1fr auto',
+                  alignItems: 'center',
+                  gap: '0.6rem',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  padding: '0.45rem',
+                  background: index === 0 ? '#FDECEA' : '#fff',
+                }}
+              >
+                <img src={url} alt="" style={{ width: '58px', height: '44px', objectFit: 'cover', borderRadius: '6px' }} />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 800, color: index === 0 ? 'var(--red)' : '#374151' }}>
+                    {index === 0 ? '대표 이미지' : `상세 이미지 ${index + 1}`}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#6B7280', wordBreak: 'break-all' }}>{url}</div>
+                </div>
+                <div style={{ display: 'flex', gap: '0.25rem' }}>
+                  <button type="button" onClick={() => moveImage(index, -1)} disabled={index === 0}>↑</button>
+                  <button type="button" onClick={() => moveImage(index, 1)} disabled={index === compactImages(form).length - 1}>↓</button>
+                  <button type="button" onClick={() => removeImage(index)}>삭제</button>
+                </div>
+              </div>
+            ))}
+          </div>
         </FormRow>
         {message && (
           <div style={{ fontSize: '0.82rem', color: message.includes('실패') || message.includes('확인') ? '#DC2626' : '#047857', fontWeight: 700 }}>
@@ -190,6 +282,10 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
       </div>
     </div>
   );
+}
+
+function compactImages(product: Pick<Product, 'imageGallery' | 'thumbnailImage' | 'detailImage'>) {
+  return Array.from(new Set([...(product.imageGallery ?? []), product.thumbnailImage, product.detailImage].filter(Boolean) as string[]));
 }
 
 function FormRow({ label, help, children }: { label: string; help?: string; children: React.ReactNode }) {

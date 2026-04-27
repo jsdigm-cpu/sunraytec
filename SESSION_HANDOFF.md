@@ -37,6 +37,37 @@
 
 ## 이번 세션에서 수정한 코드
 
+- `src/lib/storageUploads.ts`
+  - Supabase Storage 공개 URL 업로드 헬퍼 추가
+- `src/types/product.ts`, `src/app/App.tsx`
+  - 제품 `imageGallery`, `sortOrder` 매핑 추가
+- `src/pages/AdminDashboardPage.tsx`
+  - 제품 `image_gallery`, `sort_order` 저장 추가
+  - 제품 노출 순서 저장 함수 추가
+  - 자료실 관리 탭 연결
+- `src/components/admin/ProductForm.tsx`
+  - URL 입력 대신 여러 이미지 파일 업로드 방식 추가
+  - 첫 번째 이미지를 썸네일/상세 대표 이미지로 자동 사용
+  - 이미지 미리보기, 삭제, 위/아래 순서 변경 추가
+- `src/components/admin/ProductListEditor.tsx`
+  - 네이티브 드래그앤드롭과 위/아래 버튼으로 제품 노출 순서 변경
+  - `순서 저장` 버튼 추가
+- `src/components/admin/CaseEditor.tsx`
+  - 시공사례 이미지 URL 입력을 Storage 파일 업로드 방식으로 전환
+  - 첫 이미지가 `image_url` 대표 이미지로 저장되도록 보강
+- `src/components/admin/Sidebar.tsx`, `src/components/admin/ResourceDocumentEditor.tsx`
+  - 관리자 `자료실 관리` 탭 추가
+  - 자료 파일 업로드, 추가/수정/삭제, 공개 여부, 위/아래 정렬 구현
+- `src/pages/resources/CatalogPage.tsx`
+  - `resource_documents` 공개 자료를 Supabase에서 읽어 표시하고 파일 URL 다운로드 연결
+- `src/pages/products/ProductDetailPage.tsx`
+  - 제품 상세에서 다중 이미지 갤러리 표시
+- `supabase_schema.sql`
+  - `products.image_gallery`, `case_studies.images/description/installed_at/sort_order`, `resource_documents` 추가
+  - `product-images`, `case-images`, `resource-files` Storage 버킷 및 관리자 정책 추가
+- `supabase_storage_uploads_delta.sql`
+  - Supabase SQL Editor에 바로 붙여넣을 수 있는 이번 변경분 전용 SQL 추가
+
 - `src/contexts/AuthContext.tsx`
   - 운영 콘솔 로그 정리
   - 로그인/세션 변경 시 프로필 로딩 상태 보강
@@ -111,19 +142,20 @@
 
 ## 다음 AI가 바로 할 일
 
-1. 다음 구현 작업은 관리자 업로드/정렬/CRUD 구조 재설계입니다.
-2. 제품, 시공사례, 자료실의 이미지/파일 입력을 URL 방식에서 Supabase Storage 업로드 방식으로 전환합니다.
-3. 제품 이미지는 여러 장 업로드를 지원하고, 첫 번째 업로드 파일을 썸네일 겸 첫 번째 상세 이미지로 사용합니다.
-4. 제품/시공사례/자료실 목록은 드래그앤드롭으로 노출 순서를 조정하고, `sort_order`를 DB에 저장합니다. React 라이브러리는 `@dnd-kit/core`, `@dnd-kit/sortable` 사용을 우선 검토합니다.
-5. 먼저 다음 파일을 확인합니다.
+1. 다음 작업은 `supabase_storage_uploads_delta.sql`의 신규 컬럼/테이블/Storage 버킷/정책을 운영 Supabase DB에 적용하는 것입니다.
+2. 운영 DB 적용 후 `/admin`에서 제품 이미지 업로드, 제품 순서 저장, 시공사례 이미지 업로드, 자료실 파일 업로드를 브라우저로 확인합니다.
+3. 시공사례 목록의 드래그 정렬 저장 UI는 아직 미구현입니다. DB 조회 기준은 `sort_order`로 바꿨으므로, 필요 시 제품 목록 UI를 공통화해 붙입니다.
+4. 먼저 다음 파일을 확인합니다.
    - `src/pages/AdminDashboardPage.tsx`
    - `src/components/admin/ProductForm.tsx`
    - `src/components/admin/ProductListEditor.tsx`
    - `src/components/admin/CaseEditor.tsx`
+   - `src/components/admin/ResourceDocumentEditor.tsx`
    - `src/pages/resources/CatalogPage.tsx`
    - `src/app/App.tsx`
    - `supabase_schema.sql`
-6. 작업 완료 후 `MENU_STATUS.md`, `PROJECT_STATUS.md`, `SESSION_HANDOFF.md`, `NEXT_TASK.md`를 갱신하고 `npm run lint`, `npm run build`를 실행합니다.
+   - `supabase_storage_uploads_delta.sql`
+5. 작업 완료 후 `MENU_STATUS.md`, `PROJECT_STATUS.md`, `SESSION_HANDOFF.md`, `NEXT_TASK.md`를 갱신하고 `npm run lint`, `npm run build`를 실행합니다.
 
 그 다음 작업:
 - `/technology/principle` 복사난방 원리 페이지 신설
@@ -140,9 +172,9 @@
 
 ## 남은 주요 대기 작업
 
-- 관리자 업로드/정렬/CRUD 구조 재설계
-- Supabase Storage 버킷 및 정책 설계
-- 제품/시공사례/자료실 드래그앤드롭 순서 관리
+- 운영 Supabase DB에 Storage/자료실/이미지 컬럼 SQL 적용
+- 관리자 업로드/정렬/CRUD 실제 브라우저 업로드 검증
+- 시공사례 목록 드래그앤드롭 순서 저장 UI 보강
 - `/technology/principle` 실제 페이지 구현
 - 제품 이미지 업로드 후 상세 페이지 연결
 - 카탈로그/지명원 PDF 업로드 후 자료실 다운로드 연결

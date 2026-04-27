@@ -83,7 +83,11 @@
 - `/partner/pending`: 승인 대기 페이지
 - `/admin`: 관리자 보호 라우트, 제품/콘텐츠/문의/회원/시공사례 관리 기능 일부
 - 관리자 제품 추가/수정/삭제: Supabase `products` upsert/delete 연결 및 결과 안내
+- 관리자 제품 이미지: Supabase Storage 업로드 방식, 여러 장 이미지, 첫 이미지 썸네일/상세 대표 이미지 구조 구현
+- 관리자 제품 정렬: 드래그앤드롭과 위/아래 버튼으로 `sort_order` 저장 구조 구현
 - 관리자 제품 수정 폼: 각 입력 필드 라벨을 입력칸 밖에 고정 표시
+- 관리자 시공사례: 이미지 파일 업로드와 대표 이미지 저장 구조 구현
+- 관리자 자료실: `resource_documents` 기반 파일 업로드/수정/삭제/정렬 탭 추가
 - 회원 승인 관리: EmailJS 환경변수 누락/발송 실패 안내 보강
 - 회원 상세 관리: 조직, 직책, 관심 사항, 로그인 횟수, 자료실 방문 횟수 확인 가능
 - 파트너 전용 자료실: 본인 정보 수정, 비밀번호 변경 탭 추가
@@ -92,7 +96,7 @@
 ### 문의 및 자료실
 
 - `/contact`: 견적 문의 폼, Supabase `inquiries` 저장
-- `/resources/catalog`: 자료실 UI 구현, 실제 PDF 다운로드 파일 연결 대기
+- `/resources/catalog`: 자료실 UI 구현, `resource_documents` 공개 자료 연동, 운영 DB/파일 업로드 확인 대기
 
 ### 성능/인프라
 
@@ -113,7 +117,7 @@
 | `/products/:productId` | 진행중 | 이미지/상세자료 연결 대기 |
 | `/cases` | 완료 | 목록/필터 |
 | `/cases/:id` | 진행중 | 상세 데이터 보강 대기 |
-| `/resources/catalog` | 진행중 | PDF 파일 연결 대기 |
+| `/resources/catalog` | 진행중 | `resource_documents` 공개 자료 연동, 실제 파일 업로드 확인 대기 |
 | `/about/certifications` | 완료 | 인증·특허 페이지, 파일 다운로드는 대기 |
 | `/about/history` | 완료 | 회사 연혁 |
 | `/contact` | 완료 | 문의 저장 |
@@ -136,6 +140,7 @@
 | `inquiries` | 견적 문의 | 운영 중 |
 | `profiles` | 회원 프로필/권한 | 운영 중 |
 | `partner_signup_requests` | 가입 신청 접수 대장 | 운영 중 |
+| `resource_documents` | 자료실 파일 목록 | 코드/SQL 작성 완료, 운영 DB 적용 대기 |
 
 주의: RLS 정책은 운영 안정성을 위해 Supabase 대시보드에서 주기적으로 재확인해야 합니다. 특히 관리자 화면에서 `products` insert/update/delete와 Storage 업로드 정책이 실제 운영 DB에서 허용되는지 확인해야 합니다.
 
@@ -145,9 +150,9 @@
 
 | 우선순위 | 이슈 | 상태 |
 |---|---|---|
-| P1 | 관리자 업로드/정렬/CRUD 구조 재설계 | 다음 세션 최우선 |
-| P1 | 제품/시공사례/자료실 드래그앤드롭 순서 관리 | 대기 |
-| P1 | Supabase Storage 버킷 및 업로드 정책 설계 | 대기 |
+| P1 | 관리자 업로드/정렬/CRUD 구조 재설계 | 코드 구현 완료, 운영 DB 적용/웹검증 대기 |
+| P1 | 제품/시공사례/자료실 순서 관리 | 제품/자료실 구현, 시공사례 정렬 저장 UI 보강 여지 |
+| P1 | Supabase Storage 버킷 및 업로드 정책 설계 | SQL 작성 완료, 운영 DB 적용 대기 |
 | P1 | `/technology/principle` 복사난방 원리 페이지 신설 | 대기 |
 | P1 | 제품 상세 이미지 업로드 및 사용자 화면 연결 | 대기 |
 | P1 | 카탈로그/지명원 PDF Storage 업로드 및 다운로드 연결 | 대기 |

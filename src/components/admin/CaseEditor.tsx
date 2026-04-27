@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { isImageFile, uploadPublicFile } from '../../lib/storageUploads';
 
 interface CaseItem {
   id: string;
@@ -11,6 +12,7 @@ interface CaseItem {
   summary: string;
   description: string;
   installed_at: string;
+  sort_order?: number;
 }
 
 const CATEGORIES = [
@@ -46,7 +48,6 @@ export default function CaseEditor() {
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [selected, setSelected] = useState<CaseItem | null>(null);
   const [form, setForm] = useState<Partial<CaseItem>>({});
-  const [newImageUrl, setNewImageUrl] = useState('');
   const [saving, setSaving] = useState(false);
   const [savedMsg, setSavedMsg] = useState('');
 
@@ -54,8 +55,8 @@ export default function CaseEditor() {
     if (!supabase) return;
     supabase
       .from('case_studies')
-      .select('id,title,category,location,image_url,images,summary,description,installed_at')
-      .order('created_at', { ascending: true })
+      .select('id,title,category,location,image_url,images,summary,description,installed_at,sort_order')
+      .order('sort_order', { ascending: true })
       .then(({ data }) => { if (data) setCases(data as CaseItem[]); });
   }, []);
 
@@ -68,22 +69,30 @@ export default function CaseEditor() {
       summary: item.summary ?? '',
       description: item.description ?? '',
       installed_at: item.installed_at ?? '',
-      images: item.images ?? [],
+      images: compactCaseImages(item),
     });
-    setNewImageUrl('');
     setSavedMsg('');
   }
 
-  function addImage() {
-    const url = newImageUrl.trim();
-    if (!url) return;
-    if (!isValidImageUrl(url)) {
-      setSavedMsg('❌ 이미지 URL 형식을 확인해주세요.');
+  async function uploadImages(files: FileList | null) {
+    if (!files || files.length === 0 || !selected) return;
+    const imageFiles = Array.from(files).filter(isImageFile);
+    if (imageFiles.length !== files.length) {
+      setSavedMsg('이미지 파일만 업로드할 수 있습니다.');
       return;
     }
-    setForm((f) => ({ ...f, images: [...(f.images ?? []), url] }));
-    setNewImageUrl('');
-    setSavedMsg('');
+
+    setSaving(true);
+    setSavedMsg('이미지를 업로드하는 중입니다...');
+    try {
+      const urls = await Promise.all(imageFiles.map((file) => uploadPublicFile('case-images', selected.id, file)));
+      setForm((f) => ({ ...f, images: [...(f.images ?? []), ...urls] }));
+      setSavedMsg('이미지가 업로드됐습니다. 저장 버튼을 눌러 사례에 반영하세요.');
+    } catch (error) {
+      setSavedMsg('이미지 업로드 실패: ' + (error instanceof Error ? error.message : '알 수 없는 오류'));
+    } finally {
+      setSaving(false);
+    }
   }
 
   function removeImage(idx: number) {
@@ -101,6 +110,7 @@ export default function CaseEditor() {
       description: form.description,
       installed_at: form.installed_at || null,
       images: form.images ?? [],
+      image_url: (form.images ?? [])[0] ?? selected.image_url ?? null,
     };
     const { error } = await supabase.from('case_studies').update(payload).eq('id', selected.id);
     setSaving(false);
@@ -174,17 +184,17 @@ export default function CaseEditor() {
 
               <label style={labelStyle}>상세 설명 (상세 페이지 본문)</label>
               <textarea
-                style={{ ...inputStyle, minHeight: '140px', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.7 }}
+                style={{ ...inputStyle, minHeight: '260px', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.7 }}
                 value={form.description ?? ''}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                 placeholder="시공 내용, 사용 제품, 설치 환경, 효과 등을 자유롭게 입력하세요."
               />
 
-              {/* 추가 사진 URL */}
-              <label style={labelStyle}>추가 사진 URL 목록</label>
+              {/* 추가 사진 업로드 */}
+              <label style={labelStyle}>사례 사진</label>
               <div style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: '8px', padding: '12px', marginBottom: '8px' }}>
                 {(form.images ?? []).length === 0 && (
-                  <p style={{ fontSize: '0.78rem', color: '#9CA3AF', margin: 0 }}>추가된 사진이 없습니다. (대표 사진은 기본 포함)</p>
+                  <p style={{ fontSize: '0.78rem', color: '#9CA3AF', margin: 0 }}>추가된 사진이 없습니다.</p>
                 )}
                 {(form.images ?? []).map((url, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
@@ -194,16 +204,7 @@ export default function CaseEditor() {
                     <button onClick={() => removeImage(i)} style={{ flexShrink: 0, background: '#FEE2E2', border: 'none', color: '#EF4444', borderRadius: '4px', padding: '3px 8px', cursor: 'pointer', fontSize: '12px' }}>삭제</button>
                   </div>
                 ))}
-                <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
-                  <input
-                    style={{ ...inputStyle, flex: 1, marginTop: 0 }}
-                    placeholder="https://... 이미지 URL 입력"
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addImage(); } }}
-                  />
-                  <button onClick={addImage} style={{ background: 'var(--navy)', color: '#fff', border: 'none', borderRadius: '6px', padding: '0 14px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>추가</button>
-                </div>
+                <input type="file" accept="image/*" multiple onChange={(e) => uploadImages(e.target.files)} style={{ marginTop: '8px' }} />
               </div>
 
               {/* 저장 버튼 */}
@@ -226,13 +227,6 @@ export default function CaseEditor() {
   );
 }
 
-function isValidImageUrl(url: string) {
-  if (url.startsWith('/')) return true;
-
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-  } catch {
-    return false;
-  }
+function compactCaseImages(item: Partial<CaseItem>) {
+  return Array.from(new Set([item.image_url, ...(item.images ?? [])].filter(Boolean) as string[]));
 }

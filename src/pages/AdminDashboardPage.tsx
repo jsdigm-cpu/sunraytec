@@ -7,6 +7,7 @@ import ProductListEditor from '../components/admin/ProductListEditor';
 import ContentEditor from '../components/admin/ContentEditor';
 import InquiryList from '../components/admin/InquiryList';
 import CaseEditor from '../components/admin/CaseEditor';
+import ResourceDocumentEditor from '../components/admin/ResourceDocumentEditor';
 import MemberManager from '../components/admin/MemberManager';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
@@ -52,7 +53,9 @@ export default function AdminDashboardPage() {
     procurement_id: product.procurementId || null,
     thumbnail_image: product.thumbnailImage || null,
     detail_image: product.detailImage || null,
+    image_gallery: product.imageGallery ?? [],
     feature_bullets: product.featureBullets ?? [],
+    sort_order: product.sortOrder ?? products.length,
     updated_at: new Date().toISOString(),
   });
 
@@ -94,6 +97,26 @@ export default function AdminDashboardPage() {
     return null;
   };
 
+  const saveProductOrder = async (ordered: Product[]) => {
+    setProductNotice('');
+    const nextProducts = ordered.map((item, index) => ({ ...item, sortOrder: index }));
+
+    if (supabase) {
+      const { error } = await supabase
+        .from('products')
+        .upsert(nextProducts.map(productToDbRow), { onConflict: 'id' });
+
+      if (error) {
+        setProductNotice(`제품 순서 저장 실패: ${error.message}`);
+        return `제품 순서 저장 실패: ${error.message}`;
+      }
+    }
+
+    setProducts(nextProducts);
+    setProductNotice('제품 노출 순서가 저장됐습니다.');
+    return null;
+  };
+
   return (
     <div style={{ display: 'flex', minHeight: '70vh' }}>
       <Sidebar tab={tab} onTab={setTab} newInquiryCount={newInquiryCount} />
@@ -118,7 +141,13 @@ export default function AdminDashboardPage() {
             )}
             <div className="admin-grid" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr' }}>
               <ProductForm onSubmit={upsertProduct} selectedProduct={selectedProduct} onClearSelection={() => setSelectedProduct(null)} />
-              <ProductListEditor products={products} selectedId={selectedProduct?.id ?? null} onSelect={setSelectedProduct} onDelete={deleteProduct} />
+              <ProductListEditor
+                products={products}
+                selectedId={selectedProduct?.id ?? null}
+                onSelect={setSelectedProduct}
+                onDelete={deleteProduct}
+                onSaveOrder={saveProductOrder}
+              />
             </div>
           </>
         )}
@@ -127,6 +156,9 @@ export default function AdminDashboardPage() {
         )}
         {tab === 'cases' && (
           <CaseEditor />
+        )}
+        {tab === 'resources' && (
+          <ResourceDocumentEditor />
         )}
         {tab === 'members' && (
           <MemberManager />

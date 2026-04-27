@@ -21,6 +21,7 @@ export default function ProductDetailPage() {
   const relatedProducts = products
     .filter((item) => item.id !== product.id && item.productLine === product.productLine)
     .slice(0, 3);
+  const galleryImages = getProductImages(product);
 
   return (
     <div>
@@ -82,9 +83,9 @@ export default function ProductDetailPage() {
                 minHeight: '320px',
               }}
             >
-              {product.detailImage || product.thumbnailImage ? (
+              {galleryImages.length > 0 ? (
                 <img
-                  src={product.detailImage ?? product.thumbnailImage}
+                  src={galleryImages[0]}
                   alt={product.name}
                   style={{ width: '100%', height: '100%', maxHeight: '340px', objectFit: 'contain' }}
                 />
@@ -121,7 +122,23 @@ export default function ProductDetailPage() {
             </div>
           </article>
 
-          <div style={{ display: 'grid', gap: '1rem' }}>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+            {galleryImages.length > 1 ? (
+              <article className="card" style={{ padding: '1.5rem' }}>
+                <h2 style={{ marginTop: 0 }}>제품 이미지</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem' }}>
+                  {galleryImages.map((url, index) => (
+                    <img
+                      key={`${url}-${index}`}
+                      src={url}
+                      alt={`${product.name} 상세 이미지 ${index + 1}`}
+                      style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: '12px', border: '1px solid var(--border)' }}
+                    />
+                  ))}
+                </div>
+              </article>
+            ) : null}
+
             <article className="card" style={{ padding: '1.5rem' }}>
               <h2 style={{ marginTop: 0 }}>기본 사양</h2>
               <DetailSpecRow label="모델명" value={product.name} />
@@ -204,6 +221,10 @@ export default function ProductDetailPage() {
       `}</style>
     </div>
   );
+}
+
+function getProductImages(product: Product) {
+  return Array.from(new Set([...(product.imageGallery ?? []), product.detailImage, product.thumbnailImage].filter(Boolean) as string[]));
 }
 
 function DetailSpecRow({ label, value }: { label: string; value: string }) {

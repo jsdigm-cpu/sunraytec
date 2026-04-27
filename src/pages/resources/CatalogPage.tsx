@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FileText, Download, Lock } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 type DocCategory = '전체' | '제품 카탈로그' | '기술 자료' | '인증서';
 
 interface DocItem {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   category: '제품 카탈로그' | '기술 자료' | '인증서';
   fileSize: string;
   ready: boolean;
+  fileUrl?: string;
 }
 
 const DOCS: DocItem[] = [
@@ -129,16 +131,40 @@ const cardVariant = {
 export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<DocCategory>('전체');
   const [toastVisible, setToastVisible] = useState(false);
+  const [docs, setDocs] = useState<DocItem[]>(DOCS);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase
+      .from('resource_documents')
+      .select('id,title,description,category,file_url,file_size,is_public,sort_order')
+      .eq('is_public', true)
+      .order('sort_order', { ascending: true })
+      .then(({ data }) => {
+        if (!data || data.length === 0) return;
+        setDocs(data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description ?? '',
+          category: item.category,
+          fileSize: item.file_size || 'PDF',
+          ready: Boolean(item.file_url),
+          fileUrl: item.file_url ?? undefined,
+        })));
+      });
+  }, []);
 
   const filtered = activeCategory === '전체'
-    ? DOCS
-    : DOCS.filter(d => d.category === activeCategory);
+    ? docs
+    : docs.filter(d => d.category === activeCategory);
 
-  const handleDownload = (ready: boolean) => {
-    if (!ready) {
+  const handleDownload = (doc: DocItem) => {
+    if (!doc.ready || !doc.fileUrl) {
       setToastVisible(true);
       setTimeout(() => setToastVisible(false), 3000);
+      return;
     }
+    window.open(doc.fileUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -197,7 +223,7 @@ export default function CatalogPage() {
                 {cat}
                 {cat !== '전체' && (
                   <span style={{ marginLeft: '6px', fontSize: '0.75rem', opacity: 0.7 }}>
-                    {DOCS.filter(d => d.category === cat).length}
+                    {docs.filter(d => d.category === cat).length}
                   </span>
                 )}
               </button>
@@ -261,7 +287,7 @@ export default function CatalogPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '11px', color: '#9CA3AF' }}>{doc.fileSize}</span>
                   <button
-                    onClick={() => handleDownload(doc.ready)}
+                    onClick={() => handleDownload(doc)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: '6px',
                       padding: '8px 16px', borderRadius: '8px',

@@ -13,37 +13,30 @@
 
 ## 최우선
 
-### 1. 관리자 업로드/정렬/CRUD 구조 재설계
+### 1. 관리자 업로드/정렬/CRUD 운영 DB 적용 및 웹 검증
 
 - 담당 후보: Codex 주도, Claude CLI 보조 가능
-- 목표: 제품안내, 시공사례, 자료실을 관리자 화면에서 파일 업로드/리스트/상세/수정/삭제/노출 순서 관리까지 일관되게 운영 가능하도록 재설계
-- 사용자 요청 핵심:
-  - 이미지/자료 파일은 URL 입력이 아니라 파일 첨부 및 Supabase Storage 업로드 방식으로 전환
-  - 여러 장 업로드 가능
-  - 제품 이미지는 첫 번째 업로드 파일을 썸네일 겸 첫 번째 상세 이미지로 사용
-  - 제품, 시공사례, 자료실 모두 관리자 페이지에서 리스트/상세/수정/삭제 가능해야 함
-  - 노출 순서는 관리자 목록에서 드래그앤드롭으로 조정
-  - 모바일/터치 보조용으로 위/아래 이동 버튼도 고려
-- 권장 구현 방향:
-  - 드래그앤드롭 라이브러리: `@dnd-kit/core`, `@dnd-kit/sortable`
-  - DB 정렬 기준: 각 테이블의 `sort_order ASC`
-  - 저장 방식: 화면에서 순서 변경 후 `순서 저장` 버튼으로 Supabase 일괄 업데이트
-  - Storage 버킷 후보: `product-images`, `case-images`, `resource-files` 또는 통합 `uploads`
+- 목표: 2026-04-27 코드에 반영된 관리자 파일 업로드/정렬 구조를 운영 Supabase DB에 적용하고 실제 업로드를 확인
+- 코드 반영 완료:
+  - 제품 여러 장 이미지 업로드, 첫 이미지 썸네일/상세 대표 이미지 자동 사용
+  - 제품 목록 드래그앤드롭 및 위/아래 버튼 정렬, `sort_order` 저장
+  - 시공사례 이미지 파일 업로드와 대표 이미지 저장
+  - 자료실 관리 탭의 파일 업로드/수정/삭제/위아래 정렬
+  - `/resources/catalog`의 `resource_documents` 공개 자료 연동
+  - `product-images`, `case-images`, `resource-files` Storage 버킷 SQL 설계
 - 먼저 확인할 파일:
   - `src/pages/AdminDashboardPage.tsx`
   - `src/components/admin/ProductForm.tsx`
   - `src/components/admin/ProductListEditor.tsx`
   - `src/components/admin/CaseEditor.tsx`
+  - `src/components/admin/ResourceDocumentEditor.tsx`
   - `src/pages/resources/CatalogPage.tsx`
   - `src/app/App.tsx`
   - `supabase_schema.sql`
+  - `supabase_storage_uploads_delta.sql`
 - 완료 기준:
-  - Supabase Storage/DB 설계 SQL 작성
-  - 제품 이미지 여러 장 업로드 및 미리보기/삭제 구현
-  - 첫 번째 제품 이미지를 썸네일로 자동 사용
-  - 제품 목록 드래그앤드롭 순서 변경 및 `sort_order` 저장 구현
-  - 시공사례 이미지 업로드/정렬 구조 설계 및 가능하면 구현
-  - 자료실 파일 업로드/다운로드 관리 구조 설계 및 가능하면 구현
+  - `supabase_storage_uploads_delta.sql` 신규 컬럼/테이블/Storage 버킷/RLS 정책 운영 DB 적용
+  - `/admin`에서 제품 이미지 업로드, 제품 정렬 저장, 시공사례 이미지 업로드, 자료실 파일 업로드 확인
   - 사용자 화면이 관리자 지정 `sort_order`대로 노출됨
   - `npm run lint`, `npm run build` 성공
 
