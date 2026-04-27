@@ -66,7 +66,7 @@ export default function MemberManager() {
       const isMissingTable = requestError.message.includes('partner_signup_requests') || requestError.code === 'PGRST205';
       setNotice(
         isMissingTable
-          ? '가입 신청 접수 대장 테이블이 아직 API에 반영되지 않았습니다. SQL 파일 재실행 후 1분 뒤 새로고침해 주세요.'
+          ? '가입 신청 접수 대장 테이블이 아직 API에 반영되지 않았습니다. supabase_create_signup_requests_table.sql 전체 실행 후 1분 뒤 새로고침해 주세요.'
           : `가입 신청 목록을 불러오지 못했습니다: ${requestError.message}`,
       );
     } else {
@@ -201,7 +201,7 @@ export default function MemberManager() {
 
       {!requestLedgerReady && (
         <div style={{ marginBottom: '14px', padding: '10px 14px', borderRadius: '8px', background: '#FFFBEB', color: '#92400E', border: '1px solid #FDE68A', fontSize: '0.84rem', fontWeight: 700 }}>
-          Supabase SQL Editor에서 <code>supabase_fix_auth_cms_policies.sql</code> 전체 실행 후, SQL 맨 아래의 schema reload까지 적용되어야 가입 신청 접수 대장이 표시됩니다.
+          Supabase SQL Editor에서 <code>supabase_create_signup_requests_table.sql</code> 전체 실행 후, SQL 맨 아래의 schema reload까지 적용되어야 가입 신청 접수 대장이 표시됩니다.
         </div>
       )}
 
