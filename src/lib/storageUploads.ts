@@ -9,7 +9,8 @@ export async function uploadPublicFile(bucket: string, folder: string, file: Fil
 
   const extension = getFileExtension(file.name);
   const safeName = sanitizeFileName(file.name.replace(/\.[^.]+$/, ''));
-  const path = `${folder}/${Date.now()}-${crypto.randomUUID()}-${safeName}${extension ? `.${extension}` : ''}`;
+  const safeFolder = sanitizeStoragePath(folder);
+  const path = `${safeFolder}/${Date.now()}-${crypto.randomUUID()}-${safeName}${extension ? `.${extension}` : ''}`;
 
   const { error } = await supabase.storage.from(bucket).upload(path, file, {
     cacheControl: '31536000',
@@ -35,9 +36,31 @@ function sanitizeFileName(fileName: string) {
   const sanitized = fileName
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9가-힣_-]+/g, '-')
+    .normalize('NFKD')
+    .replace(/[^a-z0-9_-]+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
   return sanitized || 'upload';
+}
+
+function sanitizeStoragePath(path: string) {
+  return path
+    .split('/')
+    .map((segment) => sanitizeFileName(toKnownSlug(segment)))
+    .filter(Boolean)
+    .join('/') || 'uploads';
+}
+
+function toKnownSlug(value: string) {
+  const map: Record<string, string> = {
+    '제품 카탈로그': 'product-catalog',
+    '기술 자료': 'technical-docs',
+    '인증서': 'certifications',
+    '가격표': 'price-list',
+    '기술자료': 'technical-docs',
+    '기타': 'etc',
+  };
+
+  return map[value] ?? value;
 }

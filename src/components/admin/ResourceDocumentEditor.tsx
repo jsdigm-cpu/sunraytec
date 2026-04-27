@@ -63,7 +63,7 @@ export default function ResourceDocumentEditor() {
     setSaving(true);
     setMessage('파일을 업로드하는 중입니다...');
     try {
-      const folder = encodeURIComponent(form.category ?? '자료실');
+      const folder = form.category ?? '자료실';
       const url = await uploadPublicFile('resource-files', folder, file);
       setForm((prev) => ({ ...prev, file_url: url, file_size: formatFileSize(file.size) }));
       setMessage('파일이 업로드됐습니다. 저장 버튼을 눌러 자료실에 반영하세요.');
