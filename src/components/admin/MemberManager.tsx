@@ -25,13 +25,18 @@ export default function MemberManager() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [saving, setSaving] = useState<string | null>(null);
+  const [notice, setNotice] = useState('');
 
   async function load() {
-    if (!supabase) return;
-    const { data } = await supabase
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .order('created_at', { ascending: false });
+    if (error) setNotice(`회원 목록을 불러오지 못했습니다: ${error.message}`);
     if (data) setMembers(data as Profile[]);
     setLoading(false);
   }
@@ -41,28 +46,49 @@ export default function MemberManager() {
   async function updateStatus(member: Profile, status: 'approved' | 'rejected') {
     if (!supabase) return;
     setSaving(member.id);
+    setNotice('');
     const { error } = await supabase.from('profiles').update({
       status,
       approved_at: status === 'approved' ? new Date().toISOString() : null,
     }).eq('id', member.id);
 
+    if (error) {
+      setNotice(`상태 변경 실패: ${error.message}`);
+      setSaving(null);
+      return;
+    }
+
     // DB 업데이트가 성공했고, 상태가 '승인(approved)'인 경우에만 이메일 발송
-    if (!error && status === 'approved') {
+    if (status === 'approved') {
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        setNotice('승인은 저장됐지만 EmailJS 환경변수가 없어 승인 안내 메일은 발송되지 않았습니다.');
+        setSaving(null);
+        load();
+        return;
+      }
+
       try {
         await emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID',
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID',
+          serviceId,
+          templateId,
           {
             to_email: member.email,
             to_name: member.full_name,
             company_name: member.company_name,
           },
-          import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY'
+          publicKey
         );
-        console.log(`승인 안내 메일 발송 성공: ${member.email}`);
+        setNotice('승인이 저장됐고 안내 메일도 발송됐습니다.');
       } catch (err) {
         console.error('승인 안내 메일 발송 실패:', err);
+        setNotice('승인은 저장됐지만 안내 메일 발송에 실패했습니다. EmailJS 설정을 확인해주세요.');
       }
+    } else {
+      setNotice('회원 상태가 변경됐습니다.');
     }
 
     setSaving(null);
@@ -74,6 +100,12 @@ export default function MemberManager() {
 
   return (
     <div>
+      {notice && (
+        <div style={{ marginBottom: '14px', padding: '10px 14px', borderRadius: '8px', background: notice.includes('실패') || notice.includes('못했습니다') ? '#FEF2F2' : '#EFF6FF', color: notice.includes('실패') || notice.includes('못했습니다') ? '#B91C1C' : '#1E40AF', fontSize: '0.84rem', fontWeight: 700 }}>
+          {notice}
+        </div>
+      )}
+
       {/* 필터 탭 */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
         {(['all', 'pending', 'approved', 'rejected'] as const).map((s) => (

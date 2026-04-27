@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import type React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Props {
@@ -24,7 +25,7 @@ export default function ProtectedRoute({ children, require }: Props) {
     return <Navigate to="/" replace />;
   }
 
-  if (require === 'partner' && profile?.status !== 'approved') {
+  if (require === 'partner' && profile?.role !== 'admin' && profile?.status !== 'approved') {
     return <Navigate to="/partner/pending" replace />;
   }
 

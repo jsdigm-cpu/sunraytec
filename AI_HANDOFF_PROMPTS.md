@@ -1,45 +1,79 @@
 # AI COLLABORATION RULES & PROMPTS
 
-이 문서는 프로젝트에 투입되는 모든 AI 에이전트(Claude, Codex, Antigravity 등)가 지켜야 할 **공통 작업 규칙** 및 **인수인계 프롬프트**입니다.
-이 파일 하나로 프로젝트의 작업 표준을 유지합니다.
+마지막 업데이트: 2026-04-27
+
+이 문서는 썬레이텍 홈페이지 프로젝트에 투입되는 모든 AI 에이전트(Codex, Claude CLI, Antigravity, Claude Web)가 지켜야 할 공통 작업 규칙과 시작 프롬프트입니다.
+
+현재 운영 원칙은 **Codex 총괄, Claude CLI/Antigravity 보조 실행**입니다.
 
 ---
 
-## 🛑 AI 에이전트 핵심 행동 수칙 (CORE RULES)
-1. **문서보다 코드가 먼저다 (Code > Docs)**: `PROJECT_STATUS.md` 등의 기획/상태 문서와 실제 코드가 불일치할 경우, **반드시 실제 구현된 코드를 진실(Source of Truth)로 판단**해야 합니다.
-2. **미구현 기능을 전제하지 말 것**: 작업 요청 시 존재하지 않는 라우트, DB 테이블, 파일을 이미 있는 것처럼 가정하고 덮어쓰거나 무시하지 마세요.
-3. **한 번에 하나의 작업만 (One Task at a Time)**: `NEXT_TASK.md`에 여러 과제가 있더라도, 컨텍스트 손실을 막기 위해 반드시 **가장 최우선(최상단)에 있는 작업 1개**만 처리하고 멈추세요.
-4. **Tailwind CSS 엄수**: 커스텀 CSS 파일을 새로 만들지 마세요. 모든 스타일링은 Tailwind 유틸리티 클래스와 인라인 스타일(설정 불가피한 경우)로 해결합니다.
-5. **작업 후 상태 업데이트 의무**: 작업을 완료하면 반드시 `PROJECT_STATUS.md`, `MENU_STATUS.md` (메뉴 진행 상태 표), `SESSION_HANDOFF.md` 세 가지 문서를 최신화해야 합니다.
+## 핵심 규칙
+
+1. **Code > Docs**: 문서와 실제 구현이 다르면 코드를 진실로 판단하고 문서를 갱신합니다.
+2. **Codex가 작업 큐를 관리**합니다: `CODEX_COMMAND_CENTER.md`, `NEXT_TASK.md`, `PROJECT_STATUS.md` 기준으로 다음 작업을 정합니다.
+3. **한 번에 하나의 주요 작업**을 끝냅니다. 여러 작업을 동시에 건드려 문맥을 흐리지 않습니다.
+4. **라우트와 메뉴는 실제 코드 기준**입니다: `src/app/routes.tsx`, `src/components/layout/Header.tsx`를 확인합니다.
+5. **스타일은 기존 체계 존중**: `src/styles`의 토큰/공통 스타일, Tailwind v4, 기존 인라인 스타일 패턴을 우선 사용합니다. 새 전역 CSS 파일은 꼭 필요할 때만 추가합니다.
+6. **작업 후 문서 갱신**: 기능 상태가 바뀌면 `PROJECT_STATUS.md`, `MENU_STATUS.md`, `NEXT_TASK.md`, `SESSION_HANDOFF.md` 중 필요한 문서를 업데이트합니다.
+7. **검증 우선**: 코드 변경 후 가능한 경우 `npm run build`를 실행합니다.
 
 ---
 
-## 🛠 AI 에이전트별 초기 설정 프롬프트
+## Codex 시작 프롬프트
 
-사용자(Human)는 새로운 AI 세션을 열 때 아래 텍스트를 복사하여 첫 프롬프트로 입력하세요.
-
-### ➡️ 클로드 채팅 (Claude Web) 용 프롬프트
 ```text
-이 프로젝트는 썬레이텍 공식 홈페이지입니다. 너의 역할은 코드 직접 구현이 아닌 '기획 리뷰 및 작업 요청서 작성'입니다.
-작업 전 반드시 `PROJECT_STATUS.md`와 `NEXT_TASK.md`를 기준으로 현재 상태를 요약해주세요.
-이후 `NEXT_TASK.md`의 최상단 작업 1개를 다른 코딩 AI(Claude Code, Codex)가 바로 실행할 수 있도록, 수정해야 할 파일명과 요구사항을 아주 명확하고 컴팩트한 작업 요청문으로 만들어주세요.
-```
-
-### ➡️ 코드 구현 AI (Claude Code, Codex, Antigravity) 용 프롬프트
-```text
-이 프로젝트는 썬레이텍 공식 홈페이지입니다 (React 19 + Supabase).
-작업 전 `PROJECT_STATUS.md`, `MENU_STATUS.md`, `SESSION_HANDOFF.md`, `NEXT_TASK.md`를 읽고 현재 상태를 파악하세요.
-문서와 코드가 다르면 항상 '실제 코드'를 진실로 취급하세요.
-현재 `NEXT_TASK.md`에 기재된 [🔴 최우선] 작업 1개만을 진행해 주세요.
-작업을 마친 후에는 반드시 변경 사항을 `SESSION_HANDOFF.md`에 기록하고, 특정 기능/메뉴가 완성되었다면 `MENU_STATUS.md`의 신호등 상태(🔴/🟡/🟢)를 변경한 뒤 `NEXT_TASK.md`에서 삭제해 주세요.
+이 프로젝트는 썬레이텍 공식 홈페이지입니다.
+Codex가 현재 개발 총괄입니다.
+작업 전 CODEX_COMMAND_CENTER.md, PROJECT_STATUS.md, MENU_STATUS.md, NEXT_TASK.md, SESSION_HANDOFF.md를 읽고 실제 코드와 비교해 주세요.
+문서와 코드가 다르면 코드를 기준으로 판단하고, 현재 NEXT_TASK.md의 최우선 작업 1개를 진행해 주세요.
+작업 완료 후 필요한 문서를 갱신하고 npm run build로 검증해 주세요.
 ```
 
 ---
 
-## 🤝 세션 인수인계 프롬프트 (세션이 끊겼을 때)
+## Claude CLI 작업 요청 프롬프트
+
+```text
+이 프로젝트는 썬레이텍 공식 홈페이지입니다.
+Codex가 총괄하고 있으며, 당신은 지정된 구현 작업을 맡는 보조 실행자입니다.
+작업 전 CODEX_COMMAND_CENTER.md, PROJECT_STATUS.md, NEXT_TASK.md를 읽고 실제 코드와 불일치가 있으면 코드 기준으로 진행하세요.
+이번 세션에서는 사용자가 지정한 작업 1개만 구현하세요.
+DB, Supabase, 인증, Storage를 수정할 때는 변경한 테이블/정책/환경변수/파일을 SESSION_HANDOFF.md에 반드시 기록하세요.
+완료 후 npm run build 결과와 수정 파일 목록을 보고하세요.
+```
+
+---
+
+## Antigravity 작업 요청 프롬프트
+
+```text
+이 프로젝트는 썬레이텍 공식 홈페이지입니다.
+Codex가 총괄하고 있으며, 당신은 UI/페이지 보강 담당입니다.
+작업 전 CODEX_COMMAND_CENTER.md, MENU_STATUS.md, NEXT_TASK.md를 읽고 실제 라우트는 src/app/routes.tsx에서 확인하세요.
+이번 세션에서는 지정된 페이지 또는 컴포넌트 1개만 작업하세요.
+기존 브랜드 컬러, Header/Footer 구조, 반응형 스타일을 유지하고 불필요한 전역 CSS를 추가하지 마세요.
+완료 후 바뀐 메뉴 상태가 있으면 MENU_STATUS.md 갱신 내용을 보고하세요.
+```
+
+---
+
+## Claude Web 기획 리뷰 프롬프트
+
+```text
+이 프로젝트는 썬레이텍 공식 홈페이지입니다.
+당신은 코드 구현자가 아니라 기획 리뷰와 작업 요청서 작성 담당입니다.
+PROJECT_STATUS.md, CODEX_COMMAND_CENTER.md, NEXT_TASK.md 기준으로 현재 상태를 요약하고,
+다음 구현 AI가 바로 실행할 수 있도록 수정 파일, 목표, 완료 기준, 주의사항을 포함한 짧은 작업 요청문을 작성해 주세요.
+```
+
+---
+
+## 세션 복구 프롬프트
 
 ```text
 이전 AI 세션이 중단되었습니다.
-가장 먼저 `SESSION_HANDOFF.md`를 읽고 직전 세션에서 어디까지 작업이 진행되었는지, 남아있는 이슈는 무엇인지 파악하세요.
-그 후 `NEXT_TASK.md`를 확인하여 멈췄던 작업을 이어서 1개만 진행해 주세요.
+먼저 SESSION_HANDOFF.md와 NEXT_TASK.md를 읽고 직전 작업과 남은 이슈를 파악하세요.
+그 다음 CODEX_COMMAND_CENTER.md의 운영 규칙에 따라 최우선 작업 1개만 이어서 진행해 주세요.
 ```
+

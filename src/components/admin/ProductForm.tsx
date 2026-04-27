@@ -3,7 +3,7 @@ import type { Product } from '../../types/product';
 import { positiveNumber, required } from '../../utils/validators';
 
 interface Props {
-  onSubmit: (product: Product) => void;
+  onSubmit: (product: Product) => Promise<string | null> | string | null | void;
 }
 
 const empty: Product = {
@@ -24,15 +24,33 @@ const empty: Product = {
 
 export default function ProductForm({ onSubmit }: Props) {
   const [form, setForm] = useState<Product>(empty);
+  const [message, setMessage] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const update = <K extends keyof Product>(key: K, value: Product[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const save = () => {
-    if (!required(form.id) || !required(form.name) || !positiveNumber(form.specs.powerW)) return;
-    onSubmit(form);
+  const save = async () => {
+    setMessage('');
+    if (!required(form.id) || !required(form.name) || !required(form.category) || !positiveNumber(form.specs.powerW)) {
+      setMessage('id, 모델명, 카테고리, 소비전력을 확인해주세요.');
+      return;
+    }
+
+    setSaving(true);
+    const error = await onSubmit({
+      ...form,
+      applications: form.applications.filter(Boolean),
+      featureBullets: form.featureBullets?.filter(Boolean),
+    });
+    setSaving(false);
+    if (error) {
+      setMessage(error);
+      return;
+    }
     setForm(empty);
+    setMessage('저장됐습니다.');
   };
 
   return (
@@ -104,8 +122,13 @@ export default function ProductForm({ onSubmit }: Props) {
           value={form.detailImage ?? ''}
           onChange={(e) => update('detailImage', e.target.value)}
         />
-        <button className="btn btn-primary" type="button" onClick={save}>
-          저장
+        {message && (
+          <div style={{ fontSize: '0.82rem', color: message.includes('실패') || message.includes('확인') ? '#DC2626' : '#047857', fontWeight: 700 }}>
+            {message}
+          </div>
+        )}
+        <button className="btn btn-primary" type="button" onClick={save} disabled={saving}>
+          {saving ? '저장 중...' : '저장'}
         </button>
       </div>
     </div>

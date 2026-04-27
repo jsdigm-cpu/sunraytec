@@ -1,125 +1,162 @@
 # PROJECT STATUS
 
-마지막 업데이트: 2026-04-23 (야간 세션)
+마지막 업데이트: 2026-04-27
 
 ## 프로젝트 한줄 설명
-썬레이텍 회사 홈페이지를 React + Vite + TypeScript + Supabase로 구축 중.
-현재 Supabase 연동 완료, 주요 페이지 Live 운영 중.
 
-## 기술 스택
-- Frontend: React 19, Vite 6, TypeScript
-- Routing: React Router v6 (lazy loading 적용)
-- Styling: Tailwind CSS (CSS 파일 직접 작성 금지)
-- Animation: framer-motion (motion/react)
-- Icons: lucide-react
-- DB/백엔드: Supabase (PostgreSQL + RLS)
-- 배포: GitHub (jsdigm-cpu/sunraytec) → Vercel 자동배포
+썬레이텍 공식 홈페이지를 React + Vite + TypeScript + Supabase로 구축 중입니다. 현재 주요 사용자 페이지, Supabase 연동, 인증/관리자 기능 일부가 구현되어 있고, Codex가 개발 총괄을 맡아 Claude CLI 및 Antigravity와 협업합니다.
 
 ## 현재 배포 주소
-- https://sunraytec.vercel.app ✅ 운영 중 (Supabase 연동 완료)
 
-## AI 협업 역할
-- Claude Code (CLI): 복잡한 구현, DB 연동, 디버깅, 배포
-- Codex / Antigravity: 단순 서브 페이지, 텍스트 교체
-- 클로드 채팅앱은 거치지 말고 CLI에 직접 요청 권장 (토큰 절약)
+- Production: https://sunraytec.vercel.app
 
 ---
 
-## ✅ 완료된 전체 구현 목록 (2026-04-23 기준)
+## 기술 스택
 
-### 🚀 최신 업데이트 내역
-- **Admin 인증 버그 완전 해결**: Supabase RLS 무한 루프, gotrue-js Deadlock 버그, 5초 강제 타임아웃 버그 해결. 로그인 후 Admin 대시보드 자동 진입 보장.
-- **Header UI 개편**: 상단 유틸리티 바(Utility Bar) 도입. 로그인 유저 상태 표시 및 로그아웃 버튼 추가 (데스크탑/모바일 지원). 견적문의 버튼 사이즈 축소 및 전반적 메뉴 정렬 최적화.
+| 영역 | 현재 상태 |
+|---|---|
+| Frontend | React 19, Vite 6, TypeScript |
+| Routing | React Router v7 계열, lazy loading 적용 |
+| Styling | Tailwind v4, `src/styles` 공통 CSS, 컴포넌트 인라인 스타일 혼용 |
+| Animation | `motion`, 일부 `framer-motion` import 잔존 |
+| Icons | lucide-react |
+| Backend / DB | Supabase PostgreSQL, Auth, Storage 예정 |
+| Deployment | GitHub `jsdigm-cpu/sunraytec` → Vercel 자동 배포 |
 
-### 메인 페이지 (/)
-- Hero: 배경 슬라이드 10장 + 현장별 캡션 + "실제 시공 현장" 고정 배지
-- Hero: 슬라이드 전환 fade 애니메이션, 도트 네비게이터
-- Hero: CMS 연동 (headline, subcopy, CTA 텍스트 Admin에서 편집 가능)
-- KPI, 4대 ZERO, 복사vs대류 비교, 업종별 솔루션
-- 제품 라인업, 시공사례 갤러리, 인증·특허
-- AI 계산기 미리보기, 공공기관 패스트트랙 배너, 메인 CTA
-- framer-motion 애니메이션 전체 적용
+## 주요 기준 파일
 
-### 제품 관련
-- /products: 제품 목록 (Supabase products 테이블에서 로드)
-- /products/excellence: 우수제품 전용 페이지
-- /products/mas: MAS 다수공급자 전용 페이지
-- /products/:productId: 제품 상세 페이지 (이미지 미연결 상태)
+- 총괄 운영: `CODEX_COMMAND_CENTER.md`
+- 라우팅: `src/app/routes.tsx`
+- 앱 레이아웃/데이터 주입: `src/app/App.tsx`
+- Header 메뉴: `src/components/layout/Header.tsx`
+- Footer 링크: `src/components/layout/Footer.tsx`
+- Supabase 클라이언트: `src/lib/supabase.ts`
+
+---
+
+## AI 협업 체계
+
+| AI | 역할 |
+|---|---|
+| Codex | 총괄 지휘, 코드 점검, 문서/작업 큐 관리, 최종 검증 |
+| Claude CLI | 복잡한 구현, Supabase/인증/Storage/DB 작업 보조 |
+| Antigravity | UI 보강, 단순 페이지 구현, 반복 컴포넌트 작업 |
+| Claude Web | 기획 리뷰, 카피/정보구조 검토, 작업 요청서 작성 |
+
+상세 규칙은 `CODEX_COMMAND_CENTER.md`와 `AI_HANDOFF_PROMPTS.md`를 기준으로 합니다.
+
+---
+
+## 완료된 구현 요약
+
+### 메인 페이지 `/`
+
+- Hero 슬라이드 10장, 현장별 캡션, 도트 네비게이터
+- KPI, 4대 ZERO, 복사/대류 비교, 업종별 솔루션
+- 제품 라인업, 시공사례, 인증·특허, 계산기 미리보기, CTA
+- Hero 텍스트 일부 CMS 연동
+
+### 제품
+
+- `/products`: Supabase `products` 테이블 기반 목록
+- `/products/excellence`: 조달청 우수제품 페이지
+- `/products/mas`: MAS 다수공급자 페이지
+- `/products/:productId`: 상세 페이지 UI 구현, 이미지 데이터 연결 대기
 
 ### 시공사례
-- /cases: 갤러리 목록 (Supabase case_studies 연동, 6개 카테고리 필터)
-- /cases/:id: 상세 보기 (이미지 슬라이드, 라이트박스, 이전/다음 글, 본문)
-- DB 데이터: 10건 실제 현장 정보 (제목, 위치, 카테고리, 설명)
-- DB 컬럼: title, category, location, image_url, images[], description, summary, installed_at
 
-### 🟢 진행 완료 (Phase 마일스톤)
-- [x] Phase 1: 로컬 정적 데이터 구조 설정 및 컴포넌트화 완료
-- [x] Phase 2-1: Supabase 프로젝트 연동 및 스키마/RLS 적용
-- [x] Phase 2-2: 기존 목업 데이터 Supabase 마이그레이션 (Seed)
-- [x] Phase 2-3: 협력업체 전용 자료실 및 Supabase Auth 회원가입/로그인/로그아웃/뱃지 UI 구현 완료
-- [x] Phase 3-1: 견적 문의 폼 Supabase Insert 연결 완료
-- [x] Phase 3-2: Admin: 관리자 권한 복구 및 시공사례/회원 관리 탭 추가 완료
+- `/cases`: Supabase `case_studies` 기반 목록과 카테고리 필터
+- `/cases/:id`: 상세 보기, 이미지 슬라이드/라이트박스/이전·다음 구조
+- 상세 설명과 추가 현장 사진은 데이터 보강 필요
 
-### 관리자 (/admin)
-- 제품 추가/삭제 UI
-- Hero 콘텐츠 편집 (headline, subcopy, CTA, 폰트, 강조색)
-- 견적 문의 목록 (InquiryList): 상태 관리, 이메일 답변, 필터
+### 인증·회사소개
 
-### 기타 페이지
-- /contact: 견적 문의 폼 → Supabase inquiries 테이블 저장
-- /about/certifications: 실제 특허 10건 번호 반영, KPI 업데이트
-- /about/history: 회사 연혁
-- /resources/catalog: UI 완성 (실제 PDF 미연결)
-- /coming-soon: 미구현 메뉴용
+- `/about/history`: 연혁 페이지
+- `/about/certifications`: 특허 10건 중심 반영
+- `CERT_INVENTORY.md`: 인증·특허·시험성적서 관리 대장 작성
 
-### 인프라 / 성능
-- Vercel 환경변수 설정 완료 (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
-- 번들 최적화: 800kB → 최대 218kB (lazy loading + manualChunks 4개)
-- 500kB 경고 완전 제거
+### 파트너/인증/관리자
+
+- `/signup`, `/login`: Supabase Auth 기반 회원가입/로그인, 프로필 생성/조회 오류 안내 보강
+- `/partner`: 승인된 파트너 또는 관리자 보호 라우트
+- `/partner/pending`: 승인 대기 페이지
+- `/admin`: 관리자 보호 라우트, 제품/콘텐츠/문의/회원/시공사례 관리 기능 일부
+- 관리자 제품 추가/수정/삭제: Supabase `products` upsert/delete 연결 및 결과 안내
+- 회원 승인 관리: EmailJS 환경변수 누락/발송 실패 안내 보강
+- Header 유틸리티 바에 로그인 상태, 권한 배지, 로그아웃 반영
+
+### 문의 및 자료실
+
+- `/contact`: 견적 문의 폼, Supabase `inquiries` 저장
+- `/resources/catalog`: 자료실 UI 구현, 실제 PDF 다운로드 파일 연결 대기
+
+### 성능/인프라
+
+- Vercel 배포 및 Supabase 환경변수 구성
+- 라우트 lazy loading 적용
+- 번들 분할 설정 적용
 
 ---
 
-## 현재 라우트 목록 (13개)
-| 경로 | 상태 |
-|------|------|
-| / | ✅ Live |
-| /products | ✅ Supabase 연동 |
-| /products/excellence | ✅ Live |
-| /products/mas | ✅ Live |
-| /products/:productId | ⚠️ 이미지 미연결 |
-| /cases | ✅ Supabase 연동, 6개 카테고리 |
-| /cases/:id | ✅ 상세 페이지 (설명/추가사진 입력 대기) |
-| /admin | ✅ 제품+콘텐츠+문의 관리 |
-| /contact | ✅ Supabase inquiries 저장 |
-| /about/certifications | ✅ Live |
-| /about/history | ✅ Live |
-| /resources/catalog | ⚠️ PDF 미연결 |
-| /coming-soon | ✅ Live |
+## 현재 라우트 목록
+
+| 경로 | 상태 | 메모 |
+|---|:---:|---|
+| `/` | 완료 | 메인 랜딩 |
+| `/products` | 완료 | 제품 목록 |
+| `/products/excellence` | 완료 | 우수제품 |
+| `/products/mas` | 완료 | MAS 제품 |
+| `/products/:productId` | 진행중 | 이미지/상세자료 연결 대기 |
+| `/cases` | 완료 | 목록/필터 |
+| `/cases/:id` | 진행중 | 상세 데이터 보강 대기 |
+| `/resources/catalog` | 진행중 | PDF 파일 연결 대기 |
+| `/about/certifications` | 완료 | 인증·특허 페이지, 파일 다운로드는 대기 |
+| `/about/history` | 완료 | 회사 연혁 |
+| `/contact` | 완료 | 문의 저장 |
+| `/admin` | 완료 | 관리자 보호 라우트, 기능 일부 확장 여지 |
+| `/partner` | 진행중 | 보호 라우트와 포털, 실제 자료 보강 필요 |
+| `/partner/pending` | 완료 | 승인 대기 |
+| `/login` | 완료 | 로그인 |
+| `/signup` | 완료 | 회원가입 |
+| `/coming-soon` | 완료 | 미구현 메뉴 공통 대기 페이지 |
 
 ---
 
 ## Supabase DB 현황
 
-### 테이블
-| 테이블 | 행 수 | 비고 |
-|--------|-------|------|
-| products | 18 | 제품 목록 |
-| site_content | 1 | Hero CMS |
-| case_studies | 10 | 시공사례, images[]/description 컬럼 추가됨 |
-| inquiries | - | 견적 문의 |
-| profiles | 1+ | 유저 프로필 및 role(admin/partner) |
+| 테이블 | 용도 | 상태 |
+|---|---|---|
+| `products` | 제품 목록/상세 | 운영 중 |
+| `site_content` | Hero CMS 콘텐츠 | 운영 중 |
+| `case_studies` | 시공사례 목록/상세 | 운영 중, 데이터 보강 필요 |
+| `inquiries` | 견적 문의 | 운영 중 |
+| `profiles` | 회원 프로필/권한 | 운영 중 |
 
-### RLS 정책
-- profiles: 본인 정보만 SELECT/UPDATE (auth.uid() = id)
-- products: SELECT (anon)
-- site_content: SELECT (anon)
-- case_studies: SELECT + INSERT (anon)
-- inquiries: SELECT (admin), INSERT (anon)
+주의: RLS 정책은 운영 안정성을 위해 Supabase 대시보드에서 주기적으로 재확인해야 합니다. 특히 관리자 화면에서 `products` insert/update/delete가 실제 운영 DB에서 허용되는지 확인해야 합니다.
 
 ---
 
-## 남은 이슈 / 주의
-- CERT_INVENTORY.md 파일 있음 (루트), 41개 인증서 관리 목록
-- README에 Gemini/AI Studio 흔적 남아있음 (정리 예정)
-- Tailwind CSS만 사용 (별도 CSS 파일 생성 금지)
-- 작업 전 실제 코드와 문서가 다르면 코드 기준으로 판단
+## 남은 핵심 이슈
+
+| 우선순위 | 이슈 | 상태 |
+|---|---|---|
+| P1 | `/technology/principle` 복사난방 원리 페이지 신설 | 대기 |
+| P1 | 제품 상세 이미지 업로드 및 URL 연결 | 파일 대기 |
+| P1 | 카탈로그/지명원 PDF Storage 업로드 및 다운로드 연결 | 파일 대기 |
+| P1 | 시공사례 상세 설명/추가 이미지 보강 | 데이터 대기 |
+| P1 | Supabase `products` 관리자 쓰기 RLS 정책 확인 | 대기 |
+| P2 | 인증서/시험성적서 PDF 연결 | 파일 대기 |
+| P2 | Hero 외 홈 섹션 Admin 편집 기능 | 대기 |
+| P2 | `@google/genai` 미사용 여부 확인 후 제거 | 대기 |
+| P2 | 추가 입력 검증, 에러 모니터링, 테스트 보강 | 대기 |
+
+---
+
+## 작업 시 주의
+
+- 실제 코드와 문서가 다르면 코드 기준으로 판단합니다.
+- Header/Footer/라우팅/인증/DB 변경은 영향 범위가 크므로 관련 파일을 먼저 읽습니다.
+- 새 페이지를 만들 때는 `src/app/routes.tsx`, `Header.tsx`, `MENU_STATUS.md`를 함께 갱신합니다.
+- 실제 PDF/이미지 파일이 필요한 작업은 사용자가 파일을 제공한 뒤 진행합니다.
+- 코드 변경 후 가능한 경우 `npm run build`를 실행합니다.

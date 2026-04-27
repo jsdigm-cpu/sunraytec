@@ -1,77 +1,108 @@
-# MENU STATUS (기능 진행 현황판)
+# MENU STATUS
 
-이 문서는 사용자가 홈페이지의 전체 구조와 개발 진척도를 한눈에 파악하고, 다음 작업을 직접 선택하기 위한 **메뉴 트리 및 진행 상태표**입니다.
-어떤 기능적 구현 계획이나 코드 설명도 포함하지 않으며, 오직 진행 상태만 관리합니다.
+마지막 업데이트: 2026-04-27
 
-**모든 AI 에이전트는 특정 페이지나 기능 개발이 끝나면 반드시 이 문서의 상태값을 업데이트해야 합니다.**
+이 문서는 홈페이지의 전체 메뉴 구조와 개발 진척도를 한눈에 파악하기 위한 현황판입니다. 기능 구현 계획의 상세 설명은 `PROJECT_STATUS.md`, 다음 작업은 `NEXT_TASK.md`, 총괄 운영 원칙은 `CODEX_COMMAND_CENTER.md`를 기준으로 합니다.
 
 ## 상태 범례
-- 🔴 대기중 (아직 작업 안 함, 또는 빈 껍데기만 있음)
-- 🟡 진행중 (작업을 시작했거나, 일부 기능/데이터가 누락되어 미완성)
-- 🟢 완료 (운영 가능한 수준으로 완성됨)
+
+- 대기중: 아직 작업하지 않았거나 준비중 페이지로 연결됨
+- 진행중: UI는 있으나 실제 데이터/파일/세부 기능이 부족함
+- 완료: 운영 가능한 수준으로 구현됨
 
 ---
 
-## 📌 주요 메뉴 트리 현황
+## 1. 홈 & 공통
 
-### 1. 홈 & 공통
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 메인 홈페이지 | `/` | 🟢 완료 | Hero 슬라이드, KPI, 섹션 등 구성 완료 |
-| 상단 네비게이션 (Header) | 공통 | 🟢 완료 | 유틸리티 바, 로그인/아웃, 메뉴 링크 연결 완료 |
-| 하단 정보 (Footer) | 공통 | 🟢 완료 | 회사 정보 및 하단 링크 완료 |
+| 메인 홈페이지 | `/` | 완료 | Hero, KPI, 제품, 사례, 인증, CTA 등 구성 |
+| 상단 네비게이션 | 공통 | 완료 | Header 유틸리티 바, 로그인/로그아웃, 드롭다운 |
+| 하단 정보 | 공통 | 완료 | 회사 정보 및 주요 링크 |
+| 공통 준비중 페이지 | `/coming-soon` | 완료 | 미구현 메뉴 임시 연결 |
 
-### 2. 회사소개 (About)
+## 2. 회사소개
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 인사말 | `/coming-soon` | 🔴 대기중 | 현재 준비중 페이지 연결 |
-| 회사 연혁 | `/about/history` | 🟢 완료 | |
-| 인증 및 특허 | `/about/certifications` | 🟢 완료 | 특허 10건 반영, 실제 인증서 파일 다운로드는 대기중 |
-| 오시는 길 | `/coming-soon` | 🔴 대기중 | |
+| CEO 메시지 | `/coming-soon?section=company` | 대기중 | Header 기준 |
+| 회사 연혁 | `/about/history` | 완료 | |
+| 인증서·특허 | `/about/certifications` | 완료 | 실제 PDF 다운로드는 대기 |
+| 수상·언론보도 | `/coming-soon?section=company` | 대기중 | |
+| 주요 납품처 | `/coming-soon?section=company` | 대기중 | |
+| 찾아오시는 길 | `/coming-soon?section=company` | 대기중 | |
 
-### 3. 제품안내 (Products)
+## 3. 제품안내
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 제품 목록 | `/products` | 🟢 완료 | Supabase 제품 테이블 연동 |
-| 조달청 우수제품 | `/products/excellence` | 🟢 완료 | 조달 식별번호 모델 분리 적용 |
-| 다수공급자계약 (MAS) | `/products/mas` | 🟢 완료 | |
-| 제품 상세 페이지 | `/products/:productId` | 🟡 진행중 | UI 완성. 실제 제품 이미지(썸네일/상세) 파일 업로드 대기중 |
+| 제품 목록 | `/products` | 완료 | Supabase 제품 테이블 연동 |
+| 조달청 우수제품 | `/products/excellence` | 완료 | |
+| MAS 다수공급자 | `/products/mas` | 완료 | |
+| 제품 상세 페이지 | `/products/:productId` | 진행중 | UI 구현, 실제 이미지/자료 연결 대기 |
+| 방폭·특수 제품 | `/coming-soon?section=special` | 대기중 | |
+| 개인용·욕실형 | `/coming-soon?section=products` | 대기중 | |
+| 스마트 제어 시스템 | `/coming-soon?section=products` | 대기중 | |
+| 제품 비교 | `/coming-soon?section=products` | 대기중 | |
 
-### 4. 기술·솔루션 (Technology)
+## 4. 기술·솔루션
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 복사난방 원리 | `/coming-soon` | 🔴 대기중 | |
-| 썬레이텍 특장점 | `/coming-soon` | 🔴 대기중 | |
-| 4대 제로 포인트 | `/coming-soon` | 🔴 대기중 | |
+| 복사난방 원리 | `/coming-soon?section=solutions` | 대기중 | 다음 구현 후보: `/technology/principle` |
+| 4대 ZERO 기술 | `/coming-soon?section=solutions` | 대기중 | |
+| 공공·교육 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
+| 산업·물류 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
+| 국방·특수 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
+| IoT 중앙제어 | `/coming-soon?section=solutions` | 대기중 | |
 
-### 5. 시공사례 (Cases)
+## 5. 시공사례
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 시공사례 갤러리 목록 | `/cases` | 🟢 완료 | Supabase 10개 사례 연동 (6개 카테고리 필터) |
-| 시공사례 상세 보기 | `/cases/:id` | 🟡 진행중 | UI 완성. 상세 설명 및 추가 현장 사진 업로드 대기중 |
+| 전체 포트폴리오 | `/cases` | 완료 | Supabase 사례 연동, 카테고리 필터 |
+| 공공·교육 사례 | `/cases` | 완료 | 현재 목록 필터로 대응 |
+| 산업·물류 사례 | `/cases` | 완료 | 현재 목록 필터로 대응 |
+| 국방·특수 사례 | `/cases` | 완료 | 현재 목록 필터로 대응 |
+| 상업·라이프스타일 | `/cases` | 완료 | 현재 목록 필터로 대응 |
+| 시공사례 상세 | `/cases/:id` | 진행중 | 상세 설명/추가 사진 보강 대기 |
+| 전국 시공 지도 | `/coming-soon?section=cases` | 대기중 | |
 
-### 6. 파트너 및 자료실 (Resources)
+## 6. 자료실·파트너
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 파트너 협력회사 가입 안내 | `/partner` | 🔴 대기중 | |
-| 파트너 회원가입 및 승인 | `/signup`, `/partner-pending` | 🟢 완료 | |
-| 카탈로그 / 지명원 | `/resources/catalog` | 🟡 진행중 | UI 완성. 실제 PDF 파일 Storage 업로드 대기중 |
-| 성적서 / 인증서 | `/coming-soon` | 🔴 대기중 | |
-| 기타 자료실 | `/coming-soon` | 🔴 대기중 | |
+| 파트너 포털 | `/partner` | 진행중 | 보호 라우트 구현, 실제 자료 보강 필요 |
+| 파트너 회원가입 | `/signup` | 완료 | |
+| 파트너 승인 대기 | `/partner/pending` | 완료 | |
+| 난방 용량 계산기 | `/coming-soon?section=resources` | 대기중 | |
+| 에너지 ROI 계산기 | `/coming-soon?section=resources` | 대기중 | |
+| 카탈로그 다운로드 | `/resources/catalog` | 진행중 | UI 구현, 실제 PDF 연결 대기 |
+| 스펙·도면 CAD | `/coming-soon?section=resources` | 대기중 | |
+| 인증서·시험성적서 | `/about/certifications` | 진행중 | 페이지 구현, 파일 다운로드 대기 |
+| 동영상 자료 | `/coming-soon?section=resources` | 대기중 | |
 
-### 7. 고객센터 (Support)
+## 7. 고객센터
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 공지사항 | `/coming-soon` | 🔴 대기중 | |
-| 온라인 견적문의 | `/contact` | 🟢 완료 | Supabase DB 문의 내용 자동 저장 연동 |
-| 카카오톡 채널 문의 | (외부링크) | 🔴 대기중 | |
+| 견적 문의 | `/contact` | 완료 | Supabase `inquiries` 저장 |
+| FAQ | `/coming-soon?section=contact` | 대기중 | |
+| 공지사항 | `/coming-soon?section=contact` | 대기중 | |
+| 대리점 모집 | `/coming-soon?section=contact` | 대기중 | |
+| 나라장터 바로가기 | 외부 링크 | 완료 | `https://www.g2b.go.kr` |
+| AI 상담 챗봇 | `/coming-soon?section=contact` | 대기중 | |
 
-### 8. 관리자 (Admin)
+## 8. 관리자
+
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 관리자 계정 로그인/아웃 | `/login` | 🟢 완료 | Supabase Auth 및 권한 체크 버그 해결 |
-| 대시보드 및 제품 관리 | `/admin` | 🟢 완료 | |
-| Hero 영역 텍스트 편집 | `/admin` | 🟢 완료 | |
-| 견적 문의 관리 | `/admin` | 🟢 완료 | |
-| 시공사례 관리 | `/admin` | 🟢 완료 | |
-| 기타 홈 영역(KPI 등) 편집 | `/admin` | 🔴 대기중 | Hero 외의 영역 Admin 편집 기능 추가 필요 |
+| 로그인 | `/login` | 완료 | Supabase Auth |
+| 관리자 대시보드 | `/admin` | 완료 | 보호 라우트 |
+| 제품 관리 | `/admin` | 완료 | 추가/삭제 UI |
+| Hero 텍스트 편집 | `/admin` | 완료 | `site_content` 일부 연동 |
+| 견적 문의 관리 | `/admin` | 완료 | |
+| 회원 관리 | `/admin` | 완료 | |
+| 시공사례 관리 | `/admin` | 완료 | |
+| 홈 기타 영역 CMS | `/admin` | 대기중 | KPI 등 Hero 외 섹션 편집 |
+

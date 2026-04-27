@@ -29,7 +29,10 @@ export default function PartnerPortalPage() {
   const [activeCategory, setActiveCategory] = useState('전체');
 
   useEffect(() => {
-    if (!supabase) return;
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
     supabase
       .from('partner_files')
       .select('*')
@@ -52,7 +55,7 @@ export default function PartnerPortalPage() {
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-              <img src="/logo.png" alt="썬레이텍" style={{ height: '32px', objectFit: 'contain' }}
+              <img src="/images/copmany_logo.png" alt="썬레이텍" style={{ height: '32px', objectFit: 'contain' }}
                 onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
             </Link>
             <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>|</span>

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import type React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginPage() {
-  const { signIn, profile, loading: authLoading } = useAuth();
+  const { signIn, user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -15,10 +16,13 @@ export default function LoginPage() {
   useEffect(() => {
     if (!loginAttempted) return;
     if (authLoading) return;      // 아직 로딩 중
-    if (!profile) return;          // profile이 아직 없음
+    if (user && !profile) {
+      setError('로그인은 되었지만 회원 프로필을 찾을 수 없습니다. 관리자에게 문의해 주세요.');
+      return;
+    }
     if (profile.role === 'admin') navigate('/admin');
     else navigate('/partner');
-  }, [loginAttempted, authLoading, profile, navigate]);
+  }, [loginAttempted, authLoading, user, profile, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -45,7 +49,7 @@ export default function LoginPage() {
         {/* 로고 */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <Link to="/">
-            <img src="/logo.png" alt="썬레이텍" style={{ height: '48px', objectFit: 'contain' }}
+            <img src="/images/copmany_logo.png" alt="썬레이텍" style={{ height: '48px', objectFit: 'contain' }}
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
           </Link>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '8px' }}>(주)썬레이텍 파트너 포털</p>

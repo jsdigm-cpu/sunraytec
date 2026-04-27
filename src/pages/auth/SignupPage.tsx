@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import type React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function SignupPage() {
   const { signUp } = useAuth();
-  const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '', password2: '', full_name: '', company_name: '', phone: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,11 +18,15 @@ export default function SignupPage() {
     setError('');
     if (form.password !== form.password2) { setError('비밀번호가 일치하지 않습니다.'); return; }
     if (form.password.length < 8) { setError('비밀번호는 8자 이상이어야 합니다.'); return; }
+    if (!/^0\d{1,2}-?\d{3,4}-?\d{4}$/.test(form.phone.trim())) {
+      setError('연락처 형식을 확인해주세요. 예: 010-0000-0000');
+      return;
+    }
     setLoading(true);
-    const err = await signUp(form.email, form.password, {
-      full_name: form.full_name,
-      company_name: form.company_name,
-      phone: form.phone,
+    const err = await signUp(form.email.trim(), form.password, {
+      full_name: form.full_name.trim(),
+      company_name: form.company_name.trim(),
+      phone: form.phone.trim(),
     });
     setLoading(false);
     if (err) { setError('가입 오류: ' + err); return; }
@@ -37,7 +41,8 @@ export default function SignupPage() {
           <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0F2241', marginBottom: '12px' }}>가입 신청이 완료됐습니다!</h2>
           <p style={{ color: '#6B7280', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '28px' }}>
             담당자 확인 후 승인이 완료되면<br />이메일로 알려드립니다.<br />
-            <strong>영업일 기준 1~2일</strong> 소요됩니다.
+            <strong>영업일 기준 1~2일</strong> 소요됩니다.<br />
+            승인 전에는 전용 자료실 접근이 제한됩니다.
           </p>
           <Link to="/" style={{ display: 'inline-block', padding: '12px 28px', background: 'var(--navy)', color: '#fff', borderRadius: '8px', fontWeight: 700, textDecoration: 'none' }}>
             메인 홈페이지로

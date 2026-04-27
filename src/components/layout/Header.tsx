@@ -150,7 +150,6 @@ export default function Header() {
         background: '#F8FAFC', 
         borderBottom: '1px solid var(--border)', 
         height: '34px', 
-        display: 'flex', 
         alignItems: 'center',
         display: mobileOpen ? 'none' : 'flex' // 모바일 메뉴 열렸을땐 숨김 처리
       }} className="desktop-utility-bar">

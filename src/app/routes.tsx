@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import type React from 'react';
 import App from './App';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 

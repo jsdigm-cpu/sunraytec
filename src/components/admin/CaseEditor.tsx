@@ -77,8 +77,13 @@ export default function CaseEditor() {
   function addImage() {
     const url = newImageUrl.trim();
     if (!url) return;
+    if (!isValidImageUrl(url)) {
+      setSavedMsg('❌ 이미지 URL 형식을 확인해주세요.');
+      return;
+    }
     setForm((f) => ({ ...f, images: [...(f.images ?? []), url] }));
     setNewImageUrl('');
+    setSavedMsg('');
   }
 
   function removeImage(idx: number) {
@@ -219,4 +224,15 @@ export default function CaseEditor() {
       </div>
     </div>
   );
+}
+
+function isValidImageUrl(url: string) {
+  if (url.startsWith('/')) return true;
+
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
 }

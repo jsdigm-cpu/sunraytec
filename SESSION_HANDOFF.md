@@ -1,32 +1,92 @@
 # SESSION HANDOFF
 
-마지막 업데이트: 2026-04-23 (야간 세션 - Antigravity)
+마지막 업데이트: 2026-04-27
 
-이 파일은 세션이 중단되거나 다른 AI로 넘어갈 때 **바로 이어서 작업하기 위한 인수인계 메모**입니다.
-**실제 코드와 문서가 다르면 항상 코드가 정답입니다.**
-
----
-
-## 🟢 직전 세션 완료 사항 (2026-04-23)
-- **Supabase 인증 데드락 버그 완전 해결**: 관리자(master) 로그인 불가 현상 및 UI 무한 로딩 해결. `auth.users`와 `profiles` 테이블 정상 동기화 확인.
-- **Header UI 컴포넌트 전면 개편**: 
-  - 메인 네비게이션 상단에 회색 배경의 **Utility Bar** 신설.
-  - 로그인된 유저의 권한 배지(관리자/파트너) 및 이름 노출, 로그아웃 버튼 탑재 (데스크탑/모바일 햄버거 메뉴 모두 반영 완료).
-  - 전체적으로 깔끔하고 정돈된 B2B 기업 트렌드 UI 완성.
-- **문서 구조 최적화 (MD 파일 대청소)**: 
-  - 불필요하고 오래된 문서 3개(`DECISIONS.md`, `CODEX_RULES.md`, `SUPABASE_PLAN.md`)를 과감히 삭제하여 AI가 읽어야 할 컨텍스트 무게를 대폭 줄임.
-  - `README.md`, `PROJECT_STATUS.md`, `AI_HANDOFF_PROMPTS.md`를 한눈에 들어오는 강력하고 압축된 내용으로 전면 갱신.
+이 파일은 세션이 중단되거나 다른 AI로 넘어갈 때 바로 이어서 작업하기 위한 인수인계 메모입니다. 실제 코드와 문서가 다르면 항상 코드가 정답입니다.
 
 ---
 
-## 🟡 현재 남아있는 주요 이슈 (진행 대기)
-1. **CatalogPage PDF 파일 부재**: 협력업체 자료실 UI는 완성되었으나 다운로드할 실제 PDF 파일이 없어 링크가 걸려있지 않음. (사용자가 파일 제공 시 Supabase Storage 연동 예정)
-2. **제품 상세 이미지 부재**: 제품 썸네일/상세 이미지가 없어 화면이 비어보임. (사용자 파일 제공 대기)
-3. **신규 페이지 제작 대기**: 기술/솔루션 탭의 `복사난방 원리` 페이지 등 텍스트/UI 디자인 구현 필요.
+## 직전 세션 목표
+
+사용자는 Codex가 검토한 관리자 페이지 및 회원가입 페이지 문제점을 우선 정리한 뒤 다음 기능으로 넘어가길 요청했습니다.
 
 ---
 
-## 🔵 다음 AI가 시작할 작업 (Action Item)
-- 우선 `NEXT_TASK.md`를 확인하세요.
-- 사용자가 "PDF/이미지 파일"을 제공했다면 **옵션 1 (Storage 업로드 및 프론트엔드 연결)** 작업을 시작하세요.
-- 사용자가 파일을 제공하지 않고 다른 작업을 지시했다면 **옵션 2 (복사난방 원리 페이지 신규 제작)** 또는 **옵션 3 (Admin CMS 기능 확장)** 등 사용자가 지정한 과제를 진행하세요.
+## 이번 세션에서 확인한 내용
+
+- 회원가입은 Supabase Auth 가입 후 `profiles` 생성 실패를 확인하지 않아 가입 성공처럼 보일 수 있었습니다.
+- 로그인은 프로필 조회 실패 시 사용자에게 안내 없이 멈춘 것처럼 보일 수 있었습니다.
+- 관리자 제품 관리는 기존에 React state만 바꾸고 Supabase `products` 테이블에 저장하지 않았습니다.
+- 회원 승인 메일은 EmailJS 환경변수 누락 시 콘솔에만 실패가 남는 구조였습니다.
+- 로그인/파트너 포털 로고 경로가 실제 로고 파일 경로와 달랐습니다.
+- `npm run lint` 실행 전 Vite env 타입 선언과 일부 `React.*` 타입 import가 누락되어 있었습니다.
+
+---
+
+## 이번 세션에서 수정한 코드
+
+- `src/contexts/AuthContext.tsx`
+  - 운영 콘솔 로그 정리
+  - 로그인/세션 변경 시 프로필 로딩 상태 보강
+  - 회원가입 시 `profiles` insert 오류를 반환하도록 수정
+- `src/pages/auth/SignupPage.tsx`
+  - 연락처 형식 검증 추가
+  - 입력값 trim 처리
+  - 가입 완료 안내에 승인 전 자료실 제한 문구 추가
+- `src/pages/auth/LoginPage.tsx`
+  - 프로필 누락 시 안내 메시지 표시
+  - 로고 경로를 `/images/copmany_logo.png`로 수정
+- `src/components/auth/ProtectedRoute.tsx`
+  - 관리자도 파트너 보호 라우트 접근 가능하도록 보정
+- `src/pages/AdminDashboardPage.tsx`
+  - 제품 추가/수정/삭제를 Supabase `products` upsert/delete와 연결
+  - 저장/삭제 성공 및 실패 안내 추가
+- `src/components/admin/ProductForm.tsx`
+  - 필수값 검증 메시지, 저장 중 상태, 저장 결과 메시지 추가
+- `src/components/admin/ProductListEditor.tsx`
+  - 삭제 확인창과 삭제 실패 안내 추가
+- `src/components/admin/MemberManager.tsx`
+  - 회원 목록/상태 변경 실패 안내 추가
+  - EmailJS 환경변수 누락 시 화면 안내
+- `src/components/admin/CaseEditor.tsx`
+  - 추가 이미지 URL 형식 검증 추가
+- `src/pages/partner/PartnerPortalPage.tsx`
+  - Supabase 미설정 시 로딩 고착 방지
+  - 로고 경로 수정
+- `src/vite-env.d.ts`
+  - Vite 환경변수 타입 선언 추가
+
+---
+
+## 이번 세션에서 갱신한 문서
+
+- `SESSION_HANDOFF.md`: 관리자/회원가입 안정화 작업 내역 반영
+- `PROJECT_STATUS.md`: 관리자/인증 안정화 완료 내역 반영
+
+---
+
+## 다음 AI가 바로 할 일
+
+1. 다음 구현 작업은 `/technology/principle` 복사난방 원리 페이지 신설입니다.
+2. 페이지 신설 시 다음 파일을 함께 확인합니다.
+   - `src/app/routes.tsx`
+   - `src/components/layout/Header.tsx`
+   - `src/pages/ComingSoonPage.tsx`
+   - `src/styles/tokens.css`
+   - `src/styles/components.css`
+3. 작업 완료 후 `MENU_STATUS.md`, `PROJECT_STATUS.md`, `SESSION_HANDOFF.md`, `NEXT_TASK.md`를 갱신하고 `npm run build`를 실행합니다.
+
+검증 완료:
+- `npm run lint` 성공
+- `npm run build` 성공
+
+---
+
+## 남은 주요 대기 작업
+
+- `/technology/principle` 실제 페이지 구현
+- 제품 이미지 파일 수급 후 상세 페이지 연결
+- 카탈로그/지명원 PDF 수급 후 자료실 다운로드 연결
+- 시공사례 상세 텍스트와 추가 사진 보강
+- 인증서/시험성적서 파일 업로드 및 다운로드 연결
+- Supabase 대시보드에서 `products` insert/update/delete RLS 정책 확인

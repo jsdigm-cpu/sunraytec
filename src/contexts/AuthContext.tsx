@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import type React from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
@@ -34,16 +35,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchProfile(userId: string) {
     if (!supabase) return;
-    console.log('[Auth] fetchProfile start for userId:', userId);
-    
+
     try {
       const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
-      
-      console.log('[Auth] fetchProfile result:', data, 'error:', error);
-      console.log('[Auth] role:', data?.role, 'status:', data?.status);
+
+      if (error) {
+        setProfile(null);
+        return;
+      }
+
       setProfile(data as Profile | null);
     } catch (err) {
       console.error('[Auth] fetchProfile exception:', err);
+      setProfile(null);
     }
   }
 
@@ -51,35 +55,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!supabase) { setLoading(false); return; }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('[Auth] getSession user:', session?.user?.email ?? 'none');
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id).finally(() => {
           setLoading(false);
-          console.log('[Auth] loading set to false from getSession fetchProfile');
         });
       } else {
         setLoading(false);
-        console.log('[Auth] loading set to false from getSession (no user)');
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[Auth] onAuthStateChange event:', event, 'user:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
+        setLoading(true);
         // 절대 await 하지 않음 (Deadlock 방지)
         fetchProfile(session.user.id).finally(() => {
           setLoading(false);
-          console.log('[Auth] loading set to false from onAuthStateChange fetchProfile');
         });
       } else {
         setProfile(null);
         setLoading(false);
-        console.log('[Auth] loading set to false from onAuthStateChange (no user)');
       }
     });
 
@@ -101,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return error.message;
     if (data.user) {
-      await supabase.from('profiles').insert({
+      const { error: profileError } = await supabase.from('profiles').insert({
         id: data.user.id,
         email,
         full_name: meta.full_name,
@@ -110,6 +109,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         role: 'partner',
         status: 'pending',
       });
+
+      if (profileError) return `프로필 생성 실패: ${profileError.message}`;
     }
     return null;
   }
