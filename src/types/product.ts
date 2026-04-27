@@ -24,4 +24,5 @@ export interface Product {
   detailDescription?: string;
   featureBullets?: string[];
   sortOrder?: number;
+  createdAt?: string;
 }

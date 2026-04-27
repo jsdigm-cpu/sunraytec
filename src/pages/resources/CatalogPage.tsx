@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 import { FileText, Download, Lock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
-type DocCategory = '전체' | '제품 카탈로그' | '기술 자료' | '인증서';
+type DocCategory = '전체' | '제품 카탈로그' | '기술 자료' | '인증서' | '파트너 자료';
 
 interface DocItem {
   id: number | string;
   title: string;
   description: string;
-  category: '제품 카탈로그' | '기술 자료' | '인증서';
+  category: '제품 카탈로그' | '기술 자료' | '인증서' | '파트너 자료';
   fileSize: string;
   ready: boolean;
   fileUrl?: string;
@@ -100,18 +100,20 @@ const DOCS: DocItem[] = [
   },
 ];
 
-const CATEGORIES: DocCategory[] = ['전체', '제품 카탈로그', '기술 자료', '인증서'];
+const CATEGORIES: DocCategory[] = ['전체', '제품 카탈로그', '기술 자료', '인증서', '파트너 자료'];
 
 const CATEGORY_COLOR: Record<string, { bg: string; text: string }> = {
   '제품 카탈로그': { bg: '#DBEAFE', text: '#1E40AF' },
   '기술 자료':     { bg: '#D1FAE5', text: '#065F46' },
   '인증서':        { bg: '#FEF3C7', text: '#92400E' },
+  '파트너 자료':   { bg: '#E0E7FF', text: '#3730A3' },
 };
 
 const CATEGORY_ICON: Record<string, string> = {
   '제품 카탈로그': '📘',
   '기술 자료':     '🔧',
   '인증서':        '🏅',
+  '파트너 자료':   '🔒',
 };
 
 const fadeInUp = {

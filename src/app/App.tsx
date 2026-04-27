@@ -33,6 +33,7 @@ function dbRowToProduct(row: Record<string, any>): Product {
     detailDescription: row.detail_description ?? undefined,
     featureBullets:    Array.isArray(row.feature_bullets) ? row.feature_bullets : undefined,
     sortOrder:         row.sort_order ?? undefined,
+    createdAt:         row.created_at ?? undefined,
   };
 }
 

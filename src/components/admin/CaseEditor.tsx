@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type React from 'react';
 import { supabase } from '../../lib/supabase';
 import { isImageFile, uploadPublicFile } from '../../lib/storageUploads';
 
@@ -13,6 +14,7 @@ interface CaseItem {
   description: string;
   installed_at: string;
   sort_order?: number;
+  created_at?: string;
 }
 
 const CATEGORIES = [
@@ -48,6 +50,8 @@ export default function CaseEditor() {
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [selected, setSelected] = useState<CaseItem | null>(null);
   const [form, setForm] = useState<Partial<CaseItem>>({});
+  const [activeCategory, setActiveCategory] = useState('전체');
+  const [draggedId, setDraggedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedMsg, setSavedMsg] = useState('');
 
@@ -55,7 +59,7 @@ export default function CaseEditor() {
     if (!supabase) return;
     supabase
       .from('case_studies')
-      .select('id,title,category,location,image_url,images,summary,description,installed_at,sort_order')
+      .select('id,title,category,location,image_url,images,summary,description,installed_at,sort_order,created_at')
       .order('sort_order', { ascending: true })
       .then(({ data }) => { if (data) setCases(data as CaseItem[]); });
   }, []);
@@ -124,39 +128,52 @@ export default function CaseEditor() {
     }
   }
 
+  function moveCase(index: number, direction: -1 | 1) {
+    setCases((prev) => reorder(prev, index, index + direction));
+  }
+
+  function handleDragStart(event: React.DragEvent, id: string) {
+    setDraggedId(id);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', id);
+  }
+
+  function handleDrop(event: React.DragEvent, targetId: string) {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
+    if (!sourceId || sourceId === targetId) return;
+    setCases((prev) => {
+      const from = prev.findIndex((item) => item.id === sourceId);
+      const to = prev.findIndex((item) => item.id === targetId);
+      return reorder(prev, from, to);
+    });
+    setDraggedId(null);
+  }
+
+  async function saveOrder() {
+    if (!supabase) return;
+    setSaving(true);
+    const ordered = cases.map((item, sort_order) => ({ ...item, sort_order }));
+    const { error } = await supabase.from('case_studies').upsert(ordered, { onConflict: 'id' });
+    setSaving(false);
+    if (error) {
+      setSavedMsg('순서 저장 실패: ' + error.message);
+      return;
+    }
+    setCases(ordered);
+    setSavedMsg('시공사례 노출 순서가 저장됐습니다.');
+  }
+
+  const filters = ['전체', ...CATEGORIES];
+  const visibleCases = activeCategory === '전체' ? cases : cases.filter((item) => item.category === activeCategory);
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '16px', height: '100%' }}>
-
-      {/* 좌측: 사례 목록 */}
-      <div style={{ border: '1px solid #E5E7EB', borderRadius: '10px', overflow: 'hidden', background: '#fff' }}>
-        <div style={{ padding: '12px 16px', borderBottom: '1px solid #E5E7EB', fontWeight: 700, fontSize: '0.875rem', color: '#374151', background: '#F9FAFB' }}>
-          시공사례 목록 ({cases.length}건)
-        </div>
-        <div style={{ overflowY: 'auto', maxHeight: '70vh' }}>
-          {cases.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => selectCase(item)}
-              style={{
-                width: '100%', textAlign: 'left', padding: '10px 14px',
-                border: 'none', borderBottom: '1px solid #F3F4F6',
-                background: selected?.id === item.id ? '#EFF6FF' : '#fff',
-                cursor: 'pointer',
-                borderLeft: selected?.id === item.id ? '3px solid var(--navy)' : '3px solid transparent',
-              }}
-            >
-              <div style={{ fontWeight: 600, fontSize: '0.82rem', color: '#1F2937', marginBottom: '3px' }}>{item.title}</div>
-              <div style={{ fontSize: '0.72rem', color: '#9CA3AF' }}>{item.category}</div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 우측: 편집 폼 */}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', height: '100%' }}>
+      {/* 좌측: 편집 폼 */}
       <div style={{ border: '1px solid #E5E7EB', borderRadius: '10px', background: '#fff', overflow: 'hidden' }}>
         {!selected ? (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', fontSize: '0.875rem' }}>
-            ← 좌측 목록에서 사례를 선택하세요
+            우측 목록에서 사례를 선택하세요
           </div>
         ) : (
           <div style={{ overflowY: 'auto', maxHeight: '75vh' }}>
@@ -223,10 +240,95 @@ export default function CaseEditor() {
           </div>
         )}
       </div>
+
+      {/* 우측: 사례 목록 */}
+      <div className="card" style={{ padding: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'center' }}>
+          <h3 style={{ margin: 0 }}>시공사례 목록 ({visibleCases.length}건)</h3>
+          <button type="button" onClick={saveOrder} disabled={saving}>{saving ? '저장 중...' : '순서 저장'}</button>
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', margin: '0.75rem 0' }}>
+          {filters.map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setActiveCategory(filter)}
+              style={filterButtonStyle(activeCategory === filter)}
+            >
+              {filter} {filter === '전체' ? cases.length : cases.filter((item) => item.category === filter).length}
+            </button>
+          ))}
+        </div>
+        <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.35rem', maxHeight: '72vh', overflowY: 'auto' }}>
+          {visibleCases.map((item) => {
+            const index = cases.findIndex((caseItem) => caseItem.id === item.id);
+            return (
+              <li
+                key={item.id}
+                onDragStart={(event) => handleDragStart(event, item.id)}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => handleDrop(event, item.id)}
+                onDragEnd={() => setDraggedId(null)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  border: selected?.id === item.id ? '1px solid var(--red)' : '1px solid var(--border)',
+                  borderRadius: '8px',
+                  background: selected?.id === item.id ? '#FDECEA' : '#fff',
+                  padding: '0.42rem 0.55rem',
+                  opacity: draggedId === item.id ? 0.45 : 1,
+                }}
+              >
+                <span draggable style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab' }}>☰</span>
+                <button
+                  type="button"
+                  onClick={() => selectCase(item)}
+                  style={{ flex: 1, border: 'none', background: 'transparent', padding: 0, textAlign: 'left', cursor: 'pointer' }}
+                >
+                  <strong style={{ display: 'block', fontSize: '0.84rem', color: '#1F2937' }}>{item.title}</strong>
+                  <span style={{ display: 'block', fontSize: '0.72rem', color: '#6B7280' }}>
+                    {item.category} · 작성일 {formatDate(item.created_at)}
+                  </span>
+                </button>
+                <button type="button" onClick={() => moveCase(index, -1)} disabled={index === 0}>↑</button>
+                <button type="button" onClick={() => moveCase(index, 1)} disabled={index === cases.length - 1}>↓</button>
+              </li>
+            );
+          })}
+        </ul>
+        {savedMsg && <p style={{ color: savedMsg.includes('실패') ? '#DC2626' : '#047857', fontWeight: 700, fontSize: '0.82rem' }}>{savedMsg}</p>}
+      </div>
     </div>
   );
 }
 
 function compactCaseImages(item: Partial<CaseItem>) {
   return Array.from(new Set([item.image_url, ...(item.images ?? [])].filter(Boolean) as string[]));
+}
+
+function reorder<T>(items: T[], from: number, to: number) {
+  if (from < 0 || to < 0 || from >= items.length || to >= items.length || from === to) return items;
+  const next = [...items];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
+}
+
+function filterButtonStyle(active: boolean): React.CSSProperties {
+  return {
+    border: active ? '1px solid var(--navy)' : '1px solid var(--border)',
+    background: active ? 'var(--navy)' : '#fff',
+    color: active ? '#fff' : '#374151',
+    borderRadius: '999px',
+    padding: '0.28rem 0.62rem',
+    fontSize: '0.76rem',
+    fontWeight: 800,
+    cursor: 'pointer',
+  };
+}
+
+function formatDate(value?: string) {
+  if (!value) return '-';
+  return value.slice(0, 10);
 }

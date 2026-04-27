@@ -3,7 +3,7 @@ import type React from 'react';
 import { supabase } from '../../lib/supabase';
 import { uploadPublicFile } from '../../lib/storageUploads';
 
-type ResourceCategory = '제품 카탈로그' | '기술 자료' | '인증서';
+type ResourceCategory = '제품 카탈로그' | '기술 자료' | '인증서' | '파트너 자료';
 
 interface ResourceDocument {
   id: string;
@@ -14,6 +14,7 @@ interface ResourceDocument {
   file_size: string;
   is_public: boolean;
   sort_order: number;
+  created_at?: string;
 }
 
 const EMPTY: Partial<ResourceDocument> = {
@@ -25,12 +26,14 @@ const EMPTY: Partial<ResourceDocument> = {
   is_public: true,
 };
 
-const CATEGORIES: ResourceCategory[] = ['제품 카탈로그', '기술 자료', '인증서'];
+const CATEGORIES: ResourceCategory[] = ['제품 카탈로그', '기술 자료', '인증서', '파트너 자료'];
 
 export default function ResourceDocumentEditor() {
   const [documents, setDocuments] = useState<ResourceDocument[]>([]);
   const [form, setForm] = useState<Partial<ResourceDocument>>(EMPTY);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<'전체' | ResourceCategory>('전체');
+  const [draggedId, setDraggedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -42,7 +45,7 @@ export default function ResourceDocumentEditor() {
     if (!supabase) return;
     const { data, error } = await supabase
       .from('resource_documents')
-      .select('id,title,description,category,file_url,file_size,is_public,sort_order')
+      .select('id,title,description,category,file_url,file_size,is_public,sort_order,created_at')
       .order('sort_order', { ascending: true });
 
     if (error) {
@@ -122,13 +125,35 @@ export default function ResourceDocumentEditor() {
   async function move(index: number, direction: -1 | 1) {
     const target = index + direction;
     if (target < 0 || target >= documents.length || !supabase) return;
-    const next = [...documents];
-    [next[index], next[target]] = [next[target], next[index]];
+    await saveOrderedDocuments(reorder(documents, index, target));
+  }
+
+  function handleDragStart(event: React.DragEvent, id: string) {
+    setDraggedId(id);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', id);
+  }
+
+  async function handleDrop(event: React.DragEvent, targetId: string) {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData('text/plain') || draggedId;
+    if (!sourceId || sourceId === targetId) return;
+    const from = documents.findIndex((item) => item.id === sourceId);
+    const to = documents.findIndex((item) => item.id === targetId);
+    setDraggedId(null);
+    await saveOrderedDocuments(reorder(documents, from, to));
+  }
+
+  async function saveOrderedDocuments(next: ResourceDocument[]) {
+    if (!supabase) return;
     const ordered = next.map((item, sort_order) => ({ ...item, sort_order }));
     setDocuments(ordered);
     const { error } = await supabase.from('resource_documents').upsert(ordered, { onConflict: 'id' });
-    if (error) setMessage(`순서 저장 실패: ${error.message}`);
+    setMessage(error ? `순서 저장 실패: ${error.message}` : '자료 노출 순서가 저장됐습니다.');
   }
+
+  const filters = ['전체', ...CATEGORIES] as const;
+  const visibleDocuments = activeCategory === '전체' ? documents : documents.filter((item) => item.category === activeCategory);
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -161,21 +186,54 @@ export default function ResourceDocumentEditor() {
       </section>
 
       <section className="card" style={{ padding: '1rem' }}>
-        <h3 style={{ marginTop: 0 }}>자료 목록</h3>
-        <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.5rem' }}>
-          {documents.map((item, index) => (
-            <li key={item.id} style={{ border: '1px solid var(--border)', borderRadius: '8px', padding: '0.65rem', background: selectedId === item.id ? '#FDECEA' : '#fff' }}>
-              <button type="button" onClick={() => selectDocument(item)} style={{ border: 'none', background: 'transparent', padding: 0, textAlign: 'left', width: '100%', cursor: 'pointer' }}>
-                <strong>{item.title}</strong>
-                <div style={{ color: '#6B7280', fontSize: '0.78rem' }}>{item.category} · {item.file_size || '파일 크기 미입력'} · {item.is_public ? '공개' : '비공개'}</div>
+        <h3 style={{ marginTop: 0 }}>자료 목록 ({visibleDocuments.length}건)</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '0.75rem' }}>
+          {filters.map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setActiveCategory(filter)}
+              style={filterButtonStyle(activeCategory === filter)}
+            >
+              {filter} {filter === '전체' ? documents.length : documents.filter((item) => item.category === filter).length}
+            </button>
+          ))}
+        </div>
+        <ul style={{ padding: 0, listStyle: 'none', display: 'grid', gap: '0.35rem' }}>
+          {visibleDocuments.map((item) => {
+            const index = documents.findIndex((doc) => doc.id === item.id);
+            return (
+            <li
+              key={item.id}
+              onDragStart={(event) => handleDragStart(event, item.id)}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => handleDrop(event, item.id)}
+              onDragEnd={() => setDraggedId(null)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                padding: '0.42rem 0.55rem',
+                background: selectedId === item.id ? '#FDECEA' : '#fff',
+                opacity: draggedId === item.id ? 0.45 : 1,
+              }}
+            >
+              <span draggable style={{ color: '#9CA3AF', fontWeight: 800, cursor: 'grab' }}>☰</span>
+              <button type="button" onClick={() => selectDocument(item)} style={{ flex: 1, border: 'none', background: 'transparent', padding: 0, textAlign: 'left', cursor: 'pointer' }}>
+                <strong style={{ display: 'block', fontSize: '0.84rem' }}>{item.title}</strong>
+                <div style={{ color: '#6B7280', fontSize: '0.72rem' }}>
+                  {item.category} · 작성일 {formatDate(item.created_at)} · {item.file_size || '파일 크기 미입력'} · {item.is_public ? '공개' : '비공개'}
+                </div>
               </button>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.3rem', marginTop: '0.45rem' }}>
+              <div style={{ display: 'flex', gap: '0.3rem' }}>
                 <button type="button" onClick={() => move(index, -1)} disabled={index === 0}>↑</button>
                 <button type="button" onClick={() => move(index, 1)} disabled={index === documents.length - 1}>↓</button>
                 <button type="button" onClick={() => remove(item)}>삭제</button>
               </div>
             </li>
-          ))}
+          )})}
         </ul>
       </section>
     </div>
@@ -194,4 +252,30 @@ function FormLabel({ label, children }: { label: string; children: React.ReactNo
 function formatFileSize(bytes: number) {
   if (bytes < 1024 * 1024) return `PDF · ${(bytes / 1024).toFixed(0)}KB`;
   return `PDF · ${(bytes / 1024 / 1024).toFixed(1)}MB`;
+}
+
+function reorder<T>(items: T[], from: number, to: number) {
+  if (from < 0 || to < 0 || from >= items.length || to >= items.length || from === to) return items;
+  const next = [...items];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
+}
+
+function filterButtonStyle(active: boolean): React.CSSProperties {
+  return {
+    border: active ? '1px solid var(--navy)' : '1px solid var(--border)',
+    background: active ? 'var(--navy)' : '#fff',
+    color: active ? '#fff' : '#374151',
+    borderRadius: '999px',
+    padding: '0.28rem 0.62rem',
+    fontSize: '0.76rem',
+    fontWeight: 800,
+    cursor: 'pointer',
+  };
+}
+
+function formatDate(value?: string) {
+  if (!value) return '-';
+  return value.slice(0, 10);
 }
