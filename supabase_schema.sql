@@ -139,6 +139,31 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
+-- 기존 Auth 사용자 중 profiles가 없는 사용자 복구
+INSERT INTO public.profiles (
+  id,
+  email,
+  full_name,
+  company_name,
+  phone,
+  role,
+  status,
+  created_at
+)
+SELECT
+  u.id,
+  COALESCE(u.email, ''),
+  NULLIF(u.raw_user_meta_data->>'full_name', ''),
+  NULLIF(u.raw_user_meta_data->>'company_name', ''),
+  NULLIF(u.raw_user_meta_data->>'phone', ''),
+  COALESCE(NULLIF(u.raw_user_meta_data->>'role', ''), 'partner'),
+  COALESCE(NULLIF(u.raw_user_meta_data->>'status', ''), 'pending'),
+  COALESCE(u.created_at, now())
+FROM auth.users u
+LEFT JOIN public.profiles p ON p.id = u.id
+WHERE p.id IS NULL
+ON CONFLICT (id) DO NOTHING;
+
 -- products: 누구나 읽기 가능
 CREATE POLICY "Anyone can read products"
   ON public.products FOR SELECT
@@ -163,11 +188,6 @@ CREATE POLICY "Anyone can insert inquiries"
 CREATE POLICY "Users can read own profile"
   ON public.profiles FOR SELECT
   USING (auth.uid() = id OR public.is_admin());
-
-CREATE POLICY "Users can update own basic profile"
-  ON public.profiles FOR UPDATE
-  USING (auth.uid() = id OR public.is_admin())
-  WITH CHECK (auth.uid() = id OR public.is_admin());
 
 CREATE POLICY "Admins can manage profiles"
   ON public.profiles FOR ALL

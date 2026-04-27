@@ -25,6 +25,7 @@ export default function AdminDashboardPage() {
   const [tab, setTab] = useState<AdminTab>('products');
   const [newInquiryCount, setNewInquiryCount] = useState(0);
   const [productNotice, setProductNotice] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     if (!supabase) return;
@@ -88,6 +89,7 @@ export default function AdminDashboardPage() {
     }
 
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    if (selectedProduct?.id === id) setSelectedProduct(null);
     setProductNotice('제품이 삭제됐습니다.');
     return null;
   };
@@ -115,8 +117,8 @@ export default function AdminDashboardPage() {
               </div>
             )}
             <div className="admin-grid" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr' }}>
-              <ProductForm onSubmit={upsertProduct} />
-              <ProductListEditor products={products} onDelete={deleteProduct} />
+              <ProductForm onSubmit={upsertProduct} selectedProduct={selectedProduct} onClearSelection={() => setSelectedProduct(null)} />
+              <ProductListEditor products={products} selectedId={selectedProduct?.id ?? null} onSelect={setSelectedProduct} onDelete={deleteProduct} />
             </div>
           </>
         )}

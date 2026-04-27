@@ -75,6 +75,31 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
+-- Backfill: users created before this trigger existed.
+INSERT INTO public.profiles (
+  id,
+  email,
+  full_name,
+  company_name,
+  phone,
+  role,
+  status,
+  created_at
+)
+SELECT
+  u.id,
+  COALESCE(u.email, ''),
+  NULLIF(u.raw_user_meta_data->>'full_name', ''),
+  NULLIF(u.raw_user_meta_data->>'company_name', ''),
+  NULLIF(u.raw_user_meta_data->>'phone', ''),
+  COALESCE(NULLIF(u.raw_user_meta_data->>'role', ''), 'partner'),
+  COALESCE(NULLIF(u.raw_user_meta_data->>'status', ''), 'pending'),
+  COALESCE(u.created_at, now())
+FROM auth.users u
+LEFT JOIN public.profiles p ON p.id = u.id
+WHERE p.id IS NULL
+ON CONFLICT (id) DO NOTHING;
+
 -- 2. profiles policies
 DROP POLICY IF EXISTS "Users can read own profile" ON public.profiles;
 CREATE POLICY "Users can read own profile"
@@ -82,11 +107,6 @@ CREATE POLICY "Users can read own profile"
   USING (auth.uid() = id OR public.is_admin());
 
 DROP POLICY IF EXISTS "Users can update own basic profile" ON public.profiles;
-CREATE POLICY "Users can update own basic profile"
-  ON public.profiles FOR UPDATE
-  USING (auth.uid() = id OR public.is_admin())
-  WITH CHECK (auth.uid() = id OR public.is_admin());
-
 DROP POLICY IF EXISTS "Admins can manage profiles" ON public.profiles;
 CREATE POLICY "Admins can manage profiles"
   ON public.profiles FOR ALL
@@ -127,4 +147,3 @@ CREATE POLICY "Admins can update inquiries"
   ON public.inquiries FOR UPDATE
   USING (public.is_admin())
   WITH CHECK (public.is_admin());
-

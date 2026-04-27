@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Product } from '../../types/product';
 import { positiveNumber, required } from '../../utils/validators';
 
 interface Props {
   onSubmit: (product: Product) => Promise<string | null> | string | null | void;
+  selectedProduct?: Product | null;
+  onClearSelection?: () => void;
 }
 
 const empty: Product = {
@@ -22,10 +24,21 @@ const empty: Product = {
   featureBullets: [],
 };
 
-export default function ProductForm({ onSubmit }: Props) {
+export default function ProductForm({ onSubmit, selectedProduct, onClearSelection }: Props) {
   const [form, setForm] = useState<Product>(empty);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!selectedProduct) return;
+    setForm({
+      ...selectedProduct,
+      applications: [...selectedProduct.applications],
+      specs: { ...selectedProduct.specs },
+      featureBullets: selectedProduct.featureBullets ? [...selectedProduct.featureBullets] : [],
+    });
+    setMessage(`${selectedProduct.name} 정보를 불러왔습니다. 수정 후 저장하세요.`);
+  }, [selectedProduct]);
 
   const update = <K extends keyof Product>(key: K, value: Product[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -50,14 +63,30 @@ export default function ProductForm({ onSubmit }: Props) {
       return;
     }
     setForm(empty);
+    onClearSelection?.();
     setMessage('저장됐습니다.');
+  };
+
+  const clearForm = () => {
+    setForm(empty);
+    setMessage('');
+    onClearSelection?.();
   };
 
   return (
     <div className="card" style={{ padding: '1rem' }}>
-      <h3>제품 추가/수정</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center', marginBottom: '0.75rem' }}>
+        <h3 style={{ margin: 0 }}>{selectedProduct ? '제품 수정' : '제품 추가'}</h3>
+        <button
+          type="button"
+          onClick={clearForm}
+          style={{ border: '1px solid var(--border)', background: '#fff', borderRadius: '8px', padding: '6px 10px', fontSize: '0.8rem', cursor: 'pointer' }}
+        >
+          새 제품 입력
+        </button>
+      </div>
       <div style={{ display: 'grid', gap: '0.6rem' }}>
-        <input placeholder="id" value={form.id} onChange={(e) => update('id', e.target.value)} />
+        <input placeholder="id" value={form.id} onChange={(e) => update('id', e.target.value)} disabled={Boolean(selectedProduct)} />
         <input placeholder="모델명" value={form.name} onChange={(e) => update('name', e.target.value)} />
         <input placeholder="카테고리" value={form.category} onChange={(e) => update('category', e.target.value)} />
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>

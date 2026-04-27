@@ -17,6 +17,8 @@
 - 2026-04-27 추가 확인: 웹 검토 중 회원가입에서 `profiles` RLS insert 오류가 발생했습니다.
 - 2026-04-27 추가 확인: Admin Hero 문구/폰트/굵기 변경이 현재 세션에서는 보이나 로그아웃/재접속 후 이전 상태로 돌아갔습니다.
 - 원인: `profiles` 생성과 `site_content` upsert가 Supabase RLS에 막혀 DB에 영구 저장되지 않았습니다.
+- 2026-04-27 추가 확인: 이메일 인증 후 관리자 회원 목록에 가입 신청이 보이지 않는 사례가 있었습니다. trigger 적용 전 생성된 Auth 사용자를 복구하기 위해 `supabase_fix_auth_cms_policies.sql`에 backfill 쿼리를 추가했습니다.
+- 2026-04-27 추가 확인: 관리자 제품 목록은 DB에서 로드된 목록이므로, 목록 클릭 시 좌측 폼에 값을 불러와 수정할 수 있도록 개선했습니다.
 - 회원가입은 Supabase Auth 가입 후 `profiles` 생성 실패를 확인하지 않아 가입 성공처럼 보일 수 있었습니다.
 - 로그인은 프로필 조회 실패 시 사용자에게 안내 없이 멈춘 것처럼 보일 수 있었습니다.
 - 관리자 제품 관리는 기존에 React state만 바꾸고 Supabase `products` 테이블에 저장하지 않았습니다.
@@ -60,11 +62,16 @@
   - Vite 환경변수 타입 선언 추가
 - `supabase_fix_auth_cms_policies.sql`
   - 회원가입 시 `profiles` 자동 생성을 위한 Auth trigger 추가
+  - trigger 적용 전 생성된 Auth 사용자 backfill 추가
   - 관리자 CMS 쓰기 권한을 위한 RLS 정책 추가
 - `src/app/App.tsx`, `src/components/admin/ContentEditor.tsx`
   - Hero 저장 실패를 관리자 화면에 표시하도록 보강
 - `supabase_schema.sql`
   - 운영 DB 정책 기준을 최신 구조로 보강
+- `src/components/admin/ProductForm.tsx`, `src/components/admin/ProductListEditor.tsx`, `src/pages/AdminDashboardPage.tsx`
+  - 제품 목록 클릭 시 좌측 폼에 제품 정보 로드 및 수정 저장 가능하도록 개선
+- `src/contexts/AuthContext.tsx`, `src/pages/auth/LoginPage.tsx`, `src/pages/auth/SignupPage.tsx`
+  - 이메일 인증 후 `/login?verified=1`로 돌아오도록 설정하고 안내 문구 보강
 
 ---
 

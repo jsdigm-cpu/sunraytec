@@ -101,6 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/login?verified=1`,
         data: {
           full_name: meta.full_name,
           company_name: meta.company_name,

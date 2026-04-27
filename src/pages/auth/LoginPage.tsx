@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import type React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginPage() {
   const { signIn, user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,12 @@ export default function LoginPage() {
 
         <div style={{ background: '#fff', borderRadius: '16px', padding: '36px 32px', boxShadow: '0 8px 40px rgba(0,0,0,0.3)' }}>
           <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F2241', marginBottom: '24px', textAlign: 'center' }}>로그인</h1>
+
+          {searchParams.get('verified') === '1' && (
+            <div style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', padding: '10px 14px', fontSize: '0.85rem', color: '#047857', marginBottom: '16px', fontWeight: 700 }}>
+              이메일 인증이 완료되었습니다. 관리자 승인 후 전용 자료실을 이용하실 수 있습니다.
+            </div>
+          )}
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '16px' }}>

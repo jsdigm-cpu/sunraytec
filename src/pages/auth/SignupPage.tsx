@@ -40,9 +40,10 @@ export default function SignupPage() {
           <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0F2241', marginBottom: '12px' }}>가입 신청이 완료됐습니다!</h2>
           <p style={{ color: '#6B7280', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '28px' }}>
-            담당자 확인 후 승인이 완료되면<br />이메일로 알려드립니다.<br />
-            <strong>영업일 기준 1~2일</strong> 소요됩니다.<br />
-            승인 전에는 전용 자료실 접근이 제한됩니다.
+            입력하신 이메일로 인증 메일을 보냈습니다.<br />
+            이메일 인증 후 담당자 승인이 완료되면<br />
+            전용 자료실 접근이 가능합니다.<br />
+            <strong>영업일 기준 1~2일</strong> 소요됩니다.
           </p>
           <Link to="/" style={{ display: 'inline-block', padding: '12px 28px', background: 'var(--navy)', color: '#fff', borderRadius: '8px', fontWeight: 700, textDecoration: 'none' }}>
             메인 홈페이지로

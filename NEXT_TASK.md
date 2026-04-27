@@ -21,6 +21,7 @@
   - `supabase_fix_auth_cms_policies.sql`
 - 완료 기준:
   - Supabase Dashboard > SQL Editor에서 SQL 전체 실행 성공
+  - SQL 실행 전 생성된 Auth 사용자도 `profiles`에 backfill됨
   - 신규 회원가입 시 `profiles` RLS 오류가 발생하지 않음
   - Admin Hero 폰트/굵기/강조색 저장 후 로그아웃/재접속해도 유지됨
 
