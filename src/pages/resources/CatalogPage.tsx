@@ -14,6 +14,7 @@ interface DocItem {
   fileSize: string;
   ready: boolean;
   fileUrl?: string;
+  thumbnailUrl?: string;
 }
 
 const DOCS: DocItem[] = [
@@ -150,6 +151,7 @@ export default function CatalogPage() {
           fileSize: item.file_size || 'PDF',
           ready: Boolean(item.file_url),
           fileUrl: item.file_url ?? undefined,
+          thumbnailUrl: isPreviewableImage(item.file_url) ? item.file_url : undefined,
         })));
       });
   }, []);
@@ -256,13 +258,37 @@ export default function CatalogPage() {
               >
                 {/* 상단: 아이콘 + 카테고리 배지 */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                  <div style={{
-                    width: '48px', height: '48px', borderRadius: '12px',
-                    background: '#F1F5F9',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <FileText style={{ width: 24, height: 24, color: '#475569' }} />
-                  </div>
+                  {doc.thumbnailUrl ? (
+                    <div
+                      style={{
+                        width: '86px',
+                        height: '112px',
+                        borderRadius: '10px',
+                        background: '#F8FAFC',
+                        border: '1px solid #E5E7EB',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 8px 18px rgba(15,34,65,0.08)',
+                      }}
+                    >
+                      <img
+                        src={doc.thumbnailUrl}
+                        alt={`${doc.title} 미리보기`}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div style={{
+                      width: '48px', height: '48px', borderRadius: '12px',
+                      background: '#F1F5F9',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <FileText style={{ width: 24, height: 24, color: '#475569' }} />
+                    </div>
+                  )}
                   <span style={{
                     fontSize: '11px', fontWeight: 700,
                     background: CATEGORY_COLOR[doc.category].bg,
@@ -366,4 +392,9 @@ export default function CatalogPage() {
       `}</style>
     </main>
   );
+}
+
+function isPreviewableImage(url?: string | null) {
+  if (!url) return false;
+  return /\.(avif|gif|jpe?g|png|webp)(\?|#|$)/i.test(url);
 }
