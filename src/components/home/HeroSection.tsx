@@ -177,11 +177,19 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           }}
         >
           <span style={{ fontSize: '14px', gridRow: '1 / span 2' }}>📍</span>
-          <span style={{ fontSize: '12px', fontWeight: 800, color: 'rgba(255,255,255,0.96)', letterSpacing: '0.02em', lineHeight: 1.25 }}>
-            실제 납품 · 시공 현장
-          </span>
-          <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.78)', lineHeight: 1.25 }}>
-            {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
+          <span
+            style={{
+              fontSize: '12px',
+              fontWeight: 800,
+              color: 'rgba(255,255,255,0.96)',
+              letterSpacing: '0.01em',
+              lineHeight: 1.25,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            실제 납품 · 시공 현장 · {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
           </span>
         </div>
       </motion.div>
@@ -432,11 +440,12 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
+          className="hero-slide-dots"
           style={{
             display: 'flex',
             justifyContent: 'center',
             gap: '8px',
-            marginTop: '32px',
+            marginTop: '46px',
           }}
         >
           {HERO_IMAGES.map((_, index) => (
@@ -472,7 +481,13 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           }
           .hero-site-badge {
             min-width: 0 !important;
+            width: calc(100vw - 32px) !important;
             max-width: calc(100vw - 32px) !important;
+            grid-template-columns: auto minmax(0, 1fr) !important;
+          }
+          .hero-slide-dots {
+            margin-top: 56px !important;
+            transform: translateY(12px);
           }
         }
 

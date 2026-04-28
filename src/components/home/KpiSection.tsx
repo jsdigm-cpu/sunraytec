@@ -60,8 +60,8 @@ export default function KpiSection() {
         <ScrollReveal>
           <p
             style={{
-              fontSize: '11px',
-              fontWeight: 700,
+              fontSize: '13px',
+              fontWeight: 800,
               letterSpacing: '2px',
               textTransform: 'uppercase',
               color: 'var(--gray)',
