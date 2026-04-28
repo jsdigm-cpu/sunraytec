@@ -1,26 +1,79 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { staggerContainer, staggerItem } from '../../utils/animations';
 import ScrollReveal from '../ui/ScrollReveal';
 import { fadeInUp } from '../../utils/animations';
+import { supabase } from '../../lib/supabase';
 
-const CASES = [
-  { icon: '🏭', title: '인천공항 FedEx 물류센터',  category: '산업·물류', model: 'SUR-3600D' },
-  { icon: '📬', title: '대전 우편물류센터',          category: '산업·물류', model: 'SUR-2400T' },
-  { icon: '⚔️', title: '포항 00부대 정비창',         category: '국방·특수', model: 'SUR-3600D' },
-  { icon: '🎓', title: '연무초등학교 급식실',         category: '공공·교육', model: 'SUR-1800T' },
-  { icon: '🚌', title: '한국도로공사 버스정류장',     category: '공공·교육', model: 'SUR-1200T' },
-  { icon: '🚗', title: '자동차 출고센터 세차장',      category: '상업',     model: 'SUR-2400T' },
+interface CaseCard {
+  id: string;
+  title: string;
+  category: string;
+  location?: string;
+  image_url?: string;
+  images?: string[];
+  summary?: string;
+  featured?: boolean;
+  sort_order?: number;
+}
+
+const FALLBACK_CASES: CaseCard[] = [
+  { id: 'fallback-fedex', title: '인천공항 FedEx 물류센터', category: '산업 및 물류 거점', location: '인천', image_url: '/images/hero/hero_1.jpg' },
+  { id: 'fallback-post', title: '대전 우편물류센터', category: '산업 및 물류 거점', location: '대전', image_url: '/images/hero/hero_2.jpg' },
+  { id: 'fallback-military', title: '포항 00부대 정비창', category: '국방 및 특수 시설', location: '포항', image_url: '/images/hero/hero_3.jpg' },
+  { id: 'fallback-school', title: '연무초등학교 급식실', category: '교육 및 공공 복지', location: '논산', image_url: '/images/hero/hero_4.jpg' },
+  { id: 'fallback-bus', title: '한국도로공사 버스정류장', category: '스마트 시티 솔루션', location: '전국', image_url: '/images/hero/hero_5.jpg' },
+  { id: 'fallback-carwash', title: '자동차 출고센터 세차장', category: '상업 및 서비스 공간', location: '자동차 출고센터', image_url: '/images/hero/hero_6.jpg' },
 ];
 
 const CATEGORY_COLOR: Record<string, string> = {
   '산업·물류': 'var(--amber)',
   '국방·특수': 'var(--red)',
   '공공·교육': '#60A5FA',
-  '상업':       '#4ADE80',
+  '상업': '#4ADE80',
+  '산업 및 물류 거점': 'var(--amber)',
+  '국방 및 특수 시설': 'var(--red)',
+  '교육 및 공공 복지': '#60A5FA',
+  '스마트 시티 솔루션': '#34D399',
+  '주거 및 라이프 스타일': '#F472B6',
+  '상업 및 서비스 공간': '#A78BFA',
 };
 
+function getCaseImage(item: CaseCard) {
+  return item.image_url || item.images?.find(Boolean) || '';
+}
+
 export default function CasesSection() {
+  const [cases, setCases] = useState<CaseCard[]>(FALLBACK_CASES);
+  const [loading, setLoading] = useState(Boolean(supabase));
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchCases() {
+      if (!supabase) return;
+
+      const { data, error } = await supabase
+        .from('case_studies')
+        .select('id,title,category,location,image_url,images,summary,featured,sort_order')
+        .order('sort_order', { ascending: true })
+        .limit(6);
+
+      if (!isMounted) return;
+      if (!error && data && data.length > 0) {
+        setCases(data as CaseCard[]);
+      }
+      setLoading(false);
+    }
+
+    fetchCases();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section style={{ background: 'var(--navy2)', padding: '72px 0' }}>
       <div className="container">
@@ -75,9 +128,13 @@ export default function CasesSection() {
           style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}
           className="cases-grid"
         >
-          {CASES.map((c) => (
+          {cases.map((c, index) => {
+            const imageUrl = getCaseImage(c);
+            const detailTo = c.id.startsWith('fallback-') ? '/cases' : `/cases/${c.id}`;
+
+            return (
             <motion.div
-              key={c.title}
+              key={c.id}
               variants={staggerItem}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
               style={{
@@ -88,8 +145,7 @@ export default function CasesSection() {
                 cursor: 'pointer',
               }}
             >
-              <Link to="/cases">
-                {/* 이미지 영역 — hover 시 이모지 확대 */}
+              <Link to={detailTo} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
@@ -99,11 +155,55 @@ export default function CasesSection() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '3rem',
+                    position: 'relative',
                     overflow: 'hidden',
                   }}
                 >
-                  {c.icon}
+                  {imageUrl ? (
+                    <img
+                      className="case-thumb-img"
+                      src={imageUrl}
+                      alt={c.title}
+                      style={{
+                        width: '116%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: '72% center',
+                        animationDelay: `${index * 0.55}s`,
+                      }}
+                      onError={(event) => {
+                        event.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: imageUrl
+                        ? 'linear-gradient(180deg, rgba(10,25,47,0.1) 0%, rgba(10,25,47,0.42) 100%)'
+                        : 'transparent',
+                    }}
+                  />
+                  {!imageUrl && (
+                    <span style={{ fontSize: '3rem' }}>
+                      {index % 3 === 0 ? '🏭' : index % 3 === 1 ? '🏛️' : '🚗'}
+                    </span>
+                  )}
+                  {loading && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        bottom: 10,
+                        right: 12,
+                        color: 'rgba(255,255,255,.65)',
+                        fontSize: 11,
+                        fontWeight: 700,
+                      }}
+                    >
+                      DB 연결 중
+                    </span>
+                  )}
                 </motion.div>
 
                 <div style={{ padding: '16px' }}>
@@ -114,16 +214,42 @@ export default function CasesSection() {
                     {c.title}
                   </p>
                   <span style={{ fontSize: '11px', background: 'rgba(255,255,255,.1)', color: 'rgba(255,255,255,.6)', padding: '2px 8px', borderRadius: '4px' }}>
-                    {c.model}
+                    {c.location || '시공사례'}
                   </span>
                 </div>
               </Link>
             </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
       </div>
 
       <style>{`
+        .case-thumb-img {
+          display: block;
+          transform: translateX(0) scale(1.03);
+          animation: caseThumbPan 8.5s ease-in-out infinite alternate;
+          will-change: transform, object-position;
+        }
+
+        @keyframes caseThumbPan {
+          0% {
+            transform: translateX(0) scale(1.04);
+            object-position: 74% center;
+          }
+          100% {
+            transform: translateX(-9%) scale(1.04);
+            object-position: 28% center;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .case-thumb-img {
+            animation: none;
+            transform: scale(1.02);
+          }
+        }
+
         @media (max-width: 768px) { .cases-grid { grid-template-columns: 1fr 1fr !important; } }
         @media (max-width: 480px) { .cases-grid { grid-template-columns: 1fr !important; } }
       `}</style>
