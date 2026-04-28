@@ -72,12 +72,12 @@ const NAV_ITEMS = [
     to: '/resources/catalog',
     label: '자료실',
     subs: [
-      { to: '/coming-soon?section=resources', label: '난방 용량 계산기', icon: '🧮', comingSoon: true },
-      { to: '/coming-soon?section=resources', label: '에너지 ROI 계산기', icon: '💰', comingSoon: true },
+      { to: '/resources/heating-load-calculator', label: '난방 용량 계산기', icon: '🧮' },
+      { to: '/resources/energy-roi-calculator', label: '에너지 ROI 계산기', icon: '💰' },
       { to: '/resources/catalog', label: '카탈로그 다운로드', icon: '📥' },
-      { to: '/coming-soon?section=resources', label: '스펙·도면 CAD', icon: '📐', comingSoon: true },
+      { to: '/resources/spec-cad', label: '스펙·도면 CAD', icon: '📐' },
       { to: '/about/certifications', label: '인증서·시험성적서', icon: '📄' },
-      { to: '/coming-soon?section=resources', label: '동영상 자료', icon: '🎬', comingSoon: true },
+      { to: '/resources/videos', label: '동영상 자료', icon: '🎬' },
     ],
   },
   {

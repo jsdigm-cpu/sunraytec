@@ -75,12 +75,12 @@
 | 파트너 포털 | `/partner` | 진행중 | 보호 라우트 구현, 실제 자료 보강 필요 |
 | 파트너 회원가입 | `/signup` | 완료 | |
 | 파트너 승인 대기 | `/partner/pending` | 완료 | |
-| 난방 용량 계산기 | `/coming-soon?section=resources` | 대기중 | |
-| 에너지 ROI 계산기 | `/coming-soon?section=resources` | 대기중 | |
+| 난방 용량 계산기 | `/resources/heating-load-calculator` | 완료 | 면적·천장고·단열·구역 비율 기반 1차 용량 계산 |
+| 에너지 ROI 계산기 | `/resources/energy-roi-calculator` | 완료 | 난방비·절감률·설치비 기반 회수 기간 계산 |
 | 카탈로그 다운로드 | `/resources/catalog` | 진행중 | 공개 자료 DB 연동 및 다운로드 가능, 자료 보강 대기 |
-| 스펙·도면 CAD | `/coming-soon?section=resources` | 대기중 | |
+| 스펙·도면 CAD | `/resources/spec-cad` | 진행중 | 자료 요청 흐름과 제공 항목 안내, 실파일 업로드 대기 |
 | 인증서·시험성적서 | `/about/certifications` | 진행중 | 페이지 구현, 파일 다운로드 대기 |
-| 동영상 자료 | `/coming-soon?section=resources` | 대기중 | |
+| 동영상 자료 | `/resources/videos` | 진행중 | 영상 카테고리 안내, 실영상 연결 대기 |
 
 ## 7. 고객센터
 

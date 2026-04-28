@@ -16,6 +16,7 @@ const ContactPage          = lazy(() => import('../pages/ContactPage'));
 const CasesPage            = lazy(() => import('../pages/CasesPage'));
 const CaseDetailPage       = lazy(() => import('../pages/CaseDetailPage'));
 const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage'));
+const ResourceToolsPage    = lazy(() => import('../pages/resources/ResourceToolsPage'));
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
 const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
       { path: 'cases',                 element: <S><CasesPage /></S> },
       { path: 'cases/:id',             element: <S><CaseDetailPage /></S> },
       { path: 'resources/catalog',     element: <S><CatalogPage /></S> },
+      { path: 'resources/heating-load-calculator', element: <S><ResourceToolsPage pageId="heating-load" /></S> },
+      { path: 'resources/energy-roi-calculator', element: <S><ResourceToolsPage pageId="energy-roi" /></S> },
+      { path: 'resources/spec-cad',     element: <S><ResourceToolsPage pageId="cad" /></S> },
+      { path: 'resources/videos',       element: <S><ResourceToolsPage pageId="videos" /></S> },
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },
       { path: 'technology/principle',  element: <S><PrinciplePage /></S> },
