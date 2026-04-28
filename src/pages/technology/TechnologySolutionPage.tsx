@@ -34,6 +34,9 @@ interface PageConfig {
   pains: Array<{ title: string; desc: string }>;
   solutions: Array<{ title: string; desc: string }>;
   applications: Array<{ title: string; desc: string; icon: typeof Building2 }>;
+  methodLead: string;
+  process: Array<{ step: string; title: string; desc: string }>;
+  checklist: Array<{ title: string; desc: string }>;
   diagramLabels: { source: string; center: string; outcome: string };
 }
 
@@ -68,6 +71,18 @@ const PAGES: Record<PageId, PageConfig> = {
       { icon: ShieldCheck, title: '특수 설비실', desc: '안전성 검토와 안정 운전이 중요한 공간' },
       { icon: Droplets, title: '결로 취약 구역', desc: '지하·출입구·냉기 유입 구간' },
     ],
+    methodLead: '4대 ZERO 설계는 제품 하나의 기능보다 현장 리스크를 먼저 나누어 보는 방식입니다. 공기 흐름, 표면 온도, 열원 안전성, 제어 조건을 함께 확인해야 실제 운영에서 안정적인 체감 난방으로 이어집니다.',
+    process: [
+      { step: '01', title: '위험 요인 분류', desc: '분진, 전자파 민감도, 화재 조건, 결로 취약 지점을 먼저 구분합니다.' },
+      { step: '02', title: '복사열 배치 설계', desc: '사람이 머무는 위치와 차가운 표면을 기준으로 발열 면과 방향을 정합니다.' },
+      { step: '03', title: '안전 제어 적용', desc: '온도, 시간, 구역 제어를 조합해 과열과 불필요한 운전을 줄입니다.' },
+    ],
+    checklist: [
+      { title: '송풍이 부담되는 공간인가', desc: '분진, 냄새, 비말 확산을 줄여야 하는 현장에 우선 검토합니다.' },
+      { title: '차가운 표면이 문제인가', desc: '벽, 바닥, 장비 표면 온도가 낮아 결로가 생기는 구간을 확인합니다.' },
+      { title: '화염 열원을 쓰기 어려운가', desc: '개방형 화염 사용이 부담되는 보관·정비 공간에 적합성을 봅니다.' },
+      { title: '구역별 운전이 필요한가', desc: '전체 난방보다 필요한 구역만 안정적으로 데워야 하는지 확인합니다.' },
+    ],
     diagramLabels: { source: '위험 요인', center: '복사난방', outcome: 'ZERO 리스크' },
   },
   'public-edu': {
@@ -99,6 +114,18 @@ const PAGES: Record<PageId, PageConfig> = {
       { icon: School, title: '학교 급식실·체육관', desc: '학생 체류 공간의 무풍 난방' },
       { icon: Building2, title: '관공서·복지관', desc: '민원·대기 공간의 균일 체감' },
       { icon: BadgeCheck, title: '공공 조달 현장', desc: '나라장터 검토가 필요한 발주처' },
+    ],
+    methodLead: '공공·교육시설은 체감 쾌적성과 운영 편의, 조달 검토 흐름이 함께 맞아야 합니다. 썬레이텍은 공간별 사용 시간과 체류 밀도를 기준으로 필요한 구역부터 난방 계획을 세웁니다.',
+    process: [
+      { step: '01', title: '공간 용도 확인', desc: '수업, 급식, 체육, 민원처럼 체류 방식이 다른 공간을 구분합니다.' },
+      { step: '02', title: '사용 시간대 분리', desc: '등교, 점심, 행사, 민원 피크 시간에 맞춰 구역별 운전 기준을 잡습니다.' },
+      { step: '03', title: '조달 검토 정리', desc: '우수제품, MAS, 비교 견적 등 발주처가 확인해야 할 자료 흐름을 맞춥니다.' },
+    ],
+    checklist: [
+      { title: '소음과 바람 민원이 있는가', desc: '수업·대기 공간처럼 집중도와 체류감이 중요한 곳을 먼저 봅니다.' },
+      { title: '넓고 높은 공간인가', desc: '체육관, 강당처럼 공기 난방 손실이 큰 공간의 체감 개선을 검토합니다.' },
+      { title: '운영 담당자가 적은가', desc: '필터, 송풍부 관리 부담을 줄여야 하는 시설에 적합합니다.' },
+      { title: '공공 구매 절차가 필요한가', desc: '제품군, 인증, 납품 사례를 함께 확인해야 하는 발주처에 맞춥니다.' },
     ],
     diagramLabels: { source: '공공 공간', center: '구역별 복사열', outcome: '쾌적한 체류' },
   },
@@ -132,6 +159,18 @@ const PAGES: Record<PageId, PageConfig> = {
       { icon: Gauge, title: '제조공장', desc: '라인 작업자 체류 공간' },
       { icon: MapPinned, title: '정비·서비스 구역', desc: '부분 난방이 필요한 개방형 현장' },
     ],
+    methodLead: '산업·물류 현장은 전체 공기를 균일하게 데우기보다 작업자가 실제로 머무는 동선과 작업면을 먼저 잡아야 합니다. 출입문 개방, 천장고, 라인 운영 시간에 따라 존 난방과 피크 관리 전략을 함께 설계합니다.',
+    process: [
+      { step: '01', title: '열 손실 구간 파악', desc: '대형 셔터, 상하차 도크, 외기 유입 방향과 빈도를 먼저 확인합니다.' },
+      { step: '02', title: '작업자 동선 매핑', desc: '피킹, 포장, 정비, 대기 구역처럼 체류 시간이 긴 지점을 난방 기준으로 삼습니다.' },
+      { step: '03', title: '존별 운전 계획', desc: '라인별 가동 시간과 전력 피크를 고려해 단계 운전 기준을 정합니다.' },
+    ],
+    checklist: [
+      { title: '천장이 높고 문이 자주 열리는가', desc: '데운 공기가 빠져나가는 공간일수록 복사난방 효과를 검토할 가치가 큽니다.' },
+      { title: '작업자가 춥다고 느끼는 지점이 명확한가', desc: '전체 면적보다 작업 위치 중심으로 난방을 배치할 수 있습니다.' },
+      { title: '바닥 냉기나 결로가 있는가', desc: '작업 안전과 보관 품질에 영향을 주는 표면 온도를 함께 봅니다.' },
+      { title: '전력 피크 관리가 필요한가', desc: '동시 운전보다 구역별 순차 운전이 유리한지 확인합니다.' },
+    ],
     diagramLabels: { source: '고천장 손실', center: '작업면 복사열', outcome: '체감 효율' },
   },
   'defense-special': {
@@ -164,6 +203,18 @@ const PAGES: Record<PageId, PageConfig> = {
       { icon: Flame, title: '위험물 주변 구역', desc: '안전 조건 검토가 필요한 공간' },
       { icon: Droplets, title: '동파 취약 시설', desc: '외기 유입과 습기가 많은 구간' },
     ],
+    methodLead: '국방·특수 현장은 난방 성능보다 안전 조건 검토가 먼저입니다. 위험물, 습기, 분진, 외기 유입, 장비 보관 조건을 나누어 보고 적용 가능한 전기식 복사난방 구성을 좁혀갑니다.',
+    process: [
+      { step: '01', title: '위험 등급 확인', desc: '화재, 방폭, 방수, 방진 검토가 필요한 구역을 일반 공간과 분리합니다.' },
+      { step: '02', title: '설치 조건 검토', desc: '천장 구조, 장비 간섭, 습기, 먼지, 외기 유입 정도를 확인합니다.' },
+      { step: '03', title: '제어·보호 구성', desc: '과열 방지, 구역 운전, 유지보수 접근성을 고려해 운전 방식을 정합니다.' },
+    ],
+    checklist: [
+      { title: '일반 난방기 사용이 제한되는가', desc: '화염, 고온 표면, 송풍 방식이 부담되는 현장인지 확인합니다.' },
+      { title: '부분 난방 목적이 명확한가', desc: '장비, 작업대, 출입구, 동파 구간처럼 필요한 지점을 좁힙니다.' },
+      { title: '습기·먼지 노출이 큰가', desc: '방수·방진 조건과 유지관리 접근성을 함께 검토합니다.' },
+      { title: '장기 안정 운전이 중요한가', desc: '운영 중단 비용이 큰 현장일수록 단순한 구조와 제어 안정성이 중요합니다.' },
+    ],
     diagramLabels: { source: '위험 조건', center: '안전 검토', outcome: '특수 난방' },
   },
   'iot-control': {
@@ -195,6 +246,18 @@ const PAGES: Record<PageId, PageConfig> = {
       { icon: RadioTower, title: '학교·공공시설', desc: '시간표·행사 일정 기반 운전' },
       { icon: CircuitBoard, title: '산업 현장', desc: '라인·작업구역별 제어' },
       { icon: Zap, title: '다수 지점 운영', desc: '여러 공간의 원격 모니터링' },
+    ],
+    methodLead: 'IoT 중앙제어는 난방기를 더 많이 켜기 위한 기능이 아니라 필요한 구역을 정확한 시간에 운영하기 위한 관리 방식입니다. 스케줄, 피크, 이상 상태를 한 화면에서 다룰 수 있도록 공간 운영 규칙을 먼저 정리합니다.',
+    process: [
+      { step: '01', title: '구역 체계 정의', desc: '교실, 체육관, 라인, 창고처럼 따로 운영해야 할 존을 나눕니다.' },
+      { step: '02', title: '스케줄·권한 설정', desc: '요일, 시간, 행사, 담당자 권한에 맞춰 운전 기준을 세웁니다.' },
+      { step: '03', title: '모니터링 확장', desc: '가동 상태, 피크 부담, 이상 징후를 확인할 수 있는 운영 화면으로 확장합니다.' },
+    ],
+    checklist: [
+      { title: '켜고 끄는 일이 자주 누락되는가', desc: '현장 담당자 의존도가 높으면 스케줄 운전의 효과가 큽니다.' },
+      { title: '공간별 사용 시간이 다른가', desc: '동시에 켜는 방식보다 구역별 운전으로 관리할 수 있습니다.' },
+      { title: '전력 피크가 부담되는가', desc: '동시 가동을 분산해야 하는 시설에 적용성을 검토합니다.' },
+      { title: '여러 지점을 함께 관리하는가', desc: '현장별 상태를 한 곳에서 보고 싶은 운영 조직에 적합합니다.' },
     ],
     diagramLabels: { source: '현장 구역', center: 'IoT 제어', outcome: '에너지 관리' },
   },
@@ -383,71 +446,119 @@ function EnergyDiagram({ config }: { config: PageConfig }) {
     );
   }
 
+  const beforeItems = config.pains.slice(0, 3);
+  const afterItems = config.solutions.slice(0, 3);
+
   return (
     <div
       style={{
         minHeight: 350,
         borderRadius: 8,
-        background: '#F8FAFC',
+        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
         border: '1px solid rgba(15,34,65,0.11)',
         boxShadow: '0 24px 70px rgba(15,34,65,0.14)',
-        position: 'relative',
-        overflow: 'hidden',
+        padding: 22,
+        display: 'grid',
+        gridTemplateColumns: '1fr 0.78fr 1fr',
+        gap: 14,
+        alignItems: 'center',
       }}
+      className="solution-diagram"
     >
-      <svg viewBox="0 0 720 350" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        <defs>
-          <linearGradient id={`flow-${config.breadcrumb}`} x1="0" x2="1">
-            <stop offset="0%" stopColor={config.accent} stopOpacity="0.08" />
-            <stop offset="48%" stopColor={config.accent} stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#F39C12" stopOpacity="0.25" />
-          </linearGradient>
-        </defs>
-        <motion.circle
-          cx="360"
-          cy="172"
-          r="84"
-          fill={config.accent}
-          animate={{ opacity: [0.06, 0.16, 0.06], scale: [0.92, 1.08, 0.92] }}
-          transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ transformOrigin: '360px 172px' }}
-        />
-        {[78, 126, 594, 642].map((x, index) => (
-          <motion.circle
-            key={x}
-            cx={x}
-            cy={index < 2 ? 118 + index * 112 : 118 + (index - 2) * 112}
-            r="34"
-            fill="#FFFFFF"
-            stroke="#D8DEE8"
-            strokeWidth="2"
-            animate={{ y: [0, index % 2 ? -8 : 8, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: index * 0.2 }}
-          />
+      <div style={{ display: 'grid', gap: 10 }}>
+        <p style={{ color: '#64748B', fontSize: 12, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 2 }}>
+          현장 과제
+        </p>
+        {beforeItems.map((item, index) => (
+          <motion.div
+            key={item.title}
+            animate={{ x: [0, index % 2 ? -3 : 3, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.18 }}
+            style={{
+              minHeight: 68,
+              padding: '12px 13px',
+              borderRadius: 8,
+              border: '1px solid #FED7AA',
+              background: '#FFF7ED',
+            }}
+          >
+            <div style={{ color: '#9A3412', fontSize: 13.5, fontWeight: 900, marginBottom: 4 }}>{item.title}</div>
+            <div style={{ color: '#9A3412', opacity: 0.68, fontSize: 11.5, fontWeight: 700, lineHeight: 1.45 }}>
+              {item.desc.length > 34 ? `${item.desc.slice(0, 34)}...` : item.desc}
+            </div>
+          </motion.div>
         ))}
-        {[130, 180, 230, 490, 540, 590].map((x, index) => (
-          <motion.path
-            key={x}
-            d={`M ${x} ${index < 3 ? 128 : 220} C 250 ${index < 3 ? 96 : 260}, 470 ${index < 3 ? 96 : 260}, ${720 - x} ${index < 3 ? 128 : 220}`}
-            stroke={`url(#flow-${config.breadcrumb})`}
-            strokeWidth="5"
-            strokeLinecap="round"
-            fill="none"
-            strokeDasharray="12 16"
-            animate={{ strokeDashoffset: [0, -56], opacity: [0.34, 0.9, 0.34] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'linear', delay: index * 0.14 }}
-          />
-        ))}
-        <rect x="276" y="90" width="168" height="164" rx="22" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="2" />
-        <text x="360" y="292" textAnchor="middle" fill="#0A1628" fontSize="16" fontWeight="900">{config.diagramLabels.center}</text>
-        <text x="100" y="306" textAnchor="middle" fill="#64748B" fontSize="13" fontWeight="800">{config.diagramLabels.source}</text>
-        <text x="620" y="306" textAnchor="middle" fill="#64748B" fontSize="13" fontWeight="800">{config.diagramLabels.outcome}</text>
-      </svg>
+      </div>
 
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 108, height: 108, borderRadius: 8, background: config.accent, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 18px 42px rgba(15,34,65,0.22)' }}>
-          <Icon size={54} strokeWidth={1.8} />
+      <div style={{ display: 'grid', justifyItems: 'center', gap: 12 }}>
+        <motion.div
+          animate={{ boxShadow: [`0 16px 38px ${config.accent}22`, `0 22px 54px ${config.accent}44`, `0 16px 38px ${config.accent}22`] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            width: 122,
+            height: 122,
+            borderRadius: 8,
+            background: config.accent,
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+          }}
+        >
+          <Icon size={52} strokeWidth={1.8} />
+          <motion.div
+            animate={{ opacity: [0.22, 0.62, 0.22], scale: [0.86, 1.18, 0.86] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute',
+              inset: -18,
+              border: `2px solid ${config.accent}36`,
+              borderRadius: 8,
+            }}
+          />
+        </motion.div>
+        <div style={{ color: 'var(--navy)', textAlign: 'center' }}>
+          <div style={{ fontSize: 16, fontWeight: 900 }}>썬레이텍</div>
+          <div style={{ fontSize: 12, color: '#64748B', fontWeight: 800 }}>{config.diagramLabels.center}</div>
         </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: config.accent, fontSize: 12, fontWeight: 900 }}>
+          맞춤 설계 <ArrowRight size={15} />
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gap: 10 }}>
+        <p style={{ color: '#64748B', fontSize: 12, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 2 }}>
+          운영 결과
+        </p>
+        {afterItems.map((item, index) => (
+          <motion.div
+            key={item.title}
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut', delay: index * 0.16 }}
+            style={{
+              minHeight: 68,
+              padding: '12px 13px',
+              borderRadius: 8,
+              border: '1px solid #BFDBFE',
+              background: '#EFF6FF',
+              display: 'grid',
+              gridTemplateColumns: '34px 1fr',
+              gap: 10,
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ width: 34, height: 34, borderRadius: 8, background: `${config.accent}18`, color: config.accent, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BadgeCheck size={18} />
+            </div>
+            <div>
+              <div style={{ color: '#0F2241', fontSize: 13.5, fontWeight: 900, marginBottom: 3 }}>{item.title}</div>
+              <div style={{ color: '#334155', opacity: 0.72, fontSize: 11.5, fontWeight: 700, lineHeight: 1.42 }}>
+                {item.desc.length > 30 ? `${item.desc.slice(0, 30)}...` : item.desc}
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
@@ -518,21 +629,35 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
               <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Sunraytec Method</p>
               <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900, lineHeight: 1.25, marginBottom: 16 }}>썬레이텍 방식으로 바꾸면 달라지는 것</h2>
               <p style={{ color: '#526173', lineHeight: 1.82 }}>
-                자료가 추가되기 전에도 기본 설계 방향은 명확합니다. 공기 전체를 데우는 방식보다 현장 조건, 체류 구역, 안전 조건을 먼저 보고 제품 배치와 제어 전략을 결정합니다.
+                {config.methodLead}
               </p>
               <Link to="/contact" className="btn btn-primary" style={{ borderRadius: 8, marginTop: 24 }}>
                 현장 상담 요청 <ArrowRight size={16} />
               </Link>
             </ScrollReveal>
 
-            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }} className="tech-method-grid">
-              {config.solutions.map((item) => (
-                <motion.article key={item.title} variants={staggerItem} style={{ border: '1px solid #E2E8F0', borderLeft: `4px solid ${config.accent}`, borderRadius: 8, padding: 20, background: '#fff' }}>
-                  <h3 style={{ color: 'var(--navy)', fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{item.title}</h3>
-                  <p style={{ color: '#526173', fontSize: 13.5, lineHeight: 1.68 }}>{item.desc}</p>
-                </motion.article>
-              ))}
-            </motion.div>
+            <div style={{ display: 'grid', gap: 16 }}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }} className="tech-process-grid">
+                {config.process.map((item) => (
+                  <motion.article key={item.step} variants={staggerItem} style={{ border: '1px solid #E2E8F0', borderRadius: 8, padding: 18, background: '#F8FAFC', minHeight: 170 }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 28, borderRadius: 8, background: `${config.accent}14`, color: config.accent, fontSize: 12, fontWeight: 900, marginBottom: 14 }}>
+                      {item.step}
+                    </span>
+                    <h3 style={{ color: 'var(--navy)', fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{item.title}</h3>
+                    <p style={{ color: '#526173', fontSize: 13.2, lineHeight: 1.68 }}>{item.desc}</p>
+                  </motion.article>
+                ))}
+              </motion.div>
+
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }} className="tech-method-grid">
+                {config.solutions.map((item) => (
+                  <motion.article key={item.title} variants={staggerItem} style={{ border: '1px solid #E2E8F0', borderLeft: `4px solid ${config.accent}`, borderRadius: 8, padding: 20, background: '#fff' }}>
+                    <h3 style={{ color: 'var(--navy)', fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{item.title}</h3>
+                    <p style={{ color: '#526173', fontSize: 13.5, lineHeight: 1.68 }}>{item.desc}</p>
+                  </motion.article>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -553,6 +678,34 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
               </motion.article>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      <section style={{ padding: '72px 0', background: '#F8FAFC' }}>
+        <div className="container">
+          <div className="tech-solution-split" style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 34, alignItems: 'start' }}>
+            <ScrollReveal>
+              <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Decision Check</p>
+              <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900, lineHeight: 1.25, marginBottom: 16 }}>도입 전에 확인하면 좋은 체크포인트</h2>
+              <p style={{ color: '#526173', lineHeight: 1.82 }}>
+                현장 사진이나 도면이 모두 준비되지 않아도 아래 조건만 확인되면 1차 적용 방향을 잡을 수 있습니다. 상담 단계에서는 이 항목을 기준으로 제품군, 설치 위치, 제어 방식을 빠르게 좁힙니다.
+              </p>
+            </ScrollReveal>
+
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }} className="tech-method-grid">
+              {config.checklist.map((item) => (
+                <motion.article key={item.title} variants={staggerItem} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 8, padding: 20, display: 'grid', gridTemplateColumns: '38px 1fr', gap: 12, alignItems: 'start', boxShadow: '0 14px 34px rgba(15,34,65,0.05)' }}>
+                  <span style={{ display: 'inline-flex', width: 38, height: 38, alignItems: 'center', justifyContent: 'center', borderRadius: 8, background: `${config.accent}14`, color: config.accent }}>
+                    <BadgeCheck size={19} />
+                  </span>
+                  <div>
+                    <h3 style={{ color: 'var(--navy)', fontSize: '1rem', fontWeight: 900, marginBottom: 7 }}>{item.title}</h3>
+                    <p style={{ color: '#526173', fontSize: 13.5, lineHeight: 1.68 }}>{item.desc}</p>
+                  </div>
+                </motion.article>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -581,6 +734,9 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
           .tech-card-grid {
             grid-template-columns: 1fr !important;
           }
+          .tech-process-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
 
         @media (max-width: 700px) {
@@ -589,6 +745,10 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
             grid-template-columns: 1fr !important;
           }
           .zero-diagram {
+            grid-template-columns: 1fr !important;
+            gap: 18px !important;
+          }
+          .solution-diagram {
             grid-template-columns: 1fr !important;
             gap: 18px !important;
           }
