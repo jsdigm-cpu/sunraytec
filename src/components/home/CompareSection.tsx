@@ -3,248 +3,63 @@ import ScrollReveal from '../ui/ScrollReveal';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
 const COMPARE_ROWS = [
-  { label: '에너지 비용', sunray: '최대 60% 절감 (조건별)', conv: '기준 (100%)' },
-  { label: '미세먼지·분진', sunray: 'Zero', conv: '발생' },
-  { label: '결로 방지', sunray: '100% 해결', conv: '불가' },
-  { label: '항균·탈취', sunray: '99.9%', conv: '증식 가능' },
-  { label: '고천장 (8m↑)', sunray: '바닥까지 직접 도달', conv: '열이 천장에 정체' },
-  { label: '화재 위험', sunray: 'Zero', conv: '위험' },
-  { label: '소음', sunray: 'Zero', conv: '팬 소음 발생' },
-  { label: '유지보수', sunray: '반영구 사용', conv: '필터 정기 교체' },
+  { label: '에너지 비용',     sunray: '최대 60% 절감 (조건별)',  conv: '기준 (100%)' },
+  { label: '미세먼지·분진',   sunray: 'Zero',          conv: '발생' },
+  { label: '결로 방지',       sunray: '100% 해결',     conv: '불가' },
+  { label: '항균·탈취',       sunray: '99.9%',         conv: '증식 가능' },
+  { label: '고천장 (8m↑)',    sunray: '바닥까지 직접 도달', conv: '열이 천장에 정체' },
+  { label: '화재 위험',       sunray: 'Zero',          conv: '위험' },
+  { label: '소음',            sunray: 'Zero',          conv: '팬 소음 발생' },
+  { label: '유지보수',        sunray: '반영구 사용',   conv: '필터 정기 교체' },
 ];
 
-const RADIANT_WAVES = [
-  { d: 'M 138 72 C 118 102, 98 132, 72 166', delay: 0 },
-  { d: 'M 178 72 C 166 108, 152 142, 130 182', delay: 0.14 },
-  { d: 'M 218 72 C 218 112, 218 148, 214 192', delay: 0.28 },
-  { d: 'M 258 72 C 276 108, 294 142, 318 180', delay: 0.42 },
-  { d: 'M 298 72 C 322 104, 344 132, 370 166', delay: 0.56 },
+// ── 좌측(복사난방) 하강 열선 좌표 ──────────────────────────────────
+// viewBox="0 0 840 310" 기준, 패널 중심 cx≈215, cy≈42
+const RADIANT_RAYS = [
+  { x1: 196, y1: 56, x2: 68,  y2: 255, delay: 0.00 },
+  { x1: 205, y1: 56, x2: 148, y2: 258, delay: 0.20 },
+  { x1: 214, y1: 56, x2: 214, y2: 260, delay: 0.05 },
+  { x1: 223, y1: 56, x2: 282, y2: 258, delay: 0.30 },
+  { x1: 232, y1: 56, x2: 362, y2: 255, delay: 0.15 },
 ];
 
-function Label({
-  x,
-  y,
-  width,
-  text,
-  tone = 'warm',
-}: {
-  x: number;
-  y: number;
-  width: number;
-  text: string;
-  tone?: 'warm' | 'cool';
-}) {
-  const isWarm = tone === 'warm';
+// ── 우측(대류난방) 대류 경로 ────────────────────────────────────────
+// 큰 루프: 바닥 가열 → 좌측 상승 → 천장 이동 → 우측 하강
+const CONVECTION_PATHS = [
+  {
+    d: 'M 490 252 Q 470 190 478 130 Q 486 70 545 46 Q 640 28 720 46 Q 790 68 782 150 Q 774 235 730 252',
+    delay: 0.00,
+  },
+  {
+    d: 'M 535 246 Q 520 195 528 148 Q 536 100 580 80 Q 638 62 692 82 Q 740 104 732 165 Q 724 228 695 246',
+    delay: 0.30,
+  },
+];
 
-  return (
-    <g>
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height="28"
-        rx="7"
-        fill={isWarm ? '#FFF7ED' : '#EFF6FF'}
-        stroke={isWarm ? '#FDBA74' : '#93C5FD'}
-      />
-      <text
-        x={x + width / 2}
-        y={y + 18}
-        textAnchor="middle"
-        fill={isWarm ? '#9A3412' : '#1D4ED8'}
-        fontSize="12"
-        fontWeight="900"
-      >
-        {text}
-      </text>
-    </g>
-  );
-}
+// ── 우측 먼지·열기 파티클 위치 ──────────────────────────────────────
+const DUST = [
+  { cx: 518, startY: 235, endY: 85,  r: 2.2, delay: 0.0  },
+  { cx: 560, startY: 240, endY: 70,  r: 1.8, delay: 0.6  },
+  { cx: 612, startY: 244, endY: 60,  r: 2.5, delay: 1.1  },
+  { cx: 660, startY: 238, endY: 72,  r: 1.6, delay: 0.3  },
+  { cx: 710, startY: 235, endY: 80,  r: 2.0, delay: 0.8  },
+  { cx: 748, startY: 240, endY: 90,  r: 1.4, delay: 0.4  },
+];
 
-function ComparisonDiagram() {
-  return (
-    <motion.div
-      className="compare-diagram"
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-    >
-      <article className="compare-diagram-panel compare-diagram-panel-radiant">
-        <div className="compare-diagram-header">
-          <div>
-            <p className="compare-diagram-kicker compare-diagram-kicker-warm">Radiant Heating</p>
-            <h3>썬레이텍 원적외선 복사난방</h3>
-          </div>
-          <span>가로형 패널 1대</span>
-        </div>
-
-        <svg
-          viewBox="0 0 420 252"
-          role="img"
-          aria-label="썬레이텍 복사난방은 긴 가로형 패널에서 보이지 않는 원적외선 파장이 직진하고 피사체 흡수와 난반사로 공간을 데우는 원리"
-        >
-          <defs>
-            <linearGradient id="panelMetal" x1="0" x2="1">
-              <stop offset="0%" stopColor="#F8FAFC" />
-              <stop offset="54%" stopColor="#E2E8F0" />
-              <stop offset="100%" stopColor="#CBD5E1" />
-            </linearGradient>
-            <linearGradient id="floorWarm" x1="0" x2="1">
-              <stop offset="0%" stopColor="#FDBA74" stopOpacity="0.08" />
-              <stop offset="50%" stopColor="#F97316" stopOpacity="0.24" />
-              <stop offset="100%" stopColor="#FDBA74" stopOpacity="0.08" />
-            </linearGradient>
-            <marker id="warmArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#EA580C" />
-            </marker>
-          </defs>
-
-          <rect x="18" y="24" width="384" height="194" rx="10" fill="#FFFFFF" stroke="#FED7AA" />
-          <rect x="18" y="170" width="384" height="48" rx="10" fill="url(#floorWarm)" />
-          <line x1="18" y1="170" x2="402" y2="170" stroke="#FDBA74" strokeDasharray="5 7" />
-
-          <rect x="104" y="40" width="212" height="40" rx="8" fill="url(#panelMetal)" stroke="#94A3B8" strokeWidth="2" />
-          <rect x="116" y="50" width="188" height="18" rx="4" fill="#F8FAFC" stroke="#CBD5E1" />
-          <text x="210" y="32" textAnchor="middle" fill="#475569" fontSize="12" fontWeight="900">
-            실제 제품 비율에 가까운 긴 직사각형 패널
-          </text>
-          <text x="210" y="98" textAnchor="middle" fill="#64748B" fontSize="11" fontWeight="800">
-            1200 x 300 x 48mm / 표면은 붉게 보이지 않음
-          </text>
-
-          {RADIANT_WAVES.map((wave) => (
-            <motion.path
-              key={wave.d}
-              d={wave.d}
-              fill="none"
-              stroke="#F97316"
-              strokeWidth="2.1"
-              strokeLinecap="round"
-              strokeDasharray="7 8"
-              markerEnd="url(#warmArrow)"
-              initial={{ opacity: 0.3, pathLength: 0.45 }}
-              animate={{ opacity: [0.3, 0.75, 0.3], pathLength: [0.45, 1, 0.45] }}
-              transition={{ duration: 2.7, repeat: Infinity, ease: 'easeInOut', delay: wave.delay }}
-            />
-          ))}
-
-          <circle cx="86" cy="178" r="17" fill="#FFEDD5" stroke="#FB923C" />
-          <circle cx="210" cy="187" r="20" fill="#FFEDD5" stroke="#FB923C" />
-          <circle cx="334" cy="178" r="17" fill="#FFEDD5" stroke="#FB923C" />
-          <path
-            d="M 72 207 C 116 188, 164 190, 206 207 S 312 224, 370 192"
-            fill="none"
-            stroke="#EA580C"
-            strokeWidth="2.1"
-            strokeDasharray="5 7"
-            opacity="0.62"
-          />
-          <path
-            d="M 78 170 C 126 154, 166 158, 204 174 M 228 177 C 270 158, 314 156, 350 170"
-            fill="none"
-            stroke="#FB923C"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeDasharray="4 7"
-            opacity="0.7"
-          />
-
-          <Label x={30} y={120} width={96} text="직진성" />
-          <Label x={156} y={207} width={108} text="피사체 흡수" />
-          <Label x={286} y={120} width={106} text="일부 난반사" />
-        </svg>
-      </article>
-
-      <article className="compare-diagram-panel compare-diagram-panel-convection">
-        <div className="compare-diagram-header">
-          <div>
-            <p className="compare-diagram-kicker compare-diagram-kicker-cool">Convection Heating</p>
-            <h3>일반 대류난방 공기 흐름</h3>
-          </div>
-          <span>온풍 순환 방식</span>
-        </div>
-
-        <svg
-          viewBox="0 0 420 252"
-          role="img"
-          aria-label="일반 대류난방은 토출부의 따뜻한 공기가 상승하고 순환 중 식으면서 바닥에는 냉기가 머무르는 흐름"
-        >
-          <defs>
-            <linearGradient id="ceilingHeat" x1="0" x2="1">
-              <stop offset="0%" stopColor="#FED7AA" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#F97316" stopOpacity="0.42" />
-            </linearGradient>
-            <linearGradient id="floorCold" x1="0" x2="1">
-              <stop offset="0%" stopColor="#DBEAFE" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.42" />
-            </linearGradient>
-            <marker id="heatArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#F97316" />
-            </marker>
-            <marker id="coldArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#3B82F6" />
-            </marker>
-          </defs>
-
-          <rect x="18" y="24" width="384" height="194" rx="10" fill="#FFFFFF" stroke="#CBD5E1" />
-          <rect x="18" y="24" width="384" height="46" rx="10" fill="url(#ceilingHeat)" />
-          <rect x="18" y="174" width="384" height="44" rx="10" fill="url(#floorCold)" />
-          <line x1="18" y1="174" x2="402" y2="174" stroke="#93C5FD" strokeDasharray="5 7" />
-
-          <rect x="169" y="42" width="82" height="34" rx="7" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="2" />
-          <rect x="182" y="58" width="56" height="6" rx="3" fill="#64748B" />
-          <text x="210" y="97" textAnchor="middle" fill="#64748B" fontSize="11" fontWeight="800">
-            토출부는 따뜻한 공기
-          </text>
-
-          <motion.path
-            d="M 238 70 C 296 82, 336 106, 348 146"
-            fill="none"
-            stroke="#F97316"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeDasharray="9 8"
-            markerEnd="url(#heatArrow)"
-            animate={{ strokeDashoffset: [0, -34] }}
-            transition={{ duration: 1.9, repeat: Infinity, ease: 'linear' }}
-          />
-          <motion.path
-            d="M 182 70 C 118 86, 82 122, 84 166"
-            fill="none"
-            stroke="#F97316"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeDasharray="9 8"
-            markerEnd="url(#heatArrow)"
-            animate={{ strokeDashoffset: [0, -34] }}
-            transition={{ duration: 1.9, repeat: Infinity, ease: 'linear', delay: 0.2 }}
-          />
-          <motion.path
-            d="M 348 146 C 336 188, 286 204, 214 204 C 144 204, 90 190, 84 166"
-            fill="none"
-            stroke="#3B82F6"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeDasharray="9 8"
-            markerEnd="url(#coldArrow)"
-            animate={{ strokeDashoffset: [0, 34] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'linear' }}
-          />
-
-          <Label x={32} y={86} width={112} text="천장 열 정체" />
-          <Label x={274} y={86} width={112} text="토출부 고온" />
-          <Label x={34} y={184} width={116} text="순환 중 냉각" tone="cool" />
-          <Label x={268} y={184} width={116} text="바닥 냉기" tone="cool" />
-        </svg>
-      </article>
-    </motion.div>
-  );
-}
+// ── 복사난방 낙하 파티클 ────────────────────────────────────────────
+const HEAT_PARTICLES = [
+  { cx: 214, startY: 60, endY: 245, delay: 0.0  },
+  { cx: 178, startY: 60, endY: 232, delay: 0.65 },
+  { cx: 250, startY: 60, endY: 232, delay: 1.20 },
+];
 
 export default function CompareSection() {
   return (
     <section style={{ background: 'var(--off)', padding: '72px 0' }}>
       <div className="container">
-        <ScrollReveal variants={fadeInUp} style={{ textAlign: 'center', marginBottom: '42px' }}>
+
+        {/* 섹션 헤더 */}
+        <ScrollReveal variants={fadeInUp} style={{ textAlign: 'center', marginBottom: '48px' }}>
           <p
             style={{
               fontSize: '11px',
@@ -265,16 +80,217 @@ export default function CompareSection() {
               lineHeight: 1.2,
             }}
           >
-            복사난방 vs 대류난방
-            <br />
+            복사난방 vs 대류난방<br />
             <span style={{ color: 'var(--red)' }}>한눈에 비교</span>
           </h2>
         </ScrollReveal>
 
-        <ScrollReveal variants={fadeInUp} style={{ marginBottom: '38px' }}>
-          <ComparisonDiagram />
+        {/* ── 이미지 + 애니메이션 오버레이 ──────────────────────────── */}
+        <ScrollReveal variants={fadeInUp} style={{ marginBottom: '40px' }}>
+          <motion.div
+            style={{
+              position: 'relative',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+              cursor: 'default',
+            }}
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            {/* 베이스 이미지 */}
+            <img
+              src="/images/comparison-modern.png"
+              alt="복사난방 vs 대류난방 비교"
+              style={{ width: '100%', display: 'block' }}
+            />
+
+            {/* ── SVG 애니메이션 오버레이 ── */}
+            <svg
+              viewBox="0 0 840 310"
+              preserveAspectRatio="none"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+              }}
+            >
+              {/* ════ 왼쪽: 복사난방 ════ */}
+
+              {/* 패널 아래 warm glow */}
+              <motion.ellipse
+                cx="214" cy="52" rx="60" ry="9"
+                fill="rgba(220,75,45,0)"
+                animate={{ fill: ['rgba(220,75,45,0)', 'rgba(220,75,45,0.32)', 'rgba(220,75,45,0)'] }}
+                transition={{ duration: 2.0, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              {/* 하강 열선 */}
+              {RADIANT_RAYS.map((ray, i) => (
+                <motion.line
+                  key={`ray-${i}`}
+                  x1={ray.x1} y1={ray.y1}
+                  x2={ray.x2} y2={ray.y2}
+                  stroke="rgba(218,72,42,0.55)"
+                  strokeWidth="2"
+                  strokeDasharray="8 5"
+                  strokeLinecap="round"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ strokeDashoffset: [0, -13] }}
+                  transition={{
+                    opacity: { duration: 0.5, delay: ray.delay },
+                    strokeDashoffset: {
+                      duration: 0.95,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      delay: ray.delay,
+                    },
+                  }}
+                />
+              ))}
+
+              {/* 낙하 열 파티클 */}
+              {HEAT_PARTICLES.map((p, i) => (
+                <motion.circle
+                  key={`hp-${i}`}
+                  cx={p.cx}
+                  cy={p.startY}
+                  r={3}
+                  fill="rgba(225,90,55,0.85)"
+                  initial={{ cy: p.startY, opacity: 0.9 }}
+                  animate={{ cy: [p.startY, p.endY], opacity: [0.9, 0] }}
+                  transition={{
+                    duration: 1.7,
+                    repeat: Infinity,
+                    ease: 'easeIn',
+                    delay: p.delay,
+                    repeatDelay: 0.5,
+                  }}
+                />
+              ))}
+
+              {/* 바닥 온기 글로우 */}
+              <motion.ellipse
+                cx="214" cy="258" rx="72" ry="9"
+                fill="rgba(210,60,40,0)"
+                animate={{ fill: ['rgba(210,60,40,0)', 'rgba(210,60,40,0.22)', 'rgba(210,60,40,0)'] }}
+                transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              />
+
+              {/* ════ 오른쪽: 대류난방 ════ */}
+
+              {/* 천장 열기 축적 펄스 */}
+              <motion.rect
+                x="450" y="25" width="370" height="32" rx="5"
+                fill="rgba(160,120,70,0)"
+                animate={{ fill: ['rgba(160,120,70,0)', 'rgba(160,120,70,0.16)', 'rgba(160,120,70,0)'] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              {/* 대류 순환 경로 */}
+              {CONVECTION_PATHS.map((p, i) => (
+                <motion.path
+                  key={`cp-${i}`}
+                  d={p.d}
+                  stroke="rgba(90,170,235,0.72)"
+                  strokeWidth="2.4"
+                  strokeDasharray="10 6"
+                  strokeLinecap="round"
+                  fill="none"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ strokeDashoffset: [0, 16] }}
+                  transition={{
+                    opacity: { duration: 0.6, delay: p.delay },
+                    strokeDashoffset: {
+                      duration: 1.3,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      delay: p.delay,
+                    },
+                  }}
+                />
+              ))}
+
+              {/* 먼지·세균 상승 파티클 */}
+              {DUST.map((p, i) => (
+                <motion.circle
+                  key={`dust-${i}`}
+                  cx={p.cx}
+                  cy={p.startY}
+                  r={p.r}
+                  fill="rgba(155,140,115,0.75)"
+                  initial={{ cx: p.cx, cy: p.startY, opacity: 0.85 }}
+                  animate={{
+                    cy: [p.startY, p.endY],
+                    opacity: [0.85, 0],
+                    cx: [p.cx, p.cx + (i % 2 === 0 ? 14 : -14)],
+                  }}
+                  transition={{
+                    duration: 2.4,
+                    repeat: Infinity,
+                    ease: 'easeOut',
+                    delay: p.delay,
+                    repeatDelay: 0.3,
+                  }}
+                />
+              ))}
+
+              {/* 중앙 구분선 — 부드러운 글로우 */}
+              <motion.line
+                x1="422" y1="18" x2="422" y2="292"
+                stroke="rgba(255,255,255,0.3)"
+                strokeWidth="1.5"
+                animate={{ opacity: [0.3, 0.7, 0.3] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </svg>
+
+            {/* 좌하단 뱃지 */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '12px',
+                left: '14px',
+                background: 'rgba(200,57,43,0.88)',
+                color: '#fff',
+                fontSize: '11px',
+                fontWeight: 700,
+                padding: '4px 10px',
+                borderRadius: '6px',
+                backdropFilter: 'blur(4px)',
+                letterSpacing: '0.3px',
+              }}
+            >
+              ✅ 썬레이텍 복사난방
+            </div>
+
+            {/* 우하단 뱃지 */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '12px',
+                right: '14px',
+                background: 'rgba(44,62,80,0.82)',
+                color: 'rgba(255,255,255,0.75)',
+                fontSize: '11px',
+                fontWeight: 600,
+                padding: '4px 10px',
+                borderRadius: '6px',
+                backdropFilter: 'blur(4px)',
+              }}
+            >
+              ❌ 일반 대류난방
+            </div>
+          </motion.div>
         </ScrollReveal>
 
+        {/* ── 비교 테이블 ──────────────────────────────────────────── */}
         <ScrollReveal variants={fadeInUp}>
           <div
             style={{
@@ -283,6 +299,7 @@ export default function CompareSection() {
               boxShadow: 'var(--sh-lg)',
             }}
           >
+            {/* 헤더 행 */}
             <div
               style={{
                 display: 'grid',
@@ -324,7 +341,13 @@ export default function CompareSection() {
               </div>
             </div>
 
-            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}>
+            {/* 데이터 행 */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
               {COMPARE_ROWS.map((row, i) => (
                 <motion.div
                   key={row.label}
@@ -336,7 +359,9 @@ export default function CompareSection() {
                     borderBottom: '1px solid var(--border)',
                   }}
                 >
-                  <div style={{ padding: '14px 20px', fontSize: '13.5px', fontWeight: 600, color: 'var(--text)' }}>{row.label}</div>
+                  <div style={{ padding: '14px 20px', fontSize: '13.5px', fontWeight: 600, color: 'var(--text)' }}>
+                    {row.label}
+                  </div>
                   <div
                     style={{
                       padding: '14px 20px',
@@ -364,106 +389,6 @@ export default function CompareSection() {
           </div>
         </ScrollReveal>
       </div>
-
-      <style>{`
-        .compare-diagram {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px;
-          align-items: stretch;
-          max-width: 920px;
-          margin: 0 auto;
-        }
-
-        .compare-diagram-panel {
-          border-radius: 12px;
-          padding: 18px;
-          box-shadow: 0 16px 44px rgba(15, 34, 65, 0.08);
-        }
-
-        .compare-diagram-panel svg {
-          width: 100%;
-          display: block;
-        }
-
-        .compare-diagram-panel-radiant {
-          background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
-          border: 1px solid #fed7aa;
-        }
-
-        .compare-diagram-panel-convection {
-          background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-          border: 1px solid #cbd5e1;
-        }
-
-        .compare-diagram-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          margin-bottom: 10px;
-        }
-
-        .compare-diagram-header h3 {
-          color: var(--navy);
-          font-size: 1.04rem;
-          font-weight: 900;
-          line-height: 1.25;
-        }
-
-        .compare-diagram-header span {
-          background: #fff;
-          border-radius: 8px;
-          padding: 6px 9px;
-          font-size: 12px;
-          font-weight: 900;
-          white-space: nowrap;
-        }
-
-        .compare-diagram-panel-radiant .compare-diagram-header span {
-          color: #c2410c;
-          border: 1px solid #fdba74;
-        }
-
-        .compare-diagram-panel-convection .compare-diagram-header span {
-          color: #2563eb;
-          border: 1px solid #bfdbfe;
-        }
-
-        .compare-diagram-kicker {
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 1.6px;
-          text-transform: uppercase;
-          margin-bottom: 4px;
-        }
-
-        .compare-diagram-kicker-warm {
-          color: #c2410c;
-        }
-
-        .compare-diagram-kicker-cool {
-          color: #2563eb;
-        }
-
-        @media (max-width: 820px) {
-          .compare-diagram {
-            grid-template-columns: 1fr;
-            max-width: 560px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .compare-diagram-panel {
-            padding: 14px;
-          }
-
-          .compare-diagram-header {
-            align-items: flex-start;
-            flex-direction: column;
-          }
-        }
-      `}</style>
     </section>
   );
 }
