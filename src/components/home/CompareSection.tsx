@@ -100,7 +100,7 @@ export default function CompareSection() {
           >
             {/* 베이스 이미지 */}
             <img
-              src="/images/comparison-modern.png"
+              src="/images/comparison.png"
               alt="복사난방 vs 대류난방 비교"
               style={{ width: '100%', display: 'block' }}
             />
