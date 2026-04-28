@@ -18,6 +18,7 @@ const CaseDetailPage       = lazy(() => import('../pages/CaseDetailPage'));
 const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage'));
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
+const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
 // 인증
 const LoginPage            = lazy(() => import('../pages/auth/LoginPage'));
 const SignupPage            = lazy(() => import('../pages/auth/SignupPage'));
@@ -58,6 +59,7 @@ export const router = createBrowserRouter([
       { path: 'resources/catalog',     element: <S><CatalogPage /></S> },
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },
+      { path: 'technology/principle',  element: <S><PrinciplePage /></S> },
 
       // 관리자 전용 (admin 로그인 필요)
       {

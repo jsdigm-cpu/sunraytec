@@ -45,10 +45,10 @@ const NAV_ITEMS = [
     ],
   },
   {
-    to: '/coming-soon?section=solutions',
+    to: '/technology/principle',
     label: '기술·솔루션',
     subs: [
-      { to: '/coming-soon?section=solutions', label: '복사난방 원리', icon: '☀️', comingSoon: true },
+      { to: '/technology/principle', label: '복사난방 원리', icon: '☀️' },
       { to: '/coming-soon?section=solutions', label: '4대 ZERO 기술', icon: '🔬', comingSoon: true },
       { to: '/coming-soon?section=solutions', label: '공공·교육 솔루션', icon: '🏛️', comingSoon: true },
       { to: '/coming-soon?section=solutions', label: '산업·물류 솔루션', icon: '🏭', comingSoon: true },
