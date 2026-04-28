@@ -19,10 +19,18 @@ const CaseDetailPage       = lazy(() => import('../pages/CaseDetailPage'));
 const CasesMapPage         = lazy(() => import('../pages/CasesMapPage'));
 const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage'));
 const ResourceToolsPage    = lazy(() => import('../pages/resources/ResourceToolsPage'));
-const SupportPage          = lazy(() => import('../pages/support/SupportPage'));
+const FaqPage              = lazy(() => import('../pages/support/FaqPage'));
+const DealersPage          = lazy(() => import('../pages/support/DealersPage'));
+const NoticePage           = lazy(() => import('../pages/support/NoticePage'));
+const ChatbotPage          = lazy(() => import('../pages/support/ChatbotPage'));
+const PrivacyPolicyPage    = lazy(() => import('../pages/policy/PrivacyPolicyPage'));
+const TermsPage            = lazy(() => import('../pages/policy/TermsPage'));
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
-const AboutInfoPage        = lazy(() => import('../pages/about/AboutInfoPage'));
+const CeoMessagePage       = lazy(() => import('../pages/about/CeoMessagePage'));
+const LocationPage         = lazy(() => import('../pages/about/LocationPage'));
+const ClientsPage          = lazy(() => import('../pages/about/ClientsPage'));
+const MediaPage            = lazy(() => import('../pages/about/MediaPage'));
 const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
 const TechnologySolutionPage = lazy(() => import('../pages/technology/TechnologySolutionPage'));
 const ProductGuidePage     = lazy(() => import('../pages/products/ProductGuidePage'));
@@ -73,20 +81,20 @@ export const router = createBrowserRouter([
       { path: 'resources/videos',       element: <S><ResourceToolsPage pageId="videos" /></S> },
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },
-      { path: 'about/ceo-message',     element: <S><AboutInfoPage pageId="ceo" /></S> },
-      { path: 'about/media',           element: <S><AboutInfoPage pageId="media" /></S> },
-      { path: 'about/clients',         element: <S><AboutInfoPage pageId="clients" /></S> },
-      { path: 'about/location',        element: <S><AboutInfoPage pageId="location" /></S> },
+      { path: 'about/ceo-message',     element: <S><CeoMessagePage /></S> },
+      { path: 'about/media',           element: <S><MediaPage /></S> },
+      { path: 'about/clients',         element: <S><ClientsPage /></S> },
+      { path: 'about/location',        element: <S><LocationPage /></S> },
       { path: 'products/special',      element: <S><ProductGuidePage pageId="special" /></S> },
       { path: 'products/personal-bath', element: <S><ProductGuidePage pageId="personal-bath" /></S> },
       { path: 'products/smart-control', element: <S><ProductGuidePage pageId="smart-control" /></S> },
       { path: 'products/compare',      element: <S><ProductGuidePage pageId="compare" /></S> },
-      { path: 'support/faq',           element: <S><SupportPage pageId="faq" /></S> },
-      { path: 'support/notice',        element: <S><SupportPage pageId="notice" /></S> },
-      { path: 'support/dealers',       element: <S><SupportPage pageId="dealers" /></S> },
-      { path: 'support/chatbot',       element: <S><SupportPage pageId="chatbot" /></S> },
-      { path: 'policy/privacy',        element: <S><SupportPage pageId="privacy" /></S> },
-      { path: 'policy/terms',          element: <S><SupportPage pageId="terms" /></S> },
+      { path: 'support/faq',           element: <S><FaqPage /></S> },
+      { path: 'support/notice',        element: <S><NoticePage /></S> },
+      { path: 'support/dealers',       element: <S><DealersPage /></S> },
+      { path: 'support/chatbot',       element: <S><ChatbotPage /></S> },
+      { path: 'policy/privacy',        element: <S><PrivacyPolicyPage /></S> },
+      { path: 'policy/terms',          element: <S><TermsPage /></S> },
       { path: 'technology/principle',  element: <S><PrinciplePage /></S> },
       { path: 'technology/zero',       element: <S><TechnologySolutionPage pageId="zero" /></S> },
       { path: 'solutions/public-edu',  element: <S><TechnologySolutionPage pageId="public-edu" /></S> },

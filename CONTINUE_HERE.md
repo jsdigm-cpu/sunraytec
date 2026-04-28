@@ -1,6 +1,6 @@
 # CONTINUE HERE — 다음 AI 인수인계
 
-마지막 업데이트: 2026-04-28 (Claude Sonnet 4.6 세션 종료)
+마지막 업데이트: 2026-04-28 (Claude Opus 4.7 세션 — Tier 2~4 페이지 고도화 종료)
 
 이 문서는 박이사님의 토큰 한도 도달로 세션이 끊겼을 때 **다른 AI가 바로 이어받기 위한 단일 진입점**입니다. 다른 AI에게는 아래 "사용자가 복사할 시작 프롬프트" 섹션의 텍스트를 그대로 전달하세요.
 
@@ -30,11 +30,17 @@
 - 작업 후 npm run lint && npm run build 통과 확인
 - 커밋 + 푸시 후 핸드오프 문서(NEXT_TASK, MENU_STATUS, SESSION_HANDOFF, PROJECT_STATUS) 갱신
 
-현재 브랜치: claude/nostalgic-payne-6b67a5
-워크트리 경로: C:\projects\sunraytec\.claude\worktrees\nostalgic-payne-6b67a5
+현재 브랜치: claude/refine-coming-soon-page-rQj4K
 
-이전 세션이 막 끝낸 작업: /technology/principle 복사난방 원리 페이지 신설 완료
-다음 최우선 작업: 파트너 전용 자료실(/partner)과 관리자 resource_documents 통합
+이전 세션이 막 끝낸 작업:
+- 회사소개 4종 / 고객센터 4종 / 정책 2종 / 패스트트랙 콘텐츠 고도화 완료
+- 레거시 AboutInfoPage·SupportPage 제거, 10개 신규 전용 페이지 신설
+
+다음 최우선 작업:
+- Tier 1 — 제품 페이지 4종(`/products/special`, `/products/personal-bath`,
+  `/products/smart-control`, `/products/compare`) 실제 모델·스펙 반영
+- 박이사님이 자료 정리해서 넘기면 시작
+- 그 후: 파트너 전용 자료실 통합, 제품 상세 자료 다운로드 연결
 
 먼저 위 문서들을 읽고 어떻게 진행할지 박이사님께 한국어로 확인하고 시작하세요.
 ```

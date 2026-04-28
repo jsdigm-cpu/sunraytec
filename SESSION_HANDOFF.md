@@ -1,12 +1,65 @@
 # SESSION HANDOFF
 
-마지막 업데이트: 2026-04-28
+마지막 업데이트: 2026-04-28 (Claude Opus 4.7 — Tier 2~4 페이지 콘텐츠 고도화 세션)
 
 이 파일은 세션이 중단되거나 다른 AI로 넘어갈 때 바로 이어서 작업하기 위한 인수인계 메모입니다. 실제 코드와 문서가 다르면 항상 코드가 정답입니다.
 
 ---
 
-## 직전 세션 목표
+## 이번 세션 (2026-04-28, Opus 4.7) 작업 요약
+
+박이사님 요청: Codex가 임시로 채운 초안 페이지들을 기획서·CERT_INVENTORY 기반으로 고도화. 박이사님 우선순위 — Tier 1(제품 페이지)은 자료 보강 후 별도 진행, Tier 2부터 단계별 진행.
+
+### 신규/재작성 페이지 (10개 컴포넌트)
+
+회사소개:
+- `src/pages/about/CeoMessagePage.tsx` — 4단 메시지·ESG 비전 3축·KPI·서명
+- `src/pages/about/LocationPage.tsx` — 주소·연락처·Google 지도 embed·교통편·방문 팁
+- `src/pages/about/ClientsPage.tsx` — `case_studies` DB 4개 그룹 자동 연동 + fallback, 신뢰 KPI, 공공조달 채널 CTA
+- `src/pages/about/MediaPage.tsx` — 1994~2025 수상·인증 타임라인, 인증 보유 현황, 보도자료 운영 안내
+
+고객센터:
+- `src/pages/support/FaqPage.tsx` — 16개 Q&A, 5개 카테고리 필터, 아코디언 UI
+- `src/pages/support/DealersPage.tsx` — 모집 대상 4종·혜택 6종·5단계 절차·FAQ
+- `src/pages/support/NoticePage.tsx` — 임시 공지 6건, 카테고리 컬러 배지, pinned 표시
+- `src/pages/support/ChatbotPage.tsx` — 예정 기능 4종 + 즉시 사용 가능한 대안 채널 4종
+
+정책:
+- `src/pages/policy/PrivacyPolicyPage.tsx` — 11개 조항 운영팀 초안
+- `src/pages/policy/TermsPage.tsx` — 11개 조항 운영팀 초안
+
+### 보강 페이지
+
+- `src/pages/FastTrackPage.tsx` — 자료 4→6종, 이용 기관 4종, 절차 3→4단계, 빠른 도움 채널 3종 추가
+
+### 제거 (레거시 통합 컴포넌트)
+
+- `src/pages/about/AboutInfoPage.tsx` (4개 pageId 분기 → 4개 전용 페이지로 분리)
+- `src/pages/support/SupportPage.tsx` (6개 pageId 분기 → 6개 전용 페이지로 분리)
+
+### routes.tsx 변경
+
+- 신규 컴포넌트 lazy import 추가, 기존 `/about/...`, `/support/...`, `/policy/...` 경로를 새 컴포넌트로 교체
+- 미사용 `AboutInfoPage`, `SupportPage` import 제거
+
+### 검증
+
+- `npm install` 후 `npm run lint` 통과 (tsc --noEmit)
+- `npm run build` 통과 (5.89s, 신규 청크 정상 분리: FaqPage 9.29 kB, DealersPage 8.5 kB 등)
+
+### 미진행 (의도적 보류)
+
+- Tier 1 — 제품 페이지 4종(`/products/special`, `/products/personal-bath`, `/products/smart-control`, `/products/compare`): 박이사님이 모델·스펙 자료를 정리해서 넘긴 후 진행하기로 합의
+- `/cases-map`: 기존 권역별 DB 연동 그대로 유지 (이번 세션 손대지 않음)
+
+### 환경 메모
+
+- 최초 진입 시 `node_modules` 부재 → `npm install` 1회 수행
+- 대용량 Write 1방에 처리 시 stream idle timeout 발생 가능 → 한 페이지씩 작성 + 매번 lint 실행으로 해결
+
+---
+
+## 이전 세션 목표 (참고용)
 
 박이사님은 직전 세션의 인수인계를 이어 `/technology/principle` 복사난방 원리 페이지를 신설하고, Header의 준비중 링크를 실제 페이지로 전환해줄 것을 요청했습니다.
 
