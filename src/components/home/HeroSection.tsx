@@ -165,31 +165,42 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           className="hero-site-badge"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'auto 1fr',
+            gridTemplateColumns: 'auto minmax(0, 1fr)',
             gap: '8px',
-            alignItems: 'center',
+            alignItems: 'start',
             background: 'rgba(10,22,40,0.78)',
             border: '1px solid rgba(255,255,255,0.28)',
             borderRadius: '8px',
-            padding: '9px 14px',
+            padding: '8px 14px 9px',
             backdropFilter: 'blur(8px)',
-            minWidth: '250px',
+            maxWidth: '440px',
           }}
         >
           <span style={{ fontSize: '14px', gridRow: '1 / span 2' }}>📍</span>
           <span
             style={{
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 800,
               color: 'rgba(255,255,255,0.96)',
               letterSpacing: '0.01em',
-              lineHeight: 1.25,
+              lineHeight: 1.2,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            실제 납품 · 시공 현장
+          </span>
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: 800,
+              color: 'rgba(255,255,255,0.8)',
+              lineHeight: 1.2,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             }}
           >
-            실제 납품 · 시공 현장 · {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
+            {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
           </span>
         </div>
       </motion.div>

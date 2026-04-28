@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import ScrollReveal from '../ui/ScrollReveal';
 import { slideInLeft, slideInRight } from '../../utils/animations';
 
@@ -71,10 +72,12 @@ export default function FastTrackBanner() {
                 )
               )}
             </div>
-            <motion.a
-              href="/fasttrack"
+            <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
+            >
+              <Link
+                to="/fasttrack"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -85,10 +88,12 @@ export default function FastTrackBanner() {
                 borderRadius: '8px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
+                textDecoration: 'none',
               }}
             >
               🚀 라운지 입장하기
-            </motion.a>
+              </Link>
+            </motion.div>
           </ScrollReveal>
         </div>
       </div>
