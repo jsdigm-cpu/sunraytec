@@ -1,6 +1,6 @@
 # NEXT TASK
 
-마지막 업데이트: 2026-04-27
+마지막 업데이트: 2026-04-28
 
 ## 사용 규칙
 
@@ -13,24 +13,7 @@
 
 ## 최우선
 
-### 1. `/technology/principle` 복사난방 원리 페이지 신설
-
-- 담당 후보: Codex 또는 Antigravity
-- 목표: 현재 `/coming-soon?section=solutions`로 연결된 복사난방 원리 메뉴를 실제 페이지로 전환
-- 관련 파일:
-  - `src/app/routes.tsx`
-  - `src/components/layout/Header.tsx`
-  - 신규 페이지 `src/pages/technology/PrinciplePage.tsx`
-  - `MENU_STATUS.md`
-- 완료 기준:
-  - `/technology/principle` 라우트 추가
-  - Header의 복사난방 원리 링크 변경
-  - 모바일/데스크탑 반응형 확인
-  - `npm run build` 성공
-
-## 다음 우선순위
-
-### 2. 파트너 전용 자료실 관리 구조 통합
+### 1. 파트너 전용 자료실 관리 구조 통합
 
 - 담당 후보: Codex 주도
 - 목표: 현재 `/partner`가 조회하는 `partner_files`와 관리자 `자료실 관리(resource_documents)`의 관계를 정리
@@ -48,7 +31,9 @@
   - 승인된 파트너가 `/partner`에서 해당 자료 다운로드 가능
   - 공개 자료와 파트너 전용 자료 노출 범위가 분리됨
 
-### 3. Supabase 운영 DB 정책 SQL 상태 최종 확인
+## 다음 우선순위
+
+### 2. Supabase 운영 DB 정책 SQL 상태 최종 확인
 
 - 담당 후보: 사용자 또는 Supabase 관리자 권한이 있는 AI/도구
 - 목표: 지금까지 작성/적용된 SQL이 운영 DB에 모두 반영됐는지 확인
@@ -62,7 +47,7 @@
 - 완료 기준:
   - 신규 회원가입, 이메일 인증, 관리자 회원 상세, 파트너 내 정보 수정, 로그인/자료실 방문 카운트 정상 확인
 
-### 4. 제품 상세 페이지 자료 연결
+### 3. 제품 상세 페이지 자료 연결
 
 - 담당 후보: Claude CLI
 - 전제: 제품 이미지 업로드/갤러리 구조 완료
@@ -73,7 +58,7 @@
   - `src/components/ui/ExcellenceProductCard.tsx`
   - Supabase `products`
 
-### 5. 시공사례 상세 데이터 보강
+### 4. 시공사례 상세 데이터 보강
 
 - 담당 후보: Claude CLI
 - 전제: 시공사례 이미지 업로드 구조 완료

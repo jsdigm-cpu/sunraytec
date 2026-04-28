@@ -1,6 +1,6 @@
 # SESSION HANDOFF
 
-마지막 업데이트: 2026-04-27
+마지막 업데이트: 2026-04-28
 
 이 파일은 세션이 중단되거나 다른 AI로 넘어갈 때 바로 이어서 작업하기 위한 인수인계 메모입니다. 실제 코드와 문서가 다르면 항상 코드가 정답입니다.
 
@@ -8,11 +8,25 @@
 
 ## 직전 세션 목표
 
-사용자는 Codex가 검토한 관리자 페이지 및 회원가입 페이지 문제점을 우선 정리한 뒤, 회원 관리 개선과 제품 관리자 폼 정리를 마치고 다음 세션으로 넘기길 요청했습니다.
+박이사님은 직전 세션의 인수인계를 이어 `/technology/principle` 복사난방 원리 페이지를 신설하고, Header의 준비중 링크를 실제 페이지로 전환해줄 것을 요청했습니다.
 
 ---
 
-## 이번 세션에서 확인한 내용
+## 이번 세션 (2026-04-28) 작업 요약
+
+- 신규 페이지 `src/pages/technology/PrinciplePage.tsx` 추가 (Sub-Hero, 복사 vs 대류 비교표, 4단계 원리, 6대 강점, 적용분야, CTA, 모바일 대응 포함)
+- `src/app/routes.tsx`에 `/technology/principle` 라우트 추가
+- `src/components/layout/Header.tsx`에서 `복사난방 원리` 링크를 `/coming-soon?section=solutions`에서 `/technology/principle`로 교체하고 `comingSoon` 플래그 제거
+- 상위 `기술·솔루션` 메뉴 자체 링크도 `/technology/principle`로 변경
+- `npm run lint`, `npm run build` 모두 성공 확인 (PrinciplePage 청크 13.17 kB)
+- 브랜치 `claude/nostalgic-payne-6b67a5`로 commit `20f3dc4`, push 완료
+- Vercel preview URL은 박이사님이 모바일에서 확인 예정
+
+남은 메뉴/구조 작업은 `NEXT_TASK.md` 1번 (파트너 자료실 통합) 으로 이관됨.
+
+---
+
+## 이전 세션에서 확인한 내용
 
 - 2026-04-27 최종 확인: `supabase_storage_uploads_delta.sql` 운영 DB 적용 성공.
 - 2026-04-27 최종 확인: 관리자 자료실에서 한글 파일명 업로드 시 Storage key 오류가 있었고, 내부 저장 경로를 영문 안전 slug로 변환하도록 수정했습니다.
@@ -152,8 +166,8 @@
 
 ## 다음 AI가 바로 할 일
 
-1. 다음 최우선 작업은 `/technology/principle` 복사난방 원리 페이지 신설입니다.
-2. 그 다음은 파트너 전용 자료실(`/partner`)과 관리자 `resource_documents` 구조 통합입니다.
+1. 다음 최우선 작업은 파트너 전용 자료실(`/partner`)과 관리자 `resource_documents` 구조 통합입니다.
+2. 그 다음은 제품 상세 페이지에 카탈로그·시방서·인증서 다운로드 자료 연결입니다.
 3. 작업 전 `NEXT_TASK.md`, `PROJECT_STATUS.md`, `MENU_STATUS.md`를 확인하고 코드 기준으로 판단합니다.
 4. 작업 완료 후 `npm run lint`, `npm run build`, 커밋, push까지 진행하고 배포된 화면 기준으로 검증합니다.
 
@@ -170,7 +184,6 @@
 
 ## 남은 주요 대기 작업
 
-- `/technology/principle` 실제 페이지 구현
 - 파트너 전용 자료실과 관리자 자료실 관리 통합
 - 제품 상세 자료 다운로드 연결
 - 카탈로그/지명원 PDF 추가 업로드

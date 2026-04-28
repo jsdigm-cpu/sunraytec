@@ -1,6 +1,6 @@
 # MENU STATUS
 
-마지막 업데이트: 2026-04-27
+마지막 업데이트: 2026-04-28
 
 이 문서는 홈페이지의 전체 메뉴 구조와 개발 진척도를 한눈에 파악하기 위한 현황판입니다. 기능 구현 계획의 상세 설명은 `PROJECT_STATUS.md`, 다음 작업은 `NEXT_TASK.md`, 총괄 운영 원칙은 `CODEX_COMMAND_CENTER.md`를 기준으로 합니다.
 
@@ -49,7 +49,7 @@
 
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 복사난방 원리 | `/coming-soon?section=solutions` | 대기중 | 다음 구현 후보: `/technology/principle` |
+| 복사난방 원리 | `/technology/principle` | 완료 | 비교표·4단계 원리·6대 강점·적용분야·CTA 구성 |
 | 4대 ZERO 기술 | `/coming-soon?section=solutions` | 대기중 | |
 | 공공·교육 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
 | 산업·물류 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
