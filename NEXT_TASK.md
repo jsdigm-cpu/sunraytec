@@ -1,6 +1,6 @@
 # NEXT TASK
 
-마지막 업데이트: 2026-04-28
+마지막 업데이트: 2026-04-28 (Tier 2~4 페이지 콘텐츠 고도화 후)
 
 ## 사용 규칙
 
@@ -13,19 +13,26 @@
 
 ## 최우선
 
-### 1. 신규 초안 페이지 실제 자료 보강
+### 1. 제품군 페이지(Tier 1) 실제 제품 자료 반영
 
-- 담당 후보: Codex 주도
-- 목표: 2026-04-28에 coming-soon을 제거하기 위해 만든 초안 페이지들을 실제 자료로 교체
+- 담당 후보: 박이사님 자료 정리 후 Claude/Codex 진행
+- 사유: 박이사님이 제품 모델·스펙 자료를 별도 정리해서 전달 예정 (2026-04-28 협의)
 - 대상:
-  - `/about/ceo-message`, `/about/media`, `/about/clients`, `/about/location`
-  - `/products/special`, `/products/personal-bath`, `/products/smart-control`, `/products/compare`
-  - `/support/faq`, `/support/notice`, `/support/dealers`, `/support/chatbot`
-  - `/policy/privacy`, `/policy/terms`, `/cases-map`, `/fasttrack`
+  - `/products/special` (방폭·특수 — EX emb II T1, 적용 산업, 모델별 스펙)
+  - `/products/personal-bath` (개인용·욕실형 — SUR-D300A, SUR-600 벽걸이 등)
+  - `/products/smart-control` (스마트 제어 — 128회로 중앙제어, WiFi)
+  - `/products/compare` (제품 비교 — 정량 비교표, 용도별 매트릭스)
 - 완료 기준:
-  - 박이사님이 제공한 실제 문구/자료/법무 문안 반영
-  - 초안/가상 표현 제거 또는 “자료 준비중” 문구를 운영 문구로 정리
+  - 박이사님이 제공한 정량 스펙·모델 코드·인증 등급 반영
+  - 가상/초안 표현 제거
   - 모바일/데스크톱 브라우저 검증
+
+### (완료) 회사소개/고객센터/정책/패스트트랙 페이지 콘텐츠 고도화
+
+- 2026-04-28 처리 완료 — 자세한 내용은 `SESSION_HANDOFF.md` 참조
+- 신규 페이지: `CeoMessagePage`, `LocationPage`, `ClientsPage`, `MediaPage`, `FaqPage`, `DealersPage`, `NoticePage`, `ChatbotPage`, `PrivacyPolicyPage`, `TermsPage`
+- 레거시 통합 컴포넌트(`AboutInfoPage`, `SupportPage`) 제거
+- `FastTrackPage` 자료 6종·이용기관·빠른 도움 채널 보강
 
 ### 2. 파트너 전용 자료실 관리 구조 통합
 
