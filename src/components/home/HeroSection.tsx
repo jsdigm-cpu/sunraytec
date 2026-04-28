@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import type { HeroContent } from '../../types/cms';
 
 const BADGES = [
-  { label: '조달청', sub: '우수제품' },
+  { label: '우수제품', sub: '조달청' },
   { label: '혁신제품', sub: '2020년' },
   { label: 'K마크', sub: '성능인증' },
   { label: '방폭인증', sub: 'EX emb II T1' },
@@ -145,31 +145,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         />
       </div>
 
-      {/* B: 고정 "실제 시공 현장" 배지 */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '16px',
-          left: '16px',
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          background: 'rgba(10,22,40,0.78)',
-          border: '1px solid rgba(255,255,255,0.28)',
-          borderRadius: '8px',
-          padding: '6px 12px',
-          backdropFilter: 'blur(6px)',
-          pointerEvents: 'none',
-        }}
-      >
-        <span style={{ fontSize: '13px' }}>📍</span>
-        <span style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.92)', letterSpacing: '0.03em' }}>
-          실제 납품 · 시공 현장
-        </span>
-      </div>
-
-      {/* A: 슬라이드 캡션 */}
+      {/* 고정 시공 현장 배지 + 슬라이드 캡션 */}
       <motion.div
         key={`caption-${currentIndex}`}
         initial={{ opacity: 0, y: 8 }}
@@ -178,33 +154,34 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{
           position: 'absolute',
-          bottom: '52px',
-          left: 0,
-          right: 0,
+          top: '16px',
+          left: '16px',
           zIndex: 3,
           display: 'flex',
-          justifyContent: 'center',
           pointerEvents: 'none',
         }}
       >
         <div
+          className="hero-site-badge"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
+            display: 'grid',
+            gridTemplateColumns: 'auto 1fr',
             gap: '8px',
-            background: 'rgba(10,22,40,0.72)',
-            border: '1px solid rgba(255,255,255,0.18)',
-            borderRadius: '999px',
-            padding: '7px 18px',
+            alignItems: 'center',
+            background: 'rgba(10,22,40,0.78)',
+            border: '1px solid rgba(255,255,255,0.28)',
+            borderRadius: '8px',
+            padding: '9px 14px',
             backdropFilter: 'blur(8px)',
+            minWidth: '250px',
           }}
         >
-          <span style={{ fontSize: '14px' }}>{SLIDE_INFO[currentIndex]?.icon}</span>
-          <span style={{ fontSize: '13px', fontWeight: 700, color: '#fff' }}>
-            {SLIDE_INFO[currentIndex]?.location}
+          <span style={{ fontSize: '14px', gridRow: '1 / span 2' }}>📍</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: 'rgba(255,255,255,0.96)', letterSpacing: '0.02em', lineHeight: 1.25 }}>
+            실제 납품 · 시공 현장
           </span>
-          <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.65)', borderLeft: '1px solid rgba(255,255,255,0.25)', paddingLeft: '8px' }}>
-            {SLIDE_INFO[currentIndex]?.desc}
+          <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.78)', lineHeight: 1.25 }}>
+            {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
           </span>
         </div>
       </motion.div>
@@ -275,8 +252,9 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             borderRadius: '999px',
             padding: '6px 18px',
             fontSize: '13px',
-            fontWeight: 600,
-            color: 'var(--amber2)',
+            fontWeight: 800,
+            color: '#FFD166',
+            textShadow: '0 1px 8px rgba(0,0,0,0.35)',
             marginBottom: '28px',
           }}
         >
@@ -287,6 +265,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.15, ease: 'easeOut' }}
+          className="hero-main-copy"
           style={{
             fontFamily: FONT_FAMILY_MAP[heroContent.headlineFontFamily],
             fontSize: FONT_SIZE_MAP[heroContent.headlineFontSize],
@@ -436,9 +415,10 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               <strong
                 style={{
                   display: 'block',
-                  color: 'var(--amber2)',
+                  color: '#FFB23F',
                   fontSize: '13px',
-                  fontWeight: 700,
+                  fontWeight: 900,
+                  textShadow: '0 1px 7px rgba(0,0,0,0.32)',
                 }}
               >
                 {badge.label}
@@ -480,6 +460,28 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           ))}
         </motion.div>
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .hero-main-copy {
+            font-size: clamp(1.95rem, 7.8vw, 2.12rem) !important;
+            line-height: 1.18 !important;
+            letter-spacing: 0 !important;
+            word-break: keep-all !important;
+            overflow-wrap: normal !important;
+          }
+          .hero-site-badge {
+            min-width: 0 !important;
+            max-width: calc(100vw - 32px) !important;
+          }
+        }
+
+        @media (max-width: 390px) {
+          .hero-main-copy {
+            font-size: 1.92rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

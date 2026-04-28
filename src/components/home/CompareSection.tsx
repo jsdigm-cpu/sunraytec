@@ -157,8 +157,11 @@ export default function CompareSection() {
               {HEAT_PARTICLES.map((p, i) => (
                 <motion.circle
                   key={`hp-${i}`}
-                  cx={p.cx} r={3}
+                  cx={p.cx}
+                  cy={p.startY}
+                  r={3}
                   fill="rgba(225,90,55,0.85)"
+                  initial={{ cy: p.startY, opacity: 0.9 }}
                   animate={{ cy: [p.startY, p.endY], opacity: [0.9, 0] }}
                   transition={{
                     duration: 1.7,
@@ -218,8 +221,11 @@ export default function CompareSection() {
               {DUST.map((p, i) => (
                 <motion.circle
                   key={`dust-${i}`}
-                  cx={p.cx} r={p.r}
+                  cx={p.cx}
+                  cy={p.startY}
+                  r={p.r}
                   fill="rgba(155,140,115,0.75)"
+                  initial={{ cx: p.cx, cy: p.startY, opacity: 0.85 }}
                   animate={{
                     cy: [p.startY, p.endY],
                     opacity: [0.85, 0],

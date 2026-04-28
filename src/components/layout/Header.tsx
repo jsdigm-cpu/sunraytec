@@ -155,7 +155,7 @@ export default function Header() {
       }} className="desktop-utility-bar">
         <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100%', gap: '14px' }}>
           
-          <Link to="/partner" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', color: '#475569', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--red)'} onMouseLeave={(e) => e.currentTarget.style.color = '#475569'}>
+          <Link to="/partner/signup-guide" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', color: '#475569', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--red)'} onMouseLeave={(e) => e.currentTarget.style.color = '#475569'}>
             <span style={{ color: 'var(--red)' }}>♣</span> 파트너·협력회사 회원가입 안내
             <span style={{ 
               border: '1px solid #CBD5E1', background: '#fff', padding: '1px 5px', 
