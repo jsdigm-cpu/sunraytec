@@ -25,12 +25,12 @@
 
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| CEO 메시지 | `/coming-soon?section=company` | 대기중 | Header 기준 |
+| CEO 메시지 | `/about/ceo-message` | 진행중 | 가상/초안 카피 기반, 실제 대표 메시지 대기 |
 | 회사 연혁 | `/about/history` | 완료 | |
 | 인증서·특허 | `/about/certifications` | 완료 | 실제 PDF 다운로드는 대기 |
-| 수상·언론보도 | `/coming-soon?section=company` | 대기중 | |
-| 주요 납품처 | `/coming-soon?section=company` | 대기중 | |
-| 찾아오시는 길 | `/coming-soon?section=company` | 대기중 | |
+| 수상·언론보도 | `/about/media` | 진행중 | 가상/초안 콘텐츠, 실제 보도자료 대기 |
+| 주요 납품처 | `/about/clients` | 진행중 | 가상/초안 콘텐츠, DB 연동 확장 가능 |
+| 찾아오시는 길 | `/about/location` | 진행중 | 기본 주소/연락처 안내 |
 
 ## 3. 제품안내
 
@@ -40,10 +40,10 @@
 | 조달청 우수제품 | `/products/excellence` | 완료 | |
 | MAS 다수공급자 | `/products/mas` | 완료 | |
 | 제품 상세 페이지 | `/products/:productId` | 진행중 | 이미지 갤러리 연결, 상세자료 다운로드 연결 대기 |
-| 방폭·특수 제품 | `/coming-soon?section=special` | 대기중 | |
-| 개인용·욕실형 | `/coming-soon?section=products` | 대기중 | |
-| 스마트 제어 시스템 | `/coming-soon?section=products` | 대기중 | |
-| 제품 비교 | `/coming-soon?section=products` | 대기중 | |
+| 방폭·특수 제품 | `/products/special` | 진행중 | 가상/초안 콘텐츠, 상세 제원 대기 |
+| 개인용·욕실형 | `/products/personal-bath` | 진행중 | 가상/초안 콘텐츠, 상세 제원 대기 |
+| 스마트 제어 시스템 | `/products/smart-control` | 진행중 | 가상/초안 콘텐츠, 상세 제원 대기 |
+| 제품 비교 | `/products/compare` | 진행중 | 용도별 비교 안내 초안 |
 
 ## 4. 기술·솔루션
 
@@ -66,7 +66,7 @@
 | 국방·특수 사례 | `/cases` | 완료 | 현재 목록 필터로 대응 |
 | 상업·라이프스타일 | `/cases` | 완료 | 현재 목록 필터로 대응 |
 | 시공사례 상세 | `/cases/:id` | 진행중 | 상세 설명/추가 사진 보강 대기 |
-| 전국 시공 지도 | `/coming-soon?section=cases` | 대기중 | |
+| 전국 시공 지도 | `/cases-map` | 진행중 | 지도 API 전 단계, 시공사례 DB 권역별 목록 |
 
 ## 6. 자료실·파트너
 
@@ -74,6 +74,7 @@
 |---|---|:---:|---|
 | 파트너 포털 | `/partner` | 진행중 | 보호 라우트 구현, 실제 자료 보강 필요 |
 | 파트너·협력회사 회원가입 안내 | `/partner/signup-guide` | 완료 | 공개 안내 페이지, 회원가입/로그인 흐름 연결 |
+| 패스트트랙 라운지 | `/fasttrack` | 진행중 | 공공기관 자료 라운지 초안, 실제 파일/권한 연동 대기 |
 | 파트너 회원가입 | `/signup` | 완료 | |
 | 파트너 승인 대기 | `/partner/pending` | 완료 | |
 | 난방 용량 계산기 | `/resources/heating-load-calculator` | 완료 | 면적·천장고·단열·구역 비율 기반 1차 용량 계산 |
@@ -88,13 +89,20 @@
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
 | 견적 문의 | `/contact` | 완료 | Supabase `inquiries` 저장 |
-| FAQ | `/coming-soon?section=contact` | 대기중 | |
-| 공지사항 | `/coming-soon?section=contact` | 대기중 | |
-| 대리점 모집 | `/coming-soon?section=contact` | 대기중 | |
+| FAQ | `/support/faq` | 진행중 | 기본 Q&A 초안 |
+| 공지사항 | `/support/notice` | 진행중 | 공지 목록 초안, DB 연동 전 |
+| 대리점 모집 | `/support/dealers` | 진행중 | 협력 안내 초안 |
 | 나라장터 바로가기 | 외부 링크 | 완료 | `https://www.g2b.go.kr` |
-| AI 상담 챗봇 | `/coming-soon?section=contact` | 대기중 | |
+| AI 상담 챗봇 | `/support/chatbot` | 진행중 | 기능 준비 안내 페이지 |
 
-## 8. 관리자
+## 8. 정책
+
+| 메뉴 / 기능 | 경로 | 상태 | 비고 |
+|---|---|:---:|---|
+| 개인정보처리방침 | `/policy/privacy` | 진행중 | 운영/법무 검토 전 초안 |
+| 이용약관 | `/policy/terms` | 진행중 | 운영/법무 검토 전 초안 |
+
+## 9. 관리자
 
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|

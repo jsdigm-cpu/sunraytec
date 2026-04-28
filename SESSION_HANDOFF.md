@@ -14,6 +14,18 @@
 
 ## 이번 세션 (2026-04-28) 작업 요약
 
+- 2026-04-28 추가 진행:
+  - 메인 히어로 현장 배지를 2줄 구조로 정리해 긴 현장명이 한 줄에 붙어 보이는 문제 완화
+  - `/fasttrack` 패스트트랙 라운지 페이지 신설 및 배너 버튼 연결
+  - 회사소개 coming-soon 링크 제거용 초안 페이지 추가: `/about/ceo-message`, `/about/media`, `/about/clients`, `/about/location`
+  - 제품 하위 coming-soon 링크 제거용 초안 페이지 추가: `/products/special`, `/products/personal-bath`, `/products/smart-control`, `/products/compare`
+  - 시공사례 전국 지도 초안 `/cases-map` 추가. 실제 지도 API 전 단계로 `case_studies`를 권역별 목록으로 표시
+  - 고객센터 초안 페이지 추가: `/support/faq`, `/support/notice`, `/support/dealers`, `/support/chatbot`
+  - 정책 초안 페이지 추가: `/policy/privacy`, `/policy/terms`
+  - `Header.tsx`, `Footer.tsx`, `routes.tsx` 링크를 신규 페이지로 업데이트
+  - `npm run lint`, `npm run build` 성공
+  - Playwright로 신규 15개 경로 모바일/데스크톱 순회 검증: 콘솔 오류 없음, 400 이상 응답 없음, 가로 넘침 없음
+
 - 신규 페이지 `src/pages/technology/PrinciplePage.tsx` 추가 (Sub-Hero, 복사 vs 대류 비교표, 4단계 원리, 6대 강점, 적용분야, CTA, 모바일 대응 포함)
 - `src/app/routes.tsx`에 `/technology/principle` 라우트 추가
 - `src/components/layout/Header.tsx`에서 `복사난방 원리` 링크를 `/coming-soon?section=solutions`에서 `/technology/principle`로 교체하고 `comingSoon` 플래그 제거
@@ -22,7 +34,7 @@
 - 브랜치 `claude/nostalgic-payne-6b67a5`로 commit `20f3dc4`, push 완료
 - Vercel preview URL은 박이사님이 모바일에서 확인 예정
 
-남은 메뉴/구조 작업은 `NEXT_TASK.md` 1번 (파트너 자료실 통합) 으로 이관됨.
+남은 핵심 작업은 `NEXT_TASK.md` 기준으로 신규 초안 페이지 실제 자료 보강, 파트너 자료실 통합, 제품 상세 자료 연결 순서입니다.
 
 ---
 
@@ -55,6 +67,23 @@
 ---
 
 ## 이번 세션에서 수정한 코드
+
+- `src/pages/about/AboutInfoPage.tsx`
+  - CEO 메시지, 수상·언론보도, 주요 납품처, 찾아오시는 길 공통 초안 페이지 추가
+- `src/pages/products/ProductGuidePage.tsx`
+  - 방폭·특수 제품, 개인용·욕실형, 스마트 제어, 제품 비교 공통 초안 페이지 추가
+- `src/pages/support/SupportPage.tsx`
+  - FAQ, 공지사항, 대리점 모집, AI 상담 챗봇, 개인정보처리방침, 이용약관 공통 초안 페이지 추가
+- `src/pages/CasesMapPage.tsx`
+  - `case_studies` 위치 텍스트 기반 권역별 시공사례 목록 페이지 추가
+- `src/pages/FastTrackPage.tsx`
+  - 공공기관 자료 라운지 초안 페이지 추가
+- `src/components/layout/Header.tsx`, `src/components/layout/Footer.tsx`, `src/app/routes.tsx`
+  - 신규 페이지 라우트와 메뉴/푸터 링크 연결
+- `src/components/home/HeroSection.tsx`
+  - 현장 배지를 고정 라벨과 현장 설명 2줄로 분리
+- `src/components/home/FastTrackBanner.tsx`
+  - `/fasttrack` 라우터 링크 연결
 
 - `src/lib/storageUploads.ts`
   - Supabase Storage 공개 URL 업로드 헬퍼 추가

@@ -19,17 +19,17 @@ interface NavItem {
 }
 
 // 현재 실제 라우트 기준으로만 클릭 가능한 메뉴를 노출합니다.
-const NAV_ITEMS = [
+const NAV_ITEMS: NavItem[] = [
   {
     to: '/about/history',
     label: '회사소개',
     subs: [
-      { to: '/coming-soon?section=company', label: 'CEO 메시지', icon: '👤', comingSoon: true },
+      { to: '/about/ceo-message', label: 'CEO 메시지', icon: '👤' },
       { to: '/about/history', label: '회사 연혁', icon: '📅' },
       { to: '/about/certifications', label: '인증서·특허', icon: '🏆' },
-      { to: '/coming-soon?section=company', label: '수상·언론보도', icon: '📰', comingSoon: true },
-      { to: '/coming-soon?section=company', label: '주요 납품처', icon: '🤝', comingSoon: true },
-      { to: '/coming-soon?section=company', label: '찾아오시는 길', icon: '📍', comingSoon: true },
+      { to: '/about/media', label: '수상·언론보도', icon: '📰' },
+      { to: '/about/clients', label: '주요 납품처', icon: '🤝' },
+      { to: '/about/location', label: '찾아오시는 길', icon: '📍' },
     ],
   },
   {
@@ -38,10 +38,10 @@ const NAV_ITEMS = [
     subs: [
       { to: '/products/excellence', label: '조달청 우수제품', icon: '🏅' },
       { to: '/products/mas', label: 'MAS 다수공급자', icon: '📋' },
-      { to: '/coming-soon?section=special', label: '방폭·특수 제품', icon: '⚡', comingSoon: true },
-      { to: '/coming-soon?section=products', label: '개인용·욕실형', icon: '🏠', comingSoon: true },
-      { to: '/coming-soon?section=products', label: '스마트 제어 시스템', icon: '📡', comingSoon: true },
-      { to: '/coming-soon?section=products', label: '제품 비교', icon: '⚖️', comingSoon: true },
+      { to: '/products/special', label: '방폭·특수 제품', icon: '⚡' },
+      { to: '/products/personal-bath', label: '개인용·욕실형', icon: '🏠' },
+      { to: '/products/smart-control', label: '스마트 제어 시스템', icon: '📡' },
+      { to: '/products/compare', label: '제품 비교', icon: '⚖️' },
     ],
   },
   {
@@ -65,7 +65,7 @@ const NAV_ITEMS = [
       { to: '/cases', label: '산업·물류 사례', icon: '🏭' },
       { to: '/cases', label: '국방·특수 사례', icon: '⚔️' },
       { to: '/cases', label: '상업·라이프스타일', icon: '🏢' },
-      { to: '/coming-soon?section=cases', label: '전국 시공 지도', icon: '🗺️', comingSoon: true },
+      { to: '/cases-map', label: '전국 시공 지도', icon: '🗺️' },
     ],
   },
   {
@@ -85,14 +85,14 @@ const NAV_ITEMS = [
     label: '고객센터',
     subs: [
       { to: '/contact', label: '견적 문의', icon: '📋' },
-      { to: '/coming-soon?section=contact', label: 'FAQ', icon: '❓', comingSoon: true },
-      { to: '/coming-soon?section=contact', label: '공지사항', icon: '📢', comingSoon: true },
-      { to: '/coming-soon?section=contact', label: '대리점 모집', icon: '🤝', comingSoon: true },
+      { to: '/support/faq', label: 'FAQ', icon: '❓' },
+      { to: '/support/notice', label: '공지사항', icon: '📢' },
+      { to: '/support/dealers', label: '대리점 모집', icon: '🤝' },
       { external: 'https://www.g2b.go.kr', label: '나라장터 바로가기', icon: '🏛️' },
-      { to: '/coming-soon?section=contact', label: 'AI 상담 챗봇', icon: '🤖', comingSoon: true },
+      { to: '/support/chatbot', label: 'AI 상담 챗봇', icon: '🤖' },
     ],
   },
-] satisfies NavItem[];
+];
 
 export default function Header() {
   const { user, profile, signOut } = useAuth();

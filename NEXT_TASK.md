@@ -13,7 +13,21 @@
 
 ## 최우선
 
-### 1. 파트너 전용 자료실 관리 구조 통합
+### 1. 신규 초안 페이지 실제 자료 보강
+
+- 담당 후보: Codex 주도
+- 목표: 2026-04-28에 coming-soon을 제거하기 위해 만든 초안 페이지들을 실제 자료로 교체
+- 대상:
+  - `/about/ceo-message`, `/about/media`, `/about/clients`, `/about/location`
+  - `/products/special`, `/products/personal-bath`, `/products/smart-control`, `/products/compare`
+  - `/support/faq`, `/support/notice`, `/support/dealers`, `/support/chatbot`
+  - `/policy/privacy`, `/policy/terms`, `/cases-map`, `/fasttrack`
+- 완료 기준:
+  - 박이사님이 제공한 실제 문구/자료/법무 문안 반영
+  - 초안/가상 표현 제거 또는 “자료 준비중” 문구를 운영 문구로 정리
+  - 모바일/데스크톱 브라우저 검증
+
+### 2. 파트너 전용 자료실 관리 구조 통합
 
 - 담당 후보: Codex 주도
 - 목표: 현재 `/partner`가 조회하는 `partner_files`와 관리자 `자료실 관리(resource_documents)`의 관계를 정리
@@ -28,7 +42,7 @@
 
 ## 다음 우선순위
 
-### 2. Supabase 운영 DB 정책 SQL 상태 최종 확인
+### 3. Supabase 운영 DB 정책 SQL 상태 최종 확인
 
 - 담당 후보: 사용자 또는 Supabase 관리자 권한이 있는 AI/도구
 - 목표: 지금까지 작성/적용된 SQL이 운영 DB에 모두 반영됐는지 확인
@@ -42,7 +56,7 @@
 - 완료 기준:
   - 신규 회원가입, 이메일 인증, 관리자 회원 상세, 파트너 내 정보 수정, 로그인/자료실 방문 카운트 정상 확인
 
-### 3. 제품 상세 페이지 자료 연결
+### 4. 제품 상세 페이지 자료 연결
 
 - 담당 후보: Claude CLI
 - 전제: 제품 이미지 업로드/갤러리 구조 완료
@@ -53,7 +67,7 @@
   - `src/components/ui/ExcellenceProductCard.tsx`
   - Supabase `products`
 
-### 4. 시공사례 상세 데이터 보강
+### 5. 시공사례 상세 데이터 보강
 
 - 담당 후보: Claude CLI
 - 전제: 시공사례 이미지 업로드 구조 완료

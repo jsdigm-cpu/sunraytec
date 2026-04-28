@@ -12,12 +12,12 @@ const FOOTER_LINKS = [
     ],
   },
   {
-    title: '준비중 메뉴',
+    title: '주요 메뉴',
     links: [
-      { label: '회사소개', to: '/coming-soon?section=company', comingSoon: true },
-      { label: '기술·솔루션', to: '/coming-soon?section=solutions', comingSoon: true },
-      { label: '시공사례', to: '/coming-soon?section=cases', comingSoon: true },
-      { label: '자료실', to: '/coming-soon?section=resources', comingSoon: true },
+      { label: 'CEO 메시지', to: '/about/ceo-message' },
+      { label: '시공사례', to: '/cases' },
+      { label: '전국 시공 지도', to: '/cases-map' },
+      { label: '자료실', to: '/resources/catalog' },
     ],
   },
   {
@@ -25,15 +25,15 @@ const FOOTER_LINKS = [
     links: [
       { label: '나라장터 바로가기', href: 'https://www.g2b.go.kr' },
       { label: 'MAS 제품', to: '/products/mas' },
-      { label: '방폭·특수 제품', to: '/coming-soon?section=special', comingSoon: true },
+      { label: '방폭·특수 제품', to: '/products/special' },
       { label: '공공기관 문의', href: 'tel:16882520' },
     ],
   },
   {
     title: '정책',
     links: [
-      { label: '개인정보처리방침', to: '/coming-soon?section=policy', comingSoon: true },
-      { label: '이용약관', to: '/coming-soon?section=policy', comingSoon: true },
+      { label: '개인정보처리방침', to: '/policy/privacy' },
+      { label: '이용약관', to: '/policy/terms' },
       { label: '운영 문서', to: '/admin' },
     ],
   },
@@ -154,8 +154,8 @@ export default function Footer() {
         >
           <span>© {new Date().getFullYear()} (주)썬레이텍 SUNRAYTEC Co., Ltd. All rights reserved.</span>
           <div style={{ display: 'flex', gap: '16px' }}>
-            <Link to="/coming-soon?section=policy" style={{ color: 'rgba(255,255,255,.4)' }}>개인정보처리방침 준비중</Link>
-            <Link to="/coming-soon?section=policy" style={{ color: 'rgba(255,255,255,.4)' }}>이용약관 준비중</Link>
+            <Link to="/policy/privacy" style={{ color: 'rgba(255,255,255,.4)' }}>개인정보처리방침</Link>
+            <Link to="/policy/terms" style={{ color: 'rgba(255,255,255,.4)' }}>이용약관</Link>
             <a
               href="https://www.g2b.go.kr"
               target="_blank"

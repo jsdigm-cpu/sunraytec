@@ -16,12 +16,16 @@ const ContactPage          = lazy(() => import('../pages/ContactPage'));
 const FastTrackPage        = lazy(() => import('../pages/FastTrackPage'));
 const CasesPage            = lazy(() => import('../pages/CasesPage'));
 const CaseDetailPage       = lazy(() => import('../pages/CaseDetailPage'));
+const CasesMapPage         = lazy(() => import('../pages/CasesMapPage'));
 const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage'));
 const ResourceToolsPage    = lazy(() => import('../pages/resources/ResourceToolsPage'));
+const SupportPage          = lazy(() => import('../pages/support/SupportPage'));
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
+const AboutInfoPage        = lazy(() => import('../pages/about/AboutInfoPage'));
 const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
 const TechnologySolutionPage = lazy(() => import('../pages/technology/TechnologySolutionPage'));
+const ProductGuidePage     = lazy(() => import('../pages/products/ProductGuidePage'));
 // 인증
 const LoginPage            = lazy(() => import('../pages/auth/LoginPage'));
 const SignupPage            = lazy(() => import('../pages/auth/SignupPage'));
@@ -61,6 +65,7 @@ export const router = createBrowserRouter([
       { path: 'fasttrack',             element: <S><FastTrackPage /></S> },
       { path: 'cases',                 element: <S><CasesPage /></S> },
       { path: 'cases/:id',             element: <S><CaseDetailPage /></S> },
+      { path: 'cases-map',             element: <S><CasesMapPage /></S> },
       { path: 'resources/catalog',     element: <S><CatalogPage /></S> },
       { path: 'resources/heating-load-calculator', element: <S><ResourceToolsPage pageId="heating-load" /></S> },
       { path: 'resources/energy-roi-calculator', element: <S><ResourceToolsPage pageId="energy-roi" /></S> },
@@ -68,6 +73,20 @@ export const router = createBrowserRouter([
       { path: 'resources/videos',       element: <S><ResourceToolsPage pageId="videos" /></S> },
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },
+      { path: 'about/ceo-message',     element: <S><AboutInfoPage pageId="ceo" /></S> },
+      { path: 'about/media',           element: <S><AboutInfoPage pageId="media" /></S> },
+      { path: 'about/clients',         element: <S><AboutInfoPage pageId="clients" /></S> },
+      { path: 'about/location',        element: <S><AboutInfoPage pageId="location" /></S> },
+      { path: 'products/special',      element: <S><ProductGuidePage pageId="special" /></S> },
+      { path: 'products/personal-bath', element: <S><ProductGuidePage pageId="personal-bath" /></S> },
+      { path: 'products/smart-control', element: <S><ProductGuidePage pageId="smart-control" /></S> },
+      { path: 'products/compare',      element: <S><ProductGuidePage pageId="compare" /></S> },
+      { path: 'support/faq',           element: <S><SupportPage pageId="faq" /></S> },
+      { path: 'support/notice',        element: <S><SupportPage pageId="notice" /></S> },
+      { path: 'support/dealers',       element: <S><SupportPage pageId="dealers" /></S> },
+      { path: 'support/chatbot',       element: <S><SupportPage pageId="chatbot" /></S> },
+      { path: 'policy/privacy',        element: <S><SupportPage pageId="privacy" /></S> },
+      { path: 'policy/terms',          element: <S><SupportPage pageId="terms" /></S> },
       { path: 'technology/principle',  element: <S><PrinciplePage /></S> },
       { path: 'technology/zero',       element: <S><TechnologySolutionPage pageId="zero" /></S> },
       { path: 'solutions/public-edu',  element: <S><TechnologySolutionPage pageId="public-edu" /></S> },

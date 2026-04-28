@@ -1,6 +1,6 @@
 # PROJECT STATUS
 
-마지막 업데이트: 2026-04-27
+마지막 업데이트: 2026-04-28
 
 ## 프로젝트 한줄 설명
 
@@ -63,17 +63,20 @@
 - `/products/excellence`: 조달청 우수제품 페이지
 - `/products/mas`: MAS 다수공급자 페이지
 - `/products/:productId`: 상세 페이지 UI 및 다중 이미지 갤러리 연결
+- `/products/special`, `/products/personal-bath`, `/products/smart-control`, `/products/compare`: 자료 대기 중에도 메뉴가 열리도록 초안 안내 페이지 구현
 
 ### 시공사례
 
 - `/cases`: Supabase `case_studies` 기반 목록과 카테고리 필터
 - `/cases/:id`: 상세 보기, 이미지 슬라이드/라이트박스/이전·다음 구조
+- `/cases-map`: 시공사례 DB를 권역별로 묶어 보여주는 지도형 목록 초안
 - 상세 설명과 추가 현장 사진은 데이터 보강 필요
 
 ### 인증·회사소개
 
 - `/about/history`: 연혁 페이지
 - `/about/certifications`: 특허 10건 중심 반영
+- `/about/ceo-message`, `/about/media`, `/about/clients`, `/about/location`: coming-soon 제거용 회사소개 초안 페이지
 - `CERT_INVENTORY.md`: 인증·특허·시험성적서 관리 대장 작성
 
 ### 파트너/인증/관리자
@@ -97,6 +100,9 @@
 
 - `/contact`: 견적 문의 폼, Supabase `inquiries` 저장
 - `/resources/catalog`: `resource_documents` 공개 자료 연동, 이미지 파일 썸네일과 다운로드 연결
+- `/support/faq`, `/support/notice`, `/support/dealers`, `/support/chatbot`: 고객센터 하위 초안 페이지
+- `/policy/privacy`, `/policy/terms`: 개인정보처리방침/이용약관 초안 페이지
+- `/fasttrack`: 공공기관 자료 라운지 초안 페이지
 
 ### 성능/인프라
 
@@ -114,13 +120,29 @@
 | `/products` | 완료 | 제품 목록 |
 | `/products/excellence` | 완료 | 우수제품 |
 | `/products/mas` | 완료 | MAS 제품 |
+| `/products/special` | 진행중 | 방폭·특수 제품 초안 |
+| `/products/personal-bath` | 진행중 | 개인용·욕실형 초안 |
+| `/products/smart-control` | 진행중 | 스마트 제어 초안 |
+| `/products/compare` | 진행중 | 제품 비교 초안 |
 | `/products/:productId` | 진행중 | 이미지 갤러리 연결, 상세자료 다운로드 연결 대기 |
 | `/cases` | 완료 | 목록/필터 |
 | `/cases/:id` | 진행중 | 상세 데이터 보강 대기 |
+| `/cases-map` | 진행중 | 시공사례 DB 권역별 목록 |
 | `/resources/catalog` | 진행중 | 공개 자료 연동 및 다운로드 가능, 자료 보강 대기 |
 | `/about/certifications` | 완료 | 인증·특허 페이지, 파일 다운로드는 대기 |
 | `/about/history` | 완료 | 회사 연혁 |
+| `/about/ceo-message` | 진행중 | CEO 메시지 초안 |
+| `/about/media` | 진행중 | 수상·언론보도 초안 |
+| `/about/clients` | 진행중 | 주요 납품처 초안 |
+| `/about/location` | 진행중 | 찾아오시는 길 초안 |
 | `/contact` | 완료 | 문의 저장 |
+| `/support/faq` | 진행중 | FAQ 초안 |
+| `/support/notice` | 진행중 | 공지사항 초안 |
+| `/support/dealers` | 진행중 | 대리점 모집 초안 |
+| `/support/chatbot` | 진행중 | AI 상담 챗봇 준비 안내 |
+| `/policy/privacy` | 진행중 | 개인정보처리방침 초안 |
+| `/policy/terms` | 진행중 | 이용약관 초안 |
+| `/fasttrack` | 진행중 | 공공기관 자료 라운지 초안 |
 | `/admin` | 완료 | 관리자 보호 라우트, 기능 일부 확장 여지 |
 | `/partner` | 진행중 | 보호 라우트와 포털, 실제 자료 보강 필요 |
 | `/partner/pending` | 완료 | 승인 대기 |
@@ -154,6 +176,7 @@
 | P1 | 제품/시공사례/자료실 순서 관리 | 완료 |
 | P1 | Supabase Storage 버킷 및 업로드 정책 설계 | 운영 DB 적용 완료 |
 | P1 | `/technology/principle` 복사난방 원리 페이지 신설 | 완료 (2026-04-28) |
+| P1 | 회사소개/제품/고객센터/정책 coming-soon 제거용 초안 페이지 | 완료 (2026-04-28, 실제 자료 보강 필요) |
 | P1 | 파트너 전용 자료실 관리 구조 통합 | 대기 |
 | P1 | 제품 상세 자료 다운로드 연결 | 대기 |
 | P1 | 카탈로그/지명원 PDF 추가 업로드 | 자료 보강 대기 |
