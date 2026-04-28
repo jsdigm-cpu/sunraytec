@@ -160,16 +160,26 @@ export default function CasesSection() {
                   }}
                 >
                   {imageUrl ? (
-                    <img
+                    <motion.img
                       className="case-thumb-img"
                       src={imageUrl}
                       alt={c.title}
+                      animate={{
+                        x: ['0%', '-12%', '0%'],
+                        scale: [1.04, 1.04, 1.04],
+                        objectPosition: ['76% center', '24% center', '76% center'],
+                      }}
+                      transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.55,
+                      }}
                       style={{
-                        width: '116%',
+                        width: '120%',
                         height: '100%',
                         objectFit: 'cover',
-                        objectPosition: '72% center',
-                        animationDelay: `${index * 0.55}s`,
+                        objectPosition: '76% center',
                       }}
                       onError={(event) => {
                         event.currentTarget.style.display = 'none';
@@ -227,26 +237,13 @@ export default function CasesSection() {
       <style>{`
         .case-thumb-img {
           display: block;
-          transform: translateX(0) scale(1.03);
-          animation: caseThumbPan 8.5s ease-in-out infinite alternate;
+          max-width: none;
           will-change: transform, object-position;
-        }
-
-        @keyframes caseThumbPan {
-          0% {
-            transform: translateX(0) scale(1.04);
-            object-position: 74% center;
-          }
-          100% {
-            transform: translateX(-9%) scale(1.04);
-            object-position: 28% center;
-          }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .case-thumb-img {
-            animation: none;
-            transform: scale(1.02);
+            transform: translateX(0) scale(1.02) !important;
           }
         }
 
