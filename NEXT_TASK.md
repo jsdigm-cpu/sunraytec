@@ -17,15 +17,10 @@
 
 - 담당 후보: Codex 주도
 - 목표: 현재 `/partner`가 조회하는 `partner_files`와 관리자 `자료실 관리(resource_documents)`의 관계를 정리
-- 현재 메모:
-  - 공개 자료실 `/resources/catalog`는 `resource_documents`와 연동 완료
-  - 파트너 포털 `/partner`는 아직 별도 `partner_files` 테이블을 조회 중
-  - 관리자 자료실에 `파트너 자료` 카테고리는 추가됐지만 파트너 포털과는 미연동
-- 관련 파일:
-  - `src/pages/partner/PartnerPortalPage.tsx`
-  - `src/components/admin/ResourceDocumentEditor.tsx`
-  - `src/pages/resources/CatalogPage.tsx`
-  - `supabase_schema.sql`
+- 권장 방향:
+  - `resource_documents`에 `audience` 또는 `visibility` 컬럼 추가
+  - 공개 자료와 파트너 전용 자료를 같은 관리자 등록 흐름에서 관리
+  - 파트너 포털은 승인된 사용자에게만 파트너 전용 자료를 노출
 - 완료 기준:
   - 관리자에서 파트너 전용 자료 등록 가능
   - 승인된 파트너가 `/partner`에서 해당 자료 다운로드 가능

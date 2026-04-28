@@ -19,6 +19,7 @@ const CatalogPage          = lazy(() => import('../pages/resources/CatalogPage')
 const CertificationsPage   = lazy(() => import('../pages/about/CertificationsPage'));
 const HistoryPage          = lazy(() => import('../pages/about/HistoryPage'));
 const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
+const TechnologySolutionPage = lazy(() => import('../pages/technology/TechnologySolutionPage'));
 // 인증
 const LoginPage            = lazy(() => import('../pages/auth/LoginPage'));
 const SignupPage            = lazy(() => import('../pages/auth/SignupPage'));
@@ -60,6 +61,11 @@ export const router = createBrowserRouter([
       { path: 'about/certifications',  element: <S><CertificationsPage /></S> },
       { path: 'about/history',         element: <S><HistoryPage /></S> },
       { path: 'technology/principle',  element: <S><PrinciplePage /></S> },
+      { path: 'technology/zero',       element: <S><TechnologySolutionPage pageId="zero" /></S> },
+      { path: 'solutions/public-edu',  element: <S><TechnologySolutionPage pageId="public-edu" /></S> },
+      { path: 'solutions/industrial-logistics', element: <S><TechnologySolutionPage pageId="industrial-logistics" /></S> },
+      { path: 'solutions/defense-special', element: <S><TechnologySolutionPage pageId="defense-special" /></S> },
+      { path: 'solutions/iot-control', element: <S><TechnologySolutionPage pageId="iot-control" /></S> },
 
       // 관리자 전용 (admin 로그인 필요)
       {

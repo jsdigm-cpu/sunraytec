@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../lib/supabase';
 
 interface CaseDetail {

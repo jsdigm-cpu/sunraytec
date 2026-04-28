@@ -49,12 +49,12 @@
 
 | 메뉴 / 기능 | 경로 | 상태 | 비고 |
 |---|---|:---:|---|
-| 복사난방 원리 | `/technology/principle` | 완료 | 비교표·4단계 원리·6대 강점·적용분야·CTA 구성 |
-| 4대 ZERO 기술 | `/coming-soon?section=solutions` | 대기중 | |
-| 공공·교육 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
-| 산업·물류 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
-| 국방·특수 솔루션 | `/coming-soon?section=solutions` | 대기중 | |
-| IoT 중앙제어 | `/coming-soon?section=solutions` | 대기중 | |
+| 복사난방 원리 | `/technology/principle` | 완료 | 애니메이션 원리도·비교표·현장 적용 CTA 구성 |
+| 4대 ZERO 기술 | `/technology/zero` | 완료 | 공통 솔루션 템플릿 기반 |
+| 공공·교육 솔루션 | `/solutions/public-edu` | 완료 | 공통 솔루션 템플릿 기반 |
+| 산업·물류 솔루션 | `/solutions/industrial-logistics` | 완료 | 공통 솔루션 템플릿 기반 |
+| 국방·특수 솔루션 | `/solutions/defense-special` | 완료 | 공통 솔루션 템플릿 기반 |
+| IoT 중앙제어 | `/solutions/iot-control` | 완료 | 공통 솔루션 템플릿 기반 |
 
 ## 5. 시공사례
 

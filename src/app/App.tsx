@@ -43,7 +43,6 @@ const PRODUCTS_SCHEMA_VERSION = '2026-04-21-products-v4';
 export default function App() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [content, setContent] = useState<SiteContent>(initialSiteContent);
-  const [isHydrated, setIsHydrated] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [lastSaveError, setLastSaveError] = useState<string | null>(null);
 
@@ -151,17 +150,11 @@ export default function App() {
         console.log('Hydrated from LocalStorage (Fallback) 📦');
       }
 
-      setIsHydrated(true);
       setLastSavedAt(new Date().toISOString());
     }
 
     hydrate();
   }, []);
-
-  useEffect(() => {
-    if (!isHydrated) return;
-    persistCmsState(products, content);
-  }, [products, content, isHydrated]);
 
   return (
     <>

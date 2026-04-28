@@ -1,514 +1,334 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { ArrowRight, Building2, Factory, Flame, Gauge, RadioTower, ShieldCheck, Sparkles, ThermometerSun, Wind } from 'lucide-react';
+import { motion } from 'motion/react';
+import ScrollReveal from '../../components/ui/ScrollReveal';
+import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
+const FLOW_LINES = [
+  { x1: 180, y1: 88, x2: 86, y2: 274, delay: 0.0 },
+  { x1: 210, y1: 88, x2: 160, y2: 282, delay: 0.2 },
+  { x1: 240, y1: 88, x2: 240, y2: 286, delay: 0.1 },
+  { x1: 270, y1: 88, x2: 320, y2: 282, delay: 0.3 },
+  { x1: 300, y1: 88, x2: 394, y2: 274, delay: 0.15 },
+];
 
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
+const CONVECTION_PATHS = [
+  'M 520 284 C 494 210 510 126 582 92 C 654 58 766 80 784 160 C 800 232 754 278 700 286',
+  'M 566 278 C 544 222 554 156 610 128 C 666 100 736 122 744 178 C 752 232 724 266 684 278',
+];
 
-const itemVariant = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
-};
+const PRINCIPLES = [
+  { title: '공기를 데우는 것이 아니라', value: '사람과 표면을 직접', desc: '원적외선은 공기보다 바닥, 벽, 장비, 인체에 먼저 흡수되어 체감 온도를 빠르게 만듭니다.' },
+  { title: '열이 위로 도망가지 않고', value: '작업면까지 직진', desc: '고천장 공간에서도 따뜻한 공기가 천장에 고이는 손실을 줄이고 필요한 구역에 열을 전달합니다.' },
+  { title: '표면 온도가 안정되며', value: '결로와 냉기 저감', desc: '차가운 표면을 직접 데워 습기, 곰팡이, 바닥 냉감을 줄이는 데 유리합니다.' },
+];
 
-interface ComparisonRow {
-  label: string;
-  radiant: string;
-  convection: string;
-  highlight?: boolean;
+const DIFFERENCES = [
+  { label: '열 전달', radiant: '복사파가 사람·물체에 직접 흡수', convection: '공기를 데운 뒤 순환' },
+  { label: '체감 속도', radiant: '점등 후 빠르게 체감', convection: '공간 전체 온도 상승까지 지연' },
+  { label: '고천장', radiant: '작업면·동선 중심 난방', convection: '따뜻한 공기가 상부에 정체' },
+  { label: '공기질', radiant: '무바람·저분진', convection: '송풍으로 먼지 확산 가능' },
+  { label: '운영 방식', radiant: '구역별 선택 난방', convection: '전체 공간 가열 중심' },
+];
+
+const SCENARIOS = [
+  { icon: Building2, title: '학교·공공시설', desc: '급식실, 체육관, 민원실처럼 조용하고 쾌적한 체감 난방이 필요한 공간' },
+  { icon: Factory, title: '산업·물류센터', desc: '고천장, 대공간, 출입문 개방이 잦아 공기난방 손실이 큰 작업 현장' },
+  { icon: ShieldCheck, title: '국방·특수환경', desc: '정비창, 격납고, 방폭·방수 조건 등 내구성과 안정성이 중요한 현장' },
+  { icon: RadioTower, title: 'IoT 중앙제어', desc: '구역별 스케줄, 피크 관리, 에너지 사용량 모니터링이 필요한 운영 환경' },
+];
+
+function RadiantDiagram() {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        minHeight: 430,
+        background: 'linear-gradient(180deg, #F8FAFC 0%, #EEF2F7 100%)',
+        border: '1px solid rgba(15,34,65,0.1)',
+        borderRadius: 8,
+        overflow: 'hidden',
+        boxShadow: '0 24px 70px rgba(15,34,65,0.14)',
+      }}
+    >
+      <svg viewBox="0 0 900 380" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <defs>
+          <linearGradient id="radiantWarm" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#E8574A" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#F39C12" stopOpacity="0.18" />
+          </linearGradient>
+          <linearGradient id="airBlue" x1="0" x2="1">
+            <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.72" />
+            <stop offset="100%" stopColor="#1A3A6B" stopOpacity="0.2" />
+          </linearGradient>
+        </defs>
+
+        <rect x="42" y="42" width="396" height="286" rx="18" fill="#FFFFFF" stroke="#D8DEE8" />
+        <rect x="462" y="42" width="396" height="286" rx="18" fill="#FFFFFF" stroke="#D8DEE8" />
+        <rect x="150" y="52" width="180" height="32" rx="8" fill="#0A1628" />
+        <rect x="604" y="252" width="112" height="28" rx="8" fill="#2C3E50" />
+
+        <text x="240" y="30" textAnchor="middle" fill="#0A1628" fontSize="18" fontWeight="800">원적외선 복사난방</text>
+        <text x="660" y="30" textAnchor="middle" fill="#0A1628" fontSize="18" fontWeight="800">일반 대류난방</text>
+        <text x="240" y="354" textAnchor="middle" fill="#C8392B" fontSize="14" fontWeight="800">열이 필요한 곳으로 직접 도달</text>
+        <text x="660" y="354" textAnchor="middle" fill="#64748B" fontSize="14" fontWeight="700">공기 순환 후 천장에 열 정체</text>
+
+        <motion.ellipse
+          cx="240"
+          cy="296"
+          rx="142"
+          ry="18"
+          fill="#F39C12"
+          animate={{ opacity: [0.16, 0.42, 0.16], scaleX: [0.84, 1.08, 0.84] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: '240px 296px' }}
+        />
+
+        {FLOW_LINES.map((line) => (
+          <motion.line
+            key={`${line.x1}-${line.x2}`}
+            x1={line.x1}
+            y1={line.y1}
+            x2={line.x2}
+            y2={line.y2}
+            stroke="url(#radiantWarm)"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeDasharray="12 14"
+            animate={{ strokeDashoffset: [0, -52], opacity: [0.35, 1, 0.35] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear', delay: line.delay }}
+          />
+        ))}
+
+        {[88, 160, 240, 318, 384].map((cx, index) => (
+          <motion.circle
+            key={cx}
+            cx={cx}
+            cy="106"
+            r="5"
+            fill="#C8392B"
+            animate={{ y: [0, 174], opacity: [0, 0.9, 0] }}
+            transition={{ duration: 2.1, repeat: Infinity, ease: 'easeIn', delay: index * 0.28 }}
+          />
+        ))}
+
+        <motion.rect
+          x="486"
+          y="56"
+          width="344"
+          height="44"
+          rx="10"
+          fill="#F59E0B"
+          animate={{ opacity: [0.08, 0.24, 0.08] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {CONVECTION_PATHS.map((d, index) => (
+          <motion.path
+            key={d}
+            d={d}
+            fill="none"
+            stroke="url(#airBlue)"
+            strokeWidth="5"
+            strokeDasharray="15 15"
+            strokeLinecap="round"
+            animate={{ strokeDashoffset: [0, 60] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'linear', delay: index * 0.25 }}
+          />
+        ))}
+
+        {[536, 584, 642, 706, 770].map((cx, index) => (
+          <motion.circle
+            key={cx}
+            cx={cx}
+            cy="266"
+            r={index % 2 ? 4 : 5}
+            fill="#94A3B8"
+            animate={{ y: [0, -186], opacity: [0.72, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut', delay: index * 0.34 }}
+          />
+        ))}
+      </svg>
+
+    </div>
+  );
 }
-
-const COMPARISON: ComparisonRow[] = [
-  { label: '난방 방식', radiant: '복사 — 물체·사람을 직접 가열', convection: '대류 — 공기를 데워서 순환' },
-  { label: '체감 속도', radiant: '점등 즉시 따뜻함 (수 초)', convection: '실내 공기 온도 상승 후 (수십 분)', highlight: true },
-  { label: '고천장 효율', radiant: '천장 높이 영향 적음', convection: '뜨거운 공기 상승으로 손실 큼', highlight: true },
-  { label: '공기 흐름', radiant: '공기 이동 거의 없음', convection: '먼지·바이러스 확산 가능' },
-  { label: '결로 / 곰팡이', radiant: '벽·바닥 표면 온도 상승으로 억제', convection: '온도차로 결로 발생' },
-  { label: '에너지 효율', radiant: '필요 구역만 국소 난방 가능', convection: '공간 전체 가열 필수' },
-  { label: '소음', radiant: '무소음 (송풍 없음)', convection: '팬·송풍기 소음' },
-  { label: '유지보수', radiant: '구동부 없음 — 반영구', convection: '필터·팬·열교환기 정기 점검' },
-];
-
-const PRINCIPLE_STEPS = [
-  {
-    step: '01',
-    title: '전기 에너지 입력',
-    desc: '발열체에 전기를 인가하면 고온의 표면이 형성되며, 이 표면에서 원적외선이 방출됩니다.',
-    icon: '⚡',
-  },
-  {
-    step: '02',
-    title: '원적외선 복사',
-    desc: '파장 4~1000μm의 원적외선이 직진하며, 공기를 거의 가열하지 않고 멀리 도달합니다.',
-    icon: '☀️',
-  },
-  {
-    step: '03',
-    title: '물체·인체 흡수',
-    desc: '복사파는 사람·바닥·벽·기계 등 물체에 직접 흡수되어 분자 진동을 일으키며 즉시 따뜻함을 느끼게 합니다.',
-    icon: '🎯',
-  },
-  {
-    step: '04',
-    title: '재방출 — 공간 보온',
-    desc: '데워진 물체가 다시 열을 방출해 실내 전체를 균일하게 따뜻하게 유지합니다.',
-    icon: '♻️',
-  },
-];
-
-const ADVANTAGES = [
-  {
-    icon: '🏭',
-    title: '고천장·대공간 적합',
-    desc: '천장이 높아 대류난방의 열손실이 큰 물류센터·체육관·공장에서 복사난방은 손실 없이 사람과 작업면을 직접 데웁니다.',
-  },
-  {
-    icon: '💨',
-    title: '국소 난방 가능',
-    desc: '필요한 구역만 선택적으로 난방하여 에너지 절감. 작업자 위치, 계산대, 출입구 등 핀포인트 적용이 가능합니다.',
-  },
-  {
-    icon: '🦠',
-    title: '항균·결로 방지',
-    desc: '바닥·벽 표면 온도를 균일하게 유지해 결로와 곰팡이 발생을 억제하고, 공기 순환이 적어 먼지·바이러스 확산을 줄입니다.',
-  },
-  {
-    icon: '🔇',
-    title: '무소음 · 무바람',
-    desc: '팬이나 송풍기가 없어 소음·먼지·기류가 발생하지 않습니다. 학교, 사무실, 카페에 적합합니다.',
-  },
-  {
-    icon: '🛠️',
-    title: '유지보수 최소화',
-    desc: '구동부가 없어 반영구적이며, 필터 청소·팬 교체 등 정기 점검 비용이 거의 발생하지 않습니다.',
-  },
-  {
-    icon: '🌱',
-    title: '저탄소 · 친환경',
-    desc: '연소 과정이 없어 CO₂·NOx 등 배기가스 배출이 없으며, 신재생 전력과 결합하면 완전 무탄소 난방이 가능합니다.',
-  },
-];
-
-const APPLICATIONS = [
-  { icon: '🏛️', label: '공공·교육시설', desc: '학교 급식실·체육관, 어린이집, 행정청사' },
-  { icon: '🏭', label: '산업·물류', desc: '물류센터, 공장 작업장, 창고' },
-  { icon: '⚔️', label: '국방·특수', desc: '군 정비창, 격납고, 방폭 환경' },
-  { icon: '🏢', label: '상업·라이프스타일', desc: '카페, 매장 계산대, 옥상정원' },
-];
 
 export default function PrinciplePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-      {/* ① Sub-Hero */}
-      <section
-        style={{
-          background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-          padding: '56px 0 64px',
-        }}
-      >
+      <section style={{ background: 'linear-gradient(150deg, #0A1628 0%, #10233F 54%, #2B1B18 100%)', padding: '58px 0 70px', color: '#fff' }}>
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '12px',
-                color: 'rgba(255,255,255,0.45)',
-                marginBottom: '20px',
-              }}
-            >
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>
-                홈
-              </Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.45)' }}>기술·솔루션</span>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>복사난방 원리</span>
-            </div>
-            <h1
-              style={{
-                fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                fontWeight: 800,
-                color: '#fff',
-                marginBottom: '12px',
-                lineHeight: 1.2,
-              }}
-            >
-              복사난방 원리
-            </h1>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', maxWidth: '640px', lineHeight: 1.6 }}>
-              공기를 데우지 않고 사람과 물체를 직접 따뜻하게.
-              <br />
-              원적외선 복사난방의 과학적 원리와 대류난방과의 차이를 정리했습니다.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ② 복사 vs 대류 핵심 비교 */}
-      <section style={{ padding: '72px 0', background: '#F7F9FC' }}>
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeInUp}
-            style={{ textAlign: 'center', marginBottom: '40px' }}
-          >
-            <p
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                color: 'var(--red)',
-                letterSpacing: '3px',
-                fontSize: '0.85rem',
-                marginBottom: '8px',
-              }}
-            >
-              Radiant vs Convection
-            </p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--navy)' }}>
-              복사난방 vs 대류난방
-            </h2>
-            <p style={{ color: '#5B6473', marginTop: '10px', fontSize: '0.95rem' }}>
-              두 방식은 같은 "난방"이지만, 열을 전달하는 메커니즘이 근본적으로 다릅니다.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={staggerContainer}
-            style={{
-              background: '#fff',
-              borderRadius: '14px',
-              overflow: 'hidden',
-              boxShadow: '0 8px 24px rgba(15,34,65,0.06)',
-              border: '1px solid #E5E9F0',
-            }}
-          >
-            {/* 헤더 */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1.1fr 1.4fr 1.4fr',
-                background: 'var(--navy)',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-              }}
-              className="compare-header"
-            >
-              <div style={{ padding: '14px 18px' }}>구분</div>
-              <div style={{ padding: '14px 18px', background: 'rgba(255,255,255,0.05)' }}>☀️ 복사난방 (썬레이텍)</div>
-              <div style={{ padding: '14px 18px' }}>💨 대류난방</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.48)', marginBottom: 20 }}>
+              <Link to="/" style={{ color: 'rgba(255,255,255,0.48)' }}>홈</Link>
+              <span>/</span>
+              <span>기술·솔루션</span>
+              <span>/</span>
+              <strong style={{ color: 'rgba(255,255,255,0.82)' }}>복사난방 원리</strong>
             </div>
 
-            {COMPARISON.map((row, idx) => (
-              <motion.div
-                key={row.label}
-                variants={itemVariant}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1.1fr 1.4fr 1.4fr',
-                  borderTop: idx === 0 ? 'none' : '1px solid #EEF1F6',
-                  background: row.highlight ? '#FFFBF0' : '#fff',
-                  fontSize: '0.92rem',
-                }}
-                className="compare-row"
-              >
-                <div style={{ padding: '14px 18px', fontWeight: 700, color: 'var(--navy)' }}>{row.label}</div>
-                <div style={{ padding: '14px 18px', color: '#1F3759', borderLeft: '3px solid var(--red)' }}>
-                  {row.radiant}
+            <div className="principle-hero-grid" style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: 34, alignItems: 'center' }}>
+              <div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 11px', borderRadius: 8, background: 'rgba(232,87,74,0.16)', border: '1px solid rgba(232,87,74,0.34)', color: '#FFD3C8', fontSize: 13, fontWeight: 800, marginBottom: 18 }}>
+                  <Sparkles size={15} /> Far Infrared Radiant Heating
                 </div>
-                <div style={{ padding: '14px 18px', color: '#5B6473' }}>{row.convection}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ③ 작동 원리 4단계 */}
-      <section style={{ padding: '80px 0', background: '#fff' }}>
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeInUp}
-            style={{ textAlign: 'center', marginBottom: '48px' }}
-          >
-            <p
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                color: 'var(--red)',
-                letterSpacing: '3px',
-                fontSize: '0.85rem',
-                marginBottom: '8px',
-              }}
-            >
-              How It Works
-            </p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--navy)' }}>
-              원적외선 복사난방 4단계 작동 원리
-            </h2>
-            <p style={{ color: '#5B6473', marginTop: '10px', fontSize: '0.95rem' }}>
-              전기 에너지가 사람과 공간의 따뜻함이 되기까지
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={staggerContainer}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '20px',
-            }}
-          >
-            {PRINCIPLE_STEPS.map(({ step, title, desc, icon }) => (
-              <motion.div
-                key={step}
-                variants={itemVariant}
-                style={{
-                  background: '#F7F9FC',
-                  border: '1px solid #E5E9F0',
-                  borderTop: '4px solid var(--red)',
-                  borderRadius: '14px',
-                  padding: '28px 22px',
-                  position: 'relative',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    color: 'var(--red)',
-                    fontSize: '2rem',
-                    letterSpacing: '2px',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {step}
+                <h1 style={{ fontSize: '2.42rem', lineHeight: 1.16, fontWeight: 900, marginBottom: 18 }}>
+                  공기를 흔들지 않고<br />
+                  필요한 곳에 열을 꽂아 넣는 방식
+                </h1>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.02rem', lineHeight: 1.75, maxWidth: 560 }}>
+                  썬레이텍 복사난방은 뜨거운 공기를 순환시키는 대신 원적외선 에너지를 사람, 바닥, 장비 표면에 직접 전달합니다. 그래서 고천장·대공간에서도 열 손실을 줄이고 체감 난방을 빠르게 만듭니다.
+                </p>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
+                  <Link to="/products" className="btn btn-white" style={{ borderRadius: 8, color: 'var(--navy)' }}>
+                    제품 보기 <ArrowRight size={16} />
+                  </Link>
+                  <Link to="/contact" className="btn btn-outline" style={{ borderRadius: 8 }}>
+                    현장 상담 요청
+                  </Link>
                 </div>
-                <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{icon}</div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--navy)', marginBottom: '8px' }}>
-                  {title}
-                </h3>
-                <p style={{ fontSize: '0.88rem', color: '#5B6473', lineHeight: 1.55 }}>{desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ④ 6대 핵심 강점 */}
-      <section
-        style={{
-          padding: '80px 0',
-          background: 'linear-gradient(180deg, #0F2241 0%, #152035 100%)',
-        }}
-      >
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeInUp}
-            style={{ textAlign: 'center', marginBottom: '48px' }}
-          >
-            <p
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                color: 'var(--red-light)',
-                letterSpacing: '3px',
-                fontSize: '0.85rem',
-                marginBottom: '8px',
-              }}
-            >
-              Why Radiant Heating
-            </p>
-            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, color: '#fff' }}>
-              복사난방이 답인 이유
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.55)', marginTop: '10px', fontSize: '0.95rem' }}>
-              공공기관·산업현장·교육시설에서 검증된 6대 핵심 강점
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={staggerContainer}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '18px',
-            }}
-          >
-            {ADVANTAGES.map(({ icon, title, desc }) => (
-              <motion.div
-                key={title}
-                variants={itemVariant}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '14px',
-                  padding: '26px 22px',
-                }}
-              >
-                <div style={{ fontSize: '2rem', marginBottom: '14px' }}>{icon}</div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>{title}</h3>
-                <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.55 }}>{desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ⑤ 적용 분야 */}
-      <section style={{ padding: '72px 0', background: '#fff' }}>
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeInUp}
-            style={{ textAlign: 'center', marginBottom: '40px' }}
-          >
-            <p
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                color: 'var(--red)',
-                letterSpacing: '3px',
-                fontSize: '0.85rem',
-                marginBottom: '8px',
-              }}
-            >
-              Applications
-            </p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--navy)' }}>
-              어디에 적용되나요?
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={staggerContainer}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '16px',
-            }}
-          >
-            {APPLICATIONS.map(({ icon, label, desc }) => (
-              <motion.div
-                key={label}
-                variants={itemVariant}
-                style={{
-                  background: '#F7F9FC',
-                  border: '1px solid #E5E9F0',
-                  borderRadius: '12px',
-                  padding: '22px 20px',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '2.2rem', marginBottom: '10px' }}>{icon}</div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--navy)', marginBottom: '6px' }}>
-                  {label}
-                </h3>
-                <p style={{ fontSize: '0.85rem', color: '#5B6473', lineHeight: 1.5 }}>{desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ⑥ CTA */}
-      <section
-        style={{
-          padding: '64px 0',
-          background: 'linear-gradient(135deg, #FFF5E6 0%, #FFE9D1 100%)',
-        }}
-      >
-        <div className="container" style={{ textAlign: 'center' }}>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <h2 style={{ fontSize: 'clamp(1.4rem, 2.6vw, 1.9rem)', fontWeight: 800, color: 'var(--navy)', marginBottom: '12px' }}>
-              현장에 맞는 복사난방 솔루션을 찾고 계신가요?
-            </h2>
-            <p style={{ color: '#5B6473', fontSize: '0.95rem', marginBottom: '28px', lineHeight: 1.6 }}>
-              30년 경험의 썬레이텍 엔지니어가 공간·용도·예산에 맞춰 최적의 시스템을 제안합니다.
-            </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link
-                to="/products"
-                style={{
-                  display: 'inline-block',
-                  padding: '13px 28px',
-                  background: 'var(--navy)',
-                  color: '#fff',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  fontSize: '0.95rem',
-                }}
-              >
-                제품 보러가기 →
-              </Link>
-              <Link
-                to="/contact"
-                style={{
-                  display: 'inline-block',
-                  padding: '13px 28px',
-                  background: '#fff',
-                  color: 'var(--navy)',
-                  border: '2px solid var(--navy)',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  fontSize: '0.95rem',
-                }}
-              >
-                상담 문의
-              </Link>
+              </div>
+              <RadiantDiagram />
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* 모바일 대응 */}
+      <section style={{ padding: '68px 0', background: '#F8FAFC' }}>
+        <div className="container">
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: 34 }}>
+            <p style={{ fontSize: 12, color: 'var(--red)', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Core Mechanism</p>
+            <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>원리는 세 문장으로 끝납니다</h2>
+          </ScrollReveal>
+
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }} className="principle-card-grid">
+            {PRINCIPLES.map((item, index) => (
+              <motion.article key={item.title} variants={staggerItem} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 8, padding: 24, boxShadow: '0 14px 34px rgba(15,34,65,0.06)' }}>
+                <span style={{ display: 'inline-flex', width: 34, height: 34, alignItems: 'center', justifyContent: 'center', borderRadius: 8, background: '#FFF1ED', color: 'var(--red)', fontWeight: 900, marginBottom: 18 }}>
+                  {index + 1}
+                </span>
+                <p style={{ color: '#64748B', fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{item.title}</p>
+                <h3 style={{ color: 'var(--navy)', fontSize: '1.2rem', fontWeight: 900, marginBottom: 10 }}>{item.value}</h3>
+                <p style={{ color: '#526173', fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
+              </motion.article>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section style={{ padding: '76px 0', background: '#fff' }}>
+        <div className="container">
+          <div className="principle-split" style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: 34, alignItems: 'center' }}>
+            <ScrollReveal variants={fadeInUp}>
+              <p style={{ fontSize: 12, color: 'var(--red)', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Radiant vs Convection</p>
+              <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900, lineHeight: 1.25, marginBottom: 16 }}>
+                대류난방은 공기를 돌리고,<br />복사난방은 열을 전달합니다
+              </h2>
+              <p style={{ color: '#526173', lineHeight: 1.8, marginBottom: 22 }}>
+                대류난방은 실내 공기를 먼저 데워야 하므로 천장이 높거나 문이 자주 열리는 현장에서는 손실이 커집니다. 복사난방은 작업자와 작업면에 직접 도달해 필요한 구역을 빠르게 따뜻하게 만듭니다.
+              </p>
+              <div style={{ display: 'grid', gap: 10 }}>
+                {[
+                  { icon: Gauge, text: '체감 난방 응답이 빠름' },
+                  { icon: Wind, text: '송풍이 없어 먼지 확산이 적음' },
+                  { icon: ThermometerSun, text: '벽·바닥 표면 냉기를 줄임' },
+                ].map(({ icon: Icon, text }) => (
+                  <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#26384F', fontWeight: 800 }}>
+                    <Icon size={18} color="var(--red)" /> {text}
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <div style={{ border: '1px solid #E2E8F0', borderRadius: 8, overflow: 'hidden', boxShadow: '0 18px 44px rgba(15,34,65,0.08)' }}>
+                <div className="principle-compare-head" style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr 1.2fr', background: 'var(--navy)', color: '#fff', fontSize: 13, fontWeight: 900 }}>
+                  <div style={{ padding: 14 }}>구분</div>
+                  <div style={{ padding: 14, color: '#FFD3C8' }}>복사난방</div>
+                  <div style={{ padding: 14, color: '#BFD7F5' }}>대류난방</div>
+                </div>
+                {DIFFERENCES.map((row) => (
+                  <div key={row.label} className="principle-compare-row" style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr 1.2fr', borderTop: '1px solid #E2E8F0', fontSize: 13.5 }}>
+                    <div style={{ padding: 14, fontWeight: 900, color: 'var(--navy)', background: '#F8FAFC' }}>{row.label}</div>
+                    <div style={{ padding: 14, color: '#C8392B', fontWeight: 800 }}>{row.radiant}</div>
+                    <div style={{ padding: 14, color: '#64748B' }}>{row.convection}</div>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '76px 0', background: 'linear-gradient(180deg, #0A1628 0%, #14233A 100%)', color: '#fff' }}>
+        <div className="container">
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: 36 }}>
+            <p style={{ fontSize: 12, color: '#E8574A', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Field Fit</p>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900 }}>어떤 현장에서 특히 강한가</h2>
+          </ScrollReveal>
+
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }} className="principle-scenario-grid">
+            {SCENARIOS.map(({ icon: Icon, title, desc }) => (
+              <motion.article key={title} variants={staggerItem} whileHover={{ y: -5 }} style={{ border: '1px solid rgba(255,255,255,0.11)', borderRadius: 8, padding: 22, background: 'rgba(255,255,255,0.05)' }}>
+                <Icon size={28} color="#F39C12" style={{ marginBottom: 14 }} />
+                <h3 style={{ fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{title}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.64)', fontSize: 13.5, lineHeight: 1.65 }}>{desc}</p>
+              </motion.article>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section style={{ padding: '68px 0', background: '#FFF7ED' }}>
+        <div className="container">
+          <ScrollReveal>
+            <div className="principle-cta" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 22, background: '#fff', border: '1px solid #FED7AA', borderRadius: 8, padding: 30, boxShadow: '0 18px 44px rgba(194,65,12,0.1)' }}>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                <div style={{ width: 52, height: 52, borderRadius: 8, background: '#FFF1ED', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Flame size={28} color="var(--red)" />
+                </div>
+                <div>
+                  <h2 style={{ color: 'var(--navy)', fontSize: '1.35rem', fontWeight: 900, marginBottom: 4 }}>현장 조건을 알려주시면 난방 방식부터 같이 검토합니다</h2>
+                  <p style={{ color: '#64748B', fontSize: 14 }}>면적, 천장고, 개방 빈도, 작업자 동선을 기준으로 적합한 제품과 제어 방식을 제안합니다.</p>
+                </div>
+              </div>
+              <Link to="/contact" className="btn btn-primary" style={{ borderRadius: 8, flexShrink: 0 }}>
+                견적 문의 <ArrowRight size={16} />
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       <style>{`
-        @media (max-width: 768px) {
-          .compare-row,
-          .compare-header {
-            grid-template-columns: 1fr 1fr !important;
-            font-size: 0.82rem !important;
+        @media (max-width: 980px) {
+          .principle-hero-grid,
+          .principle-split {
+            grid-template-columns: 1fr !important;
           }
-          .compare-row > div:first-child,
-          .compare-header > div:first-child {
-            grid-column: 1 / -1;
-            background: #F0F3F8;
-            color: var(--navy);
-            font-weight: 700;
+          .principle-card-grid,
+          .principle-scenario-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
-          .compare-header > div:first-child {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+          .principle-card-grid,
+          .principle-scenario-grid {
+            grid-template-columns: 1fr !important;
           }
-          .compare-row > div {
-            border-left: none !important;
-            padding: 10px 14px !important;
+          .principle-compare-head,
+          .principle-compare-row {
+            grid-template-columns: 1fr !important;
+          }
+          .principle-compare-head > div,
+          .principle-compare-row > div {
+            padding: 11px 14px !important;
+          }
+          .principle-cta {
+            align-items: flex-start !important;
+            flex-direction: column !important;
           }
         }
       `}</style>

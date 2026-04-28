@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 

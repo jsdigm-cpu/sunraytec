@@ -9,3 +9,5 @@ coverage/
 ~$*.xlsx
 .vercel
 .env*.local
+.codex/
+.claude/worktrees/
