@@ -68,8 +68,8 @@ const MAIN_CERTS = [
   {
     icon: '💧',
     title: '방진·방수 IP-65',
-    detail: '산업용 특수 제품',
-    description: '먼지 완전 차단(6등급)·저압 물 분사 보호(5등급)를 만족하는 산업용 제품 등급.',
+    detail: '2024 KTR 시험성적서',
+    description: 'KTR 성적서 ECU-2024-014357 기준, SUR-1800-D 시험대상에서 IP65 방진·방수 성능 확인.',
     badge: '특수',
     badgeColor: '#D97706',
   },
@@ -113,10 +113,12 @@ const PATENTS = [
 ];
 
 const TIMELINE = [
-  { year: '1994', event: '썬레이텍 설립 · 원적외선 복사난방 연구 시작' },
+  { year: '2002', event: '원적외선 복사난방 기술개발 시작' },
+  { year: '2009', event: '썬레이텍 법인 설립' },
   { year: '2013', event: '조달청 우수제품 1차 지정' },
-  { year: '2020', event: '혁신제품 지정 · ISO 9001/14001 인증 취득' },
   { year: '2019', event: '조달청 우수제품 2차 지정' },
+  { year: '2020', event: '혁신제품 지정 · ISO 9001/14001 인증 취득' },
+  { year: '2024', event: 'KTR IP65 방진·방수 등 시험성적서 확보' },
   { year: '2025', event: '조달청 우수제품 3차 지정 (최신)' },
 ];
 

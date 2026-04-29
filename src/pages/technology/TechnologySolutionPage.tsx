@@ -42,18 +42,18 @@ interface PageConfig {
 
 const PAGES: Record<PageId, PageConfig> = {
   zero: {
-    breadcrumb: '4대 ZERO 기술',
+    breadcrumb: '4대 검증 기술',
     badge: 'Core Technology',
-    title: '분진·전자파·화재·결로를 줄이는 4대 ZERO 설계',
+    title: '분진·전파·화재·결로 리스크를 줄이는 복사난방 설계',
     lead: '복사난방의 장점은 단순히 따뜻함이 아닙니다. 바람을 만들지 않고, 화염을 쓰지 않고, 표면 냉기를 줄이는 방식으로 민감한 현장의 리스크를 동시에 낮춥니다.',
     accent: '#E8574A',
     gradient: 'linear-gradient(150deg, #0A1628 0%, #16233A 54%, #2B1818 100%)',
     icon: Sparkles,
     stats: [
-      { label: '무풍 난방', value: 'Zero Dust' },
-      { label: '송풍 없음', value: 'Zero Noise' },
-      { label: '화염 없음', value: 'Zero Flame' },
-      { label: '표면 냉기 저감', value: 'Zero Dew' },
+      { label: '무풍 난방', value: '분진 저감' },
+      { label: '전파 검토', value: '적합등록' },
+      { label: '화염 없음', value: '방폭 검토' },
+      { label: '표면 냉기 저감', value: '결로 저감' },
     ],
     pains: [
       { title: '먼지와 기류', desc: '송풍식 난방은 먼지, 냄새, 바이러스성 비말을 함께 이동시킬 수 있습니다.' },
@@ -61,17 +61,17 @@ const PAGES: Record<PageId, PageConfig> = {
       { title: '특수 현장 안전성', desc: '위험물 취급 공간은 화염, 과열, 방폭 조건을 모두 검토해야 합니다.' },
     ],
     solutions: [
-      { title: '미세먼지 Zero', desc: '공기 순환을 최소화해 분진 발생과 확산을 줄입니다.' },
-      { title: '전자파 Zero 지향', desc: '원적외선 복사열 중심 설계로 민감 장비가 있는 공간에도 적용성을 검토할 수 있습니다.' },
-      { title: '화재위험 Zero 지향', desc: '개방형 화염 없이 전기식 발열체와 안전 제어를 조합합니다.' },
-      { title: '결로 Zero 지향', desc: '바닥·벽·장비 표면 온도를 높여 결로가 생기는 조건을 완화합니다.' },
+      { title: '분진 비산 저감', desc: '공기 순환을 최소화해 분진 발생과 확산을 줄입니다.' },
+      { title: '전파 적합등록', desc: '국립전파연구원 적합등록 제품군으로 민감 장비가 있는 공간도 적용성을 검토할 수 있습니다.' },
+      { title: '화재 위험 저감', desc: '개방형 화염 없이 전기식 발열체와 안전 제어를 조합합니다.' },
+      { title: '결로 저감', desc: '바닥·벽·장비 표면 온도를 높여 결로가 생기는 조건을 완화합니다.' },
     ],
     applications: [
       { icon: Factory, title: '식품·의약품 창고', desc: '분진·기류 관리가 중요한 보관 공간' },
       { icon: ShieldCheck, title: '특수 설비실', desc: '안전성 검토와 안정 운전이 중요한 공간' },
       { icon: Droplets, title: '결로 취약 구역', desc: '지하·출입구·냉기 유입 구간' },
     ],
-    methodLead: '4대 ZERO 설계는 제품 하나의 기능보다 현장 리스크를 먼저 나누어 보는 방식입니다. 공기 흐름, 표면 온도, 열원 안전성, 제어 조건을 함께 확인해야 실제 운영에서 안정적인 체감 난방으로 이어집니다.',
+    methodLead: '4대 검증 기술은 제품 하나의 기능보다 현장 리스크를 먼저 나누어 보는 방식입니다. 공기 흐름, 표면 온도, 열원 안전성, 제어 조건을 함께 확인해야 실제 운영에서 안정적인 체감 난방으로 이어집니다.',
     process: [
       { step: '01', title: '위험 요인 분류', desc: '분진, 전자파 민감도, 화재 조건, 결로 취약 지점을 먼저 구분합니다.' },
       { step: '02', title: '복사열 배치 설계', desc: '사람이 머무는 위치와 차가운 표면을 기준으로 발열 면과 방향을 정합니다.' },
@@ -83,7 +83,7 @@ const PAGES: Record<PageId, PageConfig> = {
       { title: '화염 열원을 쓰기 어려운가', desc: '개방형 화염 사용이 부담되는 보관·정비 공간에 적합성을 봅니다.' },
       { title: '구역별 운전이 필요한가', desc: '전체 난방보다 필요한 구역만 안정적으로 데워야 하는지 확인합니다.' },
     ],
-    diagramLabels: { source: '위험 요인', center: '복사난방', outcome: 'ZERO 리스크' },
+    diagramLabels: { source: '위험 요인', center: '복사난방', outcome: '리스크 저감' },
   },
   'public-edu': {
     breadcrumb: '공공·교육 솔루션',
@@ -313,7 +313,7 @@ function SunraytecSymbol() {
 function EnergyDiagram({ config }: { config: PageConfig }) {
   const Icon = config.icon;
 
-  if (config.breadcrumb === '4대 ZERO 기술') {
+  if (config.breadcrumb === '4대 검증 기술') {
     const riskItems = [
       { icon: Wind, label: '분진·먼지', note: '송풍 확산' },
       { icon: Zap, label: '전자파 우려', note: '민감 장비' },
@@ -321,10 +321,10 @@ function EnergyDiagram({ config }: { config: PageConfig }) {
       { icon: Droplets, label: '결로·곰팡이', note: '차가운 표면' },
     ];
     const zeroItems = [
-      { label: '미세먼지 Zero', detail: '무바람 복사열' },
-      { label: '전자파 Zero 지향', detail: '원적외선 중심' },
-      { label: '화재위험 Zero 지향', detail: '비화염 전기식' },
-      { label: '결로 Zero 지향', detail: '표면 온도 상승' },
+      { label: '분진 비산 저감', detail: '무바람 복사열' },
+      { label: '전파 적합등록', detail: '공식 등록자료' },
+      { label: '화재 위험 저감', detail: '비화염 전기식' },
+      { label: '결로 저감', detail: '표면 온도 상승' },
     ];
 
     return (

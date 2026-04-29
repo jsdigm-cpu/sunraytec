@@ -120,8 +120,8 @@ export default function CasesPage() {
             style={{ display: 'flex', gap: '24px', marginTop: '36px', flexWrap: 'wrap' }}
           >
             {[
-              { value: '2,000+', label: '누적 시공 건수' },
-              { value: '30+',    label: '시공 연수' },
+              { value: '다수',   label: '공공·산업 납품실적' },
+              { value: '2009',   label: '법인 설립 이후' },
               { value: '전국',   label: '서비스 지역' },
             ].map(kpi => (
               <div key={kpi.label} style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>

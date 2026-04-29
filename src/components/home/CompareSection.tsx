@@ -3,14 +3,14 @@ import ScrollReveal from '../ui/ScrollReveal';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
 const COMPARE_ROWS = [
-  { label: '에너지 비용',     sunray: '최대 60% 절감 (조건별)',  conv: '기준 (100%)' },
-  { label: '미세먼지·분진',   sunray: 'Zero',          conv: '발생' },
-  { label: '결로 방지',       sunray: '100% 해결',     conv: '불가' },
+  { label: '에너지 비용',     sunray: 'KTR 시험 기준 소비전력량 약 39.4% 절감',  conv: '기준 제품 대비 높음' },
+  { label: '미세먼지·분진',   sunray: '무풍 방식으로 비산 저감', conv: '팬·기류 발생' },
+  { label: '결로 방지',       sunray: '표면 직접 가열로 결로 저감', conv: '조건에 따라 발생' },
   { label: '항균·탈취',       sunray: '99.9%',         conv: '증식 가능' },
   { label: '고천장 (8m↑)',    sunray: '바닥까지 직접 도달', conv: '열이 천장에 정체' },
-  { label: '화재 위험',       sunray: 'Zero',          conv: '위험' },
-  { label: '소음',            sunray: 'Zero',          conv: '팬 소음 발생' },
-  { label: '유지보수',        sunray: '반영구 사용',   conv: '필터 정기 교체' },
+  { label: '특수 환경',       sunray: '방폭 인증·IP65 시험자료 보유', conv: '별도 검토 필요' },
+  { label: '소음',            sunray: '35~37 dB 시험결과', conv: '팬 소음 발생' },
+  { label: '유지보수',        sunray: '필터 교체 부담 없음', conv: '필터 정기 교체' },
 ];
 
 // ── 좌측(복사난방) 하강 열선 좌표 ──────────────────────────────────

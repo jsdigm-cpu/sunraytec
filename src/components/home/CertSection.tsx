@@ -11,7 +11,7 @@ const CERTS = [
   { icon: '📋', title: 'ISO 9001:2015',        detail: '품질경영시스템 인증' },
   { icon: '🌿', title: 'ISO 14001:2015',       detail: '환경경영시스템 인증' },
   { icon: '🔥', title: '방폭인증 EX emb II T1', detail: '위험 환경 특수 제품' },
-  { icon: '💧', title: '방진·방수 IP-65',      detail: '산업용 특수 제품' },
+  { icon: '💧', title: '방진·방수 IP-65',      detail: '2024 KTR 시험성적서' },
   { icon: '🇪🇺', title: 'CE · RoHS',           detail: '유럽 안전·환경 인증' },
 ];
 

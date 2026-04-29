@@ -49,7 +49,7 @@ const NAV_ITEMS: NavItem[] = [
     label: '기술·솔루션',
     subs: [
       { to: '/technology/principle', label: '복사난방 원리', icon: '☀️' },
-      { to: '/technology/zero', label: '4대 ZERO 기술', icon: '🔬' },
+      { to: '/technology/zero', label: '4대 검증 기술', icon: '🔬' },
       { to: '/solutions/public-edu', label: '공공·교육 솔루션', icon: '🏛️' },
       { to: '/solutions/industrial-logistics', label: '산업·물류 솔루션', icon: '🏭' },
       { to: '/solutions/defense-special', label: '국방·특수 솔루션', icon: '⚔️' },

@@ -6,12 +6,12 @@ import { fadeInUp } from '../../utils/animations';
 
 const PRODUCTS = [
   { model: 'SUR-3600D',  watt: '3,600W',    desc: '대형 물류창고·격납고·체육관', badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가', '방폭 옵션'] },
-  { model: 'SUR-2400T/D', watt: '2,400W',   desc: '중대형 공장·창고·군 시설',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가', 'IP-65 옵션'] },
+  { model: 'SUR-2400T/D', watt: '2,400W',   desc: '중대형 공장·창고·군 시설',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가', '특수환경 검토'] },
   { model: 'SUR-1800T/D', watt: '1,800W',   desc: '중형 작업장·학교·공공시설',   badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가'] },
   { model: 'SUR-1200T/D', watt: '1,200W',   desc: '소·중형 사무실·매장·식당',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가'] },
   { model: 'SUR-600T',    watt: '600W',      desc: '소형 공간·개인 사무실',       badge: 'MAS',      badgeColor: 'var(--blue)',  tags: ['MAS 계약'] },
   { model: 'SUR-D300A',   watt: '300W',      desc: '책상형 개인용·욕실형',        badge: 'MAS',      badgeColor: 'var(--blue)',  tags: ['MAS 계약', '개인용'] },
-  { model: '방폭형 EX',   watt: '최대 3,600W', desc: '위험물 취급 산업 현장',     badge: '특수',     badgeColor: 'var(--amber)', tags: ['EX emb II T1', '방진방수 IP-65'] },
+  { model: '방폭형 EX',   watt: '최대 3,600W', desc: '위험물 취급 산업 현장',     badge: '특수',     badgeColor: 'var(--amber)', tags: ['EX emb II T1', 'KTR IP65 시험'] },
   { model: '스마트 컨트롤', watt: '—',       desc: 'WiFi 원격조절 · 128회로 중앙제어', badge: 'IoT', badgeColor: '#2E7D32',   tags: ['WiFi 제어', '중앙관리'] },
 ];
 

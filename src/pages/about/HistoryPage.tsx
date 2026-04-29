@@ -26,22 +26,22 @@ interface HistoryEvent {
 
 const HISTORY: HistoryEvent[] = [
   {
-    year: '1994',
-    title: '(주)썬레이텍 설립',
-    detail: '원적외선 복사난방 기술 연구·개발 전문기업으로 출발. 고천장·대공간 난방 솔루션의 새로운 기준을 제시하기 위해 창업.',
+    year: '2002',
+    title: '원적외선 복사난방 기술개발 시작',
+    detail: '원적외선 세라믹 코팅제와 천장형 복사난방패널 개발을 위한 시장조사·기초자료 조사 착수.',
     highlight: false,
   },
   {
-    year: '1990년대',
-    title: '원적외선 복사히터 독자 개발',
-    detail: '국내 최초 원적외선 복사패널 자체 개발 및 양산 체계 구축. 매립형·노출형 라인업 확립.',
+    year: '2005',
+    title: '천장형 원적외선 난방패널 개발 본격화',
+    detail: '천장형 원적외선 음이온 난방패널 개발을 시작하고 매립형·노출형 제품화 기반을 정비.',
     highlight: false,
   },
   {
-    year: '2000년대',
-    title: '공공기관·산업시설 납품 확대',
-    detail: '학교·군부대·공장·물류센터 등 다양한 공공 및 산업 현장에 누적 2,000건 이상 시공 실적 달성.',
-    highlight: false,
+    year: '2009',
+    title: '(주)썬레이텍 법인 설립',
+    detail: '2009년 12월 22일 법인 설립. 원적외선 방사 천장형 복사난방패널 전문 제조기업으로 사업화 착수.',
+    highlight: true,
   },
   {
     year: '2013',
@@ -63,8 +63,8 @@ const HISTORY: HistoryEvent[] = [
   },
   {
     year: '2021~2024',
-    title: 'K마크·방폭·IP-65·CE 인증 확대',
-    detail: '성능인증(K마크), 방폭인증(EX emb II T1), 방진방수(IP-65), 유럽인증(CE·RoHS) 취득으로 특수 환경 및 해외 시장 기반 마련.',
+    title: '스마트 제어·IP65 시험성적서 등 검증 확대',
+    detail: '방폭인증(EX emb II T1), CE·RoHS, 국립전파연구원 적합등록, 2024년 KTR IP65 방진·방수 시험성적서 등 특수 환경 대응 근거 확보.',
     highlight: false,
   },
   {
@@ -76,10 +76,10 @@ const HISTORY: HistoryEvent[] = [
 ];
 
 const KPI_ITEMS = [
-  { value: '30+',    unit: '년',  label: '업력' },
-  { value: '2,000+', unit: '건',  label: '누적 시공' },
+  { value: '2009',   unit: '',    label: '법인 설립' },
+  { value: '2002',   unit: '',    label: '기술개발 시작' },
   { value: '3회',    unit: '',    label: '우수제품 지정' },
-  { value: '8+',     unit: '개',  label: '보유 인증' },
+  { value: 'IP65',   unit: '',    label: 'KTR 시험성적' },
 ];
 
 const BUSINESS_AREAS = [
@@ -111,7 +111,7 @@ export default function HistoryPage() {
               회사 연혁
             </h1>
             <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
-              1994년 창립 이후 30년, 복사난방의 새로운 기준을 만들어왔습니다
+              2002년 기술개발 시작, 2009년 법인 설립 이후 복사난방의 기준을 만들어왔습니다
             </p>
           </motion.div>
 
@@ -148,13 +148,14 @@ export default function HistoryPage() {
                 대한민국 복사난방의<br />기준을 만드는 기업
               </h2>
               <p style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: 1.8, marginBottom: '16px' }}>
-                (주)썬레이텍은 1994년 설립 이후 30년간 원적외선 복사난방 기술 하나에 집중해온 전문기업입니다.
+                (주)썬레이텍은 2009년 12월 22일 법인 설립 이후 원적외선 복사난방 기술 하나에 집중해온 전문기업입니다.
+                2002년부터 이어진 기술개발 경험을 바탕으로
                 에너지 절감·결로 방지·항균 기능을 동시에 갖춘 복사난방 시스템으로 공공기관, 산업시설,
                 교육기관에 검증된 열환경을 제공합니다.
               </p>
               <p style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: 1.8 }}>
                 조달청 우수제품 3차 지정(2013·2019·2025)을 비롯해 혁신제품·K마크·ISO 등 국내외
-                주요 인증을 보유하며, 2,000건 이상의 시공 실적으로 신뢰를 쌓아왔습니다.
+                주요 인증을 보유하며, 공공기관·교육시설·군부대·산업시설 등 다양한 현장 납품실적으로 신뢰를 쌓아왔습니다.
               </p>
             </motion.div>
 
@@ -197,7 +198,7 @@ export default function HistoryPage() {
               History
             </p>
             <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 900, color: 'var(--navy)' }}>
-              30년의 발자취
+              기술개발과 사업화의 발자취
             </h2>
           </motion.div>
 
@@ -296,7 +297,7 @@ export default function HistoryPage() {
           >
             <div>
               <h3 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.7rem)', fontWeight: 800, marginBottom: '8px' }}>
-                30년 기술력을 직접 경험해 보세요
+                검증된 복사난방 기술력을 직접 경험해 보세요
               </h3>
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem' }}>
                 인증서 확인부터 맞춤 견적까지, 전문가가 도와드립니다
