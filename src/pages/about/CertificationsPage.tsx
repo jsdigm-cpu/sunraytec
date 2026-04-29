@@ -122,6 +122,13 @@ const TIMELINE = [
   { year: '2025', event: '조달청 우수제품 3차 지정 (최신)' },
 ];
 
+const CERT_METRICS = [
+  { value: '15+', label: '인증·시험성적서',  sub: '국내외 공인기관', color: '#fff' },
+  { value: '10건', label: '등록 특허',        sub: '특허 9건 + 디자인 1건', color: '#fff' },
+  { value: '3회',  label: '우수제품 지정',    sub: '2013·2019·2025년', color: 'var(--red)' },
+  { value: '2종',  label: 'ISO 국제인증',     sub: '품질·환경경영 동시 보유', color: '#fff' },
+];
+
 export default function CertificationsPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
@@ -129,7 +136,7 @@ export default function CertificationsPage() {
       {/* ① Sub-Hero */}
       <section style={{
         background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 64px',
+        padding: '56px 0 0',
       }}>
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
@@ -140,29 +147,50 @@ export default function CertificationsPage() {
               <span>›</span>
               <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>인증·특허</span>
             </div>
+            <p style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '12px' }}>
+              Certifications & Patents
+            </p>
             <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
               인증 · 특허
             </h1>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
-              국내외 공인기관이 인정한 원적외선 복사난방 전문 기업
+            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', maxWidth: '520px', lineHeight: 1.65 }}>
+              조달청 우수제품 3회 지정, 10건 등록 특허, ISO·CE·KC·방폭 인증까지.<br />
+              원적외선 복사난방 기술력을 수치로 입증합니다.
             </p>
           </motion.div>
 
-          {/* KPI */}
+          {/* 다크 인포그래픽 메트릭 바 */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ display: 'flex', gap: '32px', marginTop: '36px', flexWrap: 'wrap' }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            style={{
+              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '0', marginTop: '48px',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+            }}
+            className="cert-metrics-grid"
           >
-            {[
-              { value: '15+', label: '보유 인증·성적서' },
-              { value: '10건', label: '등록 특허·디자인' },
-              { value: '3회', label: '우수제품 지정' },
-            ].map(kpi => (
-              <div key={kpi.label} style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ fontSize: '1.6rem', fontWeight: 900, color: '#fff' }}>{kpi.value}</span>
-                <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{kpi.label}</span>
+            {CERT_METRICS.map((m, i) => (
+              <div key={m.label} style={{
+                padding: '28px 20px',
+                borderRight: i < CERT_METRICS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                  color: m.color,
+                  lineHeight: 1, marginBottom: '6px',
+                }}>
+                  {m.value}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
+                  {m.label}
+                </div>
+                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
+                  {m.sub}
+                </div>
               </div>
             ))}
           </motion.div>
@@ -400,8 +428,14 @@ export default function CertificationsPage() {
       </section>
 
       <style>{`
-        @media (max-width: 900px) { .cert-page-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 480px) { .cert-page-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 900px) {
+          .cert-page-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+          .cert-metrics-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 480px) {
+          .cert-page-grid    { grid-template-columns: 1fr !important; }
+          .cert-metrics-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
       `}</style>
     </main>
   );

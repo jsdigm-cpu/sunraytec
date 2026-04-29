@@ -96,7 +96,7 @@ export default function HistoryPage() {
       {/* ① Sub-Hero */}
       <section style={{
         background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 64px',
+        padding: '56px 0 0',
       }}>
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
@@ -107,26 +107,54 @@ export default function HistoryPage() {
               <span>›</span>
               <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>회사 연혁</span>
             </div>
+            <p style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '12px' }}>
+              Company History
+            </p>
             <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
               회사 연혁
             </h1>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
-              2002년 기술개발 시작, 2009년 법인 설립 이후 복사난방의 기준을 만들어왔습니다
+            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', maxWidth: '520px', lineHeight: 1.65 }}>
+              2002년 기술개발 시작, 2009년 법인 설립 이후<br />
+              조달청 우수제품 3회 지정으로 검증된 20년 이상의 전문 기술 역량
             </p>
           </motion.div>
 
-          {/* KPI 배지 */}
+          {/* 인포그래픽 메트릭 바 */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ display: 'flex', gap: '32px', marginTop: '36px', flexWrap: 'wrap' }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            style={{
+              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '0', marginTop: '48px',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+            }}
+            className="history-metrics-grid"
           >
-            {KPI_ITEMS.map(k => (
-              <div key={k.label} style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                <span style={{ fontSize: '1.6rem', fontWeight: 900, color: '#fff' }}>{k.value}</span>
-                {k.unit && <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>{k.unit}</span>}
-                <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)' }}>{k.label}</span>
+            {[
+              { value: '2002', label: '기술개발 시작', sub: '복사난방 R&D 착수', color: '#fff' },
+              { value: '2009', label: '법인 설립',     sub: '2009년 12월 22일', color: '#fff' },
+              { value: '3회',  label: '우수제품 지정', sub: '2013·2019·2025년', color: 'var(--red)' },
+              { value: '10건', label: '등록 특허',     sub: '특허 9건+디자인 1건', color: '#fff' },
+            ].map((m, i) => (
+              <div key={m.label} style={{
+                padding: '28px 20px',
+                borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                  color: m.color, lineHeight: 1, marginBottom: '6px',
+                }}>
+                  {m.value}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
+                  {m.label}
+                </div>
+                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
+                  {m.sub}
+                </div>
               </div>
             ))}
           </motion.div>
@@ -332,6 +360,9 @@ export default function HistoryPage() {
       </section>
 
       <style>{`
+        @media (max-width: 900px) {
+          .history-metrics-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
         @media (max-width: 640px) {
           .biz-grid { width: 100% !important; }
           .timeline-line { left: 16px !important; }
