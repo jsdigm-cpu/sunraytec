@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../lib/supabase';
 
@@ -14,6 +14,19 @@ interface CaseItem {
 }
 
 const CATEGORIES = ['전체', '교육 및 공공 복지', '국방 및 특수 시설', '산업 및 물류 거점', '스마트 시티 솔루션', '주거 및 라이프 스타일', '상업 및 서비스 공간'];
+
+const SLUG_TO_CATEGORY: Record<string, string> = {
+  education:  '교육 및 공공 복지',
+  defense:    '국방 및 특수 시설',
+  industrial: '산업 및 물류 거점',
+  smart:      '스마트 시티 솔루션',
+  lifestyle:  '주거 및 라이프 스타일',
+  commercial: '상업 및 서비스 공간',
+};
+
+const CATEGORY_TO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(SLUG_TO_CATEGORY).map(([slug, cat]) => [cat, slug])
+);
 
 const CATEGORY_COLOR: Record<string, string> = {
   '교육 및 공공 복지':    '#60A5FA',
@@ -43,9 +56,21 @@ const cardVariant = {
 
 export default function CasesPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('전체');
+
+  const slug = searchParams.get('category');
+  const activeCategory = slug && SLUG_TO_CATEGORY[slug] ? SLUG_TO_CATEGORY[slug] : '전체';
+
+  const handleCategoryClick = (cat: string) => {
+    if (cat === '전체') {
+      setSearchParams({});
+    } else {
+      const targetSlug = CATEGORY_TO_SLUG[cat];
+      if (targetSlug) setSearchParams({ category: targetSlug });
+    }
+  };
 
   useEffect(() => {
     async function fetchCases() {
@@ -127,7 +152,7 @@ export default function CasesPage() {
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => handleCategoryClick(cat)}
                 style={{
                   padding: '5px 12px',
                   borderRadius: '999px',
