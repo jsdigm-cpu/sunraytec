@@ -145,9 +145,13 @@ export default function ProductDetailPage() {
               <DetailSpecRow label="제품군" value={product.category} />
               <DetailSpecRow label="설치 방법" value={formatInstallationType(product.installationType)} />
               <DetailSpecRow label="소비전력" value={`${product.specs.powerW.toLocaleString()}W`} />
-              <DetailSpecRow label="크기" value={`${product.specs.sizeMm} mm`} />
+              <DetailSpecRow label="크기" value={`${product.specs.sizeMm}`} />
               <DetailSpecRow label="전압" value={product.specs.voltage} />
               <DetailSpecRow label="난방 면적" value={product.specs.heatingArea} />
+              {product.specs.weightKg ? <DetailSpecRow label="무게" value={`${product.specs.weightKg} kg`} /> : null}
+              {product.specs.currentA ? <DetailSpecRow label="정격 전류" value={`${product.specs.currentA} A`} /> : null}
+              {product.specs.calorificValueKcal ? <DetailSpecRow label="발열량" value={`${product.specs.calorificValueKcal.toLocaleString()} kcal`} /> : null}
+              {product.specs.heatingTempC ? <DetailSpecRow label="발열 온도" value={product.specs.heatingTempC} /> : null}
               {product.procurementId ? <DetailSpecRow label="조달 식별번호" value={product.procurementId} /> : null}
             </article>
 

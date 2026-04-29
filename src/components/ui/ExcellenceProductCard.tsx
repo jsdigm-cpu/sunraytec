@@ -133,7 +133,9 @@ export default function ExcellenceProductCard({ product }: Props) {
           <SpecItem label="소비전력" value={`${product.specs.powerW.toLocaleString()}W`} />
           <SpecItem label="전압" value={product.specs.voltage.split(' ')[0]} />
           <SpecItem label="크기" value={product.specs.sizeMm} small />
-          <SpecItem label="설치 방법" value={formatInstallationType(product.installationType)} small />
+          {product.specs.weightKg ? <SpecItem label="무게" value={`${product.specs.weightKg}Kg`} small /> : <SpecItem label="설치 방법" value={formatInstallationType(product.installationType)} small />}
+          {product.specs.currentA && <SpecItem label="전류" value={`${product.specs.currentA}A`} small />}
+          {product.specs.heatingTempC && <SpecItem label="발열온도" value={product.specs.heatingTempC} small />}
         </div>
 
         {/* 적용 공간 태그 */}

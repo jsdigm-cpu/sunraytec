@@ -1,0 +1,509 @@
+[
+  {
+    "name": "모델명",
+    "procurementId": "조달 우수제품 식별번호",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "적용 분야"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "",
+      "voltage": "",
+      "heatingArea": "",
+      "weightKg": 0,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25334603",
+    "procurementId": "25334603",
+    "productLine": "excellent",
+    "installationType": "exposed",
+    "applications": [
+      "대형공간 및 야외난방 (공장",
+      "/체육관/물류센터/  테라스 등)",
+      "동파방지(소화전/물탱크실 등)",
+      "결로방지(지하실 등)",
+      "제품/기계 예열, 건조",
+      "(난방능력 : 약6~9평)"
+    ],
+    "specs": {
+      "powerW": 3600,
+      "sizeMm": "1510 x 375 x 48",
+      "voltage": "220 (380) / 60",
+      "heatingArea": "19.8~29.7",
+      "weightKg": 17,
+      "currentA": 16.3,
+      "calorificValueKcal": 3096,
+      "heatingTempC": "약350~390"
+    }
+  },
+  {
+    "name": "SUR-25334605 \r\n25800925",
+    "procurementId": "25334605 \r\n25800925",
+    "productLine": "excellent",
+    "installationType": "exposed",
+    "applications": [
+      "중/대형공간 난방 (학교/교실/",
+      "사무실/공장/업소/매장 등)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약4~6평)"
+    ],
+    "specs": {
+      "powerW": 2400,
+      "sizeMm": "(매립) 1510 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "13.2~19.8",
+      "weightKg": 13,
+      "currentA": 10.9,
+      "calorificValueKcal": 2064,
+      "heatingTempC": "약350~390"
+    }
+  },
+  {
+    "name": "SUR-25334606 \r\n23921490",
+    "procurementId": "25334606 \r\n23921490",
+    "productLine": "excellent",
+    "installationType": "exposed",
+    "applications": [
+      "중/소형공간 난방",
+      "(사무실/가정/업소)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약3~5평)"
+    ],
+    "specs": {
+      "powerW": 1800,
+      "sizeMm": "(매립) 1200 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "9.9~13.2",
+      "weightKg": 10,
+      "currentA": 8.2,
+      "calorificValueKcal": 1548,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25334606 \r\n25800924",
+    "procurementId": "25334606 \r\n25800924",
+    "productLine": "excellent",
+    "installationType": "exposed",
+    "applications": [
+      "중/소형공간 난방",
+      "(사무실/가정/업소)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약2~3평)"
+    ],
+    "specs": {
+      "powerW": 1200,
+      "sizeMm": "(매립) 1200 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "6.6~9.9",
+      "weightKg": 10,
+      "currentA": 5.5,
+      "calorificValueKcal": 1032,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25334603",
+    "procurementId": "25334603",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "소규모 공간 난방",
+      "(사무실/가정/욕실)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약1~1.5평)"
+    ],
+    "specs": {
+      "powerW": 600,
+      "sizeMm": "(매립) 600 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "3.3~4.9",
+      "weightKg": 3,
+      "currentA": 2.7,
+      "calorificValueKcal": 516,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25800923",
+    "procurementId": "25800923",
+    "productLine": "excellent",
+    "installationType": "wall-mounted",
+    "applications": [
+      "소규모 공간 및 개인용 난방",
+      "(사무실/가정/욕실)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약1~1.5평)"
+    ],
+    "specs": {
+      "powerW": 600,
+      "sizeMm": "(벽걸이형) 630 x 220 x 35",
+      "voltage": "220 / 60",
+      "heatingArea": "3.3~4.9",
+      "weightKg": 3,
+      "currentA": 2.7,
+      "calorificValueKcal": 516,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25312825",
+    "procurementId": "25312825",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "난방기 제어용 리모컨 (공용)",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "93 x 43 x 25",
+      "voltage": "3.0(1.5V x 2) DC",
+      "heatingArea": "",
+      "weightKg": 85,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25347133",
+    "procurementId": "25347133",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 통신용 온도조절기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "70 x 120 x 27",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 170,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25803890",
+    "procurementId": "25803890",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 14회로 중앙제어기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "130 x 180 x 35",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 360,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25361248",
+    "procurementId": "25361248",
+    "productLine": "excellent",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 128회로 중앙제어기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "265 x 20 x 25",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 580,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "모 델 명",
+    "procurementId": "조달 마스제풐 식별번호",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "적용 분야"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "",
+      "voltage": "",
+      "heatingArea": "",
+      "weightKg": 0,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25387001",
+    "procurementId": "25387001",
+    "productLine": "mas",
+    "installationType": "exposed",
+    "applications": [
+      "대형공간 및 야외난방 (공장",
+      "/체육관/물류센터/  테라스 등)",
+      "동파방지(소화전/물탱크실 등)",
+      "결로방지(지하실 등)",
+      "제품/기계 예열, 건조",
+      "(난방능력 : 약6~9평)"
+    ],
+    "specs": {
+      "powerW": 3600,
+      "sizeMm": "1510 x 375 x 48",
+      "voltage": "220 (380) / 60",
+      "heatingArea": "19.8~29.7",
+      "weightKg": 17,
+      "currentA": 16.3,
+      "calorificValueKcal": 3096,
+      "heatingTempC": "약350~390"
+    }
+  },
+  {
+    "name": "SUR-25386998 \r\n    25387000",
+    "procurementId": "25386998 \r\n    25387000",
+    "productLine": "mas",
+    "installationType": "exposed",
+    "applications": [
+      "중/대형공간 난방 (학교/교실",
+      "/사무실/공장/업소/매장 등)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약4~6평)"
+    ],
+    "specs": {
+      "powerW": 2400,
+      "sizeMm": "(매립) 1510 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "13.2~19.8",
+      "weightKg": 13,
+      "currentA": 10.9,
+      "calorificValueKcal": 2064,
+      "heatingTempC": "약350~390"
+    }
+  },
+  {
+    "name": "SUR-25386997",
+    "procurementId": "25386997",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "중/소형공간 난방",
+      "(사무실/가정/업소)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약3~5평)"
+    ],
+    "specs": {
+      "powerW": 1800,
+      "sizeMm": "(매립) 1200 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "9.9~13.2",
+      "weightKg": 10,
+      "currentA": 8.2,
+      "calorificValueKcal": 1548,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25386996 \r\n    25386999",
+    "procurementId": "25386996 \r\n    25386999",
+    "productLine": "mas",
+    "installationType": "exposed",
+    "applications": [
+      "중/소형공간 난방",
+      "(사무실/가정/업소)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약2~3평)"
+    ],
+    "specs": {
+      "powerW": 1200,
+      "sizeMm": "(매립) 1200 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "6.6~9.9",
+      "weightKg": 10,
+      "currentA": 5.5,
+      "calorificValueKcal": 1032,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25386995",
+    "procurementId": "25386995",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "소규모 공간 난방",
+      "(사무실/가정/욕실)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약1~1.5평)"
+    ],
+    "specs": {
+      "powerW": 600,
+      "sizeMm": "(매립) 600 x 300 x 48",
+      "voltage": "220 / 60",
+      "heatingArea": "3.3~4.9",
+      "weightKg": 3,
+      "currentA": 2.7,
+      "calorificValueKcal": 516,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25386994",
+    "procurementId": "25386994",
+    "productLine": "mas",
+    "installationType": "wall-mounted",
+    "applications": [
+      "소규모 공간 및 개인용 난방",
+      "(사무실/가정/욕실)",
+      "제품 및 기계 예열",
+      "동파방지(화장실 등)",
+      "결로방지(지하실 등)",
+      "(난방능력 : 약1~1.5평)"
+    ],
+    "specs": {
+      "powerW": 600,
+      "sizeMm": "(벽걸이형) 630 x 220 x 35",
+      "voltage": "220 / 60",
+      "heatingArea": "3.3~4.9",
+      "weightKg": 3,
+      "currentA": 2.7,
+      "calorificValueKcal": 516,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25386993",
+    "procurementId": "25386993",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "책상속 상판 고정형",
+      "개인 초절전 난방기",
+      "(Under Desk Type)"
+    ],
+    "specs": {
+      "powerW": 300,
+      "sizeMm": "500 x 580 x 28",
+      "voltage": "220 / 60",
+      "heatingArea": "1~2",
+      "weightKg": 2,
+      "currentA": 1.4,
+      "calorificValueKcal": 258,
+      "heatingTempC": "약350~400"
+    }
+  },
+  {
+    "name": "SUR-25387002",
+    "procurementId": "25387002",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "난방기 제어용 리모컨 (공용)",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "93 x 43 x 25",
+      "voltage": "3.0(1.5V x 2) DC",
+      "heatingArea": "",
+      "weightKg": 85,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25392029",
+    "procurementId": "25392029",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 통신용 온도조절기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "70 x 120 x 27",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 170,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25387004",
+    "procurementId": "25387004",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 14회로 중앙제어기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "130 x 180 x 35",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 360,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  },
+  {
+    "name": "SUR-25387003",
+    "procurementId": "25387003",
+    "productLine": "mas",
+    "installationType": "embedded",
+    "applications": [
+      "원격제어 128회로 중앙제어기",
+      "(추가선택품목 - 부품)"
+    ],
+    "specs": {
+      "powerW": 0,
+      "sizeMm": "265 x 20 x 25",
+      "voltage": "100VAC ~ 240VAC",
+      "heatingArea": "",
+      "weightKg": 580,
+      "currentA": 0,
+      "calorificValueKcal": 0,
+      "heatingTempC": ""
+    }
+  }
+]

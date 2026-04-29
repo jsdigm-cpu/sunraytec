@@ -210,7 +210,7 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
           />
         </FormRow>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
-          <FormRow label="소비전력">
+          <FormRow label="소비전력 (W)">
             <input
               type="number"
               value={form.specs.powerW || ''}
@@ -225,16 +225,48 @@ export default function ProductForm({ onSubmit, selectedProduct, onClearSelectio
           </FormRow>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
-          <FormRow label="크기">
+          <FormRow label="크기 (LxWxH mm)">
             <input
               value={form.specs.sizeMm}
               onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, sizeMm: e.target.value } }))}
             />
           </FormRow>
-          <FormRow label="전압">
+          <FormRow label="전압 (V / Hz)">
             <input
               value={form.specs.voltage}
               onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, voltage: e.target.value } }))}
+            />
+          </FormRow>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
+          <FormRow label="무게 (Kg)">
+            <input
+              type="number"
+              value={form.specs.weightKg || ''}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, weightKg: Number(e.target.value) } }))}
+            />
+          </FormRow>
+          <FormRow label="정격 전류 (A)">
+            <input
+              type="number"
+              step="0.1"
+              value={form.specs.currentA || ''}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, currentA: Number(e.target.value) } }))}
+            />
+          </FormRow>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.6rem' }}>
+          <FormRow label="발열량 (Kcal)">
+            <input
+              type="number"
+              value={form.specs.calorificValueKcal || ''}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, calorificValueKcal: Number(e.target.value) } }))}
+            />
+          </FormRow>
+          <FormRow label="발열 온도 (°C)">
+            <input
+              value={form.specs.heatingTempC || ''}
+              onChange={(e) => setForm((prev) => ({ ...prev, specs: { ...prev.specs, heatingTempC: e.target.value } }))}
             />
           </FormRow>
         </div>

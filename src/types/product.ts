@@ -3,6 +3,10 @@ export interface ProductSpec {
   sizeMm: string;
   voltage: string;
   heatingArea: string;
+  weightKg?: number;
+  currentA?: number;
+  calorificValueKcal?: number;
+  heatingTempC?: string;
 }
 
 export type ProductLine = 'excellent' | 'mas' | 'personal';

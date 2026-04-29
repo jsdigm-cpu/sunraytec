@@ -29,7 +29,11 @@ CREATE TABLE IF NOT EXISTS public.products (
 
 ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS image_gallery jsonb DEFAULT '[]'::jsonb,
-  ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+  ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS weight_kg numeric,
+  ADD COLUMN IF NOT EXISTS current_a numeric,
+  ADD COLUMN IF NOT EXISTS calorific_value_kcal numeric,
+  ADD COLUMN IF NOT EXISTS heating_temp_c text;
 
 -- 2. site_content 테이블
 CREATE TABLE IF NOT EXISTS public.site_content (
