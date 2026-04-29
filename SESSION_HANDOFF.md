@@ -45,6 +45,10 @@
 - `FaqPage.tsx` — 빠른 확인 카드(IP65·57%·99.9%·2년보증) 히어로 바 추가
 - 카테고리별 색상+아이콘 필터 탭, 아코디언 좌측 카테고리 컬러 보더 적용
 
+### 5. 버그 수정 — 시공사례 카드 클릭 기능 복구
+- `CasesPage.tsx` — `useNavigate` import 누락 및 `CaseCard` onClick 핸들러 미전달 수정
+- 카드 클릭 시 `/cases/:id` 상세 페이지 이동 정상 동작 확인
+
 ## 수정된 주요 소스 (이번 세션)
 
 - `src/pages/technology/TechnologySolutionPage.tsx`
