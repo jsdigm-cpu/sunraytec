@@ -95,6 +95,29 @@ const FAQS: FaqItem[] = [
 
 const CATEGORIES: FaqCategory[] = ['전체', '제품·기술', '견적·구매', '시공·납기', '유지·보증', '공공조달'];
 
+const CAT_ICON: Record<string, string> = {
+  '제품·기술': '⚙️',
+  '견적·구매': '💰',
+  '시공·납기': '🔧',
+  '유지·보증': '🛡',
+  '공공조달':  '🏛',
+};
+
+const CAT_COLOR: Record<string, string> = {
+  '제품·기술': '#3B82F6',
+  '견적·구매': '#F59E0B',
+  '시공·납기': '#10B981',
+  '유지·보증': '#8B5CF6',
+  '공공조달':  '#EF4444',
+};
+
+const QUICK_FACTS = [
+  { icon: '💧', label: 'IP65',      desc: '방진·방수 등급', sub: 'KTR ECU-2024-014357 기준' },
+  { icon: '⚡', label: '57%',       desc: '난방비 절감',    sub: '가나에너지 공장 실증 기준' },
+  { icon: '🦠', label: '99.9%',     desc: '항균 성능',      sub: '대장균·포도상구균 KFIA' },
+  { icon: '📅', label: '2년',       desc: '기본 보증기간',  sub: '출하일 기준 · 연장 가능' },
+];
+
 export default function FaqPage() {
   const [active, setActive] = useState<FaqCategory>('전체');
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -106,44 +129,86 @@ export default function FaqPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '56px 0 64px' }}>
+      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '56px 0 0' }}>
         <div className="container">
           <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
             <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 고객센터 ›{' '}
             <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>FAQ</span>
           </p>
-          <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>FAQ</p>
+          <p style={{ color: 'var(--red)', fontSize: 11, fontWeight: 900, letterSpacing: 3, textTransform: 'uppercase', marginBottom: 12 }}>FAQ</p>
           <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', fontWeight: 900, marginBottom: 12 }}>자주 묻는 질문</h1>
-          <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.7)', lineHeight: 1.85 }}>
-            제품, 견적, 시공, 유지관리, 공공조달까지 자주 받는 질문을 카테고리별로 정리했습니다.
-            추가 질문은 견적 문의 양식으로 보내주세요.
+          <p style={{ maxWidth: 640, color: 'rgba(255,255,255,.6)', lineHeight: 1.75 }}>
+            제품·견적·시공·유지관리·공공조달까지 자주 받는 질문 {FAQS.length}개를 카테고리별로 정리했습니다.
           </p>
+
+          {/* 빠른 확인 카드 */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.2 }}
+            style={{
+              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '0', marginTop: '40px',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+            }}
+            className="faq-quick-grid"
+          >
+            {QUICK_FACTS.map((f, i) => (
+              <div key={f.label} style={{
+                padding: '22px 20px', textAlign: 'center',
+                borderRight: i < QUICK_FACTS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+              }}>
+                <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>{f.icon}</div>
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                  color: i === 1 ? 'var(--red)' : '#fff',
+                  lineHeight: 1, marginBottom: '4px',
+                }}>
+                  {f.label}
+                </div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '2px' }}>
+                  {f.desc}
+                </div>
+                <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
+                  {f.sub}
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       <section style={{ padding: '40px 0 78px' }}>
         <div className="container">
           {/* Filter pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24, alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, marginRight: '4px' }}>카테고리:</span>
             {CATEGORIES.map((c) => {
               const isActive = c === active;
+              const color = c === '전체' ? 'var(--navy)' : (CAT_COLOR[c] || 'var(--navy)');
+              const count = c === '전체' ? FAQS.length : FAQS.filter(f => f.category === c).length;
               return (
                 <button
                   key={c}
                   type="button"
                   onClick={() => { setActive(c); setOpenIdx(null); }}
                   style={{
-                    padding: '8px 16px',
+                    padding: '6px 14px',
                     borderRadius: 999,
-                    border: isActive ? '1px solid var(--navy)' : '1px solid #CBD5E1',
-                    background: isActive ? 'var(--navy)' : '#fff',
-                    color: isActive ? '#fff' : '#334155',
+                    border: `2px solid ${isActive ? color : '#E5E7EB'}`,
+                    background: isActive ? color : '#fff',
+                    color: isActive ? '#fff' : '#64748B',
                     fontWeight: 700,
-                    fontSize: 13,
+                    fontSize: 12,
                     cursor: 'pointer',
+                    transition: 'all 0.18s',
+                    display: 'inline-flex', alignItems: 'center', gap: '4px',
                   }}
                 >
+                  {c !== '전체' && CAT_ICON[c]}
                   {c}
+                  <span style={{ opacity: 0.7, fontSize: '11px' }}>{count}</span>
                 </button>
               );
             })}
@@ -152,13 +217,22 @@ export default function FaqPage() {
           <div style={{ display: 'grid', gap: 10 }}>
             {filtered.map((item, idx) => {
               const isOpen = openIdx === idx;
+              const catColor = CAT_COLOR[item.category] || 'var(--red)';
+              const catIcon = CAT_ICON[item.category] || '❓';
               return (
                 <motion.article
                   key={`${item.category}-${item.q}`}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.28 }}
-                  style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 12, overflow: 'hidden' }}
+                  style={{
+                    background: '#fff',
+                    border: `1px solid ${isOpen ? catColor + '44' : '#E5E7EB'}`,
+                    borderLeft: `4px solid ${isOpen ? catColor : '#E5E7EB'}`,
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    transition: 'border-color 0.2s',
+                  }}
                 >
                   <button
                     type="button"
@@ -166,27 +240,41 @@ export default function FaqPage() {
                     style={{
                       width: '100%',
                       textAlign: 'left',
-                      padding: '20px 22px',
-                      background: 'transparent',
+                      padding: '18px 22px',
+                      background: isOpen ? catColor + '06' : 'transparent',
                       border: 'none',
                       cursor: 'pointer',
                       display: 'flex',
                       gap: 14,
                       alignItems: 'flex-start',
+                      transition: 'background 0.2s',
                     }}
                   >
-                    <span style={{ display: 'inline-block', padding: '2px 10px', background: '#FEF2F2', color: 'var(--red)', borderRadius: 999, fontSize: 11, fontWeight: 900, letterSpacing: 0.5, flexShrink: 0, marginTop: 2 }}>
-                      {item.category}
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '4px',
+                      padding: '2px 9px',
+                      background: catColor + '18',
+                      color: catColor,
+                      borderRadius: 999, fontSize: 10, fontWeight: 900,
+                      letterSpacing: 0.3, flexShrink: 0, marginTop: 3,
+                    }}>
+                      {catIcon} {item.category}
                     </span>
-                    <h2 style={{ flex: 1, color: 'var(--navy)', fontSize: '1.02rem', fontWeight: 800, lineHeight: 1.5 }}>
+                    <h2 style={{ flex: 1, color: 'var(--navy)', fontSize: '0.97rem', fontWeight: 700, lineHeight: 1.55 }}>
                       Q. {item.q}
                     </h2>
-                    <span style={{ color: '#94A3B8', fontSize: 18, transform: isOpen ? 'rotate(45deg)' : 'rotate(0)', transition: 'transform .2s', flexShrink: 0 }}>＋</span>
+                    <span style={{
+                      color: isOpen ? catColor : '#94A3B8',
+                      fontSize: 18,
+                      transform: isOpen ? 'rotate(45deg)' : 'rotate(0)',
+                      transition: 'transform .2s, color .2s',
+                      flexShrink: 0,
+                    }}>＋</span>
                   </button>
                   {isOpen && (
-                    <div style={{ padding: '0 22px 22px 22px', borderTop: '1px dashed #E5E7EB' }}>
-                      <p style={{ color: '#475569', lineHeight: 1.85, marginTop: 14 }}>
-                        <span style={{ color: 'var(--red)', fontWeight: 900, marginRight: 6 }}>A.</span>
+                    <div style={{ padding: '0 22px 20px 22px', borderTop: `1px dashed ${catColor}33` }}>
+                      <p style={{ color: '#374151', lineHeight: 1.9, marginTop: 14, fontSize: '0.92rem' }}>
+                        <span style={{ color: catColor, fontWeight: 900, marginRight: 6 }}>A.</span>
                         {item.a}
                       </p>
                     </div>
@@ -206,6 +294,12 @@ export default function FaqPage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .faq-quick-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+      `}</style>
     </main>
   );
 }
