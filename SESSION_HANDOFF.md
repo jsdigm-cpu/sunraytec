@@ -1,6 +1,6 @@
 # SESSION_HANDOFF
 
-마지막 업데이트: 2026-04-29, Codex
+마지막 업데이트: 2026-04-29, Claude Sonnet 4.6
 
 이 문서는 다음 AI 또는 작업자가 바로 이어서 작업하기 위한 단일 인수인계 문서입니다. 루트 Markdown 문서는 `README.md`와 이 파일만 유지합니다.
 
@@ -10,7 +10,7 @@
 - 답변 언어: 반드시 한국어
 - 말투: 친근하고 애정어린 톤
 - 회사: (주)썬레이텍
-- 주력 제품: 원적외선 방사 천장형 복사난방패널
+- 주력 제품: 원적외선 방사 천장형 복사난방패널 "양지처럼"
 - 주요 영업 채널: 조달청 나라장터, MAS 등록 제품 운영 중, 우수제품 제3자단가계약 이후 추가 등록 예정
 - 원천자료 폴더: `C:\projects\homepage_low_data`
 - 추가 인증/시험자료 폴더: `C:\projects\homepage_low_data\※인증및시험성적서_추가자료`
@@ -23,46 +23,35 @@
 - 브랜치: `main`
 - 개발 서버 기본 주소: `http://localhost:3000`
 
-## 이번 세션에서 완료한 내용
+## 이번 세션에서 완료한 내용 (2026-04-29)
 
-1. 홈페이지 콘텐츠 사실관계 1차 정정
-   - `1994년 설립`, `30년`, `30+` 등 사실과 다른 장기 업력 표현 제거
-   - 회사 기준을 `2002년 기술개발 시작`, `2009년 12월 22일 법인 설립`으로 정리
-   - `4대 ZERO 기술`을 `4대 검증 기술` 계열 표현으로 조정
-   - `100% 해결`, `유일하게`, `수의계약 없이` 등 과장 또는 오해 소지가 있는 문구 제거
-   - `IP-55`, `IP55` 표기를 KTR 시험성적서 기준 `IP65`로 갱신
+### 1. 기술·솔루션 페이지 인포그래픽 전면 재작성
+- `TechnologySolutionPage.tsx` — 5개 페이지 설정에 실측 수치(IP65·57%·96점 등) 반영
+- `DataBar` 컴포넌트 신설: 다크(#0D1B2E) 배경, Bebas Neue 대형 수치, 인증서 출처 표기
+- `CaseSpotlight` 컴포넌트 신설: 가나에너지 57% 절감(산업물류), 12사단 96점(국방특수) 실증 케이스
 
-2. 인증/시험자료 반영
-   - KTR 시험성적서 `ECU-2024-014357` 확인
-   - 시험대상: 원적외선 방사 천장형 복사난방패널
-   - 모델/정격: `SUR-1800-D / 220 V~, 60 Hz, 1,800 W`
-   - 시험기간: 2024년 9월 24일 ~ 2024년 10월 2일
-   - 결과: `IP65`, 기준 규격 `KS C IEC 60529`
-   - 주요 성능 표현은 시험성적서 기반 수치로 조정
+### 2. 시공사례 페이지 인포그래픽 강화
+- `CasesPage.tsx` — Supabase DB가 비어있을 때의 정적 폴백 케이스 10건 추가
+- 영역별 실제 납품처 데이터 기반: 학교급식실, 12사단 경계초소, 가나에너지 공장, 버스정류장 등
+- 대표 실증 사례 "Featured Cases" 스포트라이트 섹션 (가나에너지 57% / 12사단 96점)
+- 카테고리 아이콘+수치 인포그래픽 바 추가
+- 히어로 하단 4열 메트릭 바(우수제품 3회·12개사단·57%절감·전국)
 
-3. 루트 Markdown 문서 정리
-   - GitHub용 최신 안내 문서: `README.md`
-   - AI 작업 인수인계 문서: `SESSION_HANDOFF.md`
-   - 중복된 과거 작업 문서는 삭제
+### 3. 회사소개 페이지군 인포그래픽 강화
+- `CertificationsPage.tsx` — 다크 메트릭 바(15+인증·10건특허·3회우수제품·ISO2종), 히어로 문구 강화
+- `HistoryPage.tsx` — 다크 메트릭 바(2002기술개발·2009법인설립·3회우수제품·10건특허)
 
-## 수정된 주요 소스
+### 4. FAQ 페이지 인포그래픽 강화
+- `FaqPage.tsx` — 빠른 확인 카드(IP65·57%·99.9%·2년보증) 히어로 바 추가
+- 카테고리별 색상+아이콘 필터 탭, 아코디언 좌측 카테고리 컬러 보더 적용
 
-- `src/components/home/CertSection.tsx`
-- `src/components/home/CompareSection.tsx`
-- `src/components/home/KpiSection.tsx`
-- `src/components/home/ProductLineupSection.tsx`
-- `src/components/home/SolutionSection.tsx`
-- `src/components/home/ZeroSection.tsx`
-- `src/components/layout/Header.tsx`
+## 수정된 주요 소스 (이번 세션)
+
+- `src/pages/technology/TechnologySolutionPage.tsx`
 - `src/pages/CasesPage.tsx`
-- `src/pages/about/CeoMessagePage.tsx`
 - `src/pages/about/CertificationsPage.tsx`
 - `src/pages/about/HistoryPage.tsx`
-- `src/pages/about/MediaPage.tsx`
-- `src/pages/products/ProductGuidePage.tsx`
-- `src/pages/support/DealersPage.tsx`
 - `src/pages/support/FaqPage.tsx`
-- `src/pages/technology/TechnologySolutionPage.tsx`
 
 ## 콘텐츠 기준 사실
 
@@ -76,23 +65,14 @@
 ## 확인된 핵심 성능/인증 표현
 
 - 방진방수: `IP65` 확인, KTR `ECU-2024-014357`
-- 원적외선 방사율: 시험성적서 기준 `0.91`
+- 원적외선 방사율: 시험성적서 기준 `91.2%`
 - 소비전력량 절감: KTR 시험 기준 약 `39.4%` 절감 표현 사용
-- 항균 관련 표현: 시험성적서 기준 `99.9%` 범위에서 사용
-- 전자파/화재/결로/미세먼지 관련 표현: "Zero" 단정 대신 설계상 저감, 안전성 확보, 관리 부담 완화 등 검증 가능한 문장 사용
-
-## 삭제한 루트 MD
-
-다음 문서는 중복되거나 오래된 AI 세션용 문서라 삭제했습니다. 필요한 핵심 내용은 `README.md`와 이 문서에 통합했습니다.
-
-- `AI_HANDOFF_PROMPTS.md`
-- `CERT_INVENTORY.md`
-- `CODEX_COMMAND_CENTER.md`
-- `CONTENT_CORRECTION_HANDOFF.md`
-- `CONTINUE_HERE.md`
-- `MENU_STATUS.md`
-- `NEXT_TASK.md`
-- `PROJECT_STATUS.md`
+- 항균 관련 표현: 시험성적서 기준 `99.9%` 범위에서 사용 (대장균·포도상구균, KFIA-386)
+- 탈취율: `88%` 이상 (KFIG-292)
+- 에너지절감 실증: `57%` — 가나에너지 공장 200평, 천장5m, 연 1,130만→576만원
+- 군부대 만족도: `96점/100점` — 지상작전사령부 혁신제품, 12개 사단 납품 후
+- 우수제품 지정: `3회` (2013·2019·2025), 현재 유효기간 2025.09.19~2028.09.18
+- 특허: 총 `10건` (특허 9건 + 디자인 1건)
 
 ## 검증 기준
 
@@ -123,26 +103,26 @@ IP55
 
 ## 다음 추천 작업
 
-1. 실제 브라우저 화면 QA
-   - 홈, 회사소개, 제품안내, 기술/솔루션, 시공사례, 고객지원 메뉴를 PC와 모바일에서 확인
-   - 문구 줄바꿈, 버튼 폭, 카드 높이, 이미지 노출 상태 점검
+1. **실제 브라우저 QA**
+   - 기술·솔루션, 시공사례, 회사소개, FAQ 메뉴를 PC와 모바일에서 확인
+   - 다크 메트릭 바 반응형(2열·1열 전환), 스포트라이트 카드 가독성 점검
+   - 시공사례 카테고리 필터 동작, DataBar 폰트 로딩 확인
 
-2. 인증/특허/시험자료 2차 정밀 반영
+2. **제품안내 페이지 강화**
+   - `ProductGuidePage.tsx` — 모델별 소비전력, 규격, KC인증 번호 구조화
+   - SUR-D300·SUR-600·SUR-1200·SUR-1800·SUR-2400·SUR-3600 사양표 추가
+
+3. **인증/특허/시험자료 2차 정밀 반영**
    - 원천 PDF별 보고서 번호, 시험기관, 시험일, 모델명을 표 형태로 정리
    - 홈페이지 자료실 또는 인증 페이지에서 다운로드/열람 구조 확정
 
-3. 조달/구매 문구 최종 검토
-   - MAS 등록 현황과 우수제품 제3자단가계약 진행 상태를 최신 기준으로 분리
-   - 완료 전 항목은 예정/준비/추진 표현으로 유지
+4. **메인 홈 HeroSection 강화**
+   - 히어로 영역에 실증 수치(57% 절감·99.9% 항균·IP65) 인포그래픽 뱃지 추가
+   - 히어로 이미지가 없을 경우 대체 시각 요소 검토
 
-4. 제품 데이터 고도화
-   - 모델별 소비전력, 규격, 설치 기준, 조달 식별번호를 구조화
-   - 제품 상세 페이지 또는 비교표에 연결
-
-5. 배포 후 최종 검수
-   - Vercel 배포 상태 확인
-   - GitHub README 표시 확인
-   - 실제 문의/자료실 흐름 점검
+5. **Vercel 배포 상태 확인**
+   - GitHub push 후 Vercel 자동 배포 확인
+   - sunraytec.vercel.app 에서 변경사항 반영 여부 점검
 
 ## 작업 원칙
 
