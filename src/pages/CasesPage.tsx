@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../lib/supabase';
 
@@ -175,13 +175,14 @@ const cardVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
-function CaseCard({ item }: { item: CaseItem }) {
+function CaseCard({ item, onClick }: { item: CaseItem; onClick: () => void }) {
   const color = CATEGORY_COLOR[item.category] || '#6B7280';
   const icon = CATEGORY_ICON[item.category] || '🏢';
   return (
     <motion.div
       variants={cardVariant}
       whileHover={{ y: -6, boxShadow: '0 16px 40px rgba(0,0,0,0.14)', transition: { duration: 0.2 } }}
+      onClick={onClick}
       style={{
         borderRadius: '16px',
         overflow: 'hidden',
@@ -190,6 +191,7 @@ function CaseCard({ item }: { item: CaseItem }) {
         border: '1px solid #E5E7EB',
         display: 'flex',
         flexDirection: 'column',
+        cursor: 'pointer',
       }}
     >
       {/* 이미지 or 컬러 플레이스홀더 */}
@@ -264,6 +266,7 @@ function CaseCard({ item }: { item: CaseItem }) {
 }
 
 export default function CasesPage() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [dbCases, setDbCases] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -622,7 +625,7 @@ export default function CasesPage() {
             >
               {filtered.map(item => (
                 <div key={item.id}>
-                  <CaseCard item={item} />
+                  <CaseCard item={item} onClick={() => navigate(`/cases/${item.id}`)} />
                 </div>
               ))}
             </motion.div>
