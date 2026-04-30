@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SubHero from '../../components/layout/SubHero';
 
 const CAPABILITIES = [
   { tag: '준비중', title: '공간 조건 입력', body: '면적·천장고·전원 조건을 입력하면 1차 적정 모델군을 추천합니다.' },
@@ -37,22 +38,12 @@ const ALTERNATIVES = [
 export default function ChatbotPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(150deg, #2B155F 0%, #0F2241 70%)', color: '#fff', padding: '58px 0 64px' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 고객센터 ›{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>AI 상담 챗봇</span>
-          </p>
-          <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>AI Assistant · Coming Soon</p>
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', fontWeight: 900, marginBottom: 12 }}>
-            상담 챗봇은 곧 만나보실 수 있습니다
-          </h1>
-          <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.72)', lineHeight: 1.85 }}>
-            제품 추천·예상 용량·자료 위치까지 한 화면에서 안내하는 AI 상담 챗봇을 준비하고 있습니다.
-            정식 오픈 전까지는 아래 대안 채널을 활용해 주시면 같은 답변을 더 빠르게 받아보실 수 있습니다.
-          </p>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '고객센터' }, { label: 'AI 상담 챗봇' }]}
+        badge="AI Assistant · Coming Soon"
+        title="상담 챗봇은 곧 만나보실 수 있습니다"
+        lead="제품 추천·예상 용량·자료 위치까지 한 화면에서 안내하는 AI 상담 챗봇을 준비하고 있습니다. 정식 오픈 전까지는 아래 대안 채널을 활용해 주세요."
+      />
 
       <section style={{ padding: '52px 0 28px' }}>
         <div className="container">

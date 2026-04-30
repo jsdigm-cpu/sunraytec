@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SubHero from '../../components/layout/SubHero';
 
 interface Section {
   title: string;
@@ -91,23 +92,12 @@ const META = {
 export default function TermsPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '56px 0 64px' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 정책 ›{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>이용약관</span>
-          </p>
-          <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Terms of Service</p>
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', fontWeight: 900, marginBottom: 12 }}>이용약관</h1>
-          <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.7)', lineHeight: 1.85 }}>
-            본 약관은 썬레이텍 공식 홈페이지·자료실·파트너 포털 등 온라인 서비스 이용에 관한 권리와 의무를 정합니다.
-          </p>
-          <div style={{ display: 'flex', gap: 24, marginTop: 22, flexWrap: 'wrap', fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
-            <span>시행일 <strong style={{ color: '#fff', marginLeft: 6 }}>{META.effective}</strong></span>
-            <span>버전 <strong style={{ color: '#fff', marginLeft: 6 }}>{META.version}</strong></span>
-          </div>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '이용약관' }]}
+        badge="Terms of Service"
+        title="이용약관"
+        
+      />
 
       <section style={{ padding: '52px 0 80px' }}>
         <div className="container" style={{ maxWidth: 880 }}>

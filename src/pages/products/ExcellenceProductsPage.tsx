@@ -1,5 +1,6 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import ExcellenceProductCard from '../../components/ui/ExcellenceProductCard';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
@@ -33,105 +34,12 @@ export default function ExcellenceProductsPage() {
 
   return (
     <div>
-      {/* ── Sub-Hero ────────────────────────────────────────────────── */}
-      <section
-        style={{
-          background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-          padding: '56px 0 64px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* 배경 장식 원 */}
-        <div
-          style={{
-            position: 'absolute', top: '-80px', right: '-80px',
-            width: '320px', height: '320px', borderRadius: '50%',
-            background: 'rgba(200,57,43,0.06)', pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute', bottom: '-60px', left: '10%',
-            width: '200px', height: '200px', borderRadius: '50%',
-            background: 'rgba(212,172,13,0.05)', pointerEvents: 'none',
-          }}
-        />
-
-        <div className="container">
-          {/* Breadcrumb */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              color: 'rgba(255,255,255,0.45)',
-              marginBottom: '28px',
-            }}
-          >
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-            <span>›</span>
-            <span style={{ color: 'rgba(255,255,255,0.45)' }}>제품안내</span>
-            <span>›</span>
-            <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>조달청 우수제품</span>
-          </motion.div>
-
-          {/* 타이틀 */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.1 }}
-          >
-            {/* 인증 연도 배지 */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-              {['2013년 1차', '2019년 2차', '2025년 3차'].map((year) => (
-                <span
-                  key={year}
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #D4AC0D, #F1C40F)',
-                    color: '#4A3800',
-                    padding: '3px 12px',
-                    borderRadius: '20px',
-                    letterSpacing: '0.3px',
-                  }}
-                >
-                  🏅 {year} 지정
-                </span>
-              ))}
-            </div>
-
-            <h1
-              style={{
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                fontWeight: 900,
-                color: '#fff',
-                lineHeight: 1.15,
-                marginBottom: '12px',
-              }}
-            >
-              정부조달 우수제품
-            </h1>
-            <p
-              style={{
-                fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
-                color: 'rgba(255,255,255,0.6)',
-                lineHeight: 1.6,
-                maxWidth: '520px',
-              }}
-            >
-              조달청 우수제품 인증으로 <strong style={{ color: 'rgba(255,255,255,0.9)' }}>수의계약 가능</strong>.
-              공공기관·교육청·군부대 등 입찰 없이 간편하게 구매하세요.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
+      <SubHero
+        breadcrumb={[{ label: '제품안내', to: '/products' }, { label: '조달청 우수제품' }]}
+        badge="Government Procurement"
+        title="정부조달 우수제품"
+        lead="조달청이 기술력·품질·사후관리를 심사해 선정하는 최고 권위의 조달 인증 제품입니다. 매립형과 노출형을 모델별로 비교해 보세요."
+      />
       {/* ── 제품 그리드 ──────────────────────────────────────────────── */}
       <section style={{ background: 'var(--off)', padding: '72px 0' }}>
         <div className="container">

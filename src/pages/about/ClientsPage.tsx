@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 import { supabase } from '../../lib/supabase';
 
 interface CaseRow {
@@ -87,34 +88,21 @@ export default function ClientsPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      {/* Sub-Hero */}
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '58px 0 64px' }}>
-        <div className="container">
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>홈</Link>
-            {' › '}회사소개{' › '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>주요 납품처</span>
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Reference Clients</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, lineHeight: 1.18, marginBottom: 14 }}>
-              2,000곳 이상의 현장에서 검증된 복사난방
-            </h1>
-            <p style={{ maxWidth: 760, color: 'rgba(255,255,255,0.7)', lineHeight: 1.85 }}>
-              학교 교실에서부터 물류센터, 군 시설, 도심 스마트 버스정류장까지. (주)썬레이텍은 공간의 용도와 사용자에 맞춰 복사난방을 설계하고 시공해 왔습니다. 아래 그룹은 시공사례 DB와 자동으로 연동됩니다.
-            </p>
-          </motion.div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 30 }}>
-            {TRUST_NUMBERS.map((n) => (
-              <div key={n.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontSize: '1.7rem', fontWeight: 900, color: '#fff' }}>{n.value}</span>
-                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{n.label}</span>
-              </div>
-            ))}
-          </div>
+      <SubHero
+        breadcrumb={[{ label: '회사소개' }, { label: '주요 납품처' }]}
+        badge="Reference Clients"
+        title="2,000곳 이상의 현장에서 검증된 복사난방"
+        lead="학교 교실에서부터 물류센터, 군 시설, 도심 스마트 버스정류장까지. (주)썬레이텍은 공간의 용도와 사용자에 맞춰 복사난방을 설계하고 시공해 왔습니다."
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 30, paddingBottom: 32 }}>
+          {TRUST_NUMBERS.map((n) => (
+            <div key={n.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+              <span style={{ fontSize: '1.7rem', fontWeight: 900, color: '#fff' }}>{n.value}</span>
+              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{n.label}</span>
+            </div>
+          ))}
         </div>
-      </section>
+      </SubHero>
 
       {/* Group cards */}
       <section style={{ padding: '52px 0 32px' }}>

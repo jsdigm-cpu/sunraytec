@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import SubHero from '../components/layout/SubHero';
 import { supabase } from '../lib/supabase';
 
 interface CaseItem {
@@ -307,66 +308,45 @@ export default function CasesPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-
-      {/* ① Hero */}
-      <section style={{
-        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 0',
-        overflow: 'hidden',
-      }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>시공사례</span>
-            </div>
-            <p style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '12px' }}>
-              Delivery Records
-            </p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px', lineHeight: 1.2 }}>
-              시공사례
-            </h1>
-            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', maxWidth: '480px', lineHeight: 1.6 }}>
-              군부대·학교·공장·복지시설까지.<br />
-              우수제품 지정 이후 전국 공공·민간 현장에 검증된 납품 실적입니다.
-            </p>
-          </motion.div>
-
-          {/* 히어로 KPI 수치 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', marginTop: '48px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
-            className="hero-stats-grid"
-          >
-            {HERO_STATS.map((s, i) => (
-              <div key={s.label} style={{
-                padding: '28px 20px',
-                borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                textAlign: 'center',
+      <SubHero
+        breadcrumb={[{ label: '시공사례' }]}
+        badge="Delivery Records"
+        title="시공사례"
+        lead="군부대·학교·공장·복지시설까지. 우수제품 지정 이후 전국 공공·민간 현장에 검증된 납품 실적입니다."
+      >
+        {/* 히어로 KPI 수치 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', marginTop: '48px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+          className="hero-stats-grid"
+        >
+          {HERO_STATS.map((s, i) => (
+            <div key={s.label} style={{
+              padding: '28px 20px',
+              borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+              textAlign: 'center',
+            }}>
+              <div style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                color: i === 2 ? 'var(--red)' : '#fff',
+                lineHeight: 1,
+                marginBottom: '6px',
               }}>
-                <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                  color: i === 2 ? 'var(--red)' : '#fff',
-                  lineHeight: 1,
-                  marginBottom: '6px',
-                }}>
-                  {s.value}
-                </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
-                  {s.label}
-                </div>
-                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
-                  {s.sub}
-                </div>
+                {s.value}
               </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
+                {s.label}
+              </div>
+              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
+                {s.sub}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </SubHero>
 
       {/* ② 대표 실증 사례 Spotlight */}
       <section style={{ background: '#0D1B2E', padding: '56px 0' }}>

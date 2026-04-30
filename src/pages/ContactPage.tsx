@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../components/layout/SubHero';
 import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -122,29 +123,12 @@ export default function ContactPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
 
-      {/* ① Sub-Hero */}
-      <section style={{
-        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 64px',
-      }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.45)' }}>고객센터</span>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>견적 문의</span>
-            </div>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
-              견적 문의
-            </h1>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
-              전문가가 직접 상담해 드립니다
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '고객센터' }, { label: '견적 문의' }]}
+        badge="Contact Us"
+        title="견적 문의"
+        lead="전문가가 직접 상담해 드립니다"
+      />
 
       {/* ② 문의 유형 선택 */}
       <section style={{ background: '#F1F5F9', padding: '56px 0' }}>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 const KPIS = [
   { value: '2009', label: '법인 설립' },
@@ -49,35 +50,21 @@ const MESSAGE_BLOCKS = [
 export default function CeoMessagePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      {/* Sub-Hero */}
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '58px 0 66px' }}>
-        <div className="container">
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>홈</Link>
-            {' › '}회사소개{' › '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>CEO 메시지</span>
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>CEO Message</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4.2vw, 3rem)', fontWeight: 900, lineHeight: 1.16, marginBottom: 16 }}>
-              원적외선 복사난방의 기준을 세우는 기업
-            </h1>
-            <p style={{ maxWidth: 760, color: 'rgba(255,255,255,0.72)', lineHeight: 1.85 }}>
-              (주)썬레이텍은 2009년 법인 설립 이후 원적외선 복사난방 한 분야에 집중해 온 전문기업입니다.
-              2002년부터 이어진 기술개발 경험과 공공·산업·교육·국방 현장 적용 경험을 바탕으로 ‘바람 없이 따뜻한 공간’을 만들고 있습니다.
-            </p>
-          </motion.div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 32 }}>
-            {KPIS.map((k) => (
-              <div key={k.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontSize: '1.8rem', fontWeight: 900, color: '#fff' }}>{k.value}</span>
-                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{k.label}</span>
-              </div>
-            ))}
-          </div>
+      <SubHero
+        breadcrumb={[{ label: '회사소개' }, { label: 'CEO 메시지' }]}
+        badge="CEO Message"
+        title="원적외선 복사난방의 기준을 세우는 기업"
+        lead="(주)썬레이텍은 2009년 법인 설립 이후 원적외선 복사난방 한 분야에 집중해 온 전문기업입니다. 2002년부터 이어진 기술개발 경험과 공공·산업·교육·국방 현장 적용 경험을 바탕으로 '바람 없이 따뜻한 공간'을 만들고 있습니다."
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 32, paddingBottom: 32 }}>
+          {KPIS.map((k) => (
+            <div key={k.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+              <span style={{ fontSize: '1.8rem', fontWeight: 900, color: '#fff' }}>{k.value}</span>
+              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{k.label}</span>
+            </div>
+          ))}
         </div>
-      </section>
+      </SubHero>
 
       {/* Long-form message */}
       <section style={{ padding: '58px 0 32px' }}>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 24 },
@@ -92,74 +93,51 @@ const BUSINESS_AREAS = [
 export default function HistoryPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-
-      {/* ① Sub-Hero */}
-      <section style={{
-        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 0',
-      }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.45)' }}>회사소개</span>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>회사 연혁</span>
-            </div>
-            <p style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '12px' }}>
-              Company History
-            </p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
-              회사 연혁
-            </h1>
-            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', maxWidth: '520px', lineHeight: 1.65 }}>
-              2002년 기술개발 시작, 2009년 법인 설립 이후<br />
-              조달청 우수제품 3회 지정으로 검증된 20년 이상의 전문 기술 역량
-            </p>
-          </motion.div>
-
-          {/* 인포그래픽 메트릭 바 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            style={{
-              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '0', marginTop: '48px',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-            }}
-            className="history-metrics-grid"
-          >
-            {[
-              { value: '2002', label: '기술개발 시작', sub: '복사난방 R&D 착수', color: '#fff' },
-              { value: '2009', label: '법인 설립',     sub: '2009년 12월 22일', color: '#fff' },
-              { value: '3회',  label: '우수제품 지정', sub: '2013·2019·2025년', color: 'var(--red)' },
-              { value: '10건', label: '등록 특허',     sub: '특허 9건+디자인 1건', color: '#fff' },
-            ].map((m, i) => (
-              <div key={m.label} style={{
-                padding: '28px 20px',
-                borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                textAlign: 'center',
+      <SubHero
+        breadcrumb={[{ label: '회사소개' }, { label: '회사 연혁' }]}
+        badge="Company History"
+        title="회사 연혁"
+        lead="2002년 기술개발 시작, 2009년 법인 설립 이후 조달청 우수제품 3회 지정으로 검증된 20년 이상의 전문 기술 역량"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          style={{
+            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '0', marginTop: '48px',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+          }}
+          className="history-metrics-grid"
+        >
+          {[
+            { value: '2002', label: '기술개발 시작', sub: '복사난방 R&D 착수', color: '#fff' },
+            { value: '2009', label: '법인 설립',     sub: '2009년 12월 22일', color: '#fff' },
+            { value: '3회',  label: '우수제품 지정', sub: '2013·2019·2025년', color: 'var(--red)' },
+            { value: '10건', label: '등록 특허',     sub: '특허 9건+디자인 1건', color: '#fff' },
+          ].map((m, i) => (
+            <div key={m.label} style={{
+              padding: '28px 20px',
+              borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+              textAlign: 'center',
+            }}>
+              <div style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                color: m.color, lineHeight: 1, marginBottom: '6px',
               }}>
-                <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-                  color: m.color, lineHeight: 1, marginBottom: '6px',
-                }}>
-                  {m.value}
-                </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
-                  {m.label}
-                </div>
-                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
-                  {m.sub}
-                </div>
+                {m.value}
               </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
+                {m.label}
+              </div>
+              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
+                {m.sub}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </SubHero>
 
       {/* ② 회사 개요 */}
       <section style={{ padding: '64px 0', background: '#fff' }}>

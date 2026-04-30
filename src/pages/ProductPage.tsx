@@ -1,5 +1,6 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../components/layout/SubHero';
 import SpecTable from '../components/product/SpecTable';
 import ScrollReveal from '../components/ui/ScrollReveal';
 import { fadeInUp } from '../utils/animations';
@@ -33,104 +34,12 @@ export default function ProductPage() {
 
   return (
     <div>
-      <section
-        style={{
-          background: 'linear-gradient(160deg, var(--navy) 0%, #152035 58%, #0E1E3A 100%)',
-          padding: '56px 0 66px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '-90px',
-            right: '-70px',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'rgba(200,57,43,0.08)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-80px',
-            left: '8%',
-            width: '240px',
-            height: '240px',
-            borderRadius: '50%',
-            background: 'rgba(41,128,185,0.08)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              color: 'rgba(255,255,255,0.45)',
-              marginBottom: '28px',
-            }}
-          >
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-            <span>›</span>
-            <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>제품안내</span>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-              {['우수제품', 'MAS 다수공급자계약', '모델별 상세페이지'].map((label) => (
-                <span
-                  key={label}
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'rgba(255,255,255,0.86)',
-                    padding: '4px 12px',
-                    borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                  }}
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-            <h1
-              style={{
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                fontWeight: 900,
-                color: '#fff',
-                lineHeight: 1.12,
-                marginBottom: '12px',
-              }}
-            >
-              설치 방식과 계약 유형까지
-              <br />
-              한 번에 보는 제품안내
-            </h1>
-            <p
-              style={{
-                fontSize: 'clamp(0.96rem, 2vw, 1.1rem)',
-                color: 'rgba(255,255,255,0.66)',
-                lineHeight: 1.7,
-                maxWidth: '620px',
-                margin: 0,
-              }}
-            >
-              공공조달과 현장 용도에 맞는 복사난방 제품을 한눈에 비교해보세요. 우수제품과 MAS 다수공급자계약 제품을
-              구분해 정리했으며, 각 모델의 상세 사양과 적용 정보를 바로 확인할 수 있습니다.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '제품안내' }]}
+        badge="Products"
+        title="설치 방식과 계약 유형까지 한 번에 보는 제품안내"
+        lead="공공조달과 현장 용도에 맞는 복사난방 제품을 한눈에 비교해보세요. 우수제품과 MAS 다수공급자계약 제품을 구분해 정리했으며, 각 모델의 상세 사양과 적용 정보를 바로 확인할 수 있습니다."
+      />
 
       <section style={{ background: 'var(--off)', padding: '64px 0' }}>
         <div className="container">

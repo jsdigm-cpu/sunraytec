@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 type FaqCategory = '전체' | '제품·기술' | '견적·구매' | '시공·납기' | '유지·보증' | '공공조달';
 
@@ -129,55 +130,48 @@ export default function FaqPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '56px 0 0' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 고객센터 ›{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>FAQ</span>
-          </p>
-          <p style={{ color: 'var(--red)', fontSize: 11, fontWeight: 900, letterSpacing: 3, textTransform: 'uppercase', marginBottom: 12 }}>FAQ</p>
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', fontWeight: 900, marginBottom: 12 }}>자주 묻는 질문</h1>
-          <p style={{ maxWidth: 640, color: 'rgba(255,255,255,.6)', lineHeight: 1.75 }}>
-            제품·견적·시공·유지관리·공공조달까지 자주 받는 질문 {FAQS.length}개를 카테고리별로 정리했습니다.
-          </p>
-
-          {/* 빠른 확인 카드 */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.2 }}
-            style={{
-              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '0', marginTop: '40px',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-            }}
-            className="faq-quick-grid"
-          >
-            {QUICK_FACTS.map((f, i) => (
-              <div key={f.label} style={{
-                padding: '22px 20px', textAlign: 'center',
-                borderRight: i < QUICK_FACTS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+      <SubHero
+        breadcrumb={[{ label: '고객센터' }, { label: 'FAQ' }]}
+        badge="FAQ"
+        title="자주 묻는 질문"
+        lead={"제품·견적·시공·유지관리·공공조달까지 자주 받는 질문 " + FAQS.length + "개를 카테고리별로 정리했습니다."}
+      >
+        {/* 빠른 확인 카드 */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
+          style={{
+            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '0', marginTop: '40px',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+          }}
+          className="faq-quick-grid"
+        >
+          {QUICK_FACTS.map((f, i) => (
+            <div key={f.label} style={{
+              padding: '22px 20px', textAlign: 'center',
+              borderRight: i < QUICK_FACTS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+            }}>
+              <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>{f.icon}</div>
+              <div style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                color: i === 1 ? 'var(--red)' : '#fff',
+                lineHeight: 1, marginBottom: '4px',
               }}>
-                <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>{f.icon}</div>
-                <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                  color: i === 1 ? 'var(--red)' : '#fff',
-                  lineHeight: 1, marginBottom: '4px',
-                }}>
-                  {f.label}
-                </div>
-                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '2px' }}>
-                  {f.desc}
-                </div>
-                <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
-                  {f.sub}
-                </div>
+                {f.label}
               </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '2px' }}>
+                {f.desc}
+              </div>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
+                {f.sub}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </SubHero>
 
       <section style={{ padding: '40px 0 78px' }}>
         <div className="container">

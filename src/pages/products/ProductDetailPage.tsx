@@ -27,8 +27,8 @@ export default function ProductDetailPage() {
     <div>
       <section
         style={{
-          background: 'linear-gradient(160deg, var(--navy) 0%, #142641 60%, #0C1A31 100%)',
-          padding: '56px 0 72px',
+          background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
+          padding: '56px 0 64px',
           color: '#fff',
         }}
       >

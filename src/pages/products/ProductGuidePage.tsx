@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 type ProductGuideId = 'special' | 'personal-bath' | 'smart-control' | 'compare';
 
@@ -60,18 +61,12 @@ export default function ProductGuidePage({ pageId }: ProductGuidePageProps) {
 
   return (
     <main style={{ background: '#F8FAFC', minHeight: '100vh' }}>
-      <section style={{ padding: '58px 0 66px', background: 'linear-gradient(150deg, #0F2241 0%, #173B68 100%)', color: '#fff' }}>
-        <div className="container">
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,.5)', marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 제품안내
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, marginBottom: 12, textTransform: 'uppercase' }}>{page.eyebrow}</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, marginBottom: 14 }}>{page.title}</h1>
-            <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.68)', lineHeight: 1.8 }}>{page.desc}</p>
-          </motion.div>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '제품안내' }, { label: '제품 선택 가이드' }]}
+        badge="Product Guide"
+        title="제품 선택 가이드"
+        lead="공간 면적과 천장 높이에 따라 적합한 모델을 추천해 드립니다."
+      />
 
       <section style={{ padding: '52px 0 78px' }}>
         <div className="container">

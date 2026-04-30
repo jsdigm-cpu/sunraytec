@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 type Tone = 'red' | 'amber' | 'navy' | 'green' | 'gray';
 
@@ -88,26 +89,12 @@ const TONE_BADGE: Record<Tone, { bg: string; color: string }> = {
 export default function MediaPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      {/* Sub-Hero */}
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '58px 0 64px' }}>
-        <div className="container">
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>홈</Link>
-            {' › '}회사소개{' › '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>수상·언론보도</span>
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Awards & Media</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, lineHeight: 1.18, marginBottom: 14 }}>
-              매년 다시 받아낸 외부 검증
-            </h1>
-            <p style={{ maxWidth: 760, color: 'rgba(255,255,255,0.7)', lineHeight: 1.85 }}>
-              조달청 우수제품 3차 지정, 혁신시제품 등재, K마크 6종 성능인증, 방폭(EX emb II T1) 인증까지.
-              자체 자랑이 아니라 외부 기관이 매년 다시 확인한 기록입니다.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '회사소개' }, { label: '수상·언론보도' }]}
+        badge="Awards & Media"
+        title="매년 다시 받아낸 외부 검증"
+        lead="조달청 우수제품 3차 지정, 혁신시제품 등재, K마크 6종 성능인증, 방폭(EX emb II T1) 인증까지. 자체 자랑이 아니라 외부 기관이 매년 다시 확인한 기록입니다."
+      />
 
       {/* Timeline */}
       <section style={{ padding: '52px 0 32px' }}>

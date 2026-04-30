@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 const TARGETS = [
   { icon: '⚡', title: '전기·설비 시공사', body: '학교·공공기관 전기/기계 공사 실적 보유, 지역 거점 운영' },
@@ -34,33 +35,21 @@ const FAQ = [
 export default function DealersPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(150deg, #1A3A6B 0%, #0F2241 100%)', color: '#fff', padding: '58px 0 64px' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 고객센터 ›{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>대리점 모집</span>
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Dealer Program</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, marginBottom: 12 }}>
-              지역 영업·시공 파트너를 찾습니다
-            </h1>
-            <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.72)', lineHeight: 1.85 }}>
-              2002년부터 이어진 기술개발 경험과 2009년 법인 설립 이후 축적한 복사난방 영업·시공 노하우를 함께 나눌 지역 파트너를 모집합니다.
-              안정적인 단가, 영업 자료, 본사 기술 지원, 공공조달 채널 활용까지 한 번에 제공합니다.
-            </p>
-          </motion.div>
-
-          <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
-            <Link to="/partner/signup-guide" style={{ display: 'inline-flex', padding: '13px 22px', background: 'var(--red)', color: '#fff', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
-              파트너 신청 안내
-            </Link>
-            <Link to="/contact" style={{ display: 'inline-flex', padding: '13px 22px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
-              사전 상담 요청
-            </Link>
-          </div>
+            <SubHero
+        breadcrumb={[{ label: '고객센터' }, { label: '대리점 모집' }]}
+        badge="Dealer Program"
+        title="지역 영업·시공 파트너를 찾습니다"
+        lead="2002년부터 이어진 기술개발 경험과 2009년 법인 설립 이후 축적한 복사난방 영업·시공 노하우를 함께 나눌 지역 파트너를 모집합니다."
+      >
+        <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap', paddingBottom: 32 }}>
+          <Link to="/partner/signup-guide" style={{ display: 'inline-flex', padding: '13px 22px', background: 'var(--red)', color: '#fff', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
+            파트너 신청 안내
+          </Link>
+          <Link to="/contact" style={{ display: 'inline-flex', padding: '13px 22px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
+            사전 상담 요청
+          </Link>
         </div>
-      </section>
+      </SubHero>
 
       {/* Targets */}
       <section style={{ padding: '52px 0 28px' }}>

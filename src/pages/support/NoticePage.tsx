@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SubHero from '../../components/layout/SubHero';
 
 type Tone = 'red' | 'amber' | 'navy' | 'green' | 'gray';
 
@@ -66,20 +67,12 @@ const TONE_BG: Record<Tone, { bg: string; color: string }> = {
 export default function NoticePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '56px 0 64px' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 고객센터 ›{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>공지사항</span>
-          </p>
-          <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Notice</p>
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', fontWeight: 900, marginBottom: 12 }}>공지사항</h1>
-          <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.7)', lineHeight: 1.85 }}>
-            제품·자료·조달·전시회·홈페이지 운영과 관련된 주요 안내를 모았습니다.
-            정식 공지 DB 연동 전이라 운영팀이 직접 관리하는 임시 게시물입니다.
-          </p>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '고객센터' }, { label: '공지사항' }]}
+        badge="Notice"
+        title="공지사항"
+        lead="제품·자료·조달·전시회·홈페이지 운영과 관련된 주요 안내를 모았습니다."
+      />
 
       <section style={{ padding: '52px 0 80px' }}>
         <div className="container">

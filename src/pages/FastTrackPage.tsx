@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../components/layout/SubHero';
 
 const MATERIALS = [
   { title: '일위대가표', desc: '공공기관 설계·견적 검토용 기본 산출 자료 (모델별 단가·노무비·재료비 정리)', status: '인증 후 제공' },
@@ -33,87 +34,21 @@ const QUICK_LINKS = [
 export default function FastTrackPage() {
   return (
     <main style={{ background: '#F8FAFC', minHeight: '100vh' }}>
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #2B155F 0%, #0F2241 72%)',
-          color: '#fff',
-          padding: '64px 0 72px',
-        }}
+            <SubHero
+        breadcrumb={[{ label: '패스트트랙 라운지' }]}
+        badge="Fast Track Lounge"
+        title="설계·견적 검토 자료를 더 빠르게 전달합니다"
+        lead="공공기관·교육기관·군 관련 담당자에게 필요한 일위대가표, 도면 원본, 제안서 양식, 인증 자료를 파트너 승인 후 한 곳에서 확인할 수 있도록 준비 중입니다."
       >
-        <div className="container">
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'rgba(255,255,255,0.52)', marginBottom: 22 }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.52)', textDecoration: 'none' }}>홈</Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.86)', fontWeight: 700 }}>패스트트랙 라운지</span>
-            </div>
-
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '6px 14px',
-                borderRadius: 999,
-                border: '1px solid rgba(255,255,255,0.22)',
-                background: 'rgba(255,255,255,0.1)',
-                color: '#FFB23F',
-                fontSize: 12,
-                fontWeight: 900,
-                marginBottom: 18,
-              }}
-            >
-              🔐 공공기관 전용 자료 라운지
-            </span>
-
-            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)', lineHeight: 1.12, fontWeight: 900, marginBottom: 16 }}>
-              설계·견적 검토 자료를
-              <br />
-              더 빠르게 전달합니다
-            </h1>
-            <p style={{ maxWidth: 680, color: 'rgba(255,255,255,0.72)', fontSize: '1.02rem', lineHeight: 1.85, marginBottom: 30 }}>
-              공공기관·교육기관·군 관련 담당자에게 필요한 일위대가표, 도면 원본, 제안서 양식,
-              인증 자료를 파트너 승인 후 한 곳에서 확인할 수 있도록 준비 중입니다.
-            </p>
-
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link
-                to="/partner/signup-guide"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: 'var(--red)',
-                  color: '#fff',
-                  padding: '13px 22px',
-                  borderRadius: 8,
-                  fontWeight: 800,
-                  textDecoration: 'none',
-                }}
-              >
-                회원가입 안내 보기
-              </Link>
-              <Link
-                to="/partner"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: 'rgba(255,255,255,0.13)',
-                  color: '#fff',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  padding: '12px 22px',
-                  borderRadius: 8,
-                  fontWeight: 800,
-                  textDecoration: 'none',
-                }}
-              >
-                파트너 포털로 이동
-              </Link>
-            </div>
-          </motion.div>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28, paddingBottom: 32 }}>
+          <Link to="/partner/signup-guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--red)', color: '#fff', padding: '13px 22px', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
+            회원가입 안내 보기
+          </Link>
+          <Link to="/partner" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', padding: '12px 22px', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
+            파트너 포털로 이동
+          </Link>
         </div>
-      </section>
+      </SubHero>
 
       <section style={{ padding: '54px 0 72px' }}>
         <div className="container">

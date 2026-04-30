@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import SubHero from '../components/layout/SubHero';
 import { supabase } from '../lib/supabase';
 
 interface CaseItem {
@@ -37,18 +38,12 @@ export default function CasesMapPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #173B68 100%)', color: '#fff', padding: '56px 0 64px' }}>
-        <div className="container">
-          <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>홈</Link> › 시공사례
-          </p>
-          <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Installation Map</p>
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, marginBottom: 12 }}>전국 시공 지도</h1>
-          <p style={{ maxWidth: 720, color: 'rgba(255,255,255,.68)', lineHeight: 1.8 }}>
-            실제 지도 API 연동 전, 시공사례 DB의 위치 정보를 권역별로 정리해 보여주는 지도형 목록 페이지입니다.
-          </p>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '시공사례' }, { label: '시공사례 지도' }]}
+        badge="Installation Map"
+        title="전국 시공 지도"
+        lead="실제 지도 API 연동 전, 시공사례 DB의 위치 정보를 권역별로 정리해 보여주는 지도형 목록 페이지입니다."
+      />
 
       <section style={{ padding: '52px 0 78px' }}>
         <div className="container">

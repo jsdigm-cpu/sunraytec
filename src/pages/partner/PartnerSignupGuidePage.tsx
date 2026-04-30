@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 import { ArrowRight, BadgeCheck, ClipboardList, FileCheck2, LockKeyhole, UserPlus } from 'lucide-react';
 
 const PROCESS = [
@@ -17,56 +18,12 @@ const BENEFITS = [
 export default function PartnerSignupGuidePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-      <section style={{ background: 'linear-gradient(150deg, #0A1628 0%, #16233A 55%, #2B1818 100%)', color: '#fff', padding: '58px 0 72px' }}>
-        <div className="container">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.48)', marginBottom: 22 }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.48)' }}>홈</Link>
-              <span>/</span>
-              <strong style={{ color: 'rgba(255,255,255,0.82)' }}>파트너·협력회사 회원가입 안내</strong>
-            </div>
-
-            <div className="partner-guide-hero" style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: 34, alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 11px', borderRadius: 8, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', fontSize: 13, fontWeight: 800, marginBottom: 18 }}>
-                  <UserPlus size={15} /> Partner Guide
-                </div>
-                <h1 style={{ fontSize: '2.45rem', lineHeight: 1.16, fontWeight: 900, marginBottom: 18 }}>
-                  파트너·협력회사 회원가입 안내
-                </h1>
-                <p style={{ color: 'rgba(255,255,255,0.74)', fontSize: '1.02rem', lineHeight: 1.78, maxWidth: 590 }}>
-                  협력사, 대리점, 설계·시공 파트너는 회원가입 후 관리자 승인 절차를 거쳐 파트너 전용 자료와 협업 정보를 확인할 수 있습니다.
-                </p>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 28 }}>
-                  <Link to="/signup" className="btn btn-primary" style={{ borderRadius: 8 }}>
-                    회원가입 신청 <ArrowRight size={16} />
-                  </Link>
-                  <Link to="/login" className="btn btn-outline" style={{ borderRadius: 8 }}>
-                    기존 파트너 로그인
-                  </Link>
-                </div>
-              </div>
-
-              <div style={{ background: '#fff', color: 'var(--navy)', borderRadius: 8, padding: 24, boxShadow: '0 28px 80px rgba(0,0,0,0.24)' }}>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 900, marginBottom: 18 }}>가입 후 이용 흐름</h2>
-                <div style={{ display: 'grid', gap: 12 }}>
-                  {PROCESS.map((item) => (
-                    <div key={item.step} style={{ display: 'grid', gridTemplateColumns: '46px 1fr', gap: 12, padding: 14, border: '1px solid #E2E8F0', borderRadius: 8, background: '#F8FAFC' }}>
-                      <span style={{ display: 'inline-flex', width: 42, height: 34, alignItems: 'center', justifyContent: 'center', borderRadius: 8, background: '#FEE2E2', color: 'var(--red)', fontSize: 12, fontWeight: 900 }}>
-                        {item.step}
-                      </span>
-                      <div>
-                        <h3 style={{ fontSize: 15, fontWeight: 900, marginBottom: 5 }}>{item.title}</h3>
-                        <p style={{ color: '#64748B', fontSize: 13, lineHeight: 1.62, fontWeight: 700 }}>{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            <SubHero
+        breadcrumb={[{ label: '파트너 가입 안내' }]}
+        badge="Partner Sign-up"
+        title="파트너·협력회사 회원가입 안내"
+        
+      />
 
       <section style={{ padding: '68px 0 78px', background: '#F8FAFC' }}>
         <div className="container">

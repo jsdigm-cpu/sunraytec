@@ -1,5 +1,6 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import ExcellenceProductCard from '../../components/ui/ExcellenceProductCard';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
@@ -32,92 +33,12 @@ export default function MasProductsPage() {
 
   return (
     <div>
-      <section
-        style={{
-          background: 'linear-gradient(160deg, #102246 0%, #17335A 60%, #0F1A2D 100%)',
-          padding: '56px 0 64px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '-80px',
-            right: '-80px',
-            width: '320px',
-            height: '320px',
-            borderRadius: '50%',
-            background: 'rgba(41, 128, 185, 0.12)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              color: 'rgba(255,255,255,0.45)',
-              marginBottom: '28px',
-            }}
-          >
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-            <span>›</span>
-            <Link to="/products" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>제품안내</Link>
-            <span>›</span>
-            <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>MAS 다수공급자</span>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-              {['MAS 계약', '다수공급자계약', '공공구매'].map((label) => (
-                <span
-                  key={label}
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#D9EAFB',
-                    padding: '3px 12px',
-                    borderRadius: '20px',
-                    letterSpacing: '0.3px',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                  }}
-                >
-                  📋 {label}
-                </span>
-              ))}
-            </div>
-
-            <h1
-              style={{
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                fontWeight: 900,
-                color: '#fff',
-                lineHeight: 1.15,
-                marginBottom: '12px',
-              }}
-            >
-              MAS 다수공급자 제품
-            </h1>
-            <p
-              style={{
-                fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
-                color: 'rgba(255,255,255,0.68)',
-                lineHeight: 1.6,
-                maxWidth: '560px',
-              }}
-            >
-              나라장터 종합쇼핑몰 MAS 계약 기준으로 정리한 제품군입니다. 매립형과 노출형을 모델별로 나눠 바로 비교할 수 있습니다.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '제품안내', to: '/products' }, { label: 'MAS 다수공급자' }]}
+        badge="MAS Contract"
+        title="MAS 다수공급자 제품"
+        lead="나라장터 종합쇼핑몰 MAS 계약 기준으로 정리한 제품군입니다. 매립형과 노출형을 모델별로 나눠 바로 비교할 수 있습니다."
+      />
 
       <section style={{ background: 'var(--off)', padding: '72px 0' }}>
         <div className="container">

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 
 const COMPANY_ADDRESS = '서울특별시 서초구 능안말길 40, 2층';
 const COMPANY_TEL = '1688-2520';
@@ -53,25 +54,12 @@ export default function LocationPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      {/* Sub-Hero */}
-      <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 100%)', color: '#fff', padding: '58px 0 64px' }}>
-        <div className="container">
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 18 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>홈</Link>
-            {' › '}회사소개{' › '}
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>찾아오시는 길</span>
-          </p>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p style={{ color: 'var(--amber2)', fontSize: 12, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Location</p>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, lineHeight: 1.18, marginBottom: 14 }}>
-              현장에서 가장 가까운 본사
-            </h1>
-            <p style={{ maxWidth: 720, color: 'rgba(255,255,255,0.7)', lineHeight: 1.85 }}>
-              서울 서초구에 위치한 본사에서 제품 상담, 도면 검토, 자료 수령이 가능합니다. 방문 전 전화 또는 이메일로 일정을 공유해 주시면 가장 빠르게 도와드릴 수 있습니다.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '회사소개' }, { label: '찾아오시는 길' }]}
+        badge="Location"
+        title="현장에서 가장 가까운 본사"
+        lead="서울 서초구에 위치한 본사에서 제품 상담, 도면 검토, 자료 수령이 가능합니다. 방문 전 전화 또는 이메일로 일정을 공유해 주시면 가장 빠르게 도와드릴 수 있습니다."
+      />
 
       {/* Contact + Map */}
       <section style={{ padding: '52px 0 28px' }}>
