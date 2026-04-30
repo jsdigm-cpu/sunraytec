@@ -22,6 +22,7 @@ const ResourceToolsPage    = lazy(() => import('../pages/resources/ResourceTools
 const FaqPage              = lazy(() => import('../pages/support/FaqPage'));
 const DealersPage          = lazy(() => import('../pages/support/DealersPage'));
 const NoticePage           = lazy(() => import('../pages/support/NoticePage'));
+const NoticeDetailPage     = lazy(() => import('../pages/support/NoticeDetailPage'));
 const ChatbotPage          = lazy(() => import('../pages/support/ChatbotPage'));
 const PrivacyPolicyPage    = lazy(() => import('../pages/policy/PrivacyPolicyPage'));
 const TermsPage            = lazy(() => import('../pages/policy/TermsPage'));
@@ -90,7 +91,8 @@ export const router = createBrowserRouter([
       { path: 'products/smart-control', element: <S><ProductGuidePage pageId="smart-control" /></S> },
       { path: 'products/compare',      element: <S><ProductGuidePage pageId="compare" /></S> },
       { path: 'support/faq',           element: <S><FaqPage /></S> },
-      { path: 'support/notice',        element: <S><NoticePage /></S> },
+      { path: 'support/notice',         element: <S><NoticePage /></S> },
+      { path: 'support/notice/:id',    element: <S><NoticeDetailPage /></S> },
       { path: 'support/dealers',       element: <S><DealersPage /></S> },
       { path: 'support/chatbot',       element: <S><ChatbotPage /></S> },
       { path: 'policy/privacy',        element: <S><PrivacyPolicyPage /></S> },

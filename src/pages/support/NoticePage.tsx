@@ -1,73 +1,65 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SubHero from '../../components/layout/SubHero';
+import { supabase } from '../../lib/supabase';
+import type { Notice } from '../../types/notice';
+import { NOTICE_TONE_STYLE } from '../../types/notice';
 
-type Tone = 'red' | 'amber' | 'navy' | 'green' | 'gray';
-
-const NOTICES: Array<{
-  date: string;
-  category: string;
-  tone: Tone;
-  title: string;
-  body: string;
-  pinned?: boolean;
-}> = [
-  {
-    date: '2026-04-28',
-    category: '제품',
-    tone: 'red',
-    pinned: true,
+const FALLBACK: Notice[] = [
+  { id: 'f1', category: '제품', tone: 'red', pinned: true, published: true,
     title: '복사난방 원리 페이지 신설',
-    body: '제품 도입 전 검토에 도움이 되도록 복사난방 작동 원리·복사 vs 대류 비교·적용 분야를 정리한 페이지를 새로 열었습니다. 메뉴: 기술·솔루션 → 복사난방 원리.',
-  },
-  {
-    date: '2026-04-27',
-    category: '자료실',
-    tone: 'navy',
+    body: '제품 도입 전 검토에 도움이 되도록 복사난방 작동 원리·복사 vs 대류 비교·적용 분야를 정리한 페이지를 새로 열었습니다.',
+    created_at: '2026-04-28', updated_at: '2026-04-28' },
+  { id: 'f2', category: '자료실', tone: 'navy', pinned: false, published: true,
     title: '카탈로그·자료실 다운로드 운영 시작',
-    body: '관리자 자료실에서 등록된 PDF·이미지 자료가 자료실 카탈로그 페이지에서 즉시 다운로드되도록 연동을 마쳤습니다. 신규 자료가 등록되는 즉시 노출됩니다.',
-  },
-  {
-    date: '2026-04-25',
-    category: '파트너',
-    tone: 'amber',
-    title: '파트너·협력회사 회원가입 안내 페이지 오픈',
-    body: '대리점·시공사·공공기관 담당자를 위한 회원가입 절차와 권한 부여 흐름을 안내합니다. 파트너 포털 접속 전 확인해 주세요.',
-  },
-  {
-    date: '2026-04-20',
-    category: '조달',
-    tone: 'red',
+    body: '관리자 자료실에서 등록된 자료가 즉시 다운로드되도록 연동을 마쳤습니다.',
+    created_at: '2026-04-27', updated_at: '2026-04-27' },
+  { id: 'f3', category: '조달', tone: 'red', pinned: false, published: true,
     title: '2025 조달청 우수제품 3차 지정 안내',
-    body: '복사난방 분야 단독으로 세 번째 우수제품 지정. 공공기관 수의계약 자격이 갱신되었으며 일위대가표·시방서·도면 자료는 패스트트랙 라운지에서 확인하실 수 있습니다.',
-  },
-  {
-    date: '2026-04-18',
-    category: '시공사례',
-    tone: 'green',
-    title: '시공사례 이미지·상세 자료 보강 시작',
-    body: '관리자 등록 자료를 기반으로 메인 페이지·시공사례 페이지의 현장 사진과 설명을 순차적으로 업데이트하고 있습니다.',
-  },
-  {
-    date: '2026-04-12',
-    category: '공지',
-    tone: 'gray',
+    body: '복사난방 분야 단독으로 세 번째 우수제품 지정. 공공기관 수의계약 자격이 갱신되었습니다.',
+    created_at: '2026-04-20', updated_at: '2026-04-20' },
+  { id: 'f4', category: '공지', tone: 'gray', pinned: false, published: true,
     title: '리뉴얼 사이트 공식 오픈',
-    body: '회사소개·제품·기술·시공사례·자료실·파트너 포털·관리자 CMS를 포함한 통합 리뉴얼 사이트를 공개했습니다. 미반영 자료는 순차 업데이트됩니다.',
-  },
+    body: '통합 리뉴얼 사이트를 공개했습니다. 미반영 자료는 순차 업데이트됩니다.',
+    created_at: '2026-04-12', updated_at: '2026-04-12' },
 ];
 
-const TONE_BG: Record<Tone, { bg: string; color: string }> = {
-  red:   { bg: '#FEE2E2', color: '#B91C1C' },
-  amber: { bg: '#FEF3C7', color: '#92400E' },
-  navy:  { bg: '#E0E7FF', color: '#1E3A8A' },
-  green: { bg: '#DCFCE7', color: '#166534' },
-  gray:  { bg: '#F1F5F9', color: '#334155' },
-};
+const PAGE_SIZE = 10;
 
 export default function NoticePage() {
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    if (!supabase) {
+      setNotices(FALLBACK);
+      setTotal(FALLBACK.length);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    const from = (page - 1) * PAGE_SIZE;
+    supabase
+      .from('notices')
+      .select('*', { count: 'exact' })
+      .eq('published', true)
+      .order('pinned', { ascending: false })
+      .order('created_at', { ascending: false })
+      .range(from, from + PAGE_SIZE - 1)
+      .then(({ data, count, error }) => {
+        if (error || !data) { setNotices(FALLBACK); setTotal(FALLBACK.length); }
+        else { setNotices(data as Notice[]); setTotal(count ?? 0); }
+        setLoading(false);
+      });
+  }, [page]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-            <SubHero
+      <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: '공지사항' }]}
         badge="Notice"
         title="공지사항"
@@ -77,32 +69,84 @@ export default function NoticePage() {
 
       <section style={{ padding: '52px 0 80px' }}>
         <div className="container">
-          <div style={{ display: 'grid', gap: 12 }}>
-            {NOTICES.map((n) => {
-              const tone = TONE_BG[n.tone];
-              return (
-                <article key={n.title} style={{ background: '#fff', border: n.pinned ? '1.5px solid var(--red)' : '1px solid #E5E7EB', borderRadius: 12, padding: 22, boxShadow: n.pinned ? '0 8px 22px rgba(200,57,43,0.08)' : 'none' }}>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 8 }}>
-                    {n.pinned && (
-                      <span style={{ display: 'inline-block', padding: '3px 10px', background: 'var(--red)', color: '#fff', borderRadius: 999, fontSize: 11, fontWeight: 900, letterSpacing: 0.5 }}>
-                        📌 고정
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: '#94A3B8' }}>불러오는 중…</div>
+          ) : (
+            <div style={{ display: 'grid', gap: 10 }}>
+              {notices.map((n, idx) => {
+                const tone = NOTICE_TONE_STYLE[n.tone];
+                const num = total - ((page - 1) * PAGE_SIZE) - idx;
+                return (
+                  <Link
+                    key={n.id}
+                    to={`/support/notice/${n.id}`}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <article
+                      style={{
+                        background: '#fff',
+                        border: n.pinned ? '1.5px solid var(--red)' : '1px solid #E5E7EB',
+                        borderRadius: 12,
+                        padding: '18px 22px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 16,
+                        cursor: 'pointer',
+                        transition: 'box-shadow 0.15s',
+                        boxShadow: n.pinned ? '0 4px 16px rgba(200,57,43,0.08)' : 'none',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(15,34,65,0.10)')}
+                      onMouseLeave={e => (e.currentTarget.style.boxShadow = n.pinned ? '0 4px 16px rgba(200,57,43,0.08)' : 'none')}
+                    >
+                      {/* 번호 */}
+                      <span style={{ width: 36, textAlign: 'center', fontSize: 13, fontWeight: 700, color: n.pinned ? 'var(--red)' : '#94A3B8', flexShrink: 0 }}>
+                        {n.pinned ? '📌' : num}
                       </span>
-                    )}
-                    <span style={{ display: 'inline-block', padding: '3px 10px', background: tone.bg, color: tone.color, borderRadius: 999, fontSize: 11, fontWeight: 900, letterSpacing: 0.5 }}>
-                      {n.category}
-                    </span>
-                    <span style={{ color: '#94A3B8', fontSize: 12, marginLeft: 'auto' }}>{n.date}</span>
-                  </div>
-                  <h2 style={{ color: 'var(--navy)', fontSize: '1.1rem', fontWeight: 900, marginBottom: 8 }}>{n.title}</h2>
-                  <p style={{ color: '#475569', lineHeight: 1.8 }}>{n.body}</p>
-                </article>
-              );
-            })}
-          </div>
 
-          <p style={{ marginTop: 22, color: '#94A3B8', fontSize: 13 }}>
-            ※ 공지 DB 연동 후에는 이 화면이 관리자 등록 게시물로 자동 교체됩니다.
-          </p>
+                      {/* 카테고리 배지 */}
+                      <span style={{ display: 'inline-block', padding: '3px 10px', background: tone.bg, color: tone.color, borderRadius: 999, fontSize: 11, fontWeight: 900, letterSpacing: 0.5, flexShrink: 0 }}>
+                        {n.category}
+                      </span>
+
+                      {/* 제목 */}
+                      <span style={{ flex: 1, color: 'var(--navy)', fontSize: '0.95rem', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {n.title}
+                      </span>
+
+                      {/* 날짜 */}
+                      <span style={{ color: '#94A3B8', fontSize: 12, flexShrink: 0 }}>
+                        {n.created_at.slice(0, 10)}
+                      </span>
+
+                      {/* 화살표 */}
+                      <span style={{ color: '#CBD5E1', fontSize: 14, flexShrink: 0 }}>›</span>
+                    </article>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
+          {/* 페이지네이션 */}
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 32 }}>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  style={{
+                    width: 36, height: 36, borderRadius: 8,
+                    border: p === page ? 'none' : '1px solid #E5E7EB',
+                    background: p === page ? 'var(--navy)' : '#fff',
+                    color: p === page ? '#fff' : '#374151',
+                    fontWeight: 700, fontSize: 14, cursor: 'pointer',
+                  }}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>
