@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { FileText, Download, Lock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import SubHero from '../../components/layout/SubHero';
 
 type DocCategory = '전체' | '제품 카탈로그' | '기술 자료' | '인증서' | '파트너 자료';
 
@@ -174,29 +175,13 @@ export default function CatalogPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
 
-      {/* ① Sub-Hero */}
-      <section style={{
-        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
-        padding: '56px 0 64px',
-      }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>홈</Link>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.45)' }}>자료실</span>
-              <span>›</span>
-              <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>카탈로그·자료 다운로드</span>
-            </div>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>
-              카탈로그 · 자료 다운로드
-            </h1>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}>
-              제품 카탈로그, 기술 자료, 인증서를 다운로드하실 수 있습니다
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubHero
+        breadcrumb={[{ label: '자료실' }, { label: '카탈로그·자료 다운로드' }]}
+        badge="Documents & Downloads"
+        title="카탈로그 · 자료 다운로드"
+        lead="제품 카탈로그, 기술 자료, 인증서를 다운로드하실 수 있습니다."
+        keywords={['제품 카탈로그', '기술 자료', '인증서·특허', '무료 다운로드']}
+      />
 
       {/* ② 자료 목록 */}
       <section style={{ padding: '56px 0 80px', background: '#F8FAFC' }}>

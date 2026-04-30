@@ -14,6 +14,7 @@ import {
   Ruler,
   Wallet,
 } from 'lucide-react';
+import SubHero from '../../components/layout/SubHero';
 
 type ToolPageId = 'heating-load' | 'energy-roi' | 'cad' | 'videos';
 
@@ -260,43 +261,30 @@ export default function ResourceToolsPage({ pageId }: { pageId: ToolPageId }) {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-      <section style={{ background: 'linear-gradient(150deg, #0A1628 0%, #15233B 56%, #1D2F4F 100%)', color: '#fff', padding: '58px 0 70px' }}>
+      <SubHero
+        breadcrumb={[{ label: '자료실' }, { label: config.breadcrumb }]}
+        badge={config.badge}
+        title={config.title}
+        lead={config.lead}
+        keywords={config.points.map(p => p.title)}
+      />
+
+      <section style={{ padding: '68px 0 78px', background: '#F8FAFC' }}>
         <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.48)', marginBottom: 20 }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.48)' }}>홈</Link>
-              <span>/</span>
-              <span>자료실</span>
-              <span>/</span>
-              <strong style={{ color: 'rgba(255,255,255,0.82)' }}>{config.breadcrumb}</strong>
-            </div>
-
-            <div className="resource-hero-grid" style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 36, alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 11px', borderRadius: 8, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', fontSize: 13, fontWeight: 800, marginBottom: 18 }}>
-                  <Icon size={15} /> {config.badge}
-                </div>
-                <h1 style={{ fontSize: '2.42rem', lineHeight: 1.16, fontWeight: 900, marginBottom: 18 }}>{config.title}</h1>
-                <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '1.02rem', lineHeight: 1.78, maxWidth: 590 }}>{config.lead}</p>
+          {/* 핵심 포인트 카드 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 40 }} className="resource-point-grid">
+            {config.points.map((point) => (
+              <div key={point.title} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 8, padding: 20 }}>
+                <BadgeCheck size={20} color={config.accent} style={{ marginBottom: 12 }} />
+                <h3 style={{ fontSize: 15, fontWeight: 900, marginBottom: 7, color: 'var(--navy)' }}>{point.title}</h3>
+                <p style={{ color: '#64748B', fontSize: 12.5, lineHeight: 1.6, fontWeight: 700 }}>{point.desc}</p>
               </div>
-
-              <div style={{ background: '#fff', borderRadius: 8, padding: 24, color: 'var(--navy)', boxShadow: '0 28px 80px rgba(0,0,0,0.24)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }} className="resource-point-grid">
-                  {config.points.map((point) => (
-                    <div key={point.title} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8, padding: 16, minHeight: 130 }}>
-                      <BadgeCheck size={20} color={config.accent} style={{ marginBottom: 12 }} />
-                      <h3 style={{ fontSize: 15, fontWeight: 900, marginBottom: 7 }}>{point.title}</h3>
-                      <p style={{ color: '#64748B', fontSize: 12.5, lineHeight: 1.6, fontWeight: 700 }}>{point.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section style={{ padding: '68px 0 78px', background: '#F8FAFC' }}>
+      <section style={{ padding: '0 0 78px', background: '#F8FAFC' }}>
         <div className="container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} style={{ marginBottom: 30, textAlign: 'center' }}>
             <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>
