@@ -9,6 +9,7 @@ import InquiryList from '../components/admin/InquiryList';
 import CaseEditor from '../components/admin/CaseEditor';
 import ResourceDocumentEditor from '../components/admin/ResourceDocumentEditor';
 import MemberManager from '../components/admin/MemberManager';
+import HeroThemeEditor from '../components/admin/HeroThemeEditor';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
 import { supabase } from '../lib/supabase';
@@ -166,6 +167,9 @@ export default function AdminDashboardPage() {
         )}
         {tab === 'members' && (
           <MemberManager />
+        )}
+        {tab === 'hero-theme' && (
+          <HeroThemeEditor />
         )}
         {tab === 'inquiries' && (
           <InquiryList />

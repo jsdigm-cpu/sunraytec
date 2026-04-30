@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ScrollToTop from '../components/layout/ScrollToTop';
+import { HeroThemeProvider } from '../context/HeroThemeContext';
 import { initialProducts } from '../data/products';
 import { initialSiteContent } from '../data/siteContent';
 import type { Product, ProductLine, InstallationType } from '../types/product';
@@ -161,7 +162,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <HeroThemeProvider>
       <ScrollToTop />
       <Header />
       <main>
@@ -178,6 +179,6 @@ export default function App() {
         />
       </main>
       <Footer />
-    </>
+    </HeroThemeProvider>
   );
 }

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { useHeroTheme } from '../../context/HeroThemeContext';
+import { buildGradient } from '../../types/heroTheme';
 
 export interface BreadcrumbItem {
   label: string;
@@ -7,15 +9,10 @@ export interface BreadcrumbItem {
 }
 
 interface SubHeroProps {
-  /** 브레드크럼 경로 (마지막 항목이 현재 페이지) */
   breadcrumb: BreadcrumbItem[];
-  /** 영문 서브태그 (예: 'CEO Message') */
   badge: string;
-  /** h1 제목 */
   title: string;
-  /** 부연 설명 텍스트 */
   lead?: string;
-  /** 하단 핵심 키워드 태그 (빈 공간 채우기) */
   keywords?: string[];
 }
 
@@ -24,24 +21,50 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
 };
 
-/**
- * 모든 서브 페이지에서 사용하는 통일된 히어로 섹션.
- * 고정 높이로 모든 페이지가 동일한 "군청색 가로 바"를 유지합니다.
- */
 export default function SubHero({ breadcrumb, badge, title, lead, keywords }: SubHeroProps) {
+  const { theme } = useHeroTheme();
+  const background = buildGradient(theme);
+
   return (
     <section
       style={{
-        background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
+        background,
         color: '#fff',
         padding: '56px 0 0',
         minHeight: 360,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div className="container" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      {/* 오버레이 효과 */}
+      {theme.overlayEffect === 'glow' && (
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse at 15% 50%, rgba(255,120,60,0.13) 0%, transparent 60%)',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      {theme.overlayEffect === 'grid' && (
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)',
+            backgroundSize: '28px 28px',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+
+      <div className="container" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
         {/* 브레드크럼 */}
         <div
           style={{
@@ -87,7 +110,7 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
               fontWeight: 800,
               letterSpacing: '3px',
               textTransform: 'uppercase',
-              color: 'var(--red)',
+              color: theme.accentColor,
               marginBottom: '12px',
             }}
           >
@@ -139,7 +162,7 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
                     padding: '5px 14px',
                     borderRadius: '20px',
                     background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.12)',
+                    border: `1px solid ${theme.accentColor}55`,
                     color: 'rgba(255,255,255,0.7)',
                     fontSize: '12px',
                     fontWeight: 600,
