@@ -138,42 +138,38 @@ export default function CertificationsPage() {
         badge="Certifications & Patents"
         title="인증 · 특허"
         lead="조달청 우수제품 3회 지정, 10건 등록 특허, ISO·CE·KC·방폭 인증까지. 원적외선 복사난방 기술력을 수치로 입증합니다."
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '0', marginTop: '48px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-          className="cert-metrics-grid"
-        >
-          {CERT_METRICS.map((m, i) => (
-            <div key={m.label} style={{
-              padding: '28px 20px',
-              borderRight: i < CERT_METRICS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-                color: m.color,
-                lineHeight: 1, marginBottom: '6px',
+        keywords={['우수제품 3회 지정', '등록 특허 10건', 'ISO 국제인증 2종', '인증·시험성적서 15건+']}
+      />
+
+      {/* 핵심 수치 바 (히어로에서 본문으로 이동) */}
+      <section style={{ background: '#0D1B2E', padding: 0 }}>
+        <div className="container">
+          <div className="cert-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {CERT_METRICS.map((m, i) => (
+              <div key={m.label} style={{
+                padding: '28px 20px',
+                borderRight: i < CERT_METRICS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                textAlign: 'center',
               }}>
-                {m.value}
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                  color: m.color,
+                  lineHeight: 1, marginBottom: '6px',
+                }}>
+                  {m.value}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
+                  {m.label}
+                </div>
+                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
+                  {m.sub}
+                </div>
               </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
-                {m.label}
-              </div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
-                {m.sub}
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </SubHero>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ② 인증 카드 그리드 */}
       <section style={{ padding: '64px 0', background: '#F8FAFC' }}>

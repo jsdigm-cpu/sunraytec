@@ -55,16 +55,8 @@ export default function CeoMessagePage() {
         badge="CEO Message"
         title="원적외선 복사난방의 기준을 세우는 기업"
         lead="(주)썬레이텍은 2009년 법인 설립 이후 원적외선 복사난방 한 분야에 집중해 온 전문기업입니다. 2002년부터 이어진 기술개발 경험과 공공·산업·교육·국방 현장 적용 경험을 바탕으로 '바람 없이 따뜻한 공간'을 만들고 있습니다."
-      >
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 32, paddingBottom: 32 }}>
-          {KPIS.map((k) => (
-            <div key={k.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: '1.8rem', fontWeight: 900, color: '#fff' }}>{k.value}</span>
-              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{k.label}</span>
-            </div>
-          ))}
-        </div>
-      </SubHero>
+        keywords={['2009년 법인 설립', '2002년 기술개발 시작', '우수제품 3회 지정', '등록 특허 10건']}
+      />
 
       {/* Long-form message */}
       <section style={{ padding: '58px 0 32px' }}>

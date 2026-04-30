@@ -39,6 +39,7 @@ export default function ExcellenceProductsPage() {
         badge="Government Procurement"
         title="정부조달 우수제품"
         lead="조달청이 기술력·품질·사후관리를 심사해 선정하는 최고 권위의 조달 인증 제품입니다. 매립형과 노출형을 모델별로 비교해 보세요."
+        keywords={['2013·2019·2025 지정', '조달청 수의계약', '매립형·노출형', '나라장터 검색']}
       />
       {/* ── 제품 그리드 ──────────────────────────────────────────────── */}
       <section style={{ background: 'var(--off)', padding: '72px 0' }}>

@@ -22,7 +22,7 @@ export default function PartnerSignupGuidePage() {
         breadcrumb={[{ label: '파트너 가입 안내' }]}
         badge="Partner Sign-up"
         title="파트너·협력회사 회원가입 안내"
-        
+        keywords={['파트너 등록 절차', '전용 자료 접근', '승인 기반 운영', '상담·프로젝트 연계']}
       />
 
       <section style={{ padding: '68px 0 78px', background: '#F8FAFC' }}>

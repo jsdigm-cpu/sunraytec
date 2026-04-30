@@ -94,6 +94,7 @@ export default function MediaPage() {
         badge="Awards & Media"
         title="매년 다시 받아낸 외부 검증"
         lead="조달청 우수제품 3차 지정, 혁신시제품 등재, K마크 6종 성능인증, 방폭(EX emb II T1) 인증까지. 자체 자랑이 아니라 외부 기관이 매년 다시 확인한 기록입니다."
+        keywords={['언론 보도', '수상 실적', '방송 출연', '전시회 참가']}
       />
 
       {/* Timeline */}

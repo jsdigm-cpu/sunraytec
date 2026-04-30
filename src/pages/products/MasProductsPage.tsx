@@ -38,6 +38,7 @@ export default function MasProductsPage() {
         badge="MAS Contract"
         title="MAS 다수공급자 제품"
         lead="나라장터 종합쇼핑몰 MAS 계약 기준으로 정리한 제품군입니다. 매립형과 노출형을 모델별로 나눠 바로 비교할 수 있습니다."
+        keywords={['MAS 다수공급자', '종합쇼핑몰 등록', '매립형·노출형', '규격·수량 협의']}
       />
 
       <section style={{ background: 'var(--off)', padding: '72px 0' }}>

@@ -59,6 +59,7 @@ export default function LocationPage() {
         badge="Location"
         title="현장에서 가장 가까운 본사"
         lead="서울 서초구에 위치한 본사에서 제품 상담, 도면 검토, 자료 수령이 가능합니다. 방문 전 전화 또는 이메일로 일정을 공유해 주시면 가장 빠르게 도와드릴 수 있습니다."
+        keywords={['충남 천안시 서북구', '본사·공장 일체형', '대표전화 1688-2520', '방문 상담 가능']}
       />
 
       {/* Contact + Map */}

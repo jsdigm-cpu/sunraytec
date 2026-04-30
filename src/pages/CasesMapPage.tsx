@@ -43,6 +43,7 @@ export default function CasesMapPage() {
         badge="Installation Map"
         title="전국 시공 지도"
         lead="실제 지도 API 연동 전, 시공사례 DB의 위치 정보를 권역별로 정리해 보여주는 지도형 목록 페이지입니다."
+        keywords={['전국 시공 현장', '카테고리별 검색', '지역별 납품 현황', '공공·민간 실적']}
       />
 
       <section style={{ padding: '52px 0 78px' }}>

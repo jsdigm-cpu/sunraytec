@@ -43,6 +43,7 @@ export default function ChatbotPage() {
         badge="AI Assistant · Coming Soon"
         title="상담 챗봇은 곧 만나보실 수 있습니다"
         lead="제품 추천·예상 용량·자료 위치까지 한 화면에서 안내하는 AI 상담 챗봇을 준비하고 있습니다. 정식 오픈 전까지는 아래 대안 채널을 활용해 주세요."
+        keywords={['24시간 자동 응답', '제품 사양 안내', '견적 요청 연결', '기술 문의 지원']}
       />
 
       <section style={{ padding: '52px 0 28px' }}>

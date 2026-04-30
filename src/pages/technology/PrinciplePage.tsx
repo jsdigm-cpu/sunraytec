@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Building2, Factory, Flame, Gauge, RadioTower, ShieldCheck, Sparkles, ThermometerSun, Wind } from 'lucide-react';
 import { motion } from 'motion/react';
+import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
@@ -157,41 +158,32 @@ function RadiantDiagram() {
 export default function PrinciplePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-      <section style={{ background: 'linear-gradient(150deg, #0A1628 0%, #10233F 54%, #2B1B18 100%)', padding: '58px 0 70px', color: '#fff' }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.48)', marginBottom: 20 }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.48)' }}>홈</Link>
-              <span>/</span>
-              <span>기술·솔루션</span>
-              <span>/</span>
-              <strong style={{ color: 'rgba(255,255,255,0.82)' }}>복사난방 원리</strong>
-            </div>
+      <SubHero
+        breadcrumb={[{ label: '기술·솔루션' }, { label: '복사난방 원리' }]}
+        badge="Far Infrared Radiant Heating"
+        title="공기를 흔들지 않고 필요한 곳에 열을 꽂아 넣는 방식"
+        lead="썬레이텍 복사난방은 뜨거운 공기를 순환시키는 대신 원적외선 에너지를 사람, 바닥, 장비 표면에 직접 전달합니다. 그래서 고천장·대공간에서도 열 손실을 줄이고 체감 난방을 빠르게 만듭니다."
+        keywords={['사람·표면 직접 가열', '고천장 열 손실 최소화', '무바람·저분진', '결로·냉기 저감']}
+      />
 
-            <div className="principle-hero-grid" style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: 34, alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 11px', borderRadius: 8, background: 'rgba(232,87,74,0.16)', border: '1px solid rgba(232,87,74,0.34)', color: '#FFD3C8', fontSize: 13, fontWeight: 800, marginBottom: 18 }}>
-                  <Sparkles size={15} /> Far Infrared Radiant Heating
-                </div>
-                <h1 style={{ fontSize: '2.42rem', lineHeight: 1.16, fontWeight: 900, marginBottom: 18 }}>
-                  공기를 흔들지 않고<br />
-                  필요한 곳에 열을 꽂아 넣는 방식
-                </h1>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.02rem', lineHeight: 1.75, maxWidth: 560 }}>
-                  썬레이텍 복사난방은 뜨거운 공기를 순환시키는 대신 원적외선 에너지를 사람, 바닥, 장비 표면에 직접 전달합니다. 그래서 고천장·대공간에서도 열 손실을 줄이고 체감 난방을 빠르게 만듭니다.
-                </p>
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
-                  <Link to="/products" className="btn btn-white" style={{ borderRadius: 8, color: 'var(--navy)' }}>
-                    제품 보기 <ArrowRight size={16} />
-                  </Link>
-                  <Link to="/contact" className="btn btn-outline" style={{ borderRadius: 8 }}>
-                    현장 상담 요청
-                  </Link>
-                </div>
-              </div>
-              <RadiantDiagram />
-            </div>
-          </motion.div>
+      {/* 복사난방 다이어그램 (히어로에서 본문으로 이동) */}
+      <section style={{ padding: '56px 0', background: '#F8FAFC' }}>
+        <div className="container">
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: 34 }}>
+            <p style={{ fontSize: 12, color: 'var(--red)', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Radiant vs Convection</p>
+            <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>복사난방과 대류난방의 차이</h2>
+          </ScrollReveal>
+          <div style={{ maxWidth: 960, margin: '0 auto' }}>
+            <RadiantDiagram />
+          </div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28, justifyContent: 'center' }}>
+            <Link to="/products" className="btn btn-primary" style={{ borderRadius: 8 }}>
+              제품 보기 <ArrowRight size={16} />
+            </Link>
+            <Link to="/contact" className="btn btn-outline" style={{ borderRadius: 8, color: 'var(--navy)', borderColor: '#CBD5E1' }}>
+              현장 상담 요청
+            </Link>
+          </div>
         </div>
       </section>
 

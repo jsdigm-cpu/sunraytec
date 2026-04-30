@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
         breadcrumb={[{ label: '개인정보처리방침' }]}
         badge="Privacy Policy"
         title="개인정보처리방침"
-        
+        keywords={['개인정보 수집·이용', '보유 기간 안내', '제3자 제공 원칙', '정보주체 권리']}
       />
 
       <section style={{ padding: '52px 0 80px' }}>

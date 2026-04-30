@@ -98,46 +98,42 @@ export default function HistoryPage() {
         badge="Company History"
         title="회사 연혁"
         lead="2002년 기술개발 시작, 2009년 법인 설립 이후 조달청 우수제품 3회 지정으로 검증된 20년 이상의 전문 기술 역량"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '0', marginTop: '48px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-          className="history-metrics-grid"
-        >
-          {[
-            { value: '2002', label: '기술개발 시작', sub: '복사난방 R&D 착수', color: '#fff' },
-            { value: '2009', label: '법인 설립',     sub: '2009년 12월 22일', color: '#fff' },
-            { value: '3회',  label: '우수제품 지정', sub: '2013·2019·2025년', color: 'var(--red)' },
-            { value: '10건', label: '등록 특허',     sub: '특허 9건+디자인 1건', color: '#fff' },
-          ].map((m, i) => (
-            <div key={m.label} style={{
-              padding: '28px 20px',
-              borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-                color: m.color, lineHeight: 1, marginBottom: '6px',
+        keywords={['2002년 기술개발 시작', '2009년 법인 설립', '우수제품 3회 지정', '등록 특허 10건']}
+      />
+
+      {/* 핵심 연혁 수치 바 (히어로에서 본문으로 이동) */}
+      <section style={{ background: '#0D1B2E', padding: 0 }}>
+        <div className="container">
+          <div className="history-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {[
+              { value: '2002', label: '기술개발 시작', sub: '복사난방 R&D 착수', color: '#fff' },
+              { value: '2009', label: '법인 설립',     sub: '2009년 12월 22일', color: '#fff' },
+              { value: '3회',  label: '우수제품 지정', sub: '2013·2019·2025년', color: 'var(--red)' },
+              { value: '10건', label: '등록 특허',     sub: '특허 9건+디자인 1건', color: '#fff' },
+            ].map((m, i) => (
+              <div key={m.label} style={{
+                padding: '28px 20px',
+                borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                textAlign: 'center',
               }}>
-                {m.value}
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                  color: m.color, lineHeight: 1, marginBottom: '6px',
+                }}>
+                  {m.value}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
+                  {m.label}
+                </div>
+                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
+                  {m.sub}
+                </div>
               </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginBottom: '3px' }}>
-                {m.label}
-              </div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
-                {m.sub}
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </SubHero>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ② 회사 개요 */}
       <section style={{ padding: '64px 0', background: '#fff' }}>

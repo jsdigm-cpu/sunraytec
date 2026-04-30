@@ -135,43 +135,38 @@ export default function FaqPage() {
         badge="FAQ"
         title="자주 묻는 질문"
         lead={"제품·견적·시공·유지관리·공공조달까지 자주 받는 질문 " + FAQS.length + "개를 카테고리별로 정리했습니다."}
-      >
-        {/* 빠른 확인 카드 */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.2 }}
-          style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '0', marginTop: '40px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-          className="faq-quick-grid"
-        >
-          {QUICK_FACTS.map((f, i) => (
-            <div key={f.label} style={{
-              padding: '22px 20px', textAlign: 'center',
-              borderRight: i < QUICK_FACTS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-            }}>
-              <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>{f.icon}</div>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                color: i === 1 ? 'var(--red)' : '#fff',
-                lineHeight: 1, marginBottom: '4px',
+        keywords={['제품·기술', '견적·구매', '시공·납기', '유지·보증', '공공조달']}
+      />
+
+      {/* 빠른 확인 카드 (히어로에서 본문으로 이동) */}
+      <section style={{ background: '#0D1B2E', padding: 0 }}>
+        <div className="container">
+          <div className="faq-quick-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {QUICK_FACTS.map((f, i) => (
+              <div key={f.label} style={{
+                padding: '22px 20px', textAlign: 'center',
+                borderRight: i < QUICK_FACTS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
               }}>
-                {f.label}
+                <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>{f.icon}</div>
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                  color: i === 1 ? 'var(--red)' : '#fff',
+                  lineHeight: 1, marginBottom: '4px',
+                }}>
+                  {f.label}
+                </div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '2px' }}>
+                  {f.desc}
+                </div>
+                <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
+                  {f.sub}
+                </div>
               </div>
-              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '2px' }}>
-                {f.desc}
-              </div>
-              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
-                {f.sub}
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </SubHero>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section style={{ padding: '40px 0 78px' }}>
         <div className="container">

@@ -66,6 +66,7 @@ export default function ProductGuidePage({ pageId }: ProductGuidePageProps) {
         badge="Product Guide"
         title="제품 선택 가이드"
         lead="공간 면적과 천장 높이에 따라 적합한 모델을 추천해 드립니다."
+        keywords={['제품 선정 가이드', '설치 방식 비교', '공간별 추천', '용량 산출 기준']}
       />
 
       <section style={{ padding: '52px 0 78px' }}>

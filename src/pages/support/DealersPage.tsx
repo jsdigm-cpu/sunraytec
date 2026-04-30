@@ -40,8 +40,12 @@ export default function DealersPage() {
         badge="Dealer Program"
         title="지역 영업·시공 파트너를 찾습니다"
         lead="2002년부터 이어진 기술개발 경험과 2009년 법인 설립 이후 축적한 복사난방 영업·시공 노하우를 함께 나눌 지역 파트너를 모집합니다."
-      >
-        <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap', paddingBottom: 32 }}>
+        keywords={['대리점 모집', '시공사 협력', '교육·지원 프로그램', '파트너 전용 포털']}
+      />
+
+      {/* CTA 바 */}
+      <section style={{ background: '#0D1B2E', padding: '20px 0' }}>
+        <div className="container" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Link to="/partner/signup-guide" style={{ display: 'inline-flex', padding: '13px 22px', background: 'var(--red)', color: '#fff', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
             파트너 신청 안내
           </Link>
@@ -49,7 +53,7 @@ export default function DealersPage() {
             사전 상담 요청
           </Link>
         </div>
-      </SubHero>
+      </section>
 
       {/* Targets */}
       <section style={{ padding: '52px 0 28px' }}>

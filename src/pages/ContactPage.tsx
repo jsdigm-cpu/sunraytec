@@ -128,6 +128,7 @@ export default function ContactPage() {
         badge="Contact Us"
         title="견적 문의"
         lead="전문가가 직접 상담해 드립니다"
+        keywords={['전문가 직접 상담', '대표전화 1688-2520', '48시간 내 회신', '무료 현장 방문 가능']}
       />
 
       {/* ② 문의 유형 선택 */}

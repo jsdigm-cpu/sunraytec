@@ -39,6 +39,7 @@ export default function ProductPage() {
         badge="Products"
         title="설치 방식과 계약 유형까지 한 번에 보는 제품안내"
         lead="공공조달과 현장 용도에 맞는 복사난방 제품을 한눈에 비교해보세요. 우수제품과 MAS 다수공급자계약 제품을 구분해 정리했으며, 각 모델의 상세 사양과 적용 정보를 바로 확인할 수 있습니다."
+        keywords={['우수제품 3회 지정', 'MAS 다수공급자', '매립형·노출형', '총 18개 모델']}
       />
 
       <section style={{ background: 'var(--off)', padding: '64px 0' }}>

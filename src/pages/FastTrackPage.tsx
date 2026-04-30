@@ -39,8 +39,12 @@ export default function FastTrackPage() {
         badge="Fast Track Lounge"
         title="설계·견적 검토 자료를 더 빠르게 전달합니다"
         lead="공공기관·교육기관·군 관련 담당자에게 필요한 일위대가표, 도면 원본, 제안서 양식, 인증 자료를 파트너 승인 후 한 곳에서 확인할 수 있도록 준비 중입니다."
-      >
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28, paddingBottom: 32 }}>
+        keywords={['담당자 전용', '기술 자료 패키지', '일위대가표·시방서', '견적 우선 검토']}
+      />
+
+      {/* CTA 바 */}
+      <section style={{ background: '#0D1B2E', padding: '20px 0' }}>
+        <div className="container" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Link to="/partner/signup-guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--red)', color: '#fff', padding: '13px 22px', borderRadius: 8, fontWeight: 800, textDecoration: 'none' }}>
             회원가입 안내 보기
           </Link>
@@ -48,7 +52,7 @@ export default function FastTrackPage() {
             파트너 포털로 이동
           </Link>
         </div>
-      </SubHero>
+      </section>
 
       <section style={{ padding: '54px 0 72px' }}>
         <div className="container">

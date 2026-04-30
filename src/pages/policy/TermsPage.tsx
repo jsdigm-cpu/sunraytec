@@ -96,7 +96,7 @@ export default function TermsPage() {
         breadcrumb={[{ label: '이용약관' }]}
         badge="Terms of Service"
         title="이용약관"
-        
+        keywords={['서비스 이용 규정', '회원 약관', '책임 및 의무', '자료 저작권']}
       />
 
       <section style={{ padding: '52px 0 80px' }}>

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../components/ui/ScrollReveal';
+import SubHero from '../../components/layout/SubHero';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
 type PageId = 'zero' | 'public-edu' | 'industrial-logistics' | 'defense-special' | 'iot-control';
@@ -528,39 +529,30 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
 
-      {/* Hero */}
-      <section style={{ background: config.gradient, color: '#fff', padding: '58px 0 70px' }}>
-        <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(255,255,255,0.48)', marginBottom: 20 }}>
-              <Link to="/" style={{ color: 'rgba(255,255,255,0.48)' }}>홈</Link>
-              <span>/</span><span>기술·솔루션</span><span>/</span>
-              <strong style={{ color: 'rgba(255,255,255,0.82)' }}>{config.breadcrumb}</strong>
-            </div>
-            <div className="tech-solution-hero-grid" style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: 34, alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 11px', borderRadius: 8, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', fontSize: 13, fontWeight: 800, marginBottom: 18 }}>
-                  <Icon size={15} /> {config.badge}
-                </div>
-                <h1 style={{ fontSize: '2.38rem', lineHeight: 1.16, fontWeight: 900, marginBottom: 18 }}>{config.title}</h1>
-                <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '1.02rem', lineHeight: 1.78, maxWidth: 590 }}>{config.lead}</p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: 10, marginTop: 28, maxWidth: 520 }} className="tech-stat-grid">
-                  {config.stats.map((stat) => (
-                    <div key={stat.label} style={{ border: '1px solid rgba(255,255,255,0.16)', borderRadius: 8, padding: '14px 16px', background: 'rgba(255,255,255,0.07)' }}>
-                      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', fontWeight: 700, marginBottom: 4 }}>{stat.label}</div>
-                      <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, fontWeight: 900, color: config.accent, letterSpacing: 0.5 }}>{stat.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <EnergyDiagram config={config} />
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Hero — SubHero 통일 */}
+      <SubHero
+        breadcrumb={[{ label: '기술·솔루션' }, { label: config.breadcrumb }]}
+        badge={config.badge}
+        title={config.title}
+        lead={config.lead}
+        keywords={config.stats.map(s => `${s.label} ${s.value}`)}
+      />
 
       {/* DataBar — 인포그래픽 수치 바 */}
       <DataBar items={config.dataBar} accent={config.accent} />
+
+      {/* 솔루션 다이어그램 (히어로에서 본문으로 이동) */}
+      <section style={{ padding: '56px 0', background: '#F8FAFC' }}>
+        <div className="container">
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: 34 }}>
+            <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Solution Overview</p>
+            <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>솔루션 구성도</h2>
+          </ScrollReveal>
+          <div style={{ maxWidth: 960, margin: '0 auto' }}>
+            <EnergyDiagram config={config} />
+          </div>
+        </div>
+      </section>
 
       {/* Problem Map */}
       <section style={{ padding: '68px 0', background: '#F8FAFC' }}>

@@ -93,16 +93,8 @@ export default function ClientsPage() {
         badge="Reference Clients"
         title="2,000곳 이상의 현장에서 검증된 복사난방"
         lead="학교 교실에서부터 물류센터, 군 시설, 도심 스마트 버스정류장까지. (주)썬레이텍은 공간의 용도와 사용자에 맞춰 복사난방을 설계하고 시공해 왔습니다."
-      >
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28, marginTop: 30, paddingBottom: 32 }}>
-          {TRUST_NUMBERS.map((n) => (
-            <div key={n.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: '1.7rem', fontWeight: 900, color: '#fff' }}>{n.value}</span>
-              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>{n.label}</span>
-            </div>
-          ))}
-        </div>
-      </SubHero>
+        keywords={['2,000+ 누적 시공', '13년+ 조달청 공급', 'K마크 6종 인증', '특허·디자인 10건']}
+      />
 
       {/* Group cards */}
       <section style={{ padding: '52px 0 32px' }}>

@@ -313,40 +313,39 @@ export default function CasesPage() {
         badge="Delivery Records"
         title="시공사례"
         lead="군부대·학교·공장·복지시설까지. 우수제품 지정 이후 전국 공공·민간 현장에 검증된 납품 실적입니다."
-      >
-        {/* 히어로 KPI 수치 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', marginTop: '48px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
-          className="hero-stats-grid"
-        >
-          {HERO_STATS.map((s, i) => (
-            <div key={s.label} style={{
-              padding: '28px 20px',
-              borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                color: i === 2 ? 'var(--red)' : '#fff',
-                lineHeight: 1,
-                marginBottom: '6px',
+        keywords={['공공·교육 시설', '국방·특수 환경', '산업·물류 거점', '스마트시티 솔루션']}
+      />
+
+      {/* 히어로 KPI 수치 (본문으로 이동) */}
+      <section style={{ background: '#0D1B2E', padding: 0 }}>
+        <div className="container">
+          <div className="hero-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {HERO_STATS.map((s, i) => (
+              <div key={s.label} style={{
+                padding: '28px 20px',
+                borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                textAlign: 'center',
               }}>
-                {s.value}
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                  color: i === 2 ? 'var(--red)' : '#fff',
+                  lineHeight: 1,
+                  marginBottom: '6px',
+                }}>
+                  {s.value}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
+                  {s.label}
+                </div>
+                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
+                  {s.sub}
+                </div>
               </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
-                {s.label}
-              </div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
-                {s.sub}
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </SubHero>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ② 대표 실증 사례 Spotlight */}
       <section style={{ background: '#0D1B2E', padding: '56px 0' }}>

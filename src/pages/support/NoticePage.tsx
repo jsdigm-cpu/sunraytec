@@ -72,6 +72,7 @@ export default function NoticePage() {
         badge="Notice"
         title="공지사항"
         lead="제품·자료·조달·전시회·홈페이지 운영과 관련된 주요 안내를 모았습니다."
+        keywords={['제품 업데이트', '조달 공고 안내', '전시회 일정', '홈페이지 변경사항']}
       />
 
       <section style={{ padding: '52px 0 80px' }}>
