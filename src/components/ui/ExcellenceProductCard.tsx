@@ -72,7 +72,9 @@ export default function ExcellenceProductCard({ product }: Props) {
           >
             <img
               src={product.thumbnailImage ?? product.detailImage}
-              alt={product.name}
+              alt={`${product.name} - ${product.category}`}
+              loading="lazy"
+              decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />
           </div>

@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import ExcellenceProductCard from '../../components/ui/ExcellenceProductCard';
+import PageSEO from '../../components/seo/PageSEO';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 import type { CmsState } from '../../types/cms';
 
@@ -33,6 +34,12 @@ export default function MasProductsPage() {
 
   return (
     <div>
+      <PageSEO
+        title="MAS 다수공급자 제품 - 썬레이텍 패널히터"
+        description="나라장터 종합쇼핑몰 MAS 다수공급자계약 등록 패널히터. 매립형·노출형·벽걸이형으로 현장 용도에 맞춰 빠른 구매가 가능합니다."
+        keywords={['MAS 다수공급자', '나라장터 종합쇼핑몰', 'MAS 계약', '공공조달 패널히터', '관공서 난방', '학교 난방']}
+        canonical="/products/mas"
+      />
       <SubHero
         breadcrumb={[{ label: '제품안내', to: '/products' }, { label: 'MAS 다수공급자' }]}
         badge="MAS Contract"

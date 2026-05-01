@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import ExcellenceProductCard from '../../components/ui/ExcellenceProductCard';
+import PageSEO from '../../components/seo/PageSEO';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 import type { CmsState } from '../../types/cms';
 
@@ -34,6 +35,12 @@ export default function ExcellenceProductsPage() {
 
   return (
     <div>
+      <PageSEO
+        title="조달청 우수제품 - 썬레이텍 패널히터"
+        description="조달청 우수제품 지정 라인업. 매립형·노출형·벽걸이형 패널히터. 나라장터 수의계약으로 입찰 없이 간편 구매. 식별번호로 바로 검색 가능."
+        keywords={['조달청 우수제품', '나라장터 수의계약', '우수제품 지정', '학교 난방', '관공서 난방', '공공조달', '복사난방 패널']}
+        canonical="/products/excellence"
+      />
       <SubHero
         breadcrumb={[{ label: '제품안내', to: '/products' }, { label: '조달청 우수제품' }]}
         badge="Government Procurement"

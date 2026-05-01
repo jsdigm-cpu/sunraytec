@@ -1,5 +1,7 @@
 import { Link, useOutletContext, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
+import PageSEO from '../../components/seo/PageSEO';
+import JsonLd from '../../components/seo/JsonLd';
 import type { CmsState } from '../../types/cms';
 import type { Product } from '../../types/product';
 
@@ -25,6 +27,30 @@ export default function ProductDetailPage() {
 
   return (
     <div>
+      <PageSEO
+        title={`${product.name} - ${product.category}`}
+        description={`${product.summary} 소비전력 ${product.specs.powerW.toLocaleString()}W, 난방면적 ${product.specs.heatingArea}. 썬레이텍 ${product.category} 패널히터.`}
+        keywords={[
+          product.name,
+          ...(product.applications ?? []),
+          product.category,
+          '복사난방',
+          '패널히터',
+          ...(product.procurementId ? [`식별번호 ${product.procurementId}`] : []),
+        ]}
+        canonical={`/products/${product.id}`}
+        ogImage={product.thumbnailImage ?? product.detailImage}
+        ogType="product"
+      />
+      <JsonLd type="product" product={product} />
+      <JsonLd
+        type="breadcrumb"
+        items={[
+          { name: '홈', url: '/' },
+          { name: '제품안내', url: '/products' },
+          { name: product.name, url: `/products/${product.id}` },
+        ]}
+      />
       <section
         style={{
           background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)',
@@ -86,7 +112,9 @@ export default function ProductDetailPage() {
               {galleryImages.length > 0 ? (
                 <img
                   src={galleryImages[0]}
-                  alt={product.name}
+                  alt={`${product.name} - ${product.category}`}
+                  fetchPriority="high"
+                  decoding="async"
                   style={{ width: '100%', height: '100%', maxHeight: '340px', objectFit: 'contain' }}
                 />
               ) : (
@@ -132,7 +160,9 @@ export default function ProductDetailPage() {
                       key={`${url}-${index}`}
                       src={url}
                       alt={`${product.name} 상세 이미지 ${index + 1}`}
-                      style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: '12px', border: '1px solid var(--border)' }}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'contain', background: '#fff', borderRadius: '12px', border: '1px solid var(--border)' }}
                     />
                   ))}
                 </div>

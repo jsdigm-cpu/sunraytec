@@ -63,11 +63,54 @@
 
 ---
 
-## 📋 다음 세션 우선순위
+## 🚀 자율 작업 세션 (2026-05-01 오후)
 
-1. **Bug #4** (즉시) — 외부 노출 정보 제거
-2. **Bug #3** (확인) — 캐시 / 필터 / 데이터 매핑 점검
-3. **Bug #1 + #2** (UI 개선) — 썸네일 렌더링 통일
+박이사님이 자리 비우신 동안 SEO/성능 개선 4종 적용. 모든 변경 main에 머지됨.
+
+### Improvement #1: 페이지별 SEO 메타 태그 ✅
+- `src/components/seo/PageSEO.tsx` 신규 컴포넌트 추가 (React 19 메타데이터 호이스팅 활용)
+- 적용 페이지: HomePage, ProductPage, ExcellenceProductsPage, MasProductsPage, ProductDetailPage(동적), ContactPage
+- title, description, keywords, OG, Twitter Card 모두 페이지별 unique
+- ProductDetailPage는 모델별로 자동 생성 (모델명·카테고리·용도·식별번호 키워드)
+- `index.html` 기본 meta도 보강 (description, OG, robots, theme-color)
+
+### Improvement #2: sitemap.xml + robots.txt ✅
+- `public/sitemap.xml`: 50개+ URL (메인 페이지 + 18개 제품 상세 + about/technology/solutions/resources/policy)
+- `public/robots.txt`: admin/auth/partner 디렉토리 차단, sitemap 위치 안내
+- Google Search Console에 sitemap 등록 시 즉시 인덱싱 시작 가능
+
+### Improvement #3: 이미지 lazy loading ✅
+- 제품 카드 썸네일에 `loading="lazy"` + `decoding="async"` 적용
+- ExcellenceProductCard, ProductGrid, ProductDetailPage 갤러리, CaseDetailPage 모두 적용
+- 상세 페이지 메인 히어로는 `fetchPriority="high"`로 LCP 최적화
+- alt 텍스트도 더 의미있게 강화 (모델명+카테고리)
+
+### Improvement #4: 구조화 데이터 (JSON-LD) ✅
+- `src/components/seo/JsonLd.tsx` 신규 (Organization, Product, BreadcrumbList 3종)
+- HomePage: Organization 스키마 (회사 정보, 주소, 연락처)
+- ProductDetailPage: Product 스키마 + BreadcrumbList
+- 검색 결과에 풍부한 정보 표시 가능 (별점, 가격, 사양 등)
+
+---
+
+## 📋 다음 세션 권장 작업
+
+### 단기 (1~2일)
+- [ ] Vercel Preview/Production에서 4가지 버그 수정 결과 확인
+- [ ] Google Search Console (https://search.google.com/search-console)에 sitemap 등록
+- [ ] Naver Search Advisor (https://searchadvisor.naver.com)에도 sitemap 등록
+- [ ] `SUR-600 (벽걸이형)` MAS 모델 사진 추가 업로드
+
+### 중기 (1주)
+- [ ] 나머지 페이지(about/technology/cases/resources)에도 PageSEO 적용
+- [ ] 메인 hero 이미지(`hero_1.jpg` 등)도 sharp로 최적화 (지금은 원본)
+- [ ] OG 대표 이미지 별도 제작 (1200x630 권장)
+
+### 장기 (1개월)
+- [ ] 시공사례 페이지에 case_studies 데이터 연동 + JSON-LD CaseStudy 스키마
+- [ ] 제품 상세 페이지에 PDF 카탈로그 다운로드 버튼
+- [ ] 다국어 지원 (영문) — B2B 해외 진출 시
+- [ ] 관리자 페이지 비밀번호 강화 (현재는 단순 로그인)
 
 ---
 
