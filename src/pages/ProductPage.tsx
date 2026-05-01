@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import SubHero from '../components/layout/SubHero';
 import SpecTable from '../components/product/SpecTable';
 import ScrollReveal from '../components/ui/ScrollReveal';
+import PageSEO from '../components/seo/PageSEO';
 import { fadeInUp } from '../utils/animations';
 import type { CmsState } from '../types/cms';
 import type { ProductLine } from '../types/product';
@@ -34,6 +35,12 @@ export default function ProductPage() {
 
   return (
     <div>
+      <PageSEO
+        title="제품안내 - 조달청 우수제품·MAS 패널히터 전 라인업"
+        description="썬레이텍 패널형 복사난방 전 모델 안내. 조달청 우수제품, MAS 다수공급자, 개인용·특수형까지 18개 모델의 상세 사양을 한눈에 비교하세요."
+        keywords={['패널히터 모델', '복사난방 제품', '천장 매립형', '천장 노출형', '벽걸이형 히터', '조달청 식별번호']}
+        canonical="/products"
+      />
       <SubHero
         breadcrumb={[{ label: '제품안내' }]}
         badge="Products"

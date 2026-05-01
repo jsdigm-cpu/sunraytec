@@ -149,7 +149,7 @@ export default function CaseDetailPage() {
                       flexShrink: 0, width: '72px', height: '52px', borderRadius: '8px', overflow: 'hidden', padding: 0, border: `2px solid ${i === activeImg ? 'var(--navy)' : 'transparent'}`, cursor: 'pointer', background: 'none',
                     }}
                   >
-                    <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={src} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </button>
                 ))}
               </div>

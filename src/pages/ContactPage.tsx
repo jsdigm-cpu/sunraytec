@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../components/layout/SubHero';
+import PageSEO from '../components/seo/PageSEO';
 import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -122,7 +123,12 @@ export default function ContactPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-
+      <PageSEO
+        title="견적 문의 - 썬레이텍 복사난방"
+        description="공공기관 조달, 기업·산업시설, 상가·매장, 카탈로그 요청까지. 썬레이텍 복사난방 패널히터 견적·기술 상담을 신속하게 받으실 수 있습니다."
+        keywords={['복사난방 견적', '패널히터 문의', '난방 상담', '나라장터 견적', '카탈로그 요청']}
+        canonical="/contact"
+      />
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: '견적 문의' }]}
         badge="Contact Us"

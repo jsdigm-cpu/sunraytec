@@ -70,7 +70,9 @@ export default function ProductGrid({ products }: Props) {
                         >
                           <img
                             src={item.thumbnailImage ?? item.detailImage}
-                            alt={item.name}
+                            alt={`${item.name} - ${item.category}`}
+                            loading="lazy"
+                            decoding="async"
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                           />
                         </div>
