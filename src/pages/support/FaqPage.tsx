@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
 import PageSEO from '../../components/seo/PageSEO';
+import JsonLd from '../../components/seo/JsonLd';
 import { supabase } from '../../lib/supabase';
 import type { Faq } from '../../types/faq';
 import { FAQ_CATEGORIES, FAQ_CAT_COLOR, FAQ_CAT_ICON } from '../../types/faq';
@@ -56,6 +57,12 @@ export default function FaqPage() {
         keywords={['복사난방 FAQ', '패널히터 질문', '시공 문의', '견적 안내', '공공조달 안내']}
         canonical="/support/faq"
       />
+      {!loading && faqs.length > 0 ? (
+        <JsonLd
+          type="faq"
+          items={faqs.map((f) => ({ question: f.question, answer: f.answer }))}
+        />
+      ) : null}
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: 'FAQ' }]}
         badge="FAQ"
