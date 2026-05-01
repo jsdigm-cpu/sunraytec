@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 24 },
@@ -133,6 +134,12 @@ const CERT_METRICS = [
 export default function CertificationsPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title="인증·특허 - 조달청 우수제품 3회, 특허 10건"
+        description="조달청 우수제품 3회(2013·2019·2025) 지정, 등록 특허 10건, ISO·CE·KC·방폭 인증. 썬레이텍 원적외선 복사난방의 기술력을 수치로 입증합니다."
+        keywords={['우수제품 지정', '특허 등록', 'ISO 인증', 'CE 인증', 'KC 인증', '방폭 인증', '인증서']}
+        canonical="/about/certifications"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: '인증·특허' }]}
         badge="Certifications & Patents"

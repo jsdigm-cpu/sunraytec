@@ -91,26 +91,48 @@
 - ProductDetailPage: Product 스키마 + BreadcrumbList
 - 검색 결과에 풍부한 정보 표시 가능 (별점, 가격, 사양 등)
 
+### Improvement #5: 추가 페이지 SEO 적용 ✅
+- CeoMessagePage, HistoryPage, CertificationsPage
+- PrinciplePage, TechnologySolutionPage (5종 동적: zero/public-edu/industrial-logistics/defense-special/iot-control)
+- CasesPage, FaqPage
+- 검색 엔진에 핵심 회사·기술·솔루션 페이지가 모두 노출됨
+
+### Improvement #6: Hero 이미지 최적화 ✅
+- `src/scripts/optimizeHeroImages.ts` 추가 (`npm run optimize:hero`)
+- 10장 hero 이미지 sharp 압축: 2.6MB → 1.3MB (전체 52% 감소)
+  - hero_1.jpg: 630KB → 217KB (-66%)
+  - hero_2.jpg: 669KB → 250KB (-63%)
+  - 나머지: 평균 -40%
+- npm scripts 정리: `verify:images`, `optimize:hero`, `upload:images`
+
+### Improvement #7: 404 페이지 추가 ✅
+- `src/pages/NotFoundPage.tsx` 신규
+- 라우트 catch-all (`path: '*'`)에 적용
+- 잘못된 URL 접근 시 친절한 안내 + 홈/제품/문의 CTA + 전화번호
+
 ---
 
 ## 📋 다음 세션 권장 작업
 
 ### 단기 (1~2일)
-- [ ] Vercel Preview/Production에서 4가지 버그 수정 결과 확인
+- [ ] Vercel Preview/Production에서 모든 변경 결과 확인
 - [ ] Google Search Console (https://search.google.com/search-console)에 sitemap 등록
 - [ ] Naver Search Advisor (https://searchadvisor.naver.com)에도 sitemap 등록
-- [ ] `SUR-600 (벽걸이형)` MAS 모델 사진 추가 업로드
+- [ ] `SUR-600 (벽걸이형)` MAS 모델 사진 추가 업로드 (사진 미보유)
 
 ### 중기 (1주)
-- [ ] 나머지 페이지(about/technology/cases/resources)에도 PageSEO 적용
-- [ ] 메인 hero 이미지(`hero_1.jpg` 등)도 sharp로 최적화 (지금은 원본)
-- [ ] OG 대표 이미지 별도 제작 (1200x630 권장)
+- [ ] OG 대표 이미지 별도 제작 (1200x630 권장) — 카톡/페북 공유 시 표시
+- [ ] 나머지 보조 페이지(ClientsPage/MediaPage/LocationPage/NoticePage/DealersPage 등) PageSEO 적용
+- [ ] favicon.svg → favicon.ico + apple-touch-icon 다양한 사이즈 추가
+- [ ] 모바일 반응형 확인 (특히 제품 상세 페이지 갤러리)
 
 ### 장기 (1개월)
 - [ ] 시공사례 페이지에 case_studies 데이터 연동 + JSON-LD CaseStudy 스키마
+- [ ] FAQ 페이지에 JSON-LD FAQ 스키마 적용 (구글 FAQ rich snippet)
 - [ ] 제품 상세 페이지에 PDF 카탈로그 다운로드 버튼
 - [ ] 다국어 지원 (영문) — B2B 해외 진출 시
 - [ ] 관리자 페이지 비밀번호 강화 (현재는 단순 로그인)
+- [ ] PWA 지원 (manifest.json, 오프라인) — 모바일 사용자 경험 개선
 
 ---
 

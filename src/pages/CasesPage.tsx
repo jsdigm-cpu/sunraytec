@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import SubHero from '../components/layout/SubHero';
+import PageSEO from '../components/seo/PageSEO';
 import { supabase } from '../lib/supabase';
 
 interface CaseItem {
@@ -308,6 +309,12 @@ export default function CasesPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title="시공사례 - 전국 공공·민간 현장 납품 실적"
+        description="군부대·학교·공장·복지시설까지. 인천공항 FedEx 물류센터, 대전 우편물류센터, 한국도로공사 버스정류장 등 전국 공공·민간 현장에 검증된 썬레이텍 시공 사례."
+        keywords={['시공사례', '납품실적', '복사난방 사례', '학교 난방 사례', '물류센터 난방', '군부대 난방', '공공기관']}
+        canonical="/cases"
+      />
       <SubHero
         breadcrumb={[{ label: '시공사례' }]}
         badge="Delivery Records"

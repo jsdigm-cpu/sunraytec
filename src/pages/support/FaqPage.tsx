@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { supabase } from '../../lib/supabase';
 import type { Faq } from '../../types/faq';
 import { FAQ_CATEGORIES, FAQ_CAT_COLOR, FAQ_CAT_ICON } from '../../types/faq';
@@ -49,6 +50,12 @@ export default function FaqPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="자주 묻는 질문 (FAQ) - 썬레이텍 복사난방"
+        description="제품·견적·시공·유지관리·공공조달까지 썬레이텍 복사난방 패널히터에 자주 받는 질문을 카테고리별로 정리했습니다."
+        keywords={['복사난방 FAQ', '패널히터 질문', '시공 문의', '견적 안내', '공공조달 안내']}
+        canonical="/support/faq"
+      />
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: 'FAQ' }]}
         badge="FAQ"

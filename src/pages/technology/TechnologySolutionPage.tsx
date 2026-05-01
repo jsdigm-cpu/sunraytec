@@ -19,6 +19,7 @@ import {
 import { motion } from 'motion/react';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
 type PageId = 'zero' | 'public-edu' | 'industrial-logistics' | 'defense-special' | 'iot-control';
@@ -522,12 +523,26 @@ function EnergyDiagram({ config }: { config: PageConfig }) {
 }
 
 /* ── Main Page ── */
+const CANONICAL_BY_PAGE: Record<PageId, string> = {
+  zero: '/technology/zero',
+  'public-edu': '/solutions/public-edu',
+  'industrial-logistics': '/solutions/industrial-logistics',
+  'defense-special': '/solutions/defense-special',
+  'iot-control': '/solutions/iot-control',
+};
+
 export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
   const config = PAGES[pageId];
   const Icon = config.icon;
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title={`${config.title.replace(/<[^>]+>/g, '')} - 썬레이텍`}
+        description={config.lead}
+        keywords={[config.breadcrumb, '복사난방', '패널히터', ...config.stats.map((s) => `${s.label} ${s.value}`)]}
+        canonical={CANONICAL_BY_PAGE[pageId]}
+      />
 
       {/* Hero — SubHero 통일 */}
       <SubHero
