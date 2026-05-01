@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 24 },
@@ -93,6 +94,12 @@ const BUSINESS_AREAS = [
 export default function HistoryPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title="회사 연혁 - 썬레이텍 17년의 발자취"
+        description="2002년 기술개발 시작, 2009년 법인 설립 이후 조달청 우수제품 3회(2013·2019·2025) 지정. 16년간 산업·공공·교육 현장에 복사난방을 공급한 썬레이텍의 발자취."
+        keywords={['썬레이텍 연혁', '2009년 설립', '우수제품 지정', '회사 역사', '복사난방 역사']}
+        canonical="/about/history"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: '회사 연혁' }]}
         badge="Company History"

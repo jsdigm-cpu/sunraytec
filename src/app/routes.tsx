@@ -43,6 +43,7 @@ const SignupVerifiedPage    = lazy(() => import('../pages/auth/SignupVerifiedPag
 const PartnerPortalPage    = lazy(() => import('../pages/partner/PartnerPortalPage'));
 const PartnerPendingPage   = lazy(() => import('../pages/partner/PartnerPendingPage'));
 const PartnerSignupGuidePage = lazy(() => import('../pages/partner/PartnerSignupGuidePage'));
+const NotFoundPage         = lazy(() => import('../pages/NotFoundPage'));
 
 function PageLoader() {
   return (
@@ -129,6 +130,7 @@ export const router = createBrowserRouter([
       },
       { path: 'partner/pending',       element: <S><PartnerPendingPage /></S> },
       { path: 'partner/signup-guide',  element: <S><PartnerSignupGuidePage /></S> },
+      { path: '*',                     element: <S><NotFoundPage /></S> },
     ],
   },
   // 인증 페이지 (App 레이아웃 밖 — Header/Footer 없음)

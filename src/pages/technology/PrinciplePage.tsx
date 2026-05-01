@@ -3,6 +3,7 @@ import { ArrowRight, Building2, Factory, Flame, Gauge, RadioTower, ShieldCheck, 
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
 import ScrollReveal from '../../components/ui/ScrollReveal';
+import PageSEO from '../../components/seo/PageSEO';
 import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
 
 const FLOW_LINES = [
@@ -158,6 +159,12 @@ function RadiantDiagram() {
 export default function PrinciplePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title="복사난방 원리 - 원적외선 패널히터의 작동 원리"
+        description="썬레이텍 복사난방은 뜨거운 공기를 순환시키는 대신 원적외선 에너지를 사람·바닥·장비 표면에 직접 전달합니다. 고천장·대공간에서도 열 손실 없이 체감 난방을 빠르게."
+        keywords={['복사난방 원리', '원적외선', '패널히터 원리', '복사열 vs 대류열', '체감 난방', '열 효율']}
+        canonical="/technology/principle"
+      />
       <SubHero
         breadcrumb={[{ label: '기술·솔루션' }, { label: '복사난방 원리' }]}
         badge="Far Infrared Radiant Heating"

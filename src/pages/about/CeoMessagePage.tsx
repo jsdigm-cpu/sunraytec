@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 const KPIS = [
   { value: '2009', label: '법인 설립' },
@@ -50,6 +51,12 @@ const MESSAGE_BLOCKS = [
 export default function CeoMessagePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="CEO 메시지 - 썬레이텍 회사소개"
+        description="(주)썬레이텍은 2009년 법인 설립 이후 원적외선 복사난방 한 분야에 집중해 온 전문기업입니다. 2002년부터 이어진 기술개발 경험과 공공·산업·교육·국방 현장 적용 경험을 바탕으로 바람 없이 따뜻한 공간을 만듭니다."
+        keywords={['썬레이텍 CEO', '복사난방 전문기업', '2009년 법인설립', '원적외선 난방', '회사소개']}
+        canonical="/about/ceo-message"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: 'CEO 메시지' }]}
         badge="CEO Message"
