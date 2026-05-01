@@ -155,7 +155,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: 'sur-600-wall-excellent',
-    name: 'SUR-600-D (벽걸이형)',
+    name: 'SUR-600-D',
     category: '우수제품 · 벽걸이형',
     productLine: 'excellent',
     installationType: 'wall-mounted',
