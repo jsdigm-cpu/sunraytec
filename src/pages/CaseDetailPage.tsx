@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import type React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import PageSEO from '../components/seo/PageSEO';
+import JsonLd from '../components/seo/JsonLd';
 import { supabase } from '../lib/supabase';
 
 interface CaseDetail {
@@ -79,6 +81,22 @@ export default function CaseDetailPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title={`${item.title} - ${item.location} 복사난방 시공사례`}
+        description={`${item.location}에 설치된 ${item.title}. ${item.summary ?? `${item.category} 카테고리의 썬레이텍 복사난방 시공 사례입니다.`}`}
+        keywords={[item.title, item.location, item.category, '시공사례', '복사난방', '납품실적']}
+        canonical={`/cases/${item.id}`}
+        ogImage={item.image_url}
+        ogType="article"
+      />
+      <JsonLd
+        type="breadcrumb"
+        items={[
+          { name: '홈', url: '/' },
+          { name: '시공사례', url: '/cases' },
+          { name: item.title, url: `/cases/${item.id}` },
+        ]}
+      />
 
       {/* 서브 헤더 */}
       <section style={{ background: 'linear-gradient(160deg, var(--navy) 0%, #152035 60%, #0E1E3A 100%)', padding: '40px 0 48px' }}>

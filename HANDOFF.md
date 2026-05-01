@@ -110,6 +110,18 @@
 - 라우트 catch-all (`path: '*'`)에 적용
 - 잘못된 URL 접근 시 친절한 안내 + 홈/제품/문의 CTA + 전화번호
 
+### Improvement #8: FAQ JSON-LD ✅
+- `JsonLd` 컴포넌트에 `faq` 타입 추가 (FAQPage 스키마)
+- FaqPage에 자동 적용 (DB에서 FAQ 로드 후 JSON-LD 자동 생성)
+- 구글 검색 결과에 FAQ 펼침 상자(rich snippet) 표시 가능 → 클릭률 상승
+
+### Improvement #9: CaseDetailPage SEO + JSON-LD ✅
+- 각 시공사례에 동적 PageSEO 적용
+  - title: `{사례명} - {지역} 복사난방 시공사례`
+  - description, keywords, OG image 모두 사례별 unique
+- BreadcrumbList JSON-LD로 검색 결과 빵부스러기 노출
+- 지역명 키워드 노출 강화 (예: "인천 복사난방", "대전 물류센터 난방")
+
 ---
 
 ## 📋 다음 세션 권장 작업

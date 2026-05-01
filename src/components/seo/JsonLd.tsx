@@ -14,7 +14,12 @@ interface BreadcrumbProps {
   items: Array<{ name: string; url: string }>;
 }
 
-type Props = OrganizationProps | ProductProps | BreadcrumbProps;
+interface FaqProps {
+  type: 'faq';
+  items: Array<{ question: string; answer: string }>;
+}
+
+type Props = OrganizationProps | ProductProps | BreadcrumbProps | FaqProps;
 
 const SITE_URL = 'https://www.sunraytec.com';
 
@@ -87,14 +92,29 @@ function buildSchema(props: Props): Record<string, unknown> {
     };
   }
 
+  if (props.type === 'breadcrumb') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: props.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
+      })),
+    };
+  }
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: props.items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
+    '@type': 'FAQPage',
+    mainEntity: props.items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
     })),
   };
 }
