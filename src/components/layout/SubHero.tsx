@@ -64,17 +64,17 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
         />
       )}
 
-      <div className="container" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-        {/* 브레드크럼 */}
+      <div className="container" style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        {/* 브레드크럼 — 상단 고정 */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            fontSize: '12px',
+            fontSize: '14px',
             color: 'rgba(255,255,255,0.45)',
-            marginBottom: '20px',
             flexWrap: 'wrap',
+            paddingTop: '4px',
           }}
         >
           <Link to="/" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>
@@ -101,17 +101,17 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
           })}
         </div>
 
-        {/* 메인 컨텐츠 */}
-        <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
+        {/* 메인 컨텐츠 — 남은 공간에서 중앙 배치 */}
+        <motion.div initial="hidden" animate="visible" variants={fadeInUp} style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {/* 영문 서브태그 */}
           <p
             style={{
-              fontSize: '11px',
+              fontSize: '14px',
               fontWeight: 800,
               letterSpacing: '3px',
               textTransform: 'uppercase',
               color: theme.accentColor,
-              marginBottom: '12px',
+              marginBottom: '16px',
             }}
           >
             {badge}
