@@ -59,20 +59,21 @@ export default function ExcellenceProductCard({ product }: Props) {
           <div
             style={{
               width: '100%',
-              maxWidth: '180px',
-              aspectRatio: '1',
-              borderRadius: '18px',
+              aspectRatio: '4 / 3',
+              borderRadius: '14px',
               overflow: 'hidden',
-              background: 'rgba(255,255,255,0.08)',
+              background: '#fff',
+              boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              padding: '12px',
             }}
           >
             <img
               src={product.thumbnailImage ?? product.detailImage}
               alt={product.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />
           </div>
         ) : (

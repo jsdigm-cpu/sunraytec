@@ -59,17 +59,19 @@ export default function ProductGrid({ products }: Props) {
                             width: '84px',
                             height: '84px',
                             borderRadius: '12px',
-                            background: 'rgba(255,255,255,0.08)',
+                            background: '#fff',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             overflow: 'hidden',
+                            padding: '6px',
                           }}
                         >
                           <img
                             src={item.thumbnailImage ?? item.detailImage}
                             alt={item.name}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                           />
                         </div>
                         <div>

@@ -74,8 +74,8 @@ export default function ProductDetailPage() {
             <div
               style={{
                 borderRadius: '22px',
-                border: '1px solid rgba(255,255,255,0.1)',
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
+                background: '#fff',
+                boxShadow: '0 12px 40px rgba(0,0,0,0.3)',
                 padding: '28px',
                 display: 'flex',
                 alignItems: 'center',
@@ -156,10 +156,9 @@ export default function ProductDetailPage() {
             </article>
 
             <article className="card" style={{ padding: '1.5rem' }}>
-              <h2 style={{ marginTop: 0 }}>문의 및 운영 메모</h2>
+              <h2 style={{ marginTop: 0 }}>제품 문의</h2>
               <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.8, marginTop: 0 }}>
-                현재는 웹페이지 초안 단계라 상세 사진과 상세 문구 일부는 기본 데이터로 채워져 있습니다. 이후 관리자 화면 또는 Supabase 연동 시
-                모델별 사진, 카탈로그 링크, 상세 설명을 직접 수정할 수 있도록 구조를 열어두었습니다.
+                제품 사양, 견적, 시공 관련 상담은 아래 연락처로 문의해주세요.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <a href="tel:16882520" className="btn btn-primary" style={{ textAlign: 'center' }}>전화 문의하기</a>
