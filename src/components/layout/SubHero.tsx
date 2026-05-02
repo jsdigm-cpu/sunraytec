@@ -30,11 +30,10 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
       style={{
         background,
         color: '#fff',
-        padding: '56px 0 0',
+        padding: '32px 0 0',
         minHeight: 360,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -143,38 +142,43 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
               {lead}
             </p>
           )}
-
-          {/* 핵심 키워드 태그 */}
-          {keywords && keywords.length > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '8px',
-                marginTop: '24px',
-              }}
-            >
-              {keywords.map((kw) => (
-                <span
-                  key={kw}
-                  style={{
-                    display: 'inline-block',
-                    padding: '5px 14px',
-                    borderRadius: '20px',
-                    background: 'rgba(255,255,255,0.08)',
-                    border: `1px solid ${theme.accentColor}55`,
-                    color: 'rgba(255,255,255,0.7)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    letterSpacing: '0.3px',
-                  }}
-                >
-                  {kw}
-                </span>
-              ))}
-            </div>
-          )}
         </motion.div>
+
+        {/* 핵심 키워드 태그 (하단으로 밀어냄) */}
+        {keywords && keywords.length > 0 && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+              marginTop: 'auto',
+              paddingTop: '40px',
+              paddingBottom: '24px',
+            }}
+          >
+            {keywords.map((kw) => (
+              <span
+                key={kw}
+                style={{
+                  display: 'inline-block',
+                  padding: '5px 14px',
+                  borderRadius: '20px',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: `1px solid ${theme.accentColor}55`,
+                  color: 'rgba(255,255,255,0.7)',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  letterSpacing: '0.3px',
+                }}
+              >
+                {kw}
+              </span>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       {/* 하단 디바이더 라인 */}
