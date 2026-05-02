@@ -5,77 +5,79 @@ import { fadeInUp } from '../../utils/animations';
 
 export default function CtaSection() {
   return (
-    <section
-      style={{
-        background: 'linear-gradient(90deg, var(--red-dark) 0%, var(--red) 100%)',
-        padding: '64px 0',
-      }}
-    >
+    /* Apple: full-bleed dark tile — near-black surface, white text, pill CTA */
+    <section style={{ background: 'var(--apple-surface-dark)', padding: 'var(--as-section) 0' }}>
       <div className="container">
         <ScrollReveal variants={fadeInUp}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '32px',
-              flexWrap: 'wrap',
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-                  fontWeight: 900,
-                  color: '#fff',
-                  lineHeight: 1.25,
-                  marginBottom: '8px',
-                }}
-              >
-                지금 바로 무료 상담 · 견적 문의
-              </h2>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7 }}>
-                면적과 용도만 알려주시면 최적 모델과 견적을 빠르게 제안해 드립니다.
-              </p>
-            </div>
+          <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-apple)',
+                fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+                fontWeight: 600,
+                color: '#f5f5f7',
+                lineHeight: 1.1,
+                letterSpacing: '-1px',
+                marginBottom: '16px',
+              }}
+            >
+              지금 바로 무료 상담 · 견적 문의
+            </h2>
+            <p style={{
+              fontFamily: 'var(--font-apple)',
+              fontSize: '17px',
+              fontWeight: 400,
+              color: 'var(--apple-mid)',
+              lineHeight: 1.6,
+              marginBottom: '36px',
+            }}>
+              면적과 용도만 알려주시면 최적 모델과 견적을 빠르게 제안해 드립니다.
+            </p>
 
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', flexShrink: 0 }}>
-              <motion.div whileHover={{ scale: 1.06, y: -2 }} whileTap={{ scale: 0.97 }}>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {/* Apple primary: pill-shaped blue */}
+              <motion.div whileHover={{ opacity: 0.85 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   to="/products/excellence"
                   style={{
-                    background: '#fff',
-                    color: 'var(--red)',
-                    padding: '13px 26px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
+                    background: 'var(--apple-blue)',
+                    color: '#fff',
+                    padding: '12px 28px',
+                    borderRadius: 'var(--ar-pill)',
+                    fontFamily: 'var(--font-apple)',
+                    fontWeight: 400,
+                    fontSize: '17px',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.15s',
                   }}
                 >
-                  📦 우수제품 보기
+                  제품 카탈로그 보기
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+
+              {/* Apple secondary: same blue, no fill */}
+              <motion.div whileHover={{ opacity: 0.75 }} whileTap={{ scale: 0.97 }}>
                 <a
                   href="tel:16882520"
                   style={{
-                    background: 'rgba(255,255,255,.18)',
-                    color: '#fff',
-                    border: '1px solid rgba(255,255,255,.35)',
-                    padding: '13px 26px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
+                    background: 'transparent',
+                    color: 'var(--apple-blue)',
+                    padding: '12px 28px',
+                    borderRadius: 'var(--ar-pill)',
+                    fontFamily: 'var(--font-apple)',
+                    fontWeight: 400,
+                    fontSize: '17px',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.15s',
                   }}
                 >
-                  📞 1688-2520
+                  1688-2520 전화하기 ›
                 </a>
               </motion.div>
             </div>
