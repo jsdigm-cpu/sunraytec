@@ -4,6 +4,9 @@
 /* ── 브랜드 토큰 ── */
 @import './tokens.css';
 
+/* ── Notion 실험 디자인 토큰 (experiment/notion-design) ── */
+@import './notion-tokens.css';
+
 /* ── Tailwind 커스텀 테마 등록 (Tailwind 클래스로 사용 가능) ── */
 @theme {
   --color-red:          #C8392B;
