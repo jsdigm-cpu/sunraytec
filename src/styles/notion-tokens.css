@@ -1,0 +1,94 @@
+/* ============================================================
+   NOTION-INSPIRED DESIGN TOKENS (experiment/notion-design)
+   Reference: DESIGN.md / getdesign.md/notion
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ── Primary ── */
+  --notion-purple:         #7C3AED;
+  --notion-purple-pressed: #6D28D9;
+  --notion-purple-deep:    #5B21B6;
+  --notion-navy:           #0F1117;
+  --notion-navy-mid:       #1A1F2E;
+  --notion-navy-deep:      #080B10;
+
+  /* ── Brand spectrum ── */
+  --notion-pink:           #EC4899;
+  --notion-orange:         #F97316;
+  --notion-teal:           #14B8A6;
+  --notion-green:          #22C55E;
+  --notion-yellow:         #EAB308;
+  --notion-brown:          #92400E;
+
+  /* ── Card tints (pastel) ── */
+  --tint-peach:            #FFF1EC;
+  --tint-rose:             #FFF0F3;
+  --tint-mint:             #EDFAF4;
+  --tint-lavender:         #F3EFFE;
+  --tint-sky:              #EEF6FF;
+  --tint-yellow:           #FEFCE8;
+  --tint-yellow-bold:      #FDE047;
+  --tint-cream:            #FFFBF0;
+  --tint-gray:             #F5F5F4;
+
+  /* ── Surface ── */
+  --canvas:                #FFFFFF;
+  --surface:               #F7F7F5;
+  --surface-soft:          #F1F1EF;
+  --hairline:              #E8E8E5;
+  --hairline-soft:         #EFEFED;
+  --hairline-strong:       #C7C7C4;
+
+  /* ── Text ── */
+  --ink-deep:              #0F0F0F;
+  --ink:                   #1A1A1A;
+  --charcoal:              #37352F;
+  --slate:                 #6B6B6B;
+  --steel:                 #9B9B9B;
+  --stone:                 #B5B5B2;
+  --muted:                 #D4D4D1;
+  --on-dark:               #FFFFFF;
+  --on-dark-muted:         rgba(255, 255, 255, 0.65);
+
+  /* ── Border radius ── */
+  --nr-xs:   4px;
+  --nr-sm:   6px;
+  --nr-md:   8px;
+  --nr-lg:   12px;
+  --nr-xl:   16px;
+  --nr-xxl:  20px;
+  --nr-xxxl: 24px;
+  --nr-full: 9999px;
+
+  /* ── Shadows (Notion elevation) ── */
+  --ns-1: rgba(15, 15, 15, 0.04) 0px 1px 2px 0px;
+  --ns-2: rgba(15, 15, 15, 0.08) 0px 4px 12px 0px;
+  --ns-3: rgba(15, 15, 15, 0.20) 0px 24px 48px -8px;
+  --ns-4: rgba(15, 15, 15, 0.16) 0px 16px 48px -8px;
+
+  /* ── Spacing ── */
+  --ns-xxs:        4px;
+  --ns-xs:         8px;
+  --ns-sm:         12px;
+  --ns-md:         16px;
+  --ns-lg:         20px;
+  --ns-xl:         24px;
+  --ns-xxl:        32px;
+  --ns-xxxl:       48px;
+  --ns-section-sm: 56px;
+  --ns-section:    64px;
+  --ns-section-lg: 96px;
+  --ns-hero:       120px;
+
+  /* ── Typography ── */
+  --font-notion: 'Inter', -apple-system, system-ui, 'Segoe UI', Helvetica, sans-serif;
+}
+
+/* ── Global font override for this theme ── */
+body {
+  font-family: var(--font-notion);
+  color: var(--charcoal);
+  background: var(--canvas);
+}
