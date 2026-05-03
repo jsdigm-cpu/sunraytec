@@ -462,6 +462,8 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           {HERO_IMAGES.map((_, index) => (
             <button
               key={index}
+              aria-label={`슬라이드 ${index + 1}번으로 이동`}
+              aria-current={index === currentIndex ? 'true' : undefined}
               onClick={() => {
                 setPrevIndex(currentIndex);
                 setCurrentIndex(index);
