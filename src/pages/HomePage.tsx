@@ -8,6 +8,7 @@ import ProductLineupSection from '../components/home/ProductLineupSection';
 import CasesSection from '../components/home/CasesSection';
 import CertSection from '../components/home/CertSection';
 import CalcSection from '../components/home/CalcSection';
+import NewsSection from '../components/home/NewsSection';
 import FastTrackBanner from '../components/home/FastTrackBanner';
 import CtaSection from '../components/home/CtaSection';
 import PageSEO from '../components/seo/PageSEO';
@@ -34,6 +35,7 @@ export default function HomePage() {
       <ProductLineupSection />
       <CasesSection />
       <CertSection />
+      <NewsSection />
       <CalcSection />
       <FastTrackBanner />
       <CtaSection />
