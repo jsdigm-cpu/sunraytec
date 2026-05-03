@@ -128,11 +128,7 @@ export default function ContactPage() {
     }
 
     // 성공 시 타임스탬프 기록
-    const RATE_KEY = 'inquiry_timestamps';
-    const ONE_HOUR = 60 * 60 * 1000;
-    const raw = localStorage.getItem(RATE_KEY);
-    const timestamps: number[] = raw ? JSON.parse(raw) : [];
-    const updated = [...timestamps.filter(t => Date.now() - t < ONE_HOUR), Date.now()];
+    const updated = [...recent, Date.now()];
     localStorage.setItem(RATE_KEY, JSON.stringify(updated));
 
     setIsSubmitting(false);
