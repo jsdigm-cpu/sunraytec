@@ -16,6 +16,7 @@ const FOOTER_LINKS = [
     links: [
       { label: 'CEO 메시지', to: '/about/ceo-message' },
       { label: '시공사례', to: '/cases' },
+      { label: '뉴스·블로그', to: '/news' },
       { label: '전국 시공 지도', to: '/cases-map' },
       { label: '자료실', to: '/resources/catalog' },
     ],
