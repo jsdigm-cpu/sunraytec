@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../components/layout/SubHero';
+import PageSEO from '../components/seo/PageSEO';
 
 const MATERIALS = [
   { title: '일위대가표', desc: '공공기관 설계·견적 검토용 기본 산출 자료 (모델별 단가·노무비·재료비 정리)', status: '인증 후 제공' },
@@ -34,7 +35,13 @@ const QUICK_LINKS = [
 export default function FastTrackPage() {
   return (
     <main style={{ background: '#F8FAFC', minHeight: '100vh' }}>
-            <SubHero
+      <PageSEO
+        title="패스트트랙 라운지 - 설계·견적 자료 신속 제공"
+        description="공공기관·설계사·시공사를 위한 썬레이텍 패스트트랙 서비스. 일위대가표, CAD 도면, 제안서, 에너지 절감 시뮬레이션 자료를 빠르게 받으세요."
+        keywords={['복사난방 설계 자료', '일위대가표', 'CAD 도면', '제안서 양식', '패스트트랙']}
+        canonical="/fasttrack"
+      />
+      <SubHero
         breadcrumb={[{ label: '패스트트랙 라운지' }]}
         badge="Fast Track Lounge"
         title="설계·견적 검토 자료를 더 빠르게 전달합니다"

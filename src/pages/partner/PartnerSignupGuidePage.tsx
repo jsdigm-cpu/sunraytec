@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { ArrowRight, BadgeCheck, ClipboardList, FileCheck2, LockKeyhole, UserPlus } from 'lucide-react';
 
 const PROCESS = [
@@ -18,6 +19,12 @@ const BENEFITS = [
 export default function PartnerSignupGuidePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO
+        title="파트너·협력회사 가입 안내 - 썬레이텍"
+        description="썬레이텍 파트너 포털 가입 절차 안내. 시공사, 설계사, 대리점 등 협력회사 담당자를 위한 자료 접근 및 승인 프로세스를 안내합니다."
+        keywords={['썬레이텍 파트너', '협력회사 가입', '대리점 신청', '시공사 파트너']}
+        canonical="/partner/signup-guide"
+      />
             <SubHero
         breadcrumb={[{ label: '파트너 가입 안내' }]}
         badge="Partner Sign-up"

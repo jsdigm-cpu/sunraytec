@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { supabase } from '../../lib/supabase';
 import type { Notice } from '../../types/notice';
 import { NOTICE_TONE_STYLE } from '../../types/notice';
@@ -59,6 +60,12 @@ export default function NoticePage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="공지사항 - 썬레이텍"
+        description="썬레이텍의 공지사항을 확인하세요. 제품 업데이트, 납품 실적, 인증 현황, 운영 안내 등 최신 소식을 전달합니다."
+        keywords={['썬레이텍 공지', '제품 업데이트', '납품 실적', '복사난방 소식']}
+        canonical="/support/notice"
+      />
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: '공지사항' }]}
         badge="Notice"

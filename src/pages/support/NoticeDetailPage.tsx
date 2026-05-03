@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { supabase } from '../../lib/supabase';
 import type { Notice } from '../../types/notice';
 import { NOTICE_TONE_STYLE } from '../../types/notice';
@@ -67,6 +68,12 @@ export default function NoticeDetailPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title={`${notice.title} - 썬레이텍 공지사항`}
+        description={notice.body.slice(0, 120)}
+        keywords={['썬레이텍 공지', notice.category]}
+        canonical={`/support/notice/${notice.id}`}
+      />
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: '공지사항', to: '/support/notice' }, { label: notice.title }]}
         badge="Notice"

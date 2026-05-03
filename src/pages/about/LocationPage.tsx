@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 const COMPANY_ADDRESS = '서울특별시 서초구 능안말길 40, 2층';
 const COMPANY_TEL = '1688-2520';
@@ -54,6 +55,12 @@ export default function LocationPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="찾아오시는 길 - 썬레이텍 본사 위치"
+        description="썬레이텍 본사 위치 안내. 서울특별시 서초구 능안말길 40, 2층. 대중교통·자가용 이용 방법, 전화 1688-2520."
+        keywords={['썬레이텍 본사', '회사 위치', '서초구 본사', '찾아오시는 길', '복사난방 회사']}
+        canonical="/about/location"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: '찾아오시는 길' }]}
         badge="Location"

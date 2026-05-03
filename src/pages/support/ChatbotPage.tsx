@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 interface Message {
   id: number;
@@ -257,6 +258,12 @@ export default function ChatbotPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="AI 상담 챗봇 - 썬레이텍 복사난방"
+        description="썬레이텍 AI 상담 챗봇으로 복사난방 제품, 가격, 설치, 조달 방법에 대해 즉시 답변받으세요."
+        keywords={['복사난방 상담', 'AI 챗봇', '패널히터 문의', '난방 Q&A']}
+        canonical="/support/chatbot"
+      />
       <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: 'AI 상담 챗봇' }]}
         badge="AI Assistant · Active"

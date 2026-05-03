@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 type ProductGuideId = 'special' | 'personal-bath' | 'smart-control' | 'compare';
 
@@ -59,9 +60,18 @@ const DATA: Record<ProductGuideId, {
 export default function ProductGuidePage({ pageId }: ProductGuidePageProps) {
   const page = DATA[pageId];
 
+  const SEO_META: Record<ProductGuideId, { title: string; desc: string; kw: string[] }> = {
+    special:        { title: '방폭·특수 제품 - 썬레이텍', desc: '화학공장·도장·위험물 시설 방폭형, IP65 방진·방수, 고천장 작업자 난방 제품군 안내.', kw: ['방폭 복사난방', 'EX emb II T1', 'IP65 패널히터', '특수 복사난방'] },
+    'personal-bath':{ title: '개인용·욕실형 복사난방 - 썬레이텍', desc: '소형 사무공간, 욕실, 탈의실에 맞춘 소형 복사난방 제품 구성 안내.', kw: ['욕실 복사난방', '개인 난방', '소형 패널히터', '탈의실 난방'] },
+    'smart-control':{ title: '스마트 제어 시스템 - 썬레이텍', desc: 'WiFi 원격 제어, 구역별 운전, 128회로 중앙제어 등 복사난방 스마트 제어 솔루션.', kw: ['스마트 난방 제어', '128회로', 'IoT 복사난방', '원격 제어'] },
+    compare:        { title: '제품 비교 - 공간별 추천 복사난방', desc: '공간 규모·천장고·설치 목적에 따라 복사난방 제품을 비교하고 선택하세요.', kw: ['복사난방 비교', '제품 선택', '공간별 추천', '패널히터 비교'] },
+  };
+  const seo = SEO_META[pageId];
+
   return (
     <main style={{ background: '#F8FAFC', minHeight: '100vh' }}>
-            <SubHero
+      <PageSEO title={seo.title} description={seo.desc} keywords={seo.kw} canonical={`/products/${pageId}`} />
+      <SubHero
         breadcrumb={[{ label: '제품안내' }, { label: '제품 선택 가이드' }]}
         badge="Product Guide"
         title="제품 선택 가이드"

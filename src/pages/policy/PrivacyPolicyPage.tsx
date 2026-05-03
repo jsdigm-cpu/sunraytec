@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 interface Section {
   title: string;
@@ -101,6 +102,12 @@ const META = {
 export default function PrivacyPolicyPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="개인정보처리방침 - 썬레이텍"
+        description="(주)썬레이텍의 개인정보처리방침입니다. 수집 항목, 이용 목적, 보유 기간, 열람·삭제 요청 방법을 안내합니다."
+        keywords={['개인정보처리방침', '썬레이텍 개인정보', '정보 보호']}
+        canonical="/policy/privacy"
+      />
             <SubHero
         breadcrumb={[{ label: '개인정보처리방침' }]}
         badge="Privacy Policy"
