@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A1628;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A3A6B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#C8392B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E67E22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Grid pattern -->
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Red accent line top -->
+  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)" />
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="315" r="280" fill="none" stroke="rgba(200,57,43,0.12)" stroke-width="2"/>
+  <circle cx="1050" cy="315" r="200" fill="none" stroke="rgba(200,57,43,0.08)" stroke-width="2"/>
+  <circle cx="1050" cy="315" r="120" fill="rgba(200,57,43,0.06)"/>
+
+  <!-- Sun rays (복사난방 심볼) -->
+  <g transform="translate(1050,315)" opacity="0.15">
+    <line x1="0" y1="-90" x2="0" y2="-130" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="63" y1="-63" x2="91" y2="-91" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="90" y1="0" x2="130" y2="0" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="63" y1="63" x2="91" y2="91" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="0" y1="90" x2="0" y2="130" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-63" y1="63" x2="-91" y2="91" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-90" y1="0" x2="-130" y2="0" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-63" y1="-63" x2="-91" y2="-91" stroke="#E67E22" stroke-width="3" stroke-linecap="round"/>
+    <circle r="55" fill="rgba(230,126,34,0.2)" stroke="#E67E22" stroke-width="2"/>
+  </g>
+
+  <!-- Company name -->
+  <text x="100" y="200" font-family="'Noto Sans KR', sans-serif" font-size="28" font-weight="400" fill="rgba(255,255,255,0.55)" letter-spacing="6">SUNRAYTEC</text>
+
+  <!-- Main headline -->
+  <text x="100" y="300" font-family="'Noto Sans KR', sans-serif" font-size="68" font-weight="900" fill="#FFFFFF">복사난방의</text>
+  <text x="100" y="390" font-family="'Noto Sans KR', sans-serif" font-size="68" font-weight="900" fill="#C8392B">기준</text>
+
+  <!-- Subtext -->
+  <text x="100" y="460" font-family="'Noto Sans KR', sans-serif" font-size="26" font-weight="400" fill="rgba(255,255,255,0.65)">원적외선 복사난방 · 정부조달 우수제품 지정</text>
+
+  <!-- Badges -->
+  <rect x="100" y="510" width="150" height="42" rx="6" fill="rgba(200,57,43,0.3)" stroke="rgba(200,57,43,0.6)" stroke-width="1"/>
+  <text x="175" y="537" font-family="'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#FFB23F" text-anchor="middle">우수제품 3회</text>
+
+  <rect x="266" y="510" width="150" height="42" rx="6" fill="rgba(200,57,43,0.3)" stroke="rgba(200,57,43,0.6)" stroke-width="1"/>
+  <text x="341" y="537" font-family="'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#FFB23F" text-anchor="middle">전국 납품 실적</text>
+
+  <rect x="432" y="510" width="150" height="42" rx="6" fill="rgba(200,57,43,0.3)" stroke="rgba(200,57,43,0.6)" stroke-width="1"/>
+  <text x="507" y="537" font-family="'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#FFB23F" text-anchor="middle">에너지 57% 절감</text>
+
+  <!-- Domain -->
+  <text x="1100" y="600" font-family="'Noto Sans KR', sans-serif" font-size="18" fill="rgba(255,255,255,0.35)" text-anchor="end">sunraytec.co.kr</text>
+</svg>
