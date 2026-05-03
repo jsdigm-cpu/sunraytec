@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 const TARGETS = [
   { icon: '⚡', title: '전기·설비 시공사', body: '학교·공공기관 전기/기계 공사 실적 보유, 지역 거점 운영' },
@@ -35,7 +36,13 @@ const FAQ = [
 export default function DealersPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-            <SubHero
+      <PageSEO
+        title="대리점·파트너 모집 - 썬레이텍 복사난방"
+        description="썬레이텍 지역 영업·시공 파트너를 모집합니다. 단가 우대, 영업자료 패키지, 기술교육, 공동영업 지원. 조달·MRO 유통사, 전기·설비·냉난방 시공사 환영."
+        keywords={['대리점 모집', '시공사 파트너', '복사난방 대리점', '난방 파트너십', '조달 유통사']}
+        canonical="/support/dealers"
+      />
+      <SubHero
         breadcrumb={[{ label: '고객센터' }, { label: '대리점 모집' }]}
         badge="Dealer Program"
         title="지역 영업·시공 파트너를 찾습니다"

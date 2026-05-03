@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 import { supabase } from '../../lib/supabase';
 
 interface CaseRow {
@@ -88,6 +89,12 @@ export default function ClientsPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="주요 납품처 - 썬레이텍 복사난방 레퍼런스"
+        description="학교·군부대·물류센터·공공기관 등 2,000곳 이상에 납품한 썬레이텍의 검증된 복사난방 레퍼런스를 확인하세요."
+        keywords={['복사난방 납품처', '주요 고객사', '공공기관 납품', '학교 난방', '군부대 납품', '레퍼런스']}
+        canonical="/about/clients"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: '주요 납품처' }]}
         badge="Reference Clients"

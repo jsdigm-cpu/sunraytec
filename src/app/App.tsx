@@ -1,5 +1,6 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { trackPageView } from '../lib/gtag';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ScrollToTop from '../components/layout/ScrollToTop';
@@ -46,6 +47,7 @@ const STORAGE_KEY = 'sunraytec-cms-state-v1';
 const PRODUCTS_SCHEMA_VERSION = '2026-04-21-products-v4';
 
 export default function App() {
+  const location = useLocation();
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [content, setContent] = useState<SiteContent>(initialSiteContent);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
@@ -91,6 +93,8 @@ export default function App() {
 
     return null;
   };
+
+  useEffect(() => { trackPageView(location.pathname + location.search); }, [location]);
 
   useEffect(() => {
     async function hydrate() {

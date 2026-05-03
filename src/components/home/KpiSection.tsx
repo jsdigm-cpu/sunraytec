@@ -34,21 +34,34 @@ function KpiCardInner({ item }: { item: typeof KPI_ITEMS[0] }) {
 
   return (
     <div ref={ref}>
-      <div
-        style={{
-          fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-          color: 'var(--red)',
-          lineHeight: 1,
-          marginBottom: '6px',
-        }}
-      >
-        {item.prefix}{count}{item.suffix}
+      {/* 수치 + 단위 분리 — 시각 위계 강화 */}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '1px', marginBottom: '8px' }}>
+        {item.prefix && (
+          <span style={{ fontFamily: "'Noto Sans KR', sans-serif", fontSize: 'clamp(0.8rem, 1.5vw, 1rem)', fontWeight: 700, color: 'var(--red)', opacity: 0.75, marginRight: '1px' }}>
+            {item.prefix}
+          </span>
+        )}
+        <span
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: 'clamp(2.6rem, 5vw, 3.8rem)',
+            color: 'var(--red)',
+            lineHeight: 1,
+            fontWeight: 800,
+          }}
+        >
+          {count}
+        </span>
+        {item.suffix && (
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(1.4rem, 2.8vw, 2rem)', color: 'var(--red)', lineHeight: 1, marginLeft: '2px', opacity: 0.85 }}>
+            {item.suffix}
+          </span>
+        )}
       </div>
-      <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--navy)', marginBottom: '3px' }}>
+      <div style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--navy)', marginBottom: '4px' }}>
         {item.label}
       </div>
-      <div style={{ fontSize: '12px', color: 'var(--gray)' }}>{item.sub}</div>
+      <div style={{ fontSize: '11px', color: 'var(--gray)', lineHeight: 1.4 }}>{item.sub}</div>
     </div>
   );
 }

@@ -44,6 +44,8 @@ const PartnerPortalPage    = lazy(() => import('../pages/partner/PartnerPortalPa
 const PartnerPendingPage   = lazy(() => import('../pages/partner/PartnerPendingPage'));
 const PartnerSignupGuidePage = lazy(() => import('../pages/partner/PartnerSignupGuidePage'));
 const NotFoundPage         = lazy(() => import('../pages/NotFoundPage'));
+const NewsPage             = lazy(() => import('../pages/news/NewsPage'));
+const NewsDetailPage       = lazy(() => import('../pages/news/NewsDetailPage'));
 
 function PageLoader() {
   return (
@@ -96,6 +98,8 @@ export const router = createBrowserRouter([
       { path: 'support/notice/:id',    element: <S><NoticeDetailPage /></S> },
       { path: 'support/dealers',       element: <S><DealersPage /></S> },
       { path: 'support/chatbot',       element: <S><ChatbotPage /></S> },
+      { path: 'news',                  element: <S><NewsPage /></S> },
+      { path: 'news/:id',              element: <S><NewsDetailPage /></S> },
       { path: 'policy/privacy',        element: <S><PrivacyPolicyPage /></S> },
       { path: 'policy/terms',          element: <S><TermsPage /></S> },
       { path: 'technology/principle',  element: <S><PrinciplePage /></S> },

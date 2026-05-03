@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+
+const ADMIN_TIMEOUT_MS = 30 * 60 * 1000; // 30분
 
 interface Profile {
   id: string;
@@ -39,6 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   async function fetchProfile(userId: string) {
     if (!supabase) return;
@@ -173,6 +176,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isAdmin = profile?.role === 'admin';
   const isApprovedPartner = profile?.status === 'approved';
+
+  // 관리자 전용 — 30분 비활동 시 자동 로그아웃
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const handleTimeout = async () => {
+      if (supabase) await supabase.auth.signOut();
+      window.location.href = '/login?reason=timeout';
+    };
+
+    const resetTimer = () => {
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+      inactivityTimer.current = setTimeout(handleTimeout, ADMIN_TIMEOUT_MS);
+    };
+
+    const EVENTS = ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'] as const;
+    EVENTS.forEach(e => window.addEventListener(e, resetTimer, { passive: true }));
+    resetTimer();
+
+    return () => {
+      EVENTS.forEach(e => window.removeEventListener(e, resetTimer));
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    };
+  }, [isAdmin]);
 
   return (
     <AuthContext.Provider value={{ user, session, profile, loading, isAdmin, isApprovedPartner, signIn, signUp, signOut }}>

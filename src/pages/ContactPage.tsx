@@ -5,6 +5,7 @@ import SubHero from '../components/layout/SubHero';
 import PageSEO from '../components/seo/PageSEO';
 import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { trackEvent } from '../lib/gtag';
 
 type InquiryType = 'public' | 'industrial' | 'commercial' | 'document' | null;
 
@@ -80,6 +81,18 @@ export default function ContactPage() {
     e.preventDefault();
     if (!canSubmit) return;
 
+    // Rate limiting: 1시간 내 5건 초과 방지 (클라이언트 측)
+    const RATE_KEY = 'inquiry_timestamps';
+    const ONE_HOUR = 60 * 60 * 1000;
+    const now = Date.now();
+    const raw = localStorage.getItem(RATE_KEY);
+    const timestamps: number[] = raw ? JSON.parse(raw) : [];
+    const recent = timestamps.filter(t => now - t < ONE_HOUR);
+    if (recent.length >= 5) {
+      setSubmitError('1시간 내 문의 가능 횟수(5건)를 초과했습니다. 잠시 후 다시 시도하거나 전화(1688-2520)로 문의해 주세요.');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -115,6 +128,11 @@ export default function ContactPage() {
       console.warn('Supabase not connected. Inquiry not saved to DB.');
     }
 
+    // 성공 시 타임스탬프 기록
+    const updated = [...recent, Date.now()];
+    localStorage.setItem(RATE_KEY, JSON.stringify(updated));
+
+    trackEvent('inquiry_submit', { inquiry_type: selectedType ?? 'general' });
     setIsSubmitting(false);
     setSubmitted(true);
   };

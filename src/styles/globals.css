@@ -46,3 +46,25 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* ── 키보드 접근성 — 포커스 링 ── */
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* 마우스 클릭 시 포커스 링 제거 (키보드만 표시) */
+:focus:not(:focus-visible) {
+  outline: none;
+}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 interface Section {
   title: string;
@@ -92,6 +93,12 @@ const META = {
 export default function TermsPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="이용약관 - 썬레이텍"
+        description="(주)썬레이텍 공식 홈페이지 이용약관입니다. 서비스 이용 조건, 금지 행위, 면책 사항 등을 안내합니다."
+        keywords={['이용약관', '썬레이텍 약관', '서비스 이용 조건']}
+        canonical="/policy/terms"
+      />
             <SubHero
         breadcrumb={[{ label: '이용약관' }]}
         badge="Terms of Service"

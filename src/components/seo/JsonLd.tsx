@@ -21,7 +21,7 @@ interface FaqProps {
 
 type Props = OrganizationProps | ProductProps | BreadcrumbProps | FaqProps;
 
-const SITE_URL = 'https://www.sunraytec.com';
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://sunraytec.co.kr';
 
 export default function JsonLd(props: Props) {
   const data = buildSchema(props);

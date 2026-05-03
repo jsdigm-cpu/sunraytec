@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 type Tone = 'red' | 'amber' | 'navy' | 'green' | 'gray';
 
@@ -89,6 +90,12 @@ const TONE_BADGE: Record<Tone, { bg: string; color: string }> = {
 export default function MediaPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="수상·언론보도 - 썬레이텍 복사난방"
+        description="썬레이텍의 수상 이력과 언론 보도를 확인하세요. 조달청 우수제품 3회 지정, 혁신제품 선정, 각종 인증 및 언론 노출 내역."
+        keywords={['썬레이텍 수상', '복사난방 언론보도', '혁신제품', '우수제품 인증', '복사난방 뉴스']}
+        canonical="/about/media"
+      />
       <SubHero
         breadcrumb={[{ label: '회사소개' }, { label: '수상·언론보도' }]}
         badge="Awards & Media"

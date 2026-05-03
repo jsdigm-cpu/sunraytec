@@ -232,11 +232,11 @@ export default function CaseDetailPage() {
               onClick={(e) => e.stopPropagation()}
               style={{ maxWidth: '92vw', maxHeight: '88vh', objectFit: 'contain', borderRadius: '8px' }}
             />
-            <button onClick={() => setLightbox(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', color: '#fff', fontSize: '2rem', cursor: 'pointer' }}>✕</button>
+            <button aria-label="이미지 닫기" onClick={() => setLightbox(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', color: '#fff', fontSize: '2rem', cursor: 'pointer' }}>✕</button>
             {allImages.length > 1 && (
               <>
-                <button onClick={(e) => { e.stopPropagation(); setLightbox((p) => (p! - 1 + allImages.length) % allImages.length); }} style={{ ...arrowBtn('left'), position: 'fixed' }}>‹</button>
-                <button onClick={(e) => { e.stopPropagation(); setLightbox((p) => (p! + 1) % allImages.length); }} style={{ ...arrowBtn('right'), position: 'fixed' }}>›</button>
+                <button aria-label="이전 이미지" onClick={(e) => { e.stopPropagation(); setLightbox((p) => (p! - 1 + allImages.length) % allImages.length); }} style={{ ...arrowBtn('left'), position: 'fixed' }}>‹</button>
+                <button aria-label="다음 이미지" onClick={(e) => { e.stopPropagation(); setLightbox((p) => (p! + 1) % allImages.length); }} style={{ ...arrowBtn('right'), position: 'fixed' }}>›</button>
               </>
             )}
           </motion.div>
