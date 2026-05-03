@@ -8,7 +8,7 @@ interface Props {
 }
 
 const SITE_NAME = '썬레이텍';
-const SITE_URL = 'https://sunraytec.vercel.app';
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://sunraytec.co.kr';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.svg`;
 
 export default function PageSEO({
