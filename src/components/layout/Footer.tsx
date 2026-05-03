@@ -35,7 +35,7 @@ const FOOTER_LINKS = [
     links: [
       { label: '개인정보처리방침', to: '/policy/privacy' },
       { label: '이용약관', to: '/policy/terms' },
-      { label: '운영 문서', to: '/admin' },
+      { label: '공지사항', to: '/support/notice' },
     ],
   },
 ];
