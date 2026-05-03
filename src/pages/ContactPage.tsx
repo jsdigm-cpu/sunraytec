@@ -5,6 +5,7 @@ import SubHero from '../components/layout/SubHero';
 import PageSEO from '../components/seo/PageSEO';
 import { CheckCircle, Phone, Mail, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { trackEvent } from '../lib/gtag';
 
 type InquiryType = 'public' | 'industrial' | 'commercial' | 'document' | null;
 
@@ -131,6 +132,7 @@ export default function ContactPage() {
     const updated = [...recent, Date.now()];
     localStorage.setItem(RATE_KEY, JSON.stringify(updated));
 
+    trackEvent('inquiry_submit', { inquiry_type: selectedType ?? 'general' });
     setIsSubmitting(false);
     setSubmitted(true);
   };
