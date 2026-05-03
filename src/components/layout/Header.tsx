@@ -72,6 +72,7 @@ const NAV_ITEMS: NavItem[] = [
     to: '/resources/catalog',
     label: '자료실',
     subs: [
+      { to: '/news', label: '뉴스·블로그', icon: '📰' },
       { to: '/resources/heating-load-calculator', label: '난방 용량 계산기', icon: '🧮' },
       { to: '/resources/energy-roi-calculator', label: '에너지 ROI 계산기', icon: '💰' },
       { to: '/resources/catalog', label: '카탈로그 다운로드', icon: '📥' },

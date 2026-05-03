@@ -12,6 +12,7 @@ import MemberManager from '../components/admin/MemberManager';
 import HeroThemeEditor from '../components/admin/HeroThemeEditor';
 import NoticeEditor from '../components/admin/NoticeEditor';
 import FaqEditor from '../components/admin/FaqEditor';
+import PostsEditor from '../components/admin/PostsEditor';
 import type { CmsState, SiteContent } from '../types/cms';
 import type { Product } from '../types/product';
 import { supabase } from '../lib/supabase';
@@ -175,6 +176,9 @@ export default function AdminDashboardPage() {
         )}
         {tab === 'faqs' && (
           <FaqEditor />
+        )}
+        {tab === 'posts' && (
+          <PostsEditor />
         )}
         {tab === 'hero-theme' && (
           <HeroThemeEditor />
