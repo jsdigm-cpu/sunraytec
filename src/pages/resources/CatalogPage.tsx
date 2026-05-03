@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { FileText, Download, Lock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 type DocCategory = '전체' | '제품 카탈로그' | '기술 자료' | '인증서' | '파트너 자료';
 
@@ -174,7 +175,12 @@ export default function CatalogPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
-
+      <PageSEO
+        title="카탈로그·자료 다운로드 - 썬레이텍 복사난방"
+        description="썬레이텍 제품 카탈로그, 기술 자료, 인증서, 파트너 자료를 다운로드하세요. 원적외선 복사난방 패널히터 SUR 시리즈 상세 스펙 포함."
+        keywords={['복사난방 카탈로그', '패널히터 시방서', '제품 인증서', '기술자료 다운로드', 'SUR 스펙']}
+        canonical="/resources/catalog"
+      />
       <SubHero
         breadcrumb={[{ label: '자료실' }, { label: '카탈로그·자료 다운로드' }]}
         badge="Documents & Downloads"

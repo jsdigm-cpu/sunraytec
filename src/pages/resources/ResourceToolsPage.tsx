@@ -15,6 +15,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import SubHero from '../../components/layout/SubHero';
+import PageSEO from '../../components/seo/PageSEO';
 
 type ToolPageId = 'heating-load' | 'energy-roi' | 'cad' | 'videos';
 
@@ -259,8 +260,17 @@ export default function ResourceToolsPage({ pageId }: { pageId: ToolPageId }) {
   const Icon = config.icon;
   const isCalculator = pageId === 'heating-load' || pageId === 'energy-roi';
 
+  const SEO_META: Record<ToolPageId, { title: string; desc: string; kw: string[] }> = {
+    'heating-load': { title: '난방 용량 계산기 - 현장 조건으로 빠른 1차 산출', desc: '면적·천장고·단열·구역 비율을 입력하면 복사난방 필요 용량과 제품 수량을 즉시 계산합니다.', kw: ['난방 용량 계산기', '복사난방 용량 산출', '패널히터 수량', '열부하 계산'] },
+    'energy-roi':   { title: '에너지 ROI 계산기 - 절감액·회수 기간 즉시 비교', desc: '현재 난방비와 절감률을 입력하면 연간 절감액, 투자 회수 기간, 5년 누적 효과를 바로 확인합니다.', kw: ['에너지 절감 계산기', 'ROI 계산', '난방비 절감', '복사난방 투자효과'] },
+    cad:            { title: '스펙·도면 CAD 자료 안내 - 썬레이텍', desc: '복사난방 패널히터 시방서, 설치 상세도, 전기 조건 자료를 설계 검토 단계에 맞게 안내합니다.', kw: ['복사난방 도면', 'CAD 자료', '시방서', '설치 상세도'] },
+    videos:         { title: '동영상 자료 - 복사난방 원리·설치·사례', desc: '복사난방 원리 설명, 설치 방식, 학교·물류·특수 현장 적용 사례 영상 자료를 모아볼 수 있습니다.', kw: ['복사난방 동영상', '패널히터 설치 영상', '복사난방 원리', '시공사례 영상'] },
+  };
+  const seo = SEO_META[pageId];
+
   return (
     <main style={{ minHeight: '100vh', background: '#fff' }}>
+      <PageSEO title={seo.title} description={seo.desc} keywords={seo.kw} canonical={`/resources/${pageId === 'heating-load' ? 'heating-load-calculator' : pageId === 'energy-roi' ? 'energy-roi-calculator' : pageId === 'cad' ? 'spec-cad' : 'videos'}`} />
       <SubHero
         breadcrumb={[{ label: '자료실' }, { label: config.breadcrumb }]}
         badge={config.badge}

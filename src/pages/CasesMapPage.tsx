@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SubHero from '../components/layout/SubHero';
+import PageSEO from '../components/seo/PageSEO';
 import { supabase } from '../lib/supabase';
 
 interface CaseItem {
@@ -93,6 +94,12 @@ export default function CasesMapPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
+      <PageSEO
+        title="전국 시공 지도 - 권역별 납품·시공 현황"
+        description="전국 6개 권역의 썬레이텍 복사난방 시공 현장을 지도로 확인하세요. 수도권·강원·충청·영남·호남·제주 전 지역 납품 실적."
+        keywords={['전국 시공 현장', '복사난방 납품 현황', '권역별 시공사례', '원적외선 히터 전국']}
+        canonical="/cases-map"
+      />
       <SubHero
         breadcrumb={[{ label: '시공사례' }, { label: '전국 시공 지도' }]}
         badge="Installation Map"
