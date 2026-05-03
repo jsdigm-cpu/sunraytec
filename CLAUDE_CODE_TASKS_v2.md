@@ -556,7 +556,7 @@ WebGL/Canvas 기반.
 - [x] STEP 4-5. OG 이미지 ✅ (public/og-default.svg, 1200×630, PageSEO 연동)
 
 ## Phase 5 — 운영·고도화 (지속)
-- [ ] STEP 5-1. AI 계산기 실제 동작 (계산 공식 박이사님 제공 필요)
+- [x] STEP 5-1. AI 계산기 실제 동작 ✅ (난방용량·ROI 계산기 모두 실시간 계산 동작 — useMemo 기반)
 - [x] STEP 5-2. AI 챗봇 ✅ (규칙기반 챗봇 15+ 인텐트, API 키 없이 동작)
 - [ ] STEP 5-3. 영문 페이지 (i18next 설치 승인 필요)
 - [ ] STEP 5-4. 카카오 알림톡 (비즈니스 채널 등록 필요)
