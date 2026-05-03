@@ -514,16 +514,16 @@ WebGL/Canvas 기반.
 # 📋 작업 진행 체크리스트
 
 ## Phase 0 — 긴급 UI/UX 버그픽스 (박이사님 지적)
-- [ ] STEP 0-1. 시공사례 페이지 레이아웃 개선 (너무 어둡고 스크롤 많음)
-- [ ] STEP 0-2. 전국 시공 지도 카카오맵 실제 구현
-- [ ] STEP 0-3. 모바일 서브메뉴 아코디언 변환
-- [ ] STEP 0-4. 기술 솔루션 로딩 버그 수정 + 컨텐츠 보강
+- [x] STEP 0-1. 시공사례 페이지 레이아웃 개선 ✅ (CasesPage 전면 재작성)
+- [x] STEP 0-2. 전국 시공 지도 구현 ✅ (SVG 인터랙티브 지도 — 카카오맵 API 키 없이 자체 구현)
+- [x] STEP 0-3. 모바일 서브메뉴 아코디언 변환 ✅ (AnimatePresence height animation)
+- [x] STEP 0-4. 기술 솔루션 로딩 버그 수정 ✅ (viewport amount 0.05 + margin)
 
 ## Phase 1 — 메인페이지 폴리싱
 - [x] STEP 1-1. 프로젝트 상태 점검 ✅
 - [x] STEP 1-2. 모바일 반응형 가독성 검증 ✅ (부분)
-- [ ] STEP 1-3. KPI 시각 위계 + Hero 슬로건 모바일 변형
-- [ ] STEP 1-4. 접근성 일괄 보강
+- [x] STEP 1-3. KPI 시각 위계 ✅ (Bebas Neue 숫자 대형화, baseline 정렬)
+- [x] STEP 1-4. 접근성 일괄 보강 ✅ (focus-visible, aria-label, aria-current)
 - [x] STEP 1-5. Core Web Vitals 성능 최적화 ✅
 
 ## Phase 2 — 서브 페이지 완성
@@ -534,7 +534,7 @@ WebGL/Canvas 기반.
 - [x] STEP 2-5. /tech 기술·솔루션 ✅
 - [x] STEP 2-6. /about 회사 소개 ✅
 - [x] STEP 2-7. 파트너 포털 ✅ (v1에 없던 기능)
-- [ ] STEP 2-8. 실제 시공사례 데이터 DB 등록
+- [ ] STEP 2-8. 실제 시공사례 데이터 DB 등록 (박이사님 데이터 제공 필요)
 
 ## Phase 3 — Supabase 연동 + 관리자 모드
 - [x] STEP 3-1. Supabase 클라이언트 설정 ✅
@@ -544,22 +544,24 @@ WebGL/Canvas 기반.
 - [x] STEP 3-5. 관리자 인증 + /admin 라우트 ✅
 - [x] STEP 3-6. 관리자 CRUD — 제품 ✅
 - [x] STEP 3-7. 관리자 CRUD — 사례/자료/문의/설정 ✅
-- [ ] STEP 3-8. RLS 보안 강화 (Rate Limiting 미완)
+- [x] STEP 3-8. RLS 보안 강화 ✅ (Rate Limiting 클라이언트, 관리자 세션 타임아웃 30분)
 
 ## Phase 4 — SEO · 도메인 · 운영
 - [x] STEP 4-1. SEO 메타태그 ✅
-- [x] STEP 4-2. sitemap.xml + robots.txt ✅
-- [ ] STEP 4-3. 도메인 연결 (sunraytec.co.kr)
-- [ ] STEP 4-4. GA4 + Search Console + 네이버
-- [ ] STEP 4-5. OG 이미지
+- [x] STEP 4-2. sitemap.xml + robots.txt ✅ (62 URL — news 포함 업데이트)
+- [ ] STEP 4-3. 도메인 연결 (sunraytec.co.kr) — 박이사님 DNS 변경 필요
+- [x] STEP 4-4. GA4 인프라 ✅ (VITE_GA_MEASUREMENT_ID env var만 채우면 활성화)
+       ⚠️ 남은 작업: Vercel → Settings → Env Vars → VITE_GA_MEASUREMENT_ID = G-XXXXXX
+       ⚠️ Search Console/네이버: index.html 주석 해제 후 인증코드 입력
+- [x] STEP 4-5. OG 이미지 ✅ (public/og-default.svg, 1200×630, PageSEO 연동)
 
 ## Phase 5 — 운영·고도화 (지속)
-- [ ] STEP 5-1. AI 계산기 실제 동작
-- [ ] STEP 5-2. AI 챗봇 실제 구현
-- [ ] STEP 5-3. 영문 페이지
-- [ ] STEP 5-4. 카카오 알림톡
-- [ ] STEP 5-5. 블로그/뉴스
-- [ ] STEP 5-6. 열화상 시뮬레이터
+- [ ] STEP 5-1. AI 계산기 실제 동작 (계산 공식 박이사님 제공 필요)
+- [x] STEP 5-2. AI 챗봇 ✅ (규칙기반 챗봇 15+ 인텐트, API 키 없이 동작)
+- [ ] STEP 5-3. 영문 페이지 (i18next 설치 승인 필요)
+- [ ] STEP 5-4. 카카오 알림톡 (비즈니스 채널 등록 필요)
+- [x] STEP 5-5. 블로그/뉴스 ✅ (/news + /news/:id, 관리자 PostsEditor, supabase_posts.sql)
+- [ ] STEP 5-6. 열화상 시뮬레이터 (장기 과제)
 
 ---
 
