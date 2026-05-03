@@ -308,7 +308,7 @@ export default function CasesPage() {
   const defenseCase = STATIC_CASES.find(c => c.id === 'case-004');
 
   return (
-    <main style={{ minHeight: '100vh', background: '#fff' }}>
+    <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
       <PageSEO
         title="시공사례 - 전국 공공·민간 현장 납품 실적"
         description="군부대·학교·공장·복지시설까지. 인천공항 FedEx 물류센터, 대전 우편물류센터, 한국도로공사 버스정류장 등 전국 공공·민간 현장에 검증된 썬레이텍 시공 사례."
@@ -323,30 +323,35 @@ export default function CasesPage() {
         keywords={['공공·교육 시설', '국방·특수 환경', '산업·물류 거점', '스마트시티 솔루션']}
       />
 
-      {/* 히어로 KPI 수치 (본문으로 이동) */}
-      <section style={{ background: '#0D1B2E', padding: 0 }}>
+      {/* ① 슬림 KPI 스트립 — 얇게, 밝은 톤 */}
+      <section style={{ background: 'var(--navy)', borderBottom: '3px solid var(--red)' }}>
         <div className="container">
           <div className="hero-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
             {HERO_STATS.map((s, i) => (
               <div key={s.label} style={{
-                padding: '28px 20px',
+                padding: '18px 16px',
                 borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
                 textAlign: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                justifyContent: 'center',
               }}>
-                <div style={{
+                <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                  fontSize: 'clamp(1.4rem, 2.5vw, 2rem)',
                   color: i === 2 ? 'var(--red)' : '#fff',
                   lineHeight: 1,
-                  marginBottom: '6px',
                 }}>
                   {s.value}
-                </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
-                  {s.label}
-                </div>
-                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
-                  {s.sub}
+                </span>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(255,255,255,0.8)', lineHeight: 1.2 }}>
+                    {s.label}
+                  </div>
+                  <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', marginTop: '1px' }}>
+                    {s.sub}
+                  </div>
                 </div>
               </div>
             ))}
@@ -354,13 +359,133 @@ export default function CasesPage() {
         </div>
       </section>
 
-      {/* ② 대표 실증 사례 Spotlight */}
-      <section style={{ background: '#0D1B2E', padding: '56px 0' }}>
+      {/* ② 카테고리 퀵필터 + 갤러리 그리드 — 바로 사진 보임 */}
+      <section style={{ padding: '40px 0 80px', background: '#F8FAFC' }}>
+        <div className="container">
+
+          {/* 카테고리 아이콘 탭 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            style={{ display: 'grid', gap: '10px', marginBottom: '28px' }}
+            className="cat-stat-grid"
+          >
+            {CATEGORIES.filter(c => c !== '전체').map(cat => {
+              const count = cases.filter(c => c.category === cat).length;
+              const color = CATEGORY_COLOR[cat];
+              const icon = CATEGORY_ICON[cat];
+              const isActive = activeCategory === cat;
+              return (
+                <motion.button
+                  key={cat}
+                  whileHover={{ y: -2, transition: { duration: 0.15 } }}
+                  onClick={() => handleCategoryClick(cat)}
+                  style={{
+                    background: isActive ? color : '#fff',
+                    border: `2px solid ${isActive ? color : '#E2E8F0'}`,
+                    borderRadius: '12px',
+                    padding: '12px 6px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, border 0.2s',
+                  }}
+                >
+                  <div style={{ fontSize: '1.4rem', marginBottom: '4px' }}>{icon}</div>
+                  <div style={{
+                    fontSize: '9px', fontWeight: 700,
+                    color: isActive ? '#fff' : '#374151',
+                    lineHeight: 1.3,
+                    wordBreak: 'keep-all',
+                  }}>
+                    {cat}
+                  </div>
+                  <div style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: '1.1rem',
+                    color: isActive ? '#fff' : color,
+                    marginTop: '4px',
+                    lineHeight: 1,
+                  }}>
+                    {count}
+                  </div>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+
+          {/* 텍스트 필터 탭 (전체 포함) */}
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeInUp}
+            style={{ display: 'flex', gap: '8px', marginBottom: '28px', flexWrap: 'wrap', alignItems: 'center' }}
+          >
+            <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, marginRight: '4px' }}>필터:</span>
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => handleCategoryClick(cat)}
+                style={{
+                  padding: '5px 14px',
+                  borderRadius: '999px',
+                  border: `2px solid ${activeCategory === cat ? 'var(--navy)' : '#E5E7EB'}`,
+                  background: activeCategory === cat ? 'var(--navy)' : '#fff',
+                  color: activeCategory === cat ? '#fff' : '#6B7280',
+                  fontWeight: activeCategory === cat ? 700 : 500,
+                  fontSize: '0.775rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {cat}
+                {cat !== '전체' && (
+                  <span style={{ marginLeft: '5px', fontSize: '0.7rem', opacity: 0.7 }}>
+                    {cases.filter(c => c.category === cat).length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </motion.div>
+
+          {loading && (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
+              불러오는 중...
+            </div>
+          )}
+
+          {/* 사례 카드 그리드 */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}
+              className="cases-page-grid"
+            >
+              {filtered.map(item => (
+                <div key={item.id}>
+                  <CaseCard item={item} onClick={() => navigate(`/cases/${item.id}`)} />
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {filtered.length === 0 && !loading && (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#9CA3AF' }}>
+              해당 분야 사례를 준비 중입니다.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ③ 대표 실증 사례 Spotlight — 갤러리 아래로 이동 */}
+      <section style={{ background: '#0D1B2E', padding: '64px 0' }}>
         <div className="container">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '8px' }}
           >
             Featured Cases
@@ -368,7 +493,7 @@ export default function CasesPage() {
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 800, color: '#fff', marginBottom: '32px' }}
           >
             수치로 검증된 대표 납품 사례
@@ -381,7 +506,7 @@ export default function CasesPage() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.5 }}
                 style={{
                   background: 'linear-gradient(135deg, #1A2F4A 0%, #0F2236 100%)',
@@ -443,7 +568,7 @@ export default function CasesPage() {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 style={{
                   background: 'linear-gradient(135deg, #1A2530 0%, #0F1E2E 100%)',
@@ -503,131 +628,13 @@ export default function CasesPage() {
         </div>
       </section>
 
-      {/* ③ 카테고리 현황 인포그래픽 바 */}
-      <section style={{ background: '#F1F5F9', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
+      {/* ④ 문의 CTA */}
+      <section style={{ padding: '64px 0 80px', background: '#F8FAFC' }}>
         <div className="container">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}
-            className="cat-stat-grid"
-          >
-            {CATEGORIES.filter(c => c !== '전체').map(cat => {
-              const count = cases.filter(c => c.category === cat).length;
-              const color = CATEGORY_COLOR[cat];
-              const icon = CATEGORY_ICON[cat];
-              return (
-                <motion.button
-                  key={cat}
-                  whileHover={{ y: -3, transition: { duration: 0.15 } }}
-                  onClick={() => handleCategoryClick(cat)}
-                  style={{
-                    background: activeCategory === cat ? color : '#fff',
-                    border: `2px solid ${activeCategory === cat ? color : '#E2E8F0'}`,
-                    borderRadius: '12px',
-                    padding: '16px 8px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, border 0.2s',
-                  }}
-                >
-                  <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>{icon}</div>
-                  <div style={{
-                    fontSize: '10px', fontWeight: 700,
-                    color: activeCategory === cat ? '#fff' : '#374151',
-                    lineHeight: 1.3,
-                    wordBreak: 'keep-all',
-                  }}>
-                    {cat}
-                  </div>
-                  <div style={{
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: '1.3rem',
-                    color: activeCategory === cat ? '#fff' : color,
-                    marginTop: '6px',
-                    lineHeight: 1,
-                  }}>
-                    {count}
-                  </div>
-                </motion.button>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ④ 갤러리 그리드 */}
-      <section style={{ padding: '56px 0 80px', background: '#F8FAFC' }}>
-        <div className="container">
-
-          {/* 필터 탭 (전체 포함) */}
-          <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-            style={{ display: 'flex', gap: '8px', marginBottom: '36px', flexWrap: 'wrap', alignItems: 'center' }}
-          >
-            <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, marginRight: '4px' }}>필터:</span>
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryClick(cat)}
-                style={{
-                  padding: '5px 14px',
-                  borderRadius: '999px',
-                  border: `2px solid ${activeCategory === cat ? 'var(--navy)' : '#E5E7EB'}`,
-                  background: activeCategory === cat ? 'var(--navy)' : '#fff',
-                  color: activeCategory === cat ? '#fff' : '#6B7280',
-                  fontWeight: activeCategory === cat ? 700 : 500,
-                  fontSize: '0.775rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {cat}
-                {cat !== '전체' && (
-                  <span style={{ marginLeft: '5px', fontSize: '0.7rem', opacity: 0.7 }}>
-                    {cases.filter(c => c.category === cat).length}
-                  </span>
-                )}
-              </button>
-            ))}
-          </motion.div>
-
-          {loading && (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
-              불러오는 중...
-            </div>
-          )}
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}
-              className="cases-page-grid"
-            >
-              {filtered.map(item => (
-                <div key={item.id}>
-                  <CaseCard item={item} onClick={() => navigate(`/cases/${item.id}`)} />
-                </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-
-          {filtered.length === 0 && !loading && (
-            <div style={{ textAlign: 'center', padding: '80px 0', color: '#9CA3AF' }}>
-              해당 분야 사례를 준비 중입니다.
-            </div>
-          )}
-
-          {/* 문의 CTA */}
-          <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeInUp}
             style={{
-              marginTop: '64px', textAlign: 'center',
+              textAlign: 'center',
               background: 'linear-gradient(160deg, var(--navy) 0%, #1A3A6B 100%)',
               borderRadius: '20px', padding: '48px 32px', color: '#fff',
               position: 'relative', overflow: 'hidden',
@@ -669,6 +676,9 @@ export default function CasesPage() {
       </section>
 
       <style>{`
+        .cat-stat-grid {
+          grid-template-columns: repeat(6, 1fr);
+        }
         @media (max-width: 900px) {
           .cases-page-grid  { grid-template-columns: repeat(2, 1fr) !important; }
           .spotlight-grid   { grid-template-columns: 1fr !important; }
@@ -677,7 +687,7 @@ export default function CasesPage() {
         }
         @media (max-width: 480px) {
           .cases-page-grid  { grid-template-columns: 1fr !important; }
-          .cat-stat-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+          .cat-stat-grid    { grid-template-columns: repeat(3, 1fr) !important; }
           .hero-stats-grid  { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>

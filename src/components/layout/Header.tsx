@@ -100,7 +100,16 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [openMobileSections, setOpenMobileSections] = useState<Set<string>>(new Set());
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const toggleMobileSection = (label: string) => {
+    setOpenMobileSections(prev => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label); else next.add(label);
+      return next;
+    });
+  };
 
   const currentSection = new URLSearchParams(location.search).get('section');
 
@@ -472,75 +481,119 @@ export default function Header() {
             style={{ background: '#fff', borderTop: '1px solid var(--border)', maxHeight: '80vh', overflowY: 'auto' }}
             className="mobile-menu"
           >
-            {NAV_ITEMS.map((item) => (
-              <div key={item.label} style={{ borderBottom: '1px solid var(--border)' }}>
-                {/* 모바일 메인 메뉴 */}
-                <Link
-                  to={item.to ?? '#'}
-                  onClick={() => setMobileOpen(false)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '0.85rem 1.25rem',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    color: isItemActive(item) ? 'var(--red)' : 'var(--text)',
-                    background: isItemActive(item) ? '#FDECEA' : 'transparent',
-                  }}
-                >
-                  {item.label}
-                </Link>
-                {/* 모바일 서브메뉴 */}
-                {item.subs && (
-                  <div style={{ background: 'var(--off)', padding: '6px 12px' }}>
-                    {item.subs.map((sub) => (
-                      sub.to ? (
-                        <Link
-                          key={sub.label}
-                          to={sub.to}
-                          onClick={() => setMobileOpen(false)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            padding: '7px 12px',
-                            borderRadius: '6px',
-                            fontSize: '13px',
-                            color: 'var(--gray)',
-                            fontWeight: 500,
-                          }}
+            {NAV_ITEMS.map((item) => {
+              const isOpen = openMobileSections.has(item.label);
+              return (
+                <div key={item.label} style={{ borderBottom: '1px solid var(--border)' }}>
+                  {/* 모바일 메인 메뉴 행 */}
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Link
+                      to={item.to ?? '#'}
+                      onClick={() => { if (!item.subs) setMobileOpen(false); }}
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0.85rem 1.25rem',
+                        fontWeight: 700,
+                        fontSize: '0.95rem',
+                        color: isItemActive(item) ? 'var(--red)' : 'var(--text)',
+                        background: isItemActive(item) ? '#FDECEA' : 'transparent',
+                      }}
+                    >
+                      {item.label}
+                    </Link>
+                    {item.subs && (
+                      <button
+                        onClick={() => toggleMobileSection(item.label)}
+                        aria-label={`${item.label} 서브메뉴 ${isOpen ? '닫기' : '열기'}`}
+                        style={{
+                          padding: '0.85rem 1.1rem',
+                          background: isOpen ? '#FDECEA' : 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: isOpen ? 'var(--red)' : 'var(--navy)',
+                          borderLeft: '1px solid var(--border)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'background 0.15s',
+                        }}
+                      >
+                        <motion.span
+                          animate={{ rotate: isOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          style={{ display: 'flex', alignItems: 'center' }}
                         >
-                          <span>{sub.icon}</span>
-                          {sub.label}
-                          {sub.comingSoon && <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--red)' }}>준비중</span>}
-                        </Link>
-                      ) : sub.external ? (
-                        <a
-                          key={sub.label}
-                          href={sub.external}
-                          target={sub.external.startsWith('http') ? '_blank' : undefined}
-                          rel={sub.external.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          onClick={() => setMobileOpen(false)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            padding: '7px 12px',
-                            borderRadius: '6px',
-                            fontSize: '13px',
-                            color: 'var(--gray)',
-                            fontWeight: 500,
-                          }}
-                        >
-                          <span>{sub.icon}</span>
-                          {sub.label}
-                        </a>
-                      ) : null
-                    ))}
+                          <ChevronDown size={16} />
+                        </motion.span>
+                      </button>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* 아코디언 서브메뉴 */}
+                  <AnimatePresence initial={false}>
+                    {item.subs && isOpen && (
+                      <motion.div
+                        key={`${item.label}-subs`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22, ease: 'easeInOut' }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div style={{ background: 'var(--off)', padding: '6px 12px 10px' }}>
+                          {item.subs.map((sub) => (
+                            sub.to ? (
+                              <Link
+                                key={sub.label}
+                                to={sub.to}
+                                onClick={() => setMobileOpen(false)}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                  padding: '8px 12px',
+                                  borderRadius: '6px',
+                                  fontSize: '13px',
+                                  color: 'var(--gray)',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                <span>{sub.icon}</span>
+                                {sub.label}
+                                {sub.comingSoon && <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--red)' }}>준비중</span>}
+                              </Link>
+                            ) : sub.external ? (
+                              <a
+                                key={sub.label}
+                                href={sub.external}
+                                target={sub.external.startsWith('http') ? '_blank' : undefined}
+                                rel={sub.external.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                onClick={() => setMobileOpen(false)}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                  padding: '8px 12px',
+                                  borderRadius: '6px',
+                                  fontSize: '13px',
+                                  color: 'var(--gray)',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                <span>{sub.icon}</span>
+                                {sub.label}
+                              </a>
+                            ) : null
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
 
             {/* 로그인 상태 표시 및 로그아웃 (모바일) */}
             {user && (

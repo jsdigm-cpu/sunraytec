@@ -576,7 +576,7 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
             <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Problem Map</p>
             <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>현장에서 먼저 해결해야 할 문제</h2>
           </ScrollReveal>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }} className="tech-card-grid">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -50px 0px" }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }} className="tech-card-grid">
             {config.pains.map((item, index) => (
               <motion.article key={item.title} variants={staggerItem} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 8, padding: 24, boxShadow: '0 14px 34px rgba(15,34,65,0.06)' }}>
                 <span style={{ display: 'inline-flex', width: 34, height: 34, alignItems: 'center', justifyContent: 'center', borderRadius: 8, background: '#FFF7ED', color: config.accent, fontWeight: 900, marginBottom: 18 }}>{index + 1}</span>
@@ -604,7 +604,7 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
               </Link>
             </ScrollReveal>
             <div style={{ display: 'grid', gap: 16 }}>
-              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }} className="tech-process-grid">
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -50px 0px" }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }} className="tech-process-grid">
                 {config.process.map((item) => (
                   <motion.article key={item.step} variants={staggerItem} style={{ border: '1px solid #E2E8F0', borderRadius: 8, padding: 18, background: '#F8FAFC', minHeight: 170 }}>
                     <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 28, borderRadius: 8, background: `${config.accent}14`, color: config.accent, fontSize: 12, fontWeight: 900, marginBottom: 14 }}>{item.step}</span>
@@ -613,7 +613,7 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
                   </motion.article>
                 ))}
               </motion.div>
-              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }} className="tech-method-grid">
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -50px 0px" }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }} className="tech-method-grid">
                 {config.solutions.map((item) => (
                   <motion.article key={item.title} variants={staggerItem} style={{ border: '1px solid #E2E8F0', borderLeft: `4px solid ${config.accent}`, borderRadius: 8, padding: 20, background: '#fff' }}>
                     <h3 style={{ color: 'var(--navy)', fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{item.title}</h3>
@@ -654,7 +654,7 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
               <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900, lineHeight: 1.25, marginBottom: 16 }}>도입 전에 확인하면 좋은 체크포인트</h2>
               <p style={{ color: '#526173', lineHeight: 1.82 }}>현장 사진이나 도면이 없어도 아래 조건만 확인되면 1차 적용 방향을 잡을 수 있습니다. 상담 단계에서 이 항목을 기준으로 제품군, 설치 위치, 제어 방식을 빠르게 좁힙니다.</p>
             </ScrollReveal>
-            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }} className="tech-method-grid">
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -50px 0px" }} style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }} className="tech-method-grid">
               {config.checklist.map((item) => (
                 <motion.article key={item.title} variants={staggerItem} style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 8, padding: 20, display: 'grid', gridTemplateColumns: '38px 1fr', gap: 12, alignItems: 'start', boxShadow: '0 14px 34px rgba(15,34,65,0.05)' }}>
                   <span style={{ display: 'inline-flex', width: 38, height: 38, alignItems: 'center', justifyContent: 'center', borderRadius: 8, background: `${config.accent}14`, color: config.accent }}>
