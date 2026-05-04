@@ -146,7 +146,7 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
           )}
         </motion.div>
 
-        {/* 핵심 키워드 태그 (하단으로 밀어냄) */}
+        {/* 핵심 키워드 태그 (하단으로 밀어냄) — 배경 박스 제거 및 배지 스타일 개선 */}
         {keywords && keywords.length > 0 && (
           <motion.div
             initial="hidden"
@@ -155,13 +155,11 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '10px',
+              gap: '8px',
               marginTop: 'auto',
-              padding: '14px 1rem',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(0,0,0,0.12)',
+              padding: '12px 0', // 좌우 패딩 제거하여 전체 너비와 맞춤
+              borderTop: '1px solid rgba(255,255,255,0.1)', // 상단 구분선은 유지하되 더 은은하게
               margin: '0',
-              borderRadius: '8px 8px 0 0',
             }}
           >
             {keywords.map((kw) => (
@@ -169,18 +167,17 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
                 key={kw}
                 style={{
                   display: 'inline-block',
-                  padding: '5px 14px',
+                  padding: '6px 14px',
                   borderRadius: '20px',
-                  background: 'rgba(255,255,255,0.08)',
-                  border: `1px solid ${theme.accentColor}55`,
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '12px',
+                  background: 'rgba(255,255,255,0.1)', // 반투명 유리 질감
+                  backdropFilter: 'blur(8px)', // 배경 블러 효과로 고급스러움 추가
+                  border: `1px solid rgba(255,255,255,0.15)`, // 강조색 대신 은은한 흰색 테두리
+                  color: 'rgba(255,255,255,0.95)', // 글자색을 더 밝게 하여 가시성 확보
+                  fontSize: '13px', // 12px -> 13px로 약간 키움
                   fontWeight: 600,
                   letterSpacing: '0.3px',
-                  whiteSpace: 'normal',
-                  maxWidth: '100%',
-                  wordBreak: 'keep-all',
-                  overflowWrap: 'anywhere',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)', // 미세한 그림자로 부유감 부여
                 }}
               >
                 {kw}
