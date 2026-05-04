@@ -21,23 +21,24 @@ interface PartnerFile {
   title: string;
   description: string;
   category: string;
-  file_url: string;
-  file_size: string;
-  version: string;
-  updated_at: string;
+  file_url: string | null;
+  file_size: string | null;
+  updated_at?: string;
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
   '가격표': '#EF4444',
   '기술자료': '#3B82F6',
   '인증서': '#10B981',
+  '파트너 자료': '#7C3AED',
   '기타': '#6B7280',
 };
 
 export default function PartnerPortalPage() {
-  const { profile, signOut } = useAuth();
+  const { profile, signOut, refreshProfile } = useAuth();
   const [files, setFiles] = useState<PartnerFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fileNotice, setFileNotice] = useState('');
   const [activeCategory, setActiveCategory] = useState('전체');
   const [activeTab, setActiveTab] = useState<'files' | 'profile'>('files');
   const [profileForm, setProfileForm] = useState({
@@ -58,11 +59,16 @@ export default function PartnerPortalPage() {
       return;
     }
     supabase
-      .from('partner_files')
-      .select('*')
-      .eq('is_active', true)
+      .from('resource_documents')
+      .select('id,title,description,category,file_url,file_size,sort_order,updated_at')
+      .eq('category', '파트너 자료')
       .order('sort_order', { ascending: true })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) {
+          setFileNotice(`파트너 자료를 불러오지 못했습니다: ${error.message}`);
+          setLoading(false);
+          return;
+        }
         if (data) setFiles(data as PartnerFile[]);
         setLoading(false);
       });
@@ -111,7 +117,8 @@ export default function PartnerPortalPage() {
       setProfileNotice(`정보 저장 실패: ${error.message}`);
       return;
     }
-    setProfileNotice('내 정보가 저장되었습니다. 새로고침 후 상단 이름에도 반영됩니다.');
+    await refreshProfile();
+    setProfileNotice('내 정보가 저장되었습니다.');
   }
 
   async function updatePassword(e: React.FormEvent) {
@@ -225,6 +232,11 @@ export default function PartnerPortalPage() {
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>불러오는 중...</div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {fileNotice && (
+                    <div style={{ padding: '14px 16px', borderRadius: '8px', background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#B91C1C', fontSize: '0.84rem', fontWeight: 700 }}>
+                      {fileNotice}
+                    </div>
+                  )}
                   {filtered.map((file) => (
                     <motion.div
                       key={file.id}
@@ -241,7 +253,7 @@ export default function PartnerPortalPage() {
                           <span style={{ fontSize: '10px', fontWeight: 700, background: CATEGORY_COLOR[file.category] || '#6B7280', color: '#fff', padding: '2px 8px', borderRadius: '999px' }}>
                             {file.category}
                           </span>
-                          {file.version && <span style={{ fontSize: '11px', color: '#9CA3AF' }}>{file.version}</span>}
+                          {file.updated_at && <span style={{ fontSize: '11px', color: '#9CA3AF' }}>{file.updated_at.slice(0, 10)}</span>}
                         </div>
                         <p style={{ fontWeight: 700, color: '#1F2937', fontSize: '0.95rem', marginBottom: '3px' }}>{file.title}</p>
                         {file.description && <p style={{ fontSize: '0.8rem', color: '#6B7280' }}>{file.description}</p>}
@@ -249,15 +261,21 @@ export default function PartnerPortalPage() {
 
                       <div style={{ flexShrink: 0, textAlign: 'right' }}>
                         {file.file_size && <p style={{ fontSize: '0.75rem', color: '#9CA3AF', marginBottom: '8px' }}>{file.file_size}</p>}
-                        <a
-                          href={file.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          download
-                          style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'var(--navy)', color: '#fff', padding: '8px 18px', borderRadius: '7px', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none' }}
-                        >
-                          ⬇ 다운로드
-                        </a>
+                        {file.file_url ? (
+                          <a
+                            href={file.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'var(--navy)', color: '#fff', padding: '8px 18px', borderRadius: '7px', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none' }}
+                          >
+                            다운로드
+                          </a>
+                        ) : (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', background: '#F3F4F6', color: '#9CA3AF', padding: '8px 18px', borderRadius: '7px', fontSize: '0.82rem', fontWeight: 700 }}>
+                            준비중
+                          </span>
+                        )}
                       </div>
                     </motion.div>
                   ))}

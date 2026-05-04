@@ -17,15 +17,18 @@ interface CaseDetail {
   description?: string;
   installed_at?: string;
   created_at: string;
+  installed_model?: string;
+  quantity?: number | string;
+  before_after?: string;
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
-  '교육 및 공공 복지':    '#60A5FA',
-  '국방 및 특수 시설':    '#EF4444',
-  '산업 및 물류 거점':    '#F59E0B',
-  '스마트 시티 솔루션':   '#34D399',
-  '주거 및 라이프 스타일':'#F472B6',
-  '상업 및 서비스 공간':  '#A78BFA',
+  '교육 및 공공 복지':    'var(--blue)',
+  '국방 및 특수 시설':    'var(--red)',
+  '산업 및 물류 거점':    'var(--amber)',
+  '스마트 시티 솔루션':   '#0891B2', // Cyan 600 - Smart Tech
+  '주거 및 라이프 스타일':'#EA580C', // Orange 600 - Warmth
+  '상업 및 서비스 공간':  'var(--navy)',
 };
 
 const fadeIn = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } };
@@ -174,10 +177,43 @@ export default function CaseDetailPage() {
             )}
           </div>
 
-          {/* 본문 설명 */}
+          {/* 시공 개요 (Overview Grid) */}
           <div style={{ background: '#fff', borderRadius: '16px', padding: '28px 32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#374151', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #E5E7EB' }}>
-              시공 내용
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--navy)', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #F1F5F9' }}>
+              시공 개요
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>현장명</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.title}</div>
+              </div>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>지역</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.location}</div>
+              </div>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>공간 유형</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.category}</div>
+              </div>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>설치 모델</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.installed_model || '-'}</div>
+              </div>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>수량</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.quantity ? `${item.quantity}대` : '-'}</div>
+              </div>
+              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '4px' }}>전/후 비고</div>
+                <div style={{ fontSize: '0.95rem', color: '#1E293B', fontWeight: 800 }}>{item.before_after || '-'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 본문 설명 (메모/상세) */}
+          <div style={{ background: '#fff', borderRadius: '16px', padding: '28px 32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--navy)', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #F1F5F9' }}>
+              현장 메모 및 시공 상세
             </h2>
             {item.summary && (
               <p style={{ fontSize: '0.95rem', color: '#4B5563', marginBottom: '14px', fontWeight: 600 }}>{item.summary}</p>

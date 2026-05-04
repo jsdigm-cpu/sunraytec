@@ -1,9 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function PartnerPendingPage() {
-  const { profile, signOut } = useAuth();
+  const { user, profile, loading, signOut } = useAuth();
+  const location = useLocation();
   const isRejected = profile?.status === 'rejected';
+
+  if (loading) {
+    return (
+      <main style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #0A1628 0%, #152035 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 16px' }}>
+        <div style={{ width: 32, height: 32, border: '3px solid rgba(255,255,255,0.25)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </main>
+    );
+  }
+
+  if (!user) {
+    const returnTo = `${location.pathname}${location.search}${location.hash}`;
+    return <Navigate to={`/login?redirectTo=${encodeURIComponent(returnTo)}`} replace />;
+  }
+
+  if (profile?.role === 'admin') return <Navigate to="/admin" replace />;
+  if (profile?.status === 'approved') return <Navigate to="/partner" replace />;
 
   return (
     <main style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #0A1628 0%, #152035 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 16px' }}>

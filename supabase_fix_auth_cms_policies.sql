@@ -75,8 +75,8 @@ BEGIN
     NULLIF(NEW.raw_user_meta_data->>'full_name', ''),
     NULLIF(NEW.raw_user_meta_data->>'company_name', ''),
     NULLIF(NEW.raw_user_meta_data->>'phone', ''),
-    COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'partner'),
-    COALESCE(NULLIF(NEW.raw_user_meta_data->>'status', ''), 'pending')
+    'partner',
+    'pending'
   )
   ON CONFLICT (id) DO UPDATE SET
     email = EXCLUDED.email,
@@ -133,8 +133,8 @@ SELECT
   NULLIF(u.raw_user_meta_data->>'full_name', ''),
   NULLIF(u.raw_user_meta_data->>'company_name', ''),
   NULLIF(u.raw_user_meta_data->>'phone', ''),
-  COALESCE(NULLIF(u.raw_user_meta_data->>'role', ''), 'partner'),
-  COALESCE(NULLIF(u.raw_user_meta_data->>'status', ''), 'pending'),
+  'partner',
+  'pending',
   COALESCE(u.created_at, now())
 FROM auth.users u
 LEFT JOIN public.profiles p ON p.id = u.id
@@ -157,7 +157,7 @@ CREATE POLICY "Admins can manage profiles"
 DROP POLICY IF EXISTS "Anyone can create signup requests" ON public.partner_signup_requests;
 CREATE POLICY "Anyone can create signup requests"
   ON public.partner_signup_requests FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (status = 'pending');
 
 DROP POLICY IF EXISTS "Anyone can update own signup request by email" ON public.partner_signup_requests;
 DROP POLICY IF EXISTS "Admins can read signup requests" ON public.partner_signup_requests;

@@ -16,7 +16,7 @@ const FALLBACK: Notice[] = [
     created_at: '2026-04-27', updated_at: '2026-04-27' },
   { id: 'f3', category: '조달', tone: 'red', pinned: false, published: true,
     title: '2025 조달청 우수제품 3차 지정 안내',
-    body: '복사난방 분야 단독으로 세 번째 우수제품 지정. 공공기관 수의계약 자격이 갱신되었습니다.',
+    body: '복사난방 분야 단독으로 세 번째 우수제품 지정. 조달청 수요기관 기준에 따른 구매 자격이 갱신되었습니다.',
     created_at: '2026-04-20', updated_at: '2026-04-20' },
   { id: 'f4', category: '공지', tone: 'gray', pinned: false, published: true,
     title: '리뉴얼 사이트 공식 오픈',

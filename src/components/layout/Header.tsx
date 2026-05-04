@@ -102,17 +102,16 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const currentSection = new URLSearchParams(location.search).get('section');
-
   const isItemActive = (item: NavItem) => {
-    if (!item.to) return false;
-
-    if (item.to.startsWith('/coming-soon')) {
-      const targetSection = item.to.split('section=')[1] ?? '';
-      return location.pathname === '/coming-soon' && currentSection === targetSection;
+    // Exact match or sub-path match for main menu 'to'
+    if (item.to && (location.pathname === item.to || location.pathname.startsWith(`${item.to}/`))) return true;
+    
+    // Check if any sub-item is active
+    if (item.subs) {
+      return item.subs.some(sub => sub.to && (location.pathname === sub.to || location.pathname.startsWith(`${sub.to}/`)));
     }
 
-    return location.pathname === item.to || location.pathname.startsWith(`${item.to}/`);
+    return false;
   };
 
   useEffect(() => {
@@ -121,7 +120,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // 마우스가 메뉴→드롭다운으로 이동할 때 바로 닫히지 않도록 딜레이 처리
   const handleMouseEnter = (key: string) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setActiveDropdown(key);
@@ -150,9 +148,8 @@ export default function Header() {
         background: '#F8FAFC', 
         borderBottom: '1px solid var(--border)', 
         height: '34px', 
-        alignItems: 'center',
-        display: mobileOpen ? 'none' : 'flex' // 모바일 메뉴 열렸을땐 숨김 처리
-      }} className="desktop-utility-bar">
+        display: 'flex' 
+      }} className="desktop-utility-bar hide-on-mobile">
         <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100%', gap: '14px' }}>
           
           <Link to="/partner/signup-guide" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', color: '#475569', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--red)'} onMouseLeave={(e) => e.currentTarget.style.color = '#475569'}>
@@ -610,9 +607,10 @@ export default function Header() {
       <style>{`
         @media (max-width: 1024px) {
           .desktop-nav { display: none !important; }
+          .desktop-utility-bar { display: none !important; }
           .mobile-menu-btn { display: inline-flex !important; }
-          .header-shell { height: 76px !important; }
-          .header-logo { height: 44px !important; }
+          .header-shell { height: 72px !important; gap: 8px !important; }
+          .header-logo { height: 40px !important; }
         }
         @media (max-width: 820px) {
           .header-logo { height: 40px !important; }

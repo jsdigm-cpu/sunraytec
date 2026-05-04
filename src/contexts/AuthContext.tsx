@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type React from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
-interface Profile {
+export interface Profile {
   id: string;
   email: string;
   full_name: string | null;
@@ -30,6 +30,7 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<string | null>;
   signUp: (email: string, password: string, meta: { full_name: string; company_name: string; phone: string; organization: string; position: string; interest_area: string }) => Promise<string | null>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<Profile | null>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -40,57 +41,86 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function fetchProfile(userId: string) {
-    if (!supabase) return;
+  const fetchProfile = useCallback(async (userId: string): Promise<Profile | null> => {
+    if (!supabase) {
+      setProfile(null);
+      return null;
+    }
 
     try {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
 
       if (error) {
         setProfile(null);
-        return;
+        return null;
       }
 
-      setProfile(data as Profile | null);
+      const nextProfile = data as Profile | null;
+      setProfile(nextProfile);
+      return nextProfile;
     } catch (err) {
       console.error('[Auth] fetchProfile exception:', err);
       setProfile(null);
+      return null;
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id).finally(() => {
-          setLoading(false);
-        });
-      } else {
+    let alive = true;
+
+    async function syncSession(nextSession: Session | null) {
+      if (!alive) return;
+
+      setLoading(true);
+      setSession(nextSession);
+      setProfile(null);
+
+      if (!nextSession) {
+        setUser(null);
         setLoading(false);
+        return;
       }
+
+      const { data, error } = await supabase.auth.getUser();
+      if (!alive) return;
+
+      if (error || !data.user) {
+        setSession(null);
+        setUser(null);
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      setUser(data.user);
+      await fetchProfile(data.user.id);
+      if (alive) setLoading(false);
+    }
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      syncSession(session);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        setLoading(true);
-        // 절대 await 하지 않음 (Deadlock 방지)
-        fetchProfile(session.user.id).finally(() => {
-          setLoading(false);
-        });
-      } else {
-        setProfile(null);
-        setLoading(false);
+      if (event === 'TOKEN_REFRESHED') {
+        setSession(session);
+        return;
       }
+
+      syncSession(session);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return () => {
+      alive = false;
+      subscription.unsubscribe();
+    };
+  }, [fetchProfile]);
 
   async function signIn(email: string, password: string): Promise<string | null> {
     if (!supabase) return '서버 연결 오류';
@@ -119,8 +149,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           organization: meta.organization,
           position: meta.position,
           interest_area: meta.interest_area,
-          role: 'partner',
-          status: 'pending',
         },
       },
     });
@@ -169,13 +197,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function signOut() {
     if (!supabase) return;
     await supabase.auth.signOut();
+    setSession(null);
+    setUser(null);
+    setProfile(null);
   }
 
   const isAdmin = profile?.role === 'admin';
   const isApprovedPartner = profile?.status === 'approved';
+  const refreshProfile = async () => {
+    if (!user) return null;
+    return fetchProfile(user.id);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, loading, isAdmin, isApprovedPartner, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, isAdmin, isApprovedPartner, signIn, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

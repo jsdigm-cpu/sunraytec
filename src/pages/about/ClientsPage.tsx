@@ -148,7 +148,7 @@ export default function ClientsPage() {
             <p style={{ color: '#92400E', fontSize: 12, fontWeight: 900, letterSpacing: 1, marginBottom: 8 }}>PUBLIC PROCUREMENT</p>
             <h2 style={{ color: 'var(--navy)', fontSize: '1.4rem', fontWeight: 900, marginBottom: 12 }}>공공기관 구매 채널</h2>
             <p style={{ color: '#475569', lineHeight: 1.85, marginBottom: 18 }}>
-              나라장터 우수제품(3차 지정), MAS 다수공급자 계약, 혁신시제품 시범구매를 통해 별도 입찰 없이 수의계약으로 도입할 수 있습니다. 일위대가표·시방서·도면 자료는 패스트트랙 라운지 또는 파트너 포털에서 확인 가능합니다.
+              나라장터 우수제품(3차 지정), MAS 다수공급자 계약, 혁신시제품 시범구매를 통해 조달청 수요기관 기준에 따라 도입할 수 있습니다. 일위대가표·시방서·도면 자료는 패스트트랙 라운지 또는 파트너 포털에서 확인 가능합니다.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <Link to="/products/excellence" style={{ display: 'inline-flex', padding: '11px 18px', background: 'var(--navy)', color: '#fff', borderRadius: 8, fontWeight: 800, textDecoration: 'none', fontSize: 14 }}>

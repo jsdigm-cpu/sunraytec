@@ -35,6 +35,7 @@ const MediaPage            = lazy(() => import('../pages/about/MediaPage'));
 const PrinciplePage        = lazy(() => import('../pages/technology/PrinciplePage'));
 const TechnologySolutionPage = lazy(() => import('../pages/technology/TechnologySolutionPage'));
 const ProductGuidePage     = lazy(() => import('../pages/products/ProductGuidePage'));
+const ComparePage          = lazy(() => import('../pages/products/ComparePage'));
 // 인증
 const LoginPage            = lazy(() => import('../pages/auth/LoginPage'));
 const SignupPage            = lazy(() => import('../pages/auth/SignupPage'));
@@ -90,7 +91,7 @@ export const router = createBrowserRouter([
       { path: 'products/special',      element: <S><ProductGuidePage pageId="special" /></S> },
       { path: 'products/personal-bath', element: <S><ProductGuidePage pageId="personal-bath" /></S> },
       { path: 'products/smart-control', element: <S><ProductGuidePage pageId="smart-control" /></S> },
-      { path: 'products/compare',      element: <S><ProductGuidePage pageId="compare" /></S> },
+      { path: 'products/compare',      element: <S><ComparePage /></S> },
       { path: 'support/faq',           element: <S><FaqPage /></S> },
       { path: 'support/notice',         element: <S><NoticePage /></S> },
       { path: 'support/notice/:id',    element: <S><NoticeDetailPage /></S> },

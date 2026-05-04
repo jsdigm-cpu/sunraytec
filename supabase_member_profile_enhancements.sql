@@ -48,8 +48,8 @@ BEGIN
     NULLIF(NEW.raw_user_meta_data->>'organization', ''),
     NULLIF(NEW.raw_user_meta_data->>'position', ''),
     NULLIF(NEW.raw_user_meta_data->>'interest_area', ''),
-    COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'partner'),
-    COALESCE(NULLIF(NEW.raw_user_meta_data->>'status', ''), 'pending')
+    'partner',
+    'pending'
   )
   ON CONFLICT (id) DO UPDATE SET
     email = EXCLUDED.email,

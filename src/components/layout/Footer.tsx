@@ -41,7 +41,11 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--navy)', color: 'rgba(255,255,255,.55)' }}>
+    <footer style={{ 
+      background: 'linear-gradient(to bottom, #0F172A 0%, #020617 100%)', 
+      color: 'rgba(255,255,255,.55)',
+      borderTop: '1px solid rgba(255,255,255,0.05)'
+    }}>
       {/* 상단 링크 영역 */}
       <div className="container" style={{ padding: '56px 0 40px' }}>
         <div
@@ -59,7 +63,7 @@ export default function Footer() {
                 fontFamily: "'Bebas Neue', sans-serif",
                 fontSize: '1.8rem',
                 letterSpacing: '2px',
-                color: 'var(--red)',
+                color: 'var(--blue)',
                 marginBottom: '12px',
                 lineHeight: 1,
               }}

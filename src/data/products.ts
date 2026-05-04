@@ -190,6 +190,7 @@ export const initialProducts: Product[] = [
       heatingArea: '19.8~29.7㎡ (약 6~9평)',
     },
     procurementId: '25387001',
+    price: 990000,
   },
   {
     id: 'sur-2400-1',
@@ -209,6 +210,7 @@ export const initialProducts: Product[] = [
       heatingArea: '13.2~19.8㎡ (약 4~6평)',
     },
     procurementId: '25386998',
+    price: 850000,
   },
   {
     id: 'sur-2400-2',
@@ -228,6 +230,7 @@ export const initialProducts: Product[] = [
       heatingArea: '13.2~19.8㎡ (약 4~6평)',
     },
     procurementId: '25387000',
+    price: 800000,
   },
   {
     id: 'sur-1800-1',
@@ -247,6 +250,7 @@ export const initialProducts: Product[] = [
       heatingArea: '9.9~13.2㎡ (약 3~5평)',
     },
     procurementId: '25386997',
+    price: 750000,
   },
   {
     id: 'sur-1200-1',
@@ -266,6 +270,7 @@ export const initialProducts: Product[] = [
       heatingArea: '6.6~9.9㎡ (약 2~3평)',
     },
     procurementId: '25386996',
+    price: 650000,
   },
   {
     id: 'sur-1200-2',
@@ -285,10 +290,11 @@ export const initialProducts: Product[] = [
       heatingArea: '6.6~9.9㎡ (약 2~3평)',
     },
     procurementId: '25386999',
+    price: 600000,
   },
   {
     id: 'sur-600-1',
-    name: 'SUR-600-1',
+    name: 'SUR-600A',
     category: 'MAS · 매립형',
     productLine: 'mas',
     installationType: 'embedded',
@@ -304,10 +310,11 @@ export const initialProducts: Product[] = [
       heatingArea: '3.3~4.9㎡ (약 1~1.5평)',
     },
     procurementId: '25386995',
+    price: 450000,
   },
   {
     id: 'sur-600-wall-mas',
-    name: 'SUR-600 (벽걸이형)',
+    name: 'SUR-600',
     category: 'MAS · 벽걸이형',
     productLine: 'mas',
     installationType: 'wall-mounted',
@@ -323,6 +330,7 @@ export const initialProducts: Product[] = [
       heatingArea: '3.3~4.9㎡ (약 1~1.5평)',
     },
     procurementId: '25386994',
+    price: 450000,
   },
   {
     id: 'sur-d300a',
@@ -341,5 +349,7 @@ export const initialProducts: Product[] = [
       voltage: '220V / 60Hz',
       heatingArea: '개인용',
     },
+    procurementId: '25386993',
+    price: 350000,
   },
 ];

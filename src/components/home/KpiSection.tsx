@@ -4,10 +4,10 @@ import { staggerContainer, staggerItem } from '../../utils/animations';
 import ScrollReveal from '../ui/ScrollReveal';
 
 const KPI_ITEMS = [
-  { suffix: '%',   label: '소비전력량 절감', sub: 'KTR 난방성능 시험',     countTo: 39.4, decimal: 1, prefix: '약 ' },
-  { suffix: '',    label: '원적외선 방사율', sub: '2024 KTR 시험성적서',    countTo: 0.91, decimal: 2, prefix: '' },
-  { suffix: '%',   label: '항균 성능',       sub: '대장균·포도상구균',     countTo: 99.9, decimal: 1, prefix: '' },
-  { suffix: '년+', label: '공공조달 납품',   sub: '2013년 우수제품 지정 이후', countTo: 13,   decimal: 0, prefix: '' },
+  { suffix: '%',   label: '에너지 절감율',   sub: '㈜가나에너지 실증 사례',   countTo: 57.1, decimal: 1, prefix: '약 ' },
+  { suffix: '%',   label: '원적외선 방사율', sub: '9.4μm 중심파장 측정',      countTo: 91.2, decimal: 1, prefix: '' },
+  { suffix: '%',   label: '항균·탈취 성능',   sub: '대장균·포도상구균·암모니아', countTo: 99.9, decimal: 1, prefix: '' },
+  { suffix: '년+', label: '기술 업력',       sub: '2009년 설립 이후',        countTo: 17,   decimal: 0, prefix: '' },
 ];
 
 // 카운트업 로직만 담당 — key prop 없이 item만 받음
@@ -38,7 +38,7 @@ function KpiCardInner({ item }: { item: typeof KPI_ITEMS[0] }) {
         style={{
           fontFamily: "'Bebas Neue', sans-serif",
           fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-          color: 'var(--red)',
+          color: 'var(--blue)',
           lineHeight: 1,
           marginBottom: '6px',
         }}

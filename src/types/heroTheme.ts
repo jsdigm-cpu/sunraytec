@@ -11,11 +11,11 @@ export interface HeroTheme {
 
 export const DEFAULT_HERO_THEME: HeroTheme = {
   gradientAngle: 160,
-  gradientStart: '#0F2241',
-  gradientMid: '#152035',
-  gradientEnd: '#0E1E3A',
-  accentColor: '#E5483A',
-  overlayEffect: 'none',
+  gradientStart: '#0F172A', // Deep Navy
+  gradientMid: '#152035',   // Slate Navy
+  gradientEnd: '#0E1E3A',   // Darker Navy
+  accentColor: '#F59E0B',   // Warm Amber for high contrast and warmth
+  overlayEffect: 'grid',    // Subtle grid for professional feel
 };
 
 export function buildGradient(theme: HeroTheme): string {

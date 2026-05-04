@@ -1,23 +1,23 @@
 :root {
-  /* ── 브랜드 컬러 ── */
-  --red:         #C8392B;
-  --red-dark:    #9B2C1F;
-  --red-light:   #E8574A;
-  --navy:        #0A1628;
-  --navy2:       #152035;
-  --blue:        #1A3A6B;
-  --amber:       #E67E22;
-  --amber2:      #F39C12;
-  --gold:        #D4AC0D;
+  /* ── 브랜드 컬러 (Option D: Warm & Trust) ── */
+  --red:         #DC2626; /* Refined Red */
+  --red-dark:    #991B1B;
+  --red-light:   #FCA5A5;
+  --navy:        #0F172A; /* Deep Navy (Slate 900) - Trust & Reliability */
+  --navy2:       #1E293B; /* Slate 800 */
+  --blue:        #1E40AF; /* Professional Blue (Blue 800) */
+  --amber:       #F59E0B; /* Warm Amber (Amber 500) - Heating & Energy */
+  --amber2:      #FBBF24; /* Amber 400 */
+  --gold:        #D97706; /* Darker Gold for better contrast on light bg */
 
   /* ── 중립 컬러 ── */
   --white:       #FFFFFF;
-  --off:         #F5F6F8;
-  --light:       #EEF0F4;
-  --gray:        #7F8C8D;
-  --gray2:       #BDC3C7;
-  --text:        #2C3E50;
-  --border:      #D5D8DC;
+  --off:         #F8FAFC; /* Lighter, cooler off-white */
+  --light:       #F1F5F9;
+  --gray:        #64748B; /* Tailwind Slate 500 */
+  --gray2:       #94A3B8; /* Tailwind Slate 400 */
+  --text:        #0F172A; /* Tailwind Slate 900 */
+  --border:      #E2E8F0; /* Tailwind Slate 200 */
 
   /* ── 그림자 ── */
   --sh:          0 4px 20px rgba(0, 0, 0, 0.09);

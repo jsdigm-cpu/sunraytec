@@ -46,7 +46,7 @@ $$;
 DROP POLICY IF EXISTS "Anyone can create signup requests" ON public.partner_signup_requests;
 CREATE POLICY "Anyone can create signup requests"
   ON public.partner_signup_requests FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (status = 'pending');
 
 DROP POLICY IF EXISTS "Admins can read signup requests" ON public.partner_signup_requests;
 CREATE POLICY "Admins can read signup requests"

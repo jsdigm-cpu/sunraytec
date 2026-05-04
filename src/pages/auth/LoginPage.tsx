@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [loginAttempted, setLoginAttempted] = useState(false);
   const isVerifiedRedirect = searchParams.get('verified') === '1';
+  const redirectTo = getSafeRedirectTo(searchParams.get('redirectTo'));
 
   useEffect(() => {
     if (isVerifiedRedirect) {
@@ -22,15 +23,26 @@ export default function LoginPage() {
 
   // profile이 완전히 로드된 후 역할에 맞는 페이지로 이동
   useEffect(() => {
-    if (!loginAttempted) return;
     if (authLoading) return;      // 아직 로딩 중
+    if (!user) return;
     if (user && !profile) {
-      setError('로그인은 되었지만 회원 프로필을 찾을 수 없습니다. 관리자에게 문의해 주세요.');
+      if (loginAttempted) {
+        setError('로그인은 되었지만 회원 프로필을 찾을 수 없습니다. 관리자에게 문의해 주세요.');
+      }
       return;
     }
-    if (profile.role === 'admin') navigate('/admin');
-    else navigate('/partner');
-  }, [loginAttempted, authLoading, user, profile, navigate]);
+
+    if (!profile) return;
+
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true });
+      return;
+    }
+
+    if (profile.role === 'admin') navigate('/admin', { replace: true });
+    else if (profile.status === 'approved') navigate('/partner', { replace: true });
+    else navigate('/partner/pending', { replace: true });
+  }, [loginAttempted, authLoading, user, profile, redirectTo, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -123,3 +135,10 @@ export default function LoginPage() {
 
 const labelStyle: React.CSSProperties = { display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#374151', marginBottom: '6px' };
 const inputStyle: React.CSSProperties = { width: '100%', border: '1.5px solid #D1D5DB', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', color: '#1F2937', outline: 'none', boxSizing: 'border-box' };
+
+function getSafeRedirectTo(value: string | null) {
+  if (!value) return null;
+  if (!value.startsWith('/') || value.startsWith('//')) return null;
+  if (value.startsWith('/login') || value.startsWith('/signup')) return null;
+  return value;
+}

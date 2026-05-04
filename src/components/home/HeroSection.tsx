@@ -85,10 +85,10 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
     <section
       style={{
         color: '#fff',
-        padding: '80px 0 60px',
+        padding: 'clamp(40px, 10vh, 80px) 0 60px',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: '560px',
+        minHeight: 'clamp(480px, 70vh, 560px)',
       }}
     >
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
@@ -129,7 +129,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(160deg, rgba(10,22,40,0.60) 0%, rgba(10,22,40,0.40) 60%, rgba(10,22,40,0.52) 100%)',
+            background: 'linear-gradient(160deg, rgba(7, 12, 32, 0.55) 0%, rgba(15, 23, 42, 0.45) 50%, rgba(30, 41, 59, 0.5) 100%)',
           }}
         />
 
@@ -138,8 +138,9 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px)',
+              'linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)',
             backgroundSize: '48px 48px',
+            maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
             pointerEvents: 'none',
           }}
         />
@@ -277,7 +278,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             marginBottom: '28px',
           }}
         >
-          🏆 정부조달 우수제품 지정 (2013 · 2019 · 2025)
+          🏆 정부조달 우수제품 지정 (2013·19·25)
         </motion.div>
 
         <motion.h1
@@ -482,23 +483,19 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
       </div>
 
       <style>{`
-        @media (max-width: 640px) {
           .hero-main-copy {
-            font-size: clamp(1.95rem, 7.8vw, 2.12rem) !important;
-            line-height: 1.18 !important;
-            letter-spacing: 0 !important;
+            font-size: clamp(1.65rem, 8.5vw, 2.2rem) !important;
+            line-height: 1.25 !important;
+            letter-spacing: -0.5px !important;
             word-break: keep-all !important;
-            overflow-wrap: normal !important;
+            overflow-wrap: break-word !important;
+            margin-bottom: 20px !important;
           }
           .hero-site-badge {
-            min-width: 0 !important;
-            width: calc(100vw - 32px) !important;
-            max-width: calc(100vw - 32px) !important;
-            grid-template-columns: auto minmax(0, 1fr) !important;
+            display: none !important; /* Hide site badge on very small screens to save space */
           }
           .hero-slide-dots {
-            margin-top: 56px !important;
-            transform: translateY(12px);
+            margin-top: 40px !important;
           }
         }
 

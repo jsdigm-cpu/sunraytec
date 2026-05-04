@@ -5,4 +5,4 @@ Disallow: /admin/
 Disallow: /auth/
 Disallow: /partner/
 
-Sitemap: https://www.sunraytec.com/sitemap.xml
+Sitemap: https://www.sunraytec.co.kr/sitemap.xml

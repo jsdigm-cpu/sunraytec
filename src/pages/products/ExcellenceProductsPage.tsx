@@ -24,8 +24,8 @@ const PROCUREMENT_STEPS = [
   {
     step: '03',
     icon: '✅',
-    title: '수의계약 체결',
-    desc: '우수제품 수의계약으로\n입찰 없이 간편하게 구매 가능',
+    title: '조달청 수요기관 구매',
+    desc: '우수제품 지정으로\n조달청 기준에 따라 구매 가능',
   },
 ];
 
@@ -37,8 +37,8 @@ export default function ExcellenceProductsPage() {
     <div>
       <PageSEO
         title="조달청 우수제품 - 썬레이텍 패널히터"
-        description="조달청 우수제품 지정 라인업. 매립형·노출형·벽걸이형 패널히터. 나라장터 수의계약으로 입찰 없이 간편 구매. 식별번호로 바로 검색 가능."
-        keywords={['조달청 우수제품', '나라장터 수의계약', '우수제품 지정', '학교 난방', '관공서 난방', '공공조달', '복사난방 패널']}
+        description="조달청 우수제품 지정 라인업. 매립형·노출형·벽걸이형 패널히터. 나라장터에서 조달청 기준에 따라 구매 가능. 식별번호로 바로 검색 가능."
+        keywords={['조달청 우수제품', '나라장터 구매', '우수제품 지정', '학교 난방', '관공서 난방', '공공조달', '복사난방 패널']}
         canonical="/products/excellence"
       />
       <SubHero
@@ -46,7 +46,7 @@ export default function ExcellenceProductsPage() {
         badge="Government Procurement"
         title="정부조달 우수제품"
         lead="조달청이 기술력·품질·사후관리를 심사해 선정하는 최고 권위의 조달 인증 제품입니다. 매립형과 노출형을 모델별로 비교해 보세요."
-        keywords={['2013·2019·2025 지정', '조달청 수의계약', '매립형·노출형', '나라장터 검색']}
+        keywords={['2013·2019·2025 지정', '조달청 우수제품', '매립형·노출형', '나라장터 검색']}
       />
       {/* ── 제품 그리드 ──────────────────────────────────────────────── */}
       <section style={{ background: 'var(--off)', padding: '72px 0' }}>
@@ -121,7 +121,7 @@ export default function ExcellenceProductsPage() {
               조달 구매 절차 안내
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--gray)', marginTop: '10px' }}>
-              우수제품 수의계약은 복잡한 입찰 없이 3단계로 간편하게 진행됩니다.
+              우수제품 구매는 조달청 기준에 따라 3단계로 간편하게 진행됩니다.
             </p>
           </ScrollReveal>
 
@@ -174,27 +174,29 @@ export default function ExcellenceProductsPage() {
 
                 <div
                   style={{
-                    width: '56px', height: '56px', borderRadius: '50%',
+                    width: '64px', height: '64px', borderRadius: '50%',
                     background: 'var(--navy)', color: '#fff',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '22px', margin: '0 auto 16px',
-                    boxShadow: '0 4px 16px rgba(10,22,40,0.2)',
+                    fontSize: '24px', margin: '0 auto 20px',
+                    boxShadow: '0 8px 24px rgba(15, 23, 42, 0.15)',
+                    border: '2px solid rgba(255,255,255,0.1)',
                   }}
                 >
                   {s.icon}
                 </div>
                 <div
                   style={{
-                    fontSize: '11px', fontWeight: 700, color: 'var(--red)',
+                    fontSize: '12px', fontWeight: 800, color: 'var(--blue)',
                     letterSpacing: '1px', marginBottom: '8px',
+                    textTransform: 'uppercase'
                   }}
                 >
                   STEP {s.step}
                 </div>
-                <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--navy)', marginBottom: '10px' }}>
+                <div style={{ fontSize: '17px', fontWeight: 800, color: 'var(--navy)', marginBottom: '12px' }}>
                   {s.title}
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--gray)', lineHeight: 1.7, whiteSpace: 'pre-line', margin: 0 }}>
+                <p style={{ fontSize: '14px', color: 'var(--gray)', lineHeight: 1.7, whiteSpace: 'pre-line', margin: 0 }}>
                   {s.desc}
                 </p>
               </motion.div>
@@ -208,30 +210,30 @@ export default function ExcellenceProductsPage() {
                 href="https://shop.g2b.go.kr"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.04, boxShadow: '0 8px 32px rgba(10,22,40,0.25)' }}
+                whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(15, 23, 42, 0.25)' }}
                 whileTap={{ scale: 0.97 }}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  padding: '14px 28px', borderRadius: '10px',
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '16px 32px', borderRadius: '12px',
                   background: 'var(--navy)', color: '#fff',
-                  fontSize: '14px', fontWeight: 700, textDecoration: 'none',
-                  boxShadow: '0 4px 16px rgba(10,22,40,0.15)',
+                  fontSize: '15px', fontWeight: 700, textDecoration: 'none',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
                 }}
               >
                 🏛️ 나라장터 바로가기
               </motion.a>
               <motion.div
-                whileHover={{ scale: 1.04, boxShadow: '0 8px 32px rgba(200,57,43,0.3)' }}
+                whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(200,57,43,0.3)' }}
                 whileTap={{ scale: 0.97 }}
               >
                 <a
                   href="tel:16882520"
                   style={{
-                    display: 'flex', alignItems: 'center', gap: '8px',
-                    padding: '14px 28px', borderRadius: '10px',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '16px 32px', borderRadius: '12px',
                     background: 'var(--red)', color: '#fff',
-                    fontSize: '14px', fontWeight: 700, textDecoration: 'none',
-                    boxShadow: '0 4px 16px rgba(200,57,43,0.2)',
+                    fontSize: '15px', fontWeight: 700, textDecoration: 'none',
+                    boxShadow: '0 4px 16px rgba(200,57,43,0.1)',
                   }}
                 >
                   📞 전화 문의하기

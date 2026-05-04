@@ -30,8 +30,8 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
       style={{
         background,
         color: '#fff',
-        padding: '32px 0 0',
-        minHeight: 360,
+        padding: '24px 0 0',
+        minHeight: 'clamp(320px, 45vh, 400px)',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -119,11 +119,13 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
           {/* 제목 */}
           <h1
             style={{
-              fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+              fontSize: 'clamp(1.65rem, 5.5vw, 2.6rem)',
               fontWeight: 800,
               color: '#fff',
-              marginBottom: '12px',
-              lineHeight: 1.2,
+              marginBottom: '14px',
+              lineHeight: 1.25,
+              wordBreak: 'keep-all',
+              overflowWrap: 'break-word',
             }}
           >
             {title}
@@ -153,10 +155,13 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '8px',
+              gap: '10px',
               marginTop: 'auto',
-              paddingTop: '40px',
-              paddingBottom: '24px',
+              padding: '14px 1rem',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(0,0,0,0.12)',
+              margin: '0',
+              borderRadius: '8px 8px 0 0',
             }}
           >
             {keywords.map((kw) => (
@@ -172,6 +177,10 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
                   fontSize: '12px',
                   fontWeight: 600,
                   letterSpacing: '0.3px',
+                  whiteSpace: 'normal',
+                  maxWidth: '100%',
+                  wordBreak: 'keep-all',
+                  overflowWrap: 'anywhere',
                 }}
               >
                 {kw}

@@ -54,7 +54,20 @@ ON CONFLICT (id) DO UPDATE SET public = EXCLUDED.public;
 DROP POLICY IF EXISTS "Anyone can read public resource_documents" ON public.resource_documents;
 CREATE POLICY "Anyone can read public resource_documents"
   ON public.resource_documents FOR SELECT
-  USING (is_public = true OR public.is_admin());
+  USING (
+    is_public = true
+    OR public.is_admin()
+    OR (
+      category = '파트너 자료'
+      AND EXISTS (
+        SELECT 1
+        FROM public.profiles p
+        WHERE p.id = auth.uid()
+          AND p.role = 'partner'
+          AND p.status = 'approved'
+      )
+    )
+  );
 
 DROP POLICY IF EXISTS "Admins can manage resource_documents" ON public.resource_documents;
 CREATE POLICY "Admins can manage resource_documents"

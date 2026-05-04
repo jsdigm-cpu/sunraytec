@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import type React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -9,6 +9,8 @@ interface Props {
 
 export default function ProtectedRoute({ children, require }: Props) {
   const { user, profile, loading } = useAuth();
+  const location = useLocation();
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
 
   if (loading) {
     return (
@@ -19,7 +21,13 @@ export default function ProtectedRoute({ children, require }: Props) {
     );
   }
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) {
+    return <Navigate to={`/login?redirectTo=${encodeURIComponent(returnTo)}`} replace />;
+  }
+
+  if (!profile) {
+    return <Navigate to="/partner/pending" replace />;
+  }
 
   if (require === 'admin' && profile?.role !== 'admin') {
     return <Navigate to="/" replace />;

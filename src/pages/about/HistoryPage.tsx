@@ -48,7 +48,7 @@ const HISTORY: HistoryEvent[] = [
   {
     year: '2013',
     title: '조달청 우수제품 1차 지정',
-    detail: '조달청 우수제품으로 최초 지정. 공공기관 수의계약 공급 자격 취득. 원적외선 복사난방 분야 최초 사례.',
+    detail: '조달청 우수제품으로 최초 지정. 조달청 수요기관 기준 공급 자격 취득. 원적외선 복사난방 분야 최초 사례.',
     highlight: true,
   },
   {
@@ -85,7 +85,7 @@ const KPI_ITEMS = [
 ];
 
 const BUSINESS_AREAS = [
-  { icon: '🏛️', title: '공공기관 조달',  desc: '나라장터 우수제품·MAS 수의계약 공급' },
+  { icon: '🏛️', title: '공공기관 조달',  desc: '나라장터 우수제품·MAS 조달청 기준 공급' },
   { icon: '🏭', title: '산업·물류시설', desc: '공장·창고·물류센터 대공간 난방' },
   { icon: '🎓', title: '교육·공공시설', desc: '학교·군부대·행정기관 난방' },
   { icon: '🌍', title: '특수·수출',     desc: '방폭·방수 특수 환경 및 해외 수출' },

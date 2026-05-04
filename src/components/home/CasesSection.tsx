@@ -75,7 +75,7 @@ export default function CasesSection() {
   }, []);
 
   return (
-    <section style={{ background: 'var(--navy2)', padding: '72px 0' }}>
+    <section style={{ background: 'linear-gradient(135deg, #111827 0%, #0F172A 100%)', padding: '80px 0' }}>
       <div className="container">
         <ScrollReveal variants={fadeInUp}>
           <div

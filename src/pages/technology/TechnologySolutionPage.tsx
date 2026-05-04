@@ -30,7 +30,7 @@ interface PageSpotlight { tag: string; title: string; situation: string; result:
 
 interface PageConfig {
   breadcrumb: string; badge: string; title: string; lead: string;
-  accent: string; gradient: string; icon: typeof Sparkles;
+  accent: string; icon: typeof Sparkles;
   stats: Array<{ label: string; value: string }>;
   dataBar: DataBarItem[];
   pains: Array<{ title: string; desc: string }>;
@@ -48,8 +48,7 @@ const PAGES: Record<PageId, PageConfig> = {
     breadcrumb: '4대 검증 기술', badge: 'Core Technology',
     title: '분진·전파·화재·결로 리스크를 줄이는 복사난방 설계',
     lead: '복사난방의 장점은 단순히 따뜻함이 아닙니다. 바람을 만들지 않고, 화염을 쓰지 않고, 표면 냉기를 줄이는 방식으로 민감한 현장의 리스크를 동시에 낮춥니다.',
-    accent: '#E8574A',
-    gradient: 'linear-gradient(150deg, #0A1628 0%, #16233A 54%, #2B1818 100%)',
+    accent: 'var(--red)',
     icon: Sparkles,
     stats: [
       { label: '항균 성능', value: '99.9%' },
@@ -69,7 +68,7 @@ const PAGES: Record<PageId, PageConfig> = {
       { title: '특수 현장 안전성', desc: '위험물 취급 공간은 화염, 과열, 방폭 조건을 모두 검토해야 합니다. 기존 난방기를 그대로 쓰면 설치 자체가 규정 위반이 됩니다.' },
     ],
     solutions: [
-      { title: '분진 비산 Zero', desc: '공기 순환 없는 복사 방식으로 먼지·미생물 확산 없음. 항균 99.9% 공인 성적서 보유.' },
+      { title: '분진 비산 억제', desc: '공기 순환 없는 복사 방식으로 먼지·미생물 확산 억제. 항균 99.9% 공인 성적서 보유.' },
       { title: '전파 적합등록', desc: '국립전파연구원 적합등록(R-R-SUR-SUR-3600-P)으로 전자기기 민감 환경에도 적용 가능.' },
       { title: '화재 위험 저감', desc: '개방형 화염 없는 전기식 발열 + 방폭 인증(EX emb II T1) 제품군 별도 보유.' },
       { title: '결로 저감', desc: '복사열로 바닥·벽·장비 표면 온도를 높여 이슬점 이하 환경을 차단합니다.' },
@@ -97,9 +96,8 @@ const PAGES: Record<PageId, PageConfig> = {
   'public-edu': {
     breadcrumb: '공공·교육 솔루션', badge: 'Public & Education',
     title: '학교와 공공시설에 맞춘 조용하고 깨끗한 체감 난방',
-    lead: '급식실, 체육관, 민원실처럼 사람이 오래 머무는 공간은 소음과 바람이 적고 유지관리가 쉬운 난방이 중요합니다. 썬레이텍은 조달 흐름에 맞춰 도입 검토가 쉬운 구성을 제안합니다.',
-    accent: '#2563EB',
-    gradient: 'linear-gradient(150deg, #0A1628 0%, #12315F 58%, #14233A 100%)',
+    lead: '학교와 공공시설에 맞춘 조용하고 깨끗한 체감 난방. 급식실, 체육관, 민원실처럼 사람이 오래 머무는 공간은 소음과 바람이 적고 유지관리가 쉬운 난방이 중요합니다.',
+    accent: 'var(--blue)',
     icon: School,
     stats: [
       { label: '혁신제품 만족도', value: '96점' },
@@ -122,12 +120,12 @@ const PAGES: Record<PageId, PageConfig> = {
       { title: '무풍·무소음 체감 난방', desc: '기류·팬 소음 없이 원적외선으로 사람과 바닥 표면을 직접 데웁니다. 수업·민원 중 방해 없음.' },
       { title: '항균·탈취 성능 내장', desc: '원적외선 방사로 대장균·포도상구균 99.9% 항균, 암모니아 88% 탈취. 급식실·화장실 특화 효과.' },
       { title: '조달 대응 원스톱 구성', desc: '우수제품 3자단가·MAS 등 공공 구매 절차에 맞춰 식별번호·일위대가표·시방서를 패키지로 제공.' },
-      { title: '유지관리 부담 Zero', desc: '필터 없음, 실외기 없음. 천장 설치 후 표면 청소만으로 장기 운영 가능. 관리 인력 부담 최소화.' },
+      { title: '유지관리 최소화', desc: '필터 없음, 실외기 없음. 천장 설치 후 표면 청소만으로 장기 운영 가능. 관리 인력 부담 최소화.' },
     ],
     applications: [
       { icon: School, title: '학교 급식실·체육관', desc: '항균 99.9%·무풍 난방으로 위생 유지 + 고천장 체감 개선' },
       { icon: Building2, title: '관공서·복지관·민원실', desc: '무소음·무기류로 대기 환경 쾌적화' },
-      { icon: BadgeCheck, title: '나라장터 조달 발주처', desc: '우수제품 수의계약·MAS 직접 구매 가능' },
+      { icon: BadgeCheck, title: '나라장터 조달 발주처', desc: '우수제품·MAS로 조달청 수요기관 기준에 따른 구매 가능' },
     ],
     methodLead: '공공·교육시설 도입의 핵심은 조달 절차와 성능 검증 자료를 동시에 갖추는 것입니다. 썬레이텍은 2013·2019·2025년 3회 우수제품 지정으로 공공기관 담당자가 의심 없이 도면에 올릴 수 있는 자료를 갖추고 있습니다. 혁신제품 시범사용 만족도 96점(육군 12개 사단)은 실사용 검증 결과입니다.',
     process: [
@@ -138,7 +136,7 @@ const PAGES: Record<PageId, PageConfig> = {
     checklist: [
       { title: '소음·바람 민원이 반복되는가', desc: '수업·대기 환경에서 팬 소음과 기류가 문제라면 복사난방 전환 효과가 큽니다.' },
       { title: '급식실·화장실 위생이 중요한가', desc: '항균 99.9%·탈취 88% 성적서로 위생 기준 대응. 학교 급식실 최적.' },
-      { title: '공공 구매 절차가 필요한가', desc: '우수제품·MAS 등록으로 나라장터에서 직접 조달 가능. 수의계약 대응.' },
+      { title: '공공 구매 절차가 필요한가', desc: '우수제품·MAS 등록으로 나라장터에서 조달청 수요기관 기준에 따라 직접 조달 가능.' },
       { title: '관리 인력이 부족한가', desc: '필터·실외기 없음. 표면 청소만으로 장기 운영 — 소규모 시설에 최적.' },
     ],
     diagramLabels: { source: '공공 공간', center: '구역별 복사열', outcome: '쾌적한 체류' },
@@ -146,11 +144,11 @@ const PAGES: Record<PageId, PageConfig> = {
       tag: '교육청 납품 사례',
       title: '경기도교육청 학교 급식실 — 온풍기에서 복사난방으로',
       situation: '겨울철 급식실 온풍기 운영으로 인한 미세먼지 비산, 소음, 기류 문제. 학생 위생 환경 개선 및 에너지 절감을 위한 난방 시스템 교체 요구.',
-      result: '복사난방 도입 후 무풍·무소음 환경 구현. 항균 99.9% 성능으로 위생 기준 강화. 나라장터 우수제품 수의계약으로 예산 집행 간소화.',
+      result: '복사난방 도입 후 무풍·무소음 환경 구현. 항균 99.9% 성능으로 위생 기준 강화. 조달청 기준에 따른 구매로 예산 집행 간소화.',
       metrics: [
         { v: '99.9%', l: '항균 성능' },
-        { v: '무풍', l: '기류 Zero' },
-        { v: '수의계약', l: '조달 방식' },
+        { v: '무풍', l: '기류 최소화' },
+        { v: '조달청 기준 구매', l: '조달 방식' },
       ],
     },
   },
@@ -158,9 +156,8 @@ const PAGES: Record<PageId, PageConfig> = {
   'industrial-logistics': {
     breadcrumb: '산업·물류 솔루션', badge: 'Industrial & Logistics',
     title: '고천장 대공간에서 작업자에게 직접 도달하는 난방',
-    lead: '물류센터, 제조공장, 정비창은 천장이 높고 출입문 개방이 잦아 공기를 데우는 방식의 손실이 큽니다. 복사난방은 작업자 동선과 작업면을 중심으로 열을 전달합니다.',
-    accent: '#F59E0B',
-    gradient: 'linear-gradient(150deg, #0A1628 0%, #23324B 50%, #3A2812 100%)',
+    lead: '물류센터, 제조공장, 정비창은 천장이 높고 출입문 개방이 잦아 공기를 데우는 방식의 손실이 큽니다. 복사난방은 작업자 동선과 작업면을 중심으로 열을 직접 데웁니다.',
+    accent: 'var(--amber)',
     icon: Factory,
     stats: [
       { label: '에너지 절감 실증', value: '57%' },
@@ -220,8 +217,7 @@ const PAGES: Record<PageId, PageConfig> = {
     breadcrumb: '국방·특수 솔루션', badge: 'Defense & Special',
     title: '안전 조건이 까다로운 현장을 위한 특수 난방 접근',
     lead: '군 정비창, 특수 창고, 방폭 검토가 필요한 공간은 일반 난방기 선택이 제한됩니다. 썬레이텍은 현장 위험도와 설치 환경을 먼저 검토하고 적합한 제품군을 제안합니다.',
-    accent: '#DC2626',
-    gradient: 'linear-gradient(150deg, #0A1628 0%, #1E293B 48%, #3B1111 100%)',
+    accent: 'var(--red)',
     icon: ShieldCheck,
     stats: [
       { label: '시범사용 만족도', value: '96점' },
@@ -281,8 +277,7 @@ const PAGES: Record<PageId, PageConfig> = {
     breadcrumb: 'IoT 중앙제어', badge: 'IoT Control',
     title: '128회로 중앙제어로 구역별 난방을 데이터로 관리',
     lead: '복사난방은 필요한 구역만 켜는 방식과 궁합이 좋습니다. 128회로 IoT 중앙제어를 결합하면 스케줄, 피크, 현장별 운전 상태를 한눈에 관리할 수 있습니다.',
-    accent: '#22C55E',
-    gradient: 'linear-gradient(150deg, #0A1628 0%, #12353A 58%, #102A1B 100%)',
+    accent: 'var(--blue)',
     icon: RadioTower,
     stats: [
       { label: '최대 제어 회로', value: '128회로' },
@@ -331,7 +326,7 @@ const PAGES: Record<PageId, PageConfig> = {
 /* ── DataBar: 인포그래픽 성능 수치 바 ── */
 function DataBar({ items, accent }: { items: DataBarItem[]; accent: string }) {
   return (
-    <section style={{ background: '#0D1B2E', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '0' }}>
+    <section style={{ background: 'var(--navy)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '0' }}>
       <div className="container">
         <div className="databar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
           {items.map((item, i) => (
@@ -359,7 +354,10 @@ function DataBar({ items, accent }: { items: DataBarItem[]; accent: string }) {
                 {item.value}
               </div>
               <div style={{ color: '#CBD5E1', fontWeight: 800, fontSize: 13, marginBottom: 5 }}>{item.label}</div>
-              <div style={{ color: 'rgba(255,255,255,0.38)', fontSize: 11, lineHeight: 1.55 }}>{item.note}</div>
+              <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, lineHeight: 1.55, display: 'flex', alignItems: 'flex-start', gap: '4px', background: 'rgba(255,255,255,0.05)', padding: '6px 8px', borderRadius: '4px' }}>
+                <BadgeCheck size={14} style={{ marginTop: '2px', flexShrink: 0, color: 'var(--amber)' }} />
+                <span>출처/기관: {item.note}</span>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -370,46 +368,49 @@ function DataBar({ items, accent }: { items: DataBarItem[]; accent: string }) {
 
 /* ── CaseSpotlight: 실증 사례 하이라이트 ── */
 function CaseSpotlight({ spotlight, accent }: { spotlight: PageSpotlight; accent: string }) {
+  // Option D context: on dark bg, icons should be high contrast (white or bright gold)
+  const contrastAccent = '#fff'; 
   return (
-    <section style={{ padding: '56px 0', background: 'linear-gradient(135deg, #0A1628 0%, #162035 100%)' }}>
+    <section style={{ padding: '68px 0', background: 'linear-gradient(135deg, var(--navy) 0%, #1e293b 100%)' }}>
       <div className="container">
         <ScrollReveal>
           <div style={{ maxWidth: 880, margin: '0 auto' }}>
             <span style={{
               display: 'inline-block', padding: '4px 14px', borderRadius: 999,
-              background: `${accent}20`, color: accent,
+              background: 'rgba(255,255,255,0.08)', color: 'var(--amber)',
               fontSize: 11, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 16,
+              border: '1px solid rgba(255,255,255,0.1)'
             }}>
-              📋 {spotlight.tag}
+              📋 검증 자료: {spotlight.tag}
             </span>
-            <h2 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 2.4vw, 1.65rem)', fontWeight: 900, marginBottom: 24, lineHeight: 1.35 }}>
+            <h2 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 2.4vw, 1.75rem)', fontWeight: 900, marginBottom: 28, lineHeight: 1.3, wordBreak: 'keep-all' }}>
               {spotlight.title}
             </h2>
 
-            <div className="spotlight-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 20 }}>
-              <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: '20px 22px', borderLeft: '3px solid rgba(239,68,68,0.45)' }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10.5, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
+            <div className="spotlight-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: '24px 28px', borderLeft: '4px solid var(--red)' }}>
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
                   도입 상황
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 13.5, lineHeight: 1.78 }}>{spotlight.situation}</p>
+                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, lineHeight: 1.8 }}>{spotlight.situation}</p>
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: '20px 22px', borderLeft: `3px solid ${accent}` }}>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10.5, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: '24px 28px', borderLeft: '4px solid var(--amber)' }}>
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 900, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
                   도입 결과
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 13.5, lineHeight: 1.78 }}>{spotlight.result}</p>
+                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, lineHeight: 1.8 }}>{spotlight.result}</p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {spotlight.metrics.map((m) => (
                 <div key={m.l} style={{
-                  flex: '1 1 110px',
-                  background: `${accent}12`, border: `1px solid ${accent}28`,
-                  borderRadius: 10, padding: '18px 16px', textAlign: 'center',
+                  flex: '1 1 120px',
+                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 12, padding: '22px 18px', textAlign: 'center',
                 }}>
-                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.9rem', color: accent, lineHeight: 1 }}>{m.v}</div>
-                  <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, fontWeight: 700, marginTop: 5 }}>{m.l}</div>
+                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '2.4rem', color: 'var(--amber)', lineHeight: 1, textShadow: '0 4px 12px rgba(245,158,11,0.2)' }}>{m.v}</div>
+                  <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 800, marginTop: 8, letterSpacing: '0.5px' }}>{m.l}</div>
                 </div>
               ))}
             </div>
@@ -536,7 +537,7 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
   const Icon = config.icon;
 
   return (
-    <main style={{ minHeight: '100vh', background: '#fff' }}>
+    <main key={pageId} style={{ minHeight: '100vh', background: '#fff' }}>
       <PageSEO
         title={`${config.title.replace(/<[^>]+>/g, '')} - 썬레이텍`}
         description={config.lead}
@@ -556,19 +557,6 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
       {/* DataBar — 인포그래픽 수치 바 */}
       <DataBar items={config.dataBar} accent={config.accent} />
 
-      {/* 솔루션 다이어그램 (히어로에서 본문으로 이동) */}
-      <section style={{ padding: '56px 0', background: '#F8FAFC' }}>
-        <div className="container">
-          <ScrollReveal style={{ textAlign: 'center', marginBottom: 34 }}>
-            <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Solution Overview</p>
-            <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>솔루션 구성도</h2>
-          </ScrollReveal>
-          <div style={{ maxWidth: 960, margin: '0 auto' }}>
-            <EnergyDiagram config={config} />
-          </div>
-        </div>
-      </section>
-
       {/* Problem Map */}
       <section style={{ padding: '68px 0', background: '#F8FAFC' }}>
         <div className="container">
@@ -587,9 +575,6 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
           </motion.div>
         </div>
       </section>
-
-      {/* Case Spotlight (실증 사례 — 있는 경우만) */}
-      {config.spotlight && <CaseSpotlight spotlight={config.spotlight} accent={config.accent} />}
 
       {/* Sunraytec Method */}
       <section style={{ padding: '72px 0', background: '#fff' }}>
@@ -626,19 +611,41 @@ export default function TechnologySolutionPage({ pageId }: { pageId: PageId }) {
         </div>
       </section>
 
-      {/* Applications */}
-      <section style={{ padding: '72px 0', background: 'linear-gradient(180deg,#0A1628 0%,#14233A 100%)', color: '#fff' }}>
+      {/* 솔루션 다이어그램 (히어로에서 본문으로 이동) */}
+      <section style={{ padding: '56px 0', background: '#F8FAFC' }}>
         <div className="container">
-          <ScrollReveal style={{ textAlign: 'center', marginBottom: 36 }}>
-            <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Applications</p>
-            <h2 style={{ fontSize: '2rem', fontWeight: 900 }}>우선 적용하기 좋은 공간</h2>
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: 34 }}>
+            <p style={{ fontSize: 12, color: config.accent, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Solution Overview</p>
+            <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>솔루션 구성도</h2>
           </ScrollReveal>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="tech-card-grid">
+          <div style={{ maxWidth: 960, margin: '0 auto' }}>
+            <EnergyDiagram config={config} />
+          </div>
+        </div>
+      </section>
+
+      {/* Case Spotlight (실증 사례 — 있는 경우만) */}
+      {config.spotlight && <CaseSpotlight spotlight={config.spotlight} accent={config.accent} />}
+
+      {/* Applications */}
+      <section style={{ padding: '80px 0', background: 'linear-gradient(180deg, var(--navy) 0%, #1e293b 100%)', color: '#fff' }}>
+        <div className="container">
+          <ScrollReveal style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <p style={{ fontSize: 12, color: 'var(--amber)', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>Applications</p>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 900, color: '#fff', lineHeight: 1.2 }}>우선 적용하기 좋은 공간</h2>
+          </ScrollReveal>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }} className="tech-card-grid">
             {config.applications.map(({ icon: AppIcon, title, desc }) => (
-              <motion.article key={title} variants={staggerItem} whileHover={{ y: -5 }} style={{ border: '1px solid rgba(255,255,255,0.11)', borderRadius: 8, padding: 22, background: 'rgba(255,255,255,0.05)' }}>
-                <AppIcon size={28} color={config.accent} style={{ marginBottom: 14 }} />
-                <h3 style={{ fontSize: '1rem', fontWeight: 900, marginBottom: 8 }}>{title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.64)', fontSize: 13.5, lineHeight: 1.65 }}>{desc}</p>
+              <motion.article key={title} variants={staggerItem} whileHover={{ y: -5, background: 'rgba(255,255,255,0.08)' }} style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, padding: '32px 24px', background: 'rgba(255,255,255,0.04)', transition: 'all 0.3s' }}>
+                <div style={{ 
+                  width: '56px', height: '56px', borderRadius: '12px', background: 'rgba(255,255,255,0.06)', 
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px',
+                  border: '1px solid rgba(255,255,255,0.05)'
+                }}>
+                  <AppIcon size={28} color="var(--amber)" />
+                </div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, marginBottom: '12px', color: '#fff' }}>{title}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14.5px', lineHeight: 1.7 }}>{desc}</p>
               </motion.article>
             ))}
           </motion.div>

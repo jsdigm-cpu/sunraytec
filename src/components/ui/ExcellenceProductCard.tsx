@@ -27,47 +27,72 @@ export default function ExcellenceProductCard({ product }: Props) {
       <div
         style={{
           position: 'relative',
-          background: 'linear-gradient(135deg, var(--navy) 0%, #1A3A6B 100%)',
-          padding: '32px 24px 24px',
+          background: 'linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%)',
+          padding: '12px 14px 16px', // 전체적으로 균형 잡힌 여백
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          gap: '16px',
-          minHeight: '180px',
+          gap: '12px',
         }}
       >
-        {/* 우수제품 골드 배지 */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '14px',
-            left: '14px',
-            background: badge.background,
-            color: badge.color,
-            fontSize: '10px',
-            fontWeight: 800,
-            padding: '4px 10px',
-            borderRadius: '20px',
-            letterSpacing: '0.5px',
-            boxShadow: badge.shadow,
-          }}
-        >
-          {badge.label}
+        {/* 상단 헤더: 라벨 + 모델 정보 */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+          {/* 배지 (Absolute가 아닌 Flex 아이템으로 배치) */}
+          <div
+            style={{
+              background: badge.background,
+              color: badge.color,
+              fontSize: '10px',
+              fontWeight: 800,
+              padding: '4px 10px',
+              borderRadius: '20px',
+              letterSpacing: '0.5px',
+              boxShadow: badge.shadow,
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {badge.label}
+          </div>
+
+          {/* 모델명 및 면적 정보 */}
+          <div style={{ textAlign: 'right' }}>
+            <div
+              style={{
+                fontSize: '18px',
+                fontWeight: 900,
+                color: '#fff',
+                letterSpacing: '-0.3px',
+                lineHeight: 1.1,
+              }}
+            >
+              {product.name}
+            </div>
+            <div
+              style={{
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.6)',
+                marginTop: '2px',
+                fontWeight: 600
+              }}
+            >
+              {product.specs.heatingArea}
+            </div>
+          </div>
         </div>
 
+        {/* 제품 이미지 영역 */}
         {product.thumbnailImage || product.detailImage ? (
           <div
             style={{
               width: '100%',
-              aspectRatio: '4 / 3',
-              borderRadius: '14px',
+              aspectRatio: '16 / 9', // 사진을 더 와이드하게 강조
+              borderRadius: '12px',
               overflow: 'hidden',
               background: '#fff',
-              boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '12px',
+              padding: '4px',
             }}
           >
             <img
@@ -79,32 +104,10 @@ export default function ExcellenceProductCard({ product }: Props) {
             />
           </div>
         ) : (
-          <PanelHeaterIcon powerW={product.specs.powerW} />
+          <div style={{ padding: '20px 0', display: 'flex', justifyContent: 'center' }}>
+            <PanelHeaterIcon powerW={product.specs.powerW} />
+          </div>
         )}
-
-        {/* 모델명 */}
-        <div style={{ textAlign: 'center' }}>
-          <div
-            style={{
-              fontSize: '20px',
-              fontWeight: 900,
-              color: '#fff',
-              letterSpacing: '-0.3px',
-              lineHeight: 1,
-            }}
-          >
-            {product.name}
-          </div>
-          <div
-            style={{
-              fontSize: '12px',
-              color: 'rgba(255,255,255,0.55)',
-              marginTop: '6px',
-            }}
-          >
-            {product.specs.heatingArea}
-          </div>
-        </div>
       </div>
 
       {/* 카드 바디 */}
@@ -122,21 +125,22 @@ export default function ExcellenceProductCard({ product }: Props) {
           {product.summary}
         </p>
 
-        {/* 핵심 스펙 */}
+        {/* 핵심 스펙 - 가로형으로 배치하여 높이 축소 */}
         <div
           style={{
             background: 'var(--off)',
             borderRadius: '10px',
-            padding: '12px 14px',
+            padding: '10px 12px', // 여백 축소
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '8px',
+            gridTemplateColumns: '1.1fr 0.9fr', // 열 비율 조정
+            rowGap: '6px', // 줄 간격 촘촘하게
+            columnGap: '12px',
           }}
         >
           <SpecItem label="소비전력" value={`${product.specs.powerW.toLocaleString()}W`} />
           <SpecItem label="전압" value={product.specs.voltage.split(' ')[0]} />
           <SpecItem label="크기" value={product.specs.sizeMm} small />
-          {product.specs.weightKg ? <SpecItem label="무게" value={`${product.specs.weightKg}Kg`} small /> : <SpecItem label="설치 방법" value={formatInstallationType(product.installationType)} small />}
+          {product.specs.weightKg ? <SpecItem label="무게" value={`${product.specs.weightKg}Kg`} small /> : <SpecItem label="설치방법" value={formatInstallationType(product.installationType)} small />}
           {product.specs.currentA && <SpecItem label="전류" value={`${product.specs.currentA}A`} small />}
           {product.specs.heatingTempC && <SpecItem label="발열온도" value={product.specs.heatingTempC} small />}
         </div>
@@ -187,32 +191,33 @@ export default function ExcellenceProductCard({ product }: Props) {
           </span>
         </div>
 
-        {/* 상세보기 버튼 */}
+        {/* 상세보기 버튼 - 크기 축소 및 밝은 컬러 적용 */}
         <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          style={{ marginTop: 'auto' }}
+          whileHover={{ scale: 1.05, boxShadow: '0 8px 20px rgba(59,130,246,0.3)' }}
+          whileTap={{ scale: 0.95 }}
+          style={{ 
+            alignSelf: 'flex-end', // 우측 하단 배치
+            marginTop: '8px'
+          }}
         >
           <Link
             to={`/products/${product.id}`}
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
-              padding: '11px',
-              borderRadius: '10px',
-              background: 'var(--navy)',
+              padding: '8px 20px', // 버튼 크기 대폭 축소
+              borderRadius: '24px', // 알약 모양
+              background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)', // 밝고 눈에 띄는 블루
               color: '#fff',
-              fontSize: '13.5px',
-              fontWeight: 700,
+              fontSize: '12px',
+              fontWeight: 800,
               textDecoration: 'none',
-              transition: 'background 0.2s',
+              boxShadow: '0 4px 12px rgba(37,99,235,0.2)',
+              transition: 'all 0.2s',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--red)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--navy)'; }}
           >
-            제품 보기 →
+            상세보기
           </Link>
         </motion.div>
       </div>
@@ -222,13 +227,24 @@ export default function ExcellenceProductCard({ product }: Props) {
 
 function SpecItem({ label, value, small }: { label: string; value: string; small?: boolean }) {
   return (
-    <div>
-      <div style={{ fontSize: '10px', color: 'var(--gray)', fontWeight: 600, marginBottom: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+      <span style={{ 
+        fontSize: '10px', 
+        color: 'var(--gray)', 
+        fontWeight: 600, 
+        minWidth: '42px', // 라벨 폭 고정으로 정렬 유지
+        flexShrink: 0 
+      }}>
         {label}
-      </div>
-      <div style={{ fontSize: small ? '11px' : '13px', fontWeight: 700, color: 'var(--text)' }}>
+      </span>
+      <span style={{ 
+        fontSize: small ? '11px' : '12px', 
+        fontWeight: 700, 
+        color: 'var(--text)',
+        whiteSpace: 'nowrap'
+      }}>
         {value}
-      </div>
+      </span>
     </div>
   );
 }

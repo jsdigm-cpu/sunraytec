@@ -8,7 +8,7 @@ interface Props {
 }
 
 const SITE_NAME = '썬레이텍';
-const SITE_URL = 'https://www.sunraytec.com';
+const SITE_URL = 'https://www.sunraytec.co.kr';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/images/hero/hero_1.jpg`;
 
 export default function PageSEO({

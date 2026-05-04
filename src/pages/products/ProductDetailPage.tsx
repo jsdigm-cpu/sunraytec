@@ -26,7 +26,7 @@ export default function ProductDetailPage() {
   const galleryImages = getProductImages(product);
 
   return (
-    <div>
+    <div key={productId}>
       <PageSEO
         title={`${product.name} - ${product.category}`}
         description={`${product.summary} 소비전력 ${product.specs.powerW.toLocaleString()}W, 난방면적 ${product.specs.heatingArea}. 썬레이텍 ${product.category} 패널히터.`}
@@ -168,6 +168,18 @@ export default function ProductDetailPage() {
                 </div>
               </article>
             ) : null}
+
+            <article className="card" style={{ padding: '1.5rem' }}>
+              <h2 style={{ marginTop: 0 }}>자료 다운로드</h2>
+              <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.8, marginTop: 0, fontSize: '0.95rem' }}>
+                제품 검토 및 설계에 필요한 공식 자료를 다운로드하세요.
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a href="#" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--border)', padding: '0.7rem' }}>📥 카탈로그</a>
+                <a href="#" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--border)', padding: '0.7rem' }}>📑 시방서/도면</a>
+                <a href="#" className="btn" style={{ flex: 1, textAlign: 'center', border: '1px solid var(--border)', padding: '0.7rem' }}>🏅 시험성적서</a>
+              </div>
+            </article>
 
             <article className="card" style={{ padding: '1.5rem' }}>
               <h2 style={{ marginTop: 0 }}>기본 사양</h2>

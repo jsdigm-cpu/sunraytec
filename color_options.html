@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunraytec Design Options - Warmth & Energy</title>
+    <style>
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { font-size: 32px; color: #0f172a; margin-bottom: 10px; }
+        .subtitle { color: #64748b; font-size: 18px; }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .option-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+        .option-card:hover { transform: translateY(-10px); }
+
+        .option-header {
+            padding: 25px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .option-title { font-size: 18px; font-weight: 800; margin-bottom: 5px; }
+        .option-desc { font-size: 13px; color: #64748b; }
+
+        .preview-area {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .swatch-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .swatch {
+            height: 60px;
+            flex: 1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .ui-sample {
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 13px;
+        }
+        .ui-sample h4 { margin: 0 0 10px 0; font-size: 16px; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        /* Option 1: Lively Navy */
+        .opt1-bg { background: #1E3A8A; color: white; }
+        .opt1-accent { color: #FB923C; }
+        .opt1-badge { background: #FB923C; color: #1E3A8A; }
+
+        /* Option 2: Modern Slate */
+        .opt2-bg { background: #334155; color: white; }
+        .opt2-accent { color: #F87171; }
+        .opt2-badge { background: #F87171; color: white; }
+
+        /* Option 3: Warm Charcoal */
+        .opt3-bg { background: #3F3F46; color: white; }
+        .opt3-accent { color: #F59E0B; }
+        .opt3-badge { background: #F59E0B; color: #3F3F46; }
+
+        .tag-list { display: flex; gap: 8px; margin-top: 15px; }
+        .tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Sunraytec Design Alternatives</h1>
+        <p class="subtitle">어두운 느낌을 걷어내고 난방기의 '열기'와 '전문성'을 강조한 3가지 제안</p>
+    </header>
+
+    <div class="options-grid">
+        <!-- Option 1 -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-title" style="color: #1E3A8A;">[안 1] Lively Energy</div>
+                <div class="option-desc">채도가 높은 미드나잇 블루와 오렌지로 활기찬 에너지 강조</div>
+            </div>
+            <div class="preview-area">
+                <div class="swatch-row">
+                    <div class="swatch" style="background: #1E3A8A; color: white;">#1E3A8A</div>
+                    <div class="swatch" style="background: #FB923C; color: #1E3A8A;">#FB923C</div>
+                </div>
+                <div class="ui-sample opt1-bg">
+                    <div class="badge opt1-badge">에너지 절감 57%</div>
+                    <h4>선명한 블루와 화사한 오렌지</h4>
+                    <p style="opacity: 0.8;">기존의 칙칙한 네이비 대신 선명한 블루를 사용하여 신뢰감은 유지하면서 공간이 더 넓고 깨끗해 보입니다.</p>
+                    <div class="tag-list">
+                        <div class="tag">고효율</div>
+                        <div class="tag" style="border-color: #FB923C; color: #FB923C;">강력 난방</div>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #64748b; padding: 10px; border-top: 1px dashed #e2e8f0;">
+                    <b>특징:</b> IT와 난방 기술이 융합된 세련된 느낌. 가장 대중적이고 산뜻함.
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2 -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-title" style="color: #334155;">[안 2] Industrial Pro</div>
+                <div class="option-desc">슬레이트 그레이와 레드 포인트로 기계적 성능과 전문성 강조</div>
+            </div>
+            <div class="preview-area">
+                <div class="swatch-row">
+                    <div class="swatch" style="background: #334155; color: white;">#334155</div>
+                    <div class="swatch" style="background: #F87171; color: white;">#F87171</div>
+                </div>
+                <div class="ui-sample opt2-bg">
+                    <div class="badge opt2-badge">조달우수제품</div>
+                    <h4>프로페셔널 슬레이트 & 레드</h4>
+                    <p style="opacity: 0.8;">푸른기를 뺀 묵직한 그레이 톤으로 산업 현장의 전문성을 드러내며, 레드 포인트로 강력한 온기를 표현합니다.</p>
+                    <div class="tag-list">
+                        <div class="tag">내구성</div>
+                        <div class="tag" style="border-color: #F87171; color: #F87171;">폭발적인 열기</div>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #64748b; padding: 10px; border-top: 1px dashed #e2e8f0;">
+                    <b>특징:</b> 공장, 물류센터 등 큰 규모의 납품 실적을 강조할 때 가장 돋보임.
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 3 -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-title" style="color: #3F3F46;">[안 3] Premium Cozy</div>
+                <div class="option-desc">따뜻한 차콜과 골든 앰버로 아늑함과 프리미엄 품질 강조</div>
+            </div>
+            <div class="preview-area">
+                <div class="swatch-row">
+                    <div class="swatch" style="background: #3F3F46; color: white;">#3F3F46</div>
+                    <div class="swatch" style="background: #F59E0B; color: white;">#F59E0B</div>
+                </div>
+                <div class="ui-sample opt3-bg">
+                    <div class="badge opt3-badge">프리미엄 라인</div>
+                    <h4>따뜻한 차콜 & 골드</h4>
+                    <p style="opacity: 0.8;">차가운 블루 계열을 배제하고 갈색조가 섞인 웜 차콜을 사용해 눈이 편안하고 공간에 온기가 감도는 느낌을 줍니다.</p>
+                    <div class="tag-list">
+                        <div class="tag">무소음</div>
+                        <div class="tag" style="border-color: #F59E0B; color: #F59E0B;">은은한 온기</div>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #64748b; padding: 10px; border-top: 1px dashed #e2e8f0;">
+                    <b>특징:</b> 복지시설, 교육기관, 주거공간 등 '사람 중심'의 공간에 최적화됨.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 50px; padding: 30px; background: white; border-radius: 20px; border: 1px solid #e2e8f0; text-align: center;">
+        <p style="font-weight: 700; color: #0f172a; margin-bottom: 5px;">💡 어떤 방향이 가장 마음에 드시나요?</p>
+        <p style="font-size: 14px; color: #64748b;">선택해주시는 방향에 맞춰 전체 홈페이지의 톤앤매너를 즉시 보정하겠습니다.</p>
+    </div>
+</div>
+
+</body>
+</html>

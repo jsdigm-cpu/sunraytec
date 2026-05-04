@@ -33,12 +33,12 @@ const CATEGORY_TO_SLUG: Record<string, string> = Object.fromEntries(
 );
 
 const CATEGORY_COLOR: Record<string, string> = {
-  '교육 및 공공 복지':    '#3B82F6',
-  '국방 및 특수 시설':    '#EF4444',
-  '산업 및 물류 거점':    '#F59E0B',
-  '스마트 시티 솔루션':   '#10B981',
-  '주거 및 라이프 스타일':'#8B5CF6',
-  '상업 및 서비스 공간':  '#06B6D4',
+  '교육 및 공공 복지':    'var(--blue)',
+  '국방 및 특수 시설':    'var(--red)',
+  '산업 및 물류 거점':    'var(--amber)',
+  '스마트 시티 솔루션':   '#0891B2',
+  '주거 및 라이프 스타일':'#EA580C',
+  '상업 및 서비스 공간':  'var(--navy)',
 };
 
 const CATEGORY_ICON: Record<string, string> = {
@@ -58,7 +58,7 @@ const STATIC_CASES: CaseItem[] = [
     location: '경기도',
     image_url: '',
     summary: '급식실 천장에 복사난방 패널 설치. 기류 없는 위생 환경으로 식품위생 기준 충족, 학생 건강 보호.',
-    impact: '미세먼지 Zero',
+    impact: '미세먼지 최소화',
     impact_color: '#3B82F6',
   },
   {
@@ -151,7 +151,7 @@ const STATIC_CASES: CaseItem[] = [
     image_url: '',
     summary: '천장 높이 6~8m 대형 물류창고. 복사난방 특성상 높은 공간에서도 작업자 위치에 충분한 열 전달.',
     impact: '고천장 적합',
-    impact_color: '#06B6D4',
+    impact_color: 'var(--navy)',
   },
 ];
 
@@ -216,9 +216,10 @@ function CaseCard({ item, onClick }: { item: CaseItem; onClick: () => void }) {
         {/* 카테고리 배지 */}
         <span style={{
           position: 'absolute', top: '12px', left: '12px',
-          fontSize: '10px', fontWeight: 700, letterSpacing: '0.5px',
-          background: color, color: '#fff',
+          fontSize: '10px', fontWeight: 800, letterSpacing: '0.5px',
+          background: color, color: ['스마트 시티 솔루션', '주거 및 라이프 스타일'].includes(item.category) ? '#1F2937' : '#fff',
           padding: '3px 10px', borderRadius: '999px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
         }}>
           {item.category}
         </span>
@@ -316,246 +317,105 @@ export default function CasesPage() {
         canonical="/cases"
       />
       <SubHero
-        breadcrumb={[{ label: '시공사례' }]}
+        breadcrumb={[{ label: '시공사례' }, ...(activeCategory !== '전체' ? [{ label: activeCategory }] : [])]}
         badge="Delivery Records"
-        title="시공사례"
-        lead="군부대·학교·공장·복지시설까지. 우수제품 지정 이후 전국 공공·민간 현장에 검증된 납품 실적입니다."
-        keywords={['공공·교육 시설', '국방·특수 환경', '산업·물류 거점', '스마트시티 솔루션']}
+        title={activeCategory === '전체' ? "시공사례" : `${activeCategory} 실적`}
+        lead={activeCategory === '전체' 
+          ? "군부대·학교·공장·복지시설까지. 우수제품 지정 이후 전국 공공·민간 현장에 검증된 납품 실적입니다."
+          : `${activeCategory} 분야에 성공적으로 도입된 썬레이텍 복사난방 검증 사례입니다.`}
+        keywords={activeCategory === '전체' ? ['공공·교육 시설', '국방·특수 환경', '산업·물류 거점', '스마트시티 솔루션'] : []}
       />
 
-      {/* 히어로 KPI 수치 (본문으로 이동) */}
-      <section style={{ background: '#0D1B2E', padding: 0 }}>
-        <div className="container">
-          <div className="hero-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-            {HERO_STATS.map((s, i) => (
-              <div key={s.label} style={{
-                padding: '28px 20px',
-                borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                textAlign: 'center',
-              }}>
-                <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                  color: i === 2 ? 'var(--red)' : '#fff',
-                  lineHeight: 1,
-                  marginBottom: '6px',
-                }}>
-                  {s.value}
-                </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
-                  {s.label}
-                </div>
-                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
-                  {s.sub}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ② 대표 실증 사례 Spotlight */}
-      <section style={{ background: '#0D1B2E', padding: '56px 0' }}>
-        <div className="container">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '8px' }}
-          >
-            Featured Cases
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 800, color: '#fff', marginBottom: '32px' }}
-          >
-            수치로 검증된 대표 납품 사례
-          </motion.h2>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="spotlight-grid">
-
-            {/* 가나에너지 공장 사례 */}
-            {ganaCase && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                style={{
-                  background: 'linear-gradient(135deg, #1A2F4A 0%, #0F2236 100%)',
-                  borderRadius: '16px',
-                  padding: '32px',
-                  border: '1px solid rgba(245,158,11,0.2)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <div style={{
-                  position: 'absolute', top: 0, right: 0,
-                  width: '160px', height: '160px',
-                  background: 'radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)',
-                  borderRadius: '50%',
-                }} />
-                <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', color: '#F59E0B', textTransform: 'uppercase' }}>
-                  ★ 산업 현장 실증
-                </span>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', margin: '10px 0 6px' }}>
-                  ㈜가나에너지 공장 난방 교체
-                </h3>
-                <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginBottom: '24px' }}>
-                  200평 · 천장높이 5m · 온풍기(45kW×3대) 대체
-                </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-                  {[
-                    { label: '절감율', value: '57%', sub: 'vs 온풍기(EHP)' },
-                    { label: '기존 연간', value: '1,130만', sub: '원/5개월' },
-                    { label: '절감 후', value: '576만', sub: '원/5개월' },
-                  ].map(m => (
-                    <div key={m.label} style={{
-                      background: 'rgba(245,158,11,0.08)',
-                      borderRadius: '10px',
-                      padding: '14px 10px',
-                      textAlign: 'center',
-                      border: '1px solid rgba(245,158,11,0.15)',
-                    }}>
-                      <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.6rem', color: '#F59E0B', lineHeight: 1 }}>
-                        {m.value}
-                      </div>
-                      <div style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginTop: '4px' }}>
-                        {m.label}
-                      </div>
-                      <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
-                        {m.sub}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: '16px' }}>
-                  평당 난방비 13,500원 → 5,760원으로 감소
-                </p>
-              </motion.div>
-            )}
-
-            {/* 군부대 12사단 사례 */}
-            {defenseCase && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                style={{
-                  background: 'linear-gradient(135deg, #1A2530 0%, #0F1E2E 100%)',
-                  borderRadius: '16px',
-                  padding: '32px',
-                  border: '1px solid rgba(239,68,68,0.2)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <div style={{
-                  position: 'absolute', top: 0, right: 0,
-                  width: '160px', height: '160px',
-                  background: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)',
-                  borderRadius: '50%',
-                }} />
-                <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', color: '#EF4444', textTransform: 'uppercase' }}>
-                  ★ 국방 혁신제품
-                </span>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', margin: '10px 0 6px' }}>
-                  육군 전방 12개 사단 경계초소
-                </h3>
-                <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginBottom: '24px' }}>
-                  지상작전사령부 수요자 제안형 혁신제품 시범 납품
-                </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-                  {[
-                    { label: '만족도', value: '96점', sub: '/ 100점 만점' },
-                    { label: '납품 사단', value: '12개', sub: '전방 GOP 경계' },
-                    { label: '지정 방식', value: '혁신', sub: '제품 수요자 제안' },
-                  ].map(m => (
-                    <div key={m.label} style={{
-                      background: 'rgba(239,68,68,0.08)',
-                      borderRadius: '10px',
-                      padding: '14px 10px',
-                      textAlign: 'center',
-                      border: '1px solid rgba(239,68,68,0.15)',
-                    }}>
-                      <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem', color: '#EF4444', lineHeight: 1 }}>
-                        {m.value}
-                      </div>
-                      <div style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginTop: '4px' }}>
-                        {m.label}
-                      </div>
-                      <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
-                        {m.sub}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: '16px' }}>
-                  조달청 혁신제품 지정번호 기준 · 2020.09 ~ 2023.09
-                </p>
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ③ 카테고리 현황 인포그래픽 바 */}
-      <section style={{ background: '#F1F5F9', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}
-            className="cat-stat-grid"
-          >
-            {CATEGORIES.filter(c => c !== '전체').map(cat => {
-              const count = cases.filter(c => c.category === cat).length;
-              const color = CATEGORY_COLOR[cat];
-              const icon = CATEGORY_ICON[cat];
-              return (
-                <motion.button
-                  key={cat}
-                  whileHover={{ y: -3, transition: { duration: 0.15 } }}
-                  onClick={() => handleCategoryClick(cat)}
-                  style={{
-                    background: activeCategory === cat ? color : '#fff',
-                    border: `2px solid ${activeCategory === cat ? color : '#E2E8F0'}`,
-                    borderRadius: '12px',
-                    padding: '16px 8px',
+      {activeCategory === '전체' && (
+        <>
+          {/* 히어로 KPI 수치 (본문으로 이동) */}
+          <section style={{ background: '#0D1B2E', padding: 0 }}>
+            <div className="container">
+              <div className="hero-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+                {HERO_STATS.map((s, i) => (
+                  <div key={s.label} style={{
+                    padding: '28px 20px',
+                    borderRight: i < HERO_STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
                     textAlign: 'center',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, border 0.2s',
-                  }}
-                >
-                  <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>{icon}</div>
-                  <div style={{
-                    fontSize: '10px', fontWeight: 700,
-                    color: activeCategory === cat ? '#fff' : '#374151',
-                    lineHeight: 1.3,
-                    wordBreak: 'keep-all',
                   }}>
-                    {cat}
+                    <div style={{
+                      fontFamily: "'Bebas Neue', sans-serif",
+                      fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                      color: i === 2 ? 'var(--amber)' : '#fff',
+                      lineHeight: 1,
+                      marginBottom: '6px',
+                    }}>
+                      {s.value}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', marginBottom: '3px' }}>
+                      {s.label}
+                    </div>
+                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.3px' }}>
+                      {s.sub}
+                    </div>
                   </div>
-                  <div style={{
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: '1.3rem',
-                    color: activeCategory === cat ? '#fff' : color,
-                    marginTop: '6px',
-                    lineHeight: 1,
-                  }}>
-                    {count}
-                  </div>
-                </motion.button>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
+                ))}
+              </div>
+            </div>
+          </section>
+
+
+
+          {/* ③ 카테고리 현황 인포그래픽 바 */}
+          <section style={{ background: '#F1F5F9', borderBottom: '1px solid #E2E8F0', padding: '32px 0' }}>
+            <div className="container">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}
+                className="cat-stat-grid"
+              >
+                {CATEGORIES.filter(c => c !== '전체').map(cat => {
+                  const count = cases.filter(c => c.category === cat).length;
+                  const color = CATEGORY_COLOR[cat];
+                  const icon = CATEGORY_ICON[cat];
+                  return (
+                    <motion.button
+                      key={cat}
+                      whileHover={{ y: -3, transition: { duration: 0.15 } }}
+                      onClick={() => handleCategoryClick(cat)}
+                      style={{
+                        background: activeCategory === cat ? color : '#fff',
+                        border: `2px solid ${activeCategory === cat ? color : '#E2E8F0'}`,
+                        borderRadius: '12px',
+                        padding: '16px 8px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        transition: 'background 0.2s, border 0.2s',
+                      }}
+                    >
+                      <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>{icon}</div>
+                      <div style={{
+                        fontSize: '10px', fontWeight: 700,
+                        color: activeCategory === cat ? '#fff' : '#374151',
+                        lineHeight: 1.3,
+                        wordBreak: 'keep-all',
+                      }}>
+                        {cat}
+                      </div>
+                      <div style={{
+                        fontFamily: "'Bebas Neue', sans-serif",
+                        fontSize: '1.3rem',
+                        color: activeCategory === cat ? '#fff' : color,
+                        marginTop: '6px',
+                        lineHeight: 1,
+                      }}>
+                        {count}
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            </div>
+          </section>
+        </>
+      )}
 
       {/* ④ 갤러리 그리드 */}
       <section style={{ padding: '56px 0 80px', background: '#F8FAFC' }}>
@@ -617,57 +477,215 @@ export default function CasesPage() {
             </motion.div>
           </AnimatePresence>
 
+          {/* 필터 결과 없음 */}
           {filtered.length === 0 && !loading && (
             <div style={{ textAlign: 'center', padding: '80px 0', color: '#9CA3AF' }}>
               해당 분야 사례를 준비 중입니다.
             </div>
           )}
+        </div>
+      </section>
 
-          {/* 문의 CTA */}
+      {/* ② 대표 실증 사례 Spotlight (그리드 하단으로 이동) */}
+      {activeCategory === '전체' && (
+        <section style={{ background: 'var(--navy)', padding: '80px 0' }}>
+          <div className="container">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--amber)', marginBottom: '8px' }}
+            >
+              Featured Performance
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 800, color: '#fff', marginBottom: '40px' }}
+            >
+              수치로 검증된 대표 납품 사례
+            </motion.h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }} className="spotlight-grid">
+              {/* 가나에너지 공장 사례 */}
+              {ganaCase && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1A2F4A 0%, #0F2236 100%)',
+                    borderRadius: '24px',
+                    padding: '36px',
+                    border: '1px solid rgba(245,158,11,0.25)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute', top: 0, right: 0,
+                    width: '180px', height: '180px',
+                    background: 'radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)',
+                    borderRadius: '50%',
+                  }} />
+                  <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', color: '#F59E0B', textTransform: 'uppercase' }}>
+                    ★ 산업 현장 실증
+                  </span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', margin: '12px 0 8px' }}>
+                    ㈜가나에너지 공장 난방 교체
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', marginBottom: '32px' }}>
+                    200평 · 천장높이 5m · 온풍기 대체 실증
+                  </p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px' }}>
+                    {[
+                      { label: '절감율', value: '57%', sub: 'vs 온풍기(EHP)' },
+                      { label: '기존 연간', value: '1,130만', sub: '원/5개월' },
+                      { label: '절감 후', value: '576만', sub: '원/5개월' },
+                    ].map(m => (
+                      <div key={m.label} style={{
+                        background: 'rgba(245,158,11,0.08)',
+                        borderRadius: '12px',
+                        padding: '16px 10px',
+                        textAlign: 'center',
+                        border: '1px solid rgba(245,158,11,0.15)',
+                      }}>
+                        <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#F59E0B', lineHeight: 1 }}>
+                          {m.value}
+                        </div>
+                        <div style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginTop: '4px' }}>
+                          {m.label}
+                        </div>
+                        <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>
+                          {m.sub}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* 군부대 12사단 사례 */}
+              {defenseCase && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1A2530 0%, #0F1E2E 100%)',
+                    borderRadius: '24px',
+                    padding: '36px',
+                    border: '1px solid rgba(239,68,68,0.25)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute', top: 0, right: 0,
+                    width: '180px', height: '180px',
+                    background: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)',
+                    borderRadius: '50%',
+                  }} />
+                  <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', color: '#EF4444', textTransform: 'uppercase' }}>
+                    ★ 국방 혁신제품
+                  </span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', margin: '12px 0 8px' }}>
+                    육군 전방 12개 사단 경계초소
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', marginBottom: '32px' }}>
+                    전방 GOP 경계초소 혁신제품 납품 실적
+                  </p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px' }}>
+                    {[
+                      { label: '만족도', value: '96점', sub: '/ 100점 만점' },
+                      { label: '납품 사단', value: '12개', sub: '전방 GOP 경계' },
+                      { label: '지정 방식', value: '혁신', sub: '수요자 제안형' },
+                    ].map(m => (
+                      <div key={m.label} style={{
+                        background: 'rgba(239,68,68,0.08)',
+                        borderRadius: '12px',
+                        padding: '16px 10px',
+                        textAlign: 'center',
+                        border: '1px solid rgba(239,68,68,0.15)',
+                      }}>
+                        <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#EF4444', lineHeight: 1 }}>
+                          {m.value}
+                        </div>
+                        <div style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.8)', marginTop: '4px' }}>
+                          {m.label}
+                        </div>
+                        <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>
+                          {m.sub}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ⑤ 문의 CTA (별도 섹션으로 분리) */}
+      <section style={{ padding: '80px 0', background: '#fff' }}>
+        <div className="container">
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
             style={{
-              marginTop: '64px', textAlign: 'center',
+              textAlign: 'center',
               background: 'linear-gradient(160deg, var(--navy) 0%, #1A3A6B 100%)',
-              borderRadius: '20px', padding: '48px 32px', color: '#fff',
+              borderRadius: '24px', padding: '60px 40px', color: '#fff',
               position: 'relative', overflow: 'hidden',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
             }}
           >
             <div style={{
               position: 'absolute', top: '-40px', right: '-40px',
-              width: '200px', height: '200px',
+              width: '240px', height: '240px',
               background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)',
               borderRadius: '50%',
             }} />
-            <p style={{ fontSize: '11px', letterSpacing: '3px', color: 'rgba(255,255,255,0.4)', marginBottom: '12px', textTransform: 'uppercase', fontWeight: 700 }}>
-              Contact Us
+            <p style={{ fontSize: '11px', letterSpacing: '3px', color: 'rgba(255,255,255,0.4)', marginBottom: '16px', textTransform: 'uppercase', fontWeight: 800 }}>
+              Next Step
             </p>
-            <h3 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, marginBottom: '10px' }}>
+            <h3 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, marginBottom: '12px' }}>
               우리 시설에도 적용하고 싶다면?
             </h3>
-            <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '28px', fontSize: '0.9rem', lineHeight: 1.6 }}>
+            <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '36px', fontSize: '1rem', lineHeight: 1.7, maxWidth: '600px', marginInline: 'auto' }}>
               공장·학교·군부대·복지시설 어디서든<br />
               현장 조건에 맞는 최적 솔루션을 제안합니다.
             </p>
-            <Link
-              to="/contact"
-              style={{
-                display: 'inline-block',
-                padding: '14px 40px',
-                borderRadius: '10px',
-                background: 'var(--red)',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: '0.95rem',
-                textDecoration: 'none',
-              }}
-            >
-              견적 문의하기 →
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                to="/contact"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '16px 48px',
+                  borderRadius: '12px',
+                  background: 'var(--red)',
+                  color: '#fff',
+                  fontWeight: 800,
+                  fontSize: '1rem',
+                  textDecoration: 'none',
+                  boxShadow: '0 10px 20px rgba(220, 38, 38, 0.3)',
+                  transition: 'all 0.3s'
+                }}
+              >
+                무료 견적 문의하기 
+                <span style={{ fontSize: '1.2rem' }}>→</span>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
-
       <style>{`
         @media (max-width: 900px) {
           .cases-page-grid  { grid-template-columns: repeat(2, 1fr) !important; }

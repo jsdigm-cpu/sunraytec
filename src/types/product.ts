@@ -22,6 +22,7 @@ export interface Product {
   productLine?: ProductLine;
   installationType?: InstallationType;
   procurementId?: string;
+  price?: number;
   thumbnailImage?: string;
   detailImage?: string;
   imageGallery?: string[];

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ScrollToTop from '../components/layout/ScrollToTop';
+import BackToTopButton from '../components/ui/BackToTopButton';
 import { HeroThemeProvider } from '../context/HeroThemeContext';
 import { initialProducts } from '../data/products';
 import { initialSiteContent } from '../data/siteContent';
@@ -179,6 +180,7 @@ export default function App() {
         />
       </main>
       <Footer />
+      <BackToTopButton />
     </HeroThemeProvider>
   );
 }

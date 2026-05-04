@@ -180,8 +180,10 @@ export default function PrinciplePage() {
             <p style={{ fontSize: 12, color: 'var(--red)', fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Radiant vs Convection</p>
             <h2 style={{ fontSize: '2rem', color: 'var(--navy)', fontWeight: 900 }}>복사난방과 대류난방의 차이</h2>
           </ScrollReveal>
-          <div style={{ maxWidth: 960, margin: '0 auto' }}>
-            <RadiantDiagram />
+          <div style={{ maxWidth: 960, margin: '0 auto', overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: '16px' }}>
+            <div style={{ minWidth: '700px' }}>
+              <RadiantDiagram />
+            </div>
           </div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28, justifyContent: 'center' }}>
             <Link to="/products" className="btn btn-primary" style={{ borderRadius: 8 }}>
