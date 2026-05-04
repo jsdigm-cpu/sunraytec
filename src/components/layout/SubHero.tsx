@@ -146,7 +146,7 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
           )}
         </motion.div>
 
-        {/* 핵심 키워드 태그 (하단으로 밀어냄) — 배경 박스 제거 및 배지 스타일 개선 */}
+        {/* 핵심 키워드 태그 — 불필요한 선 제거 및 폰트/스타일 자연스럽게 개선 */}
         {keywords && keywords.length > 0 && (
           <motion.div
             initial="hidden"
@@ -155,10 +155,9 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '8px',
+              gap: '10px',
               marginTop: 'auto',
-              padding: '12px 0', // 좌우 패딩 제거하여 전체 너비와 맞춤
-              borderTop: '1px solid rgba(255,255,255,0.1)', // 상단 구분선은 유지하되 더 은은하게
+              padding: '16px 0',
               margin: '0',
             }}
           >
@@ -167,17 +166,16 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
                 key={kw}
                 style={{
                   display: 'inline-block',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  background: 'rgba(255,255,255,0.1)', // 반투명 유리 질감
-                  backdropFilter: 'blur(8px)', // 배경 블러 효과로 고급스러움 추가
-                  border: `1px solid rgba(255,255,255,0.15)`, // 강조색 대신 은은한 흰색 테두리
-                  color: 'rgba(255,255,255,0.95)', // 글자색을 더 밝게 하여 가시성 확보
-                  fontSize: '13px', // 12px -> 13px로 약간 키움
-                  fontWeight: 600,
-                  letterSpacing: '0.3px',
+                  padding: '6px 16px',
+                  borderRadius: '24px',
+                  background: 'rgba(255,255,255,0.14)', // 유리 질감을 조금 더 명확하게
+                  backdropFilter: 'blur(10px)', // 블러 강도 약간 강화
+                  border: '1px solid rgba(255,255,255,0.1)', // 아주 연한 테두리
+                  color: 'rgba(255,255,255,0.85)', // 너무 쨍하지 않은 부드러운 화이트
+                  fontSize: '13px',
+                  fontWeight: 500, // 볼드 대신 미디엄으로 자연스럽게
+                  letterSpacing: '0.2px',
                   whiteSpace: 'nowrap',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)', // 미세한 그림자로 부유감 부여
                 }}
               >
                 {kw}
@@ -186,9 +184,6 @@ export default function SubHero({ breadcrumb, badge, title, lead, keywords }: Su
           </motion.div>
         )}
       </div>
-
-      {/* 하단 디바이더 라인 */}
-      <div style={{ marginTop: 'auto', borderBottom: '1px solid rgba(255,255,255,0.06)' }} />
     </section>
   );
 }
