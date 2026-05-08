@@ -12,6 +12,12 @@ export const initialSiteContent: SiteContent = {
     headlineFontFamily: 'display',
     headlineFontSize: 'xl',
     headlineFontWeight: 'black',
+    copyEffect: 'glow-pulse',
+    overlayStrength: 'medium',
+    slideDurationSec: 6,
+    autoSlide: true,
+    showSiteBadge: true,
+    showCertBadges: true,
   },
   certifications: [
     { title: '정부조달 우수제품 지정', year: '2013 · 2019 · 2025' },
