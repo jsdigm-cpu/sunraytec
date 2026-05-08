@@ -61,7 +61,7 @@ const MAIN_CERTS = [
   },
   {
     icon: '🔥',
-    title: '방폭인증 EX emb II T1',
+    title: '방폭인증 Ex e mb Ⅱ T1',
     detail: '위험 환경 특수 제품',
     description: '폭발 위험 환경(화학·석유화학 공장 등)에서 안전하게 사용 가능한 제품임을 인증.',
     badge: '특수',

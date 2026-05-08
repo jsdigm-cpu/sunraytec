@@ -66,7 +66,7 @@ const HISTORY: HistoryEvent[] = [
   {
     year: '2021~2024',
     title: '스마트 제어·IP65 시험성적서 등 검증 확대',
-    detail: '방폭인증(EX emb II T1), CE·RoHS, 국립전파연구원 적합등록, 2024년 KTR IP65 방진·방수 시험성적서 등 특수 환경 대응 근거 확보.',
+    detail: '방폭인증(Ex e mb Ⅱ T1), CE·RoHS, 국립전파연구원 적합등록, 2024년 KTR IP65 방진·방수 시험성적서 등 특수 환경 대응 근거 확보.',
     highlight: false,
   },
   {
