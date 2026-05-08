@@ -71,7 +71,7 @@ const TIMELINE: Array<{
 
 const HONORS = [
   { label: 'K마크 성능인증', value: 'SUR-D300P / 600P / 1200P / 1800P / 2400P / 3600P (6종)' },
-  { label: '방폭 인증', value: 'EX emb II T1 (한국가스안전공사 KGS)' },
+  { label: '방폭 인증', value: 'Ex e mb Ⅱ T1 (한국가스안전공사 KGS)' },
   { label: '방진·방수 시험', value: 'IP65 시험성적서 ECU-2024-014357 (KTR, SUR-1800-D 시험대상)' },
   { label: '유럽 인증', value: 'CE · RoHS (SUR-1200 / 2400 / 3600)' },
   { label: '특허·디자인', value: '국내 등록 특허 9건 + 디자인 1건 (총 10건)' },
@@ -93,7 +93,7 @@ export default function MediaPage() {
         breadcrumb={[{ label: '회사소개' }, { label: '수상·언론보도' }]}
         badge="Awards & Media"
         title="매년 다시 받아낸 외부 검증"
-        lead="조달청 우수제품 3차 지정, 혁신시제품 등재, K마크 6종 성능인증, 방폭(EX emb II T1) 인증까지. 자체 자랑이 아니라 외부 기관이 매년 다시 확인한 기록입니다."
+        lead="조달청 우수제품 3차 지정, 혁신시제품 등재, K마크 6종 성능인증, 방폭(Ex e mb Ⅱ T1) 인증까지. 자체 자랑이 아니라 외부 기관이 매년 다시 확인한 기록입니다."
         keywords={['언론 보도', '수상 실적', '방송 출연', '전시회 참가']}
       />
 

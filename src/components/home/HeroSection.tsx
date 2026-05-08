@@ -7,7 +7,7 @@ const BADGES = [
   { label: '우수제품', sub: '조달청' },
   { label: '혁신제품', sub: '2020년' },
   { label: 'K마크', sub: '성능인증' },
-  { label: '방폭인증', sub: 'EX emb II T1' },
+  { label: '방폭인증', sub: 'Ex e mb Ⅱ T1' },
   { label: 'ISO 9001', sub: '/14001' },
   { label: 'CE·RoHS', sub: '유럽인증' },
 ];

@@ -70,15 +70,15 @@ const PAGES: Record<PageId, PageConfig> = {
     solutions: [
       { title: '분진 비산 억제', desc: '공기 순환 없는 복사 방식으로 먼지·미생물 확산 억제. 항균 99.9% 공인 성적서 보유.' },
       { title: '전파 적합등록', desc: '국립전파연구원 적합등록(R-R-SUR-SUR-3600-P)으로 전자기기 민감 환경에도 적용 가능.' },
-      { title: '화재 위험 저감', desc: '개방형 화염 없는 전기식 발열 + 방폭 인증(EX emb II T1) 제품군 별도 보유.' },
+      { title: '화재 위험 저감', desc: '개방형 화염 없는 전기식 발열 + 방폭 인증(Ex e mb Ⅱ T1) 제품군 별도 보유.' },
       { title: '결로 저감', desc: '복사열로 바닥·벽·장비 표면 온도를 높여 이슬점 이하 환경을 차단합니다.' },
     ],
     applications: [
       { icon: Factory, title: '식품·의약품 창고', desc: '분진·기류 관리가 핵심인 GMP 보관 환경' },
-      { icon: ShieldCheck, title: '탄약고·위험물 시설', desc: '방폭 EX emb II T1 인증 제품 적용 가능' },
+      { icon: ShieldCheck, title: '탄약고·위험물 시설', desc: '방폭 Ex e mb Ⅱ T1 인증 제품 적용 가능' },
       { icon: Droplets, title: '지하·결로 취약 구역', desc: '출입구 냉기 유입, 외벽 냉기 접촉 구간' },
     ],
-    methodLead: '4대 검증 기술은 제품 스펙이 아니라 현장 리스크 관리 시스템입니다. 항균 99.9%(KFIA-386), 탈취 88%(KFIG-292), IP65(2024 KTR ECU-2024-014357), 방폭 EX emb II T1(KGS) — 각 성능은 공인 기관 성적서와 인증으로 검증됩니다.',
+    methodLead: '4대 검증 기술은 제품 스펙이 아니라 현장 리스크 관리 시스템입니다. 항균 99.9%(KFIA-386), 탈취 88%(KFIG-292), IP65(2024 KTR ECU-2024-014357), 방폭 Ex e mb Ⅱ T1(KGS) — 각 성능은 공인 기관 성적서와 인증으로 검증됩니다.',
     process: [
       { step: '01', title: '위험 요인 분류', desc: '분진, 전자파 민감도, 화재 조건, 결로 취약 지점을 먼저 구분합니다.' },
       { step: '02', title: '복사열 배치 설계', desc: '사람이 머무는 위치와 차가운 표면을 기준으로 발열 면과 방향을 정합니다.' },
@@ -222,13 +222,13 @@ const PAGES: Record<PageId, PageConfig> = {
     stats: [
       { label: '시범사용 만족도', value: '96점' },
       { label: '납품 사단', value: '12개' },
-      { label: '방폭 인증', value: 'EX emb II T1' },
+      { label: '방폭 인증', value: 'Ex e mb Ⅱ T1' },
       { label: '방진·방수', value: 'IP65' },
     ],
     dataBar: [
       { value: '96점', label: '혁신제품 시범사용 만족도', note: '육군 지상작전사령부 산하 — 100점 만점 평가' },
       { value: '12개 사단', label: '전방 납품 실적', note: '혁신제품 지정 이후 전방 경계초소 등 납품 완료' },
-      { value: 'EX emb II T1', label: '방폭 인증', note: '한국가스안전공사(KGS) — 위험물 취급·화학시설 대응' },
+      { value: 'Ex e mb Ⅱ T1', label: '방폭 인증', note: '한국가스안전공사(KGS) — 위험물 취급·화학시설 대응' },
       { value: 'IP65', label: '방진·방수 등급', note: '먼지·습기 혼재 야외·특수 환경에서 안정 운전' },
     ],
     pains: [
@@ -237,24 +237,24 @@ const PAGES: Record<PageId, PageConfig> = {
       { title: '결로로 인한 장비 손상', desc: '차가운 금속 표면의 결로는 탄약·전자장비의 녹과 기능 이상으로 이어집니다. 결로 방지가 난방만큼 중요합니다.' },
     ],
     solutions: [
-      { title: '방폭 인증 제품군 보유', desc: '한국가스안전공사(KGS) EX emb II T1 방폭인증. 탄약고·화학시설·도장공장 설치 가능.' },
+      { title: '방폭 인증 제품군 보유', desc: '한국가스안전공사(KGS) Ex e mb Ⅱ T1 방폭인증. 탄약고·화학시설·도장공장 설치 가능.' },
       { title: '비화염 전기식 열원', desc: '개방형 화염 없이 필요한 지점에 복사열을 전달. 화재 위험 최소화.' },
       { title: 'IP65 방진방수 대응', desc: '2024 KTR 시험성적서(ECU-2024-014357) 기준 IP65 확인. 먼지·습기 혼재 환경 안정 운전.' },
       { title: '결로 완전 차단 설계', desc: '복사열로 금속 표면 온도를 이슬점 이상으로 유지 → 탄약·장비 결로 방지.' },
     ],
     applications: [
       { icon: ShieldCheck, title: '군 정비창·경계초소', desc: '혁신제품 96점 만족 — 전방 12개 사단 납품 완료' },
-      { icon: Flame, title: '탄약고·위험물 취급소', desc: '방폭 EX emb II T1 + 결로 차단 동시 대응' },
+      { icon: Flame, title: '탄약고·위험물 취급소', desc: '방폭 Ex e mb Ⅱ T1 + 결로 차단 동시 대응' },
       { icon: Droplets, title: '동파·습기 취약 시설', desc: '야외 전기실, 지하 창고, 외기 유입 구간' },
     ],
-    methodLead: '국방·특수 현장은 성능보다 안전 인증이 먼저입니다. 썬레이텍은 방폭(EX emb II T1, KGS), 방진방수(IP65, 2024 KTR), 방사율(91.2%), 항균(99.9%) 등 특수 환경 대응 인증을 복합적으로 보유합니다. 혁신제품 시범사용 후 육군 12개 사단 납품과 96점 만족도는 실전 검증 결과입니다.',
+    methodLead: '국방·특수 현장은 성능보다 안전 인증이 먼저입니다. 썬레이텍은 방폭(Ex e mb Ⅱ T1, KGS), 방진방수(IP65, 2024 KTR), 방사율(91.2%), 항균(99.9%) 등 특수 환경 대응 인증을 복합적으로 보유합니다. 혁신제품 시범사용 후 육군 12개 사단 납품과 96점 만족도는 실전 검증 결과입니다.',
     process: [
       { step: '01', title: '위험 등급 확인', desc: '화재, 방폭, 방수, 방진 검토가 필요한 구역을 일반 공간과 분리합니다.' },
       { step: '02', title: '설치 조건 검토', desc: '천장 구조, 장비 간섭, 습기, 먼지, 외기 유입 정도를 확인합니다.' },
       { step: '03', title: '제어·보호 구성', desc: '과열 방지, 구역 운전, 유지보수 접근성을 고려해 운전 방식을 정합니다.' },
     ],
     checklist: [
-      { title: '일반 난방기 설치가 규정상 불가한가', desc: '방폭 EX emb II T1 제품군으로 탄약고·화학시설 안전 규정 대응 가능.' },
+      { title: '일반 난방기 설치가 규정상 불가한가', desc: '방폭 Ex e mb Ⅱ T1 제품군으로 탄약고·화학시설 안전 규정 대응 가능.' },
       { title: '결로로 인한 장비 손상이 있는가', desc: '복사열로 금속 표면 이슬점 이상 유지 → 탄약·전자장비 결로 방지.' },
       { title: '습기·먼지 노출이 큰가', desc: 'IP65 방진방수 2024 KTR 확인. 야외·특수 환경 장기 운전 안정성 검증.' },
       { title: '혁신제품 시범구매를 검토하는가', desc: '일위대가·시방서·인증서 패키지 제공. 공공기관 행정 처리 지원.' },
@@ -454,7 +454,7 @@ function EnergyDiagram({ config }: { config: PageConfig }) {
     const zeroItems = [
       { label: '99.9% 항균', detail: '대장균·포도상구균' },
       { label: '전파 적합등록', detail: '국립전파연구원' },
-      { label: '방폭 EX emb II T1', detail: '비화염 전기식' },
+      { label: '방폭 Ex e mb Ⅱ T1', detail: '비화염 전기식' },
       { label: 'IP65 방진방수', detail: '2024 KTR 확인' },
     ];
     return (

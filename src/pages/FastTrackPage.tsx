@@ -6,7 +6,7 @@ const MATERIALS = [
   { title: '일위대가표', desc: '공공기관 설계·견적 검토용 기본 산출 자료 (모델별 단가·노무비·재료비 정리)', status: '인증 후 제공' },
   { title: '도면·CAD 원본', desc: '천장 매립형·노출형 시공상세도, 단면도, 배치 도면 원본(DWG/DXF)', status: '요청 검토' },
   { title: '제안서 양식', desc: '기관 내부 검토와 품의에 활용할 수 있는 PowerPoint·Word 양식', status: '준비중' },
-  { title: '시방·인증 자료', desc: '방폭(EX emb II T1)·조달 우수제품·K마크·CE 인증 관련 제출 자료 묶음', status: '인증 후 제공' },
+  { title: '시방·인증 자료', desc: '방폭(Ex e mb Ⅱ T1)·조달 우수제품·K마크·CE 인증 관련 제출 자료 묶음', status: '인증 후 제공' },
   { title: '에너지 절감 시뮬레이션', desc: '면적·천장고 기반 절감률·회수기간 산출 표 (검토 자료 첨부용)', status: '준비중' },
   { title: '시공 사례 PDF', desc: '비슷한 규모·용도 기관의 적용 사례 요약본', status: '인증 후 제공' },
 ];
