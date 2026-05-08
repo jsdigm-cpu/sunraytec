@@ -483,8 +483,8 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
       </div>
 
       <style>{`
+        @media (max-width: 600px) {
           .hero-main-copy {
-            font-size: clamp(1.65rem, 8.5vw, 2.2rem) !important;
             line-height: 1.25 !important;
             letter-spacing: -0.5px !important;
             word-break: keep-all !important;
