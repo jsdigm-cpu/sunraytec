@@ -205,6 +205,130 @@ export default function ContentEditor({ content, onChange, onSave, lastSavedAt, 
           </div>
         </div>
 
+        {/* ── 히어로 다이나믹 옵션 ─────────────────────────────────── */}
+        <div
+          style={{
+            marginTop: '0.4rem',
+            padding: '1rem 1rem 0.4rem',
+            border: '1px solid var(--border)',
+            borderRadius: '12px',
+            background: '#fff',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.9rem' }}>
+            <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--navy)', background: 'var(--off)', padding: '4px 10px', borderRadius: '999px', border: '1px solid var(--border)' }}>
+              ✨ 히어로 다이나믹 옵션
+            </span>
+            <span style={{ fontSize: '12px', color: 'var(--gray)' }}>변경 즉시 미리보기 반영</span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem', marginBottom: '0.9rem' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 700, fontSize: '13px' }}>메인 카피 효과</label>
+              <select
+                value={content.hero.copyEffect ?? 'none'}
+                onChange={(e) => updateHero('copyEffect', e.target.value as SiteContent['hero']['copyEffect'])}
+                style={FIELD_STYLE}
+              >
+                <option value="none">없음 (기본)</option>
+                <option value="glow-pulse">글로우 펄스 (강조어 박동)</option>
+                <option value="gradient-flow">그라데이션 흐름</option>
+                <option value="shimmer">셔머 (반짝임)</option>
+                <option value="underline-draw">언더라인 드로우</option>
+                <option value="word-reveal">단어별 등장 (라인 stagger)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 700, fontSize: '13px' }}>배경 오버레이 강도</label>
+              <select
+                value={content.hero.overlayStrength ?? 'medium'}
+                onChange={(e) => updateHero('overlayStrength', e.target.value as SiteContent['hero']['overlayStrength'])}
+                style={FIELD_STYLE}
+              >
+                <option value="light">약하게 (사진 강조)</option>
+                <option value="medium">보통</option>
+                <option value="dark">진하게 (글자 강조)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 700, fontSize: '13px' }}>슬라이드 전환 속도</label>
+              <select
+                value={String(content.hero.slideDurationSec ?? 6)}
+                onChange={(e) => updateHero('slideDurationSec', Number(e.target.value) as SiteContent['hero']['slideDurationSec'])}
+                style={FIELD_STYLE}
+              >
+                <option value="4">4초 (빠르게)</option>
+                <option value="6">6초 (기본)</option>
+                <option value="8">8초</option>
+                <option value="10">10초 (천천히)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.6rem', marginBottom: '0.4rem' }}>
+            {([
+              { key: 'autoSlide',      label: '슬라이드 자동 전환' },
+              { key: 'showSiteBadge',  label: '좌상단 시공현장 배지 표시' },
+              { key: 'showCertBadges', label: '하단 인증 배지(6종) 표시' },
+            ] as const).map((toggle) => {
+              const active = (content.hero[toggle.key] as boolean | undefined) ?? true;
+              return (
+                <button
+                  key={toggle.key}
+                  type="button"
+                  onClick={() => updateHero(toggle.key, !active as never)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '10px',
+                    padding: '10px 14px',
+                    border: '1px solid',
+                    borderColor: active ? 'var(--red)' : 'var(--border)',
+                    background: active ? 'rgba(220,38,38,0.06)' : '#fff',
+                    color: active ? 'var(--navy)' : 'var(--gray)',
+                    borderRadius: '10px',
+                    fontWeight: 700,
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span>{toggle.label}</span>
+                  <span
+                    aria-hidden
+                    style={{
+                      flexShrink: 0,
+                      width: '36px',
+                      height: '20px',
+                      borderRadius: '999px',
+                      background: active ? 'var(--red)' : '#CBD5E1',
+                      position: 'relative',
+                      transition: 'background 0.18s',
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '2px',
+                        left: active ? '18px' : '2px',
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '50%',
+                        background: '#fff',
+                        transition: 'left 0.18s',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                      }}
+                    />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div
           style={{
             background: 'var(--off)',
@@ -215,7 +339,7 @@ export default function ContentEditor({ content, onChange, onSave, lastSavedAt, 
         >
           <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gray)', marginBottom: '0.4rem' }}>편집 팁</div>
           <div style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7 }}>
-            메인 카피는 2~3줄이 가장 안정적입니다. 강조 단어를 비워두면 전체가 같은 색으로 보입니다.
+            메인 카피는 2~3줄이 가장 안정적입니다. 강조 단어를 비워두면 전체가 같은 색으로 보입니다. 카피 효과 중 "글로우 펄스·그라데이션·셔머·언더라인"은 강조 단어에만 적용되고, "단어별 등장"은 카피 전체에 적용됩니다.
           </div>
         </div>
       </div>

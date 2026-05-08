@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import type { HeroContent } from '../../types/cms';
+import type { HeroContent, HeroOverlayStrength } from '../../types/cms';
 
 const BADGES = [
   { label: '우수제품', sub: '조달청' },
@@ -44,8 +44,13 @@ const SLIDE_INFO = [
   { location: '포항 해병대 정비대 정비창', desc: '작업자 복사난방', icon: '🔧' },
 ];
 
-const SLIDE_DURATION = 6000;
 const PHONE_NUMBER = '1688-2520';
+
+const OVERLAY_GRADIENTS: Record<HeroOverlayStrength, string> = {
+  light:  'linear-gradient(160deg, rgba(7, 12, 32, 0.30) 0%, rgba(15, 23, 42, 0.20) 50%, rgba(30, 41, 59, 0.25) 100%)',
+  medium: 'linear-gradient(160deg, rgba(7, 12, 32, 0.55) 0%, rgba(15, 23, 42, 0.45) 50%, rgba(30, 41, 59, 0.50) 100%)',
+  dark:   'linear-gradient(160deg, rgba(7, 12, 32, 0.78) 0%, rgba(15, 23, 42, 0.68) 50%, rgba(30, 41, 59, 0.74) 100%)',
+};
 
 const FONT_FAMILY_MAP = {
   display: "'Bebas Neue', 'Noto Sans KR', sans-serif",
@@ -71,15 +76,30 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
+  const slideDurationMs = (heroContent.slideDurationSec ?? 6) * 1000;
+  const autoSlide = heroContent.autoSlide ?? true;
+
   useEffect(() => {
+    if (!autoSlide) return;
     const timer = setInterval(() => {
       setPrevIndex(currentIndex);
       setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, SLIDE_DURATION);
+    }, slideDurationMs);
     return () => clearInterval(timer);
-  }, [currentIndex]);
+  }, [currentIndex, autoSlide, slideDurationMs]);
 
   const headlineParts = highlightHeadline(heroContent.headline, heroContent.highlightText);
+  const copyEffect = heroContent.copyEffect ?? 'none';
+  const overlay = OVERLAY_GRADIENTS[heroContent.overlayStrength ?? 'medium'];
+  const showSiteBadge = heroContent.showSiteBadge ?? true;
+  const showCertBadges = heroContent.showCertBadges ?? true;
+  const highlightClass =
+    copyEffect === 'glow-pulse'     ? 'hero-fx-glow-pulse'
+    : copyEffect === 'gradient-flow' ? 'hero-fx-gradient'
+    : copyEffect === 'shimmer'       ? 'hero-fx-shimmer'
+    : copyEffect === 'underline-draw'? 'hero-fx-underline'
+    : '';
+  const headlineLines = heroContent.headline.split('\n');
 
   return (
     <section
@@ -114,7 +134,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           animate={{ opacity: 1, scale: 1.06 }}
           transition={{
             opacity: { duration: 1.2, ease: 'easeInOut' },
-            scale: { duration: SLIDE_DURATION / 1000 + 1.2, ease: 'linear' },
+            scale: { duration: slideDurationMs / 1000 + 1.2, ease: 'linear' },
           }}
           style={{
             position: 'absolute',
@@ -129,7 +149,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(160deg, rgba(7, 12, 32, 0.55) 0%, rgba(15, 23, 42, 0.45) 50%, rgba(30, 41, 59, 0.5) 100%)',
+            background: overlay,
           }}
         />
 
@@ -147,6 +167,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
       </div>
 
       {/* 고정 시공 현장 배지 + 슬라이드 캡션 */}
+      {showSiteBadge && (
       <motion.div
         key={`caption-${currentIndex}`}
         initial={{ opacity: 0, y: 8 }}
@@ -205,6 +226,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           </span>
         </div>
       </motion.div>
+      )}
 
       <div
         style={{
@@ -282,8 +304,8 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={copyEffect === 'word-reveal' ? false : { opacity: 0, y: 24 }}
+          animate={copyEffect === 'word-reveal' ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.15, ease: 'easeOut' }}
           className="hero-main-copy"
           style={{
@@ -297,14 +319,42 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             textShadow: '0 8px 24px rgba(0,0,0,0.22)',
           }}
         >
-          {headlineParts.map((part, index) => (
-            <span
-              key={`${part.text}-${index}`}
-              style={part.highlight ? { color: heroContent.highlightColor } : undefined}
-            >
-              {part.text}
-            </span>
-          ))}
+          {copyEffect === 'word-reveal' ? (
+            headlineLines.map((line, lineIdx) => (
+              <motion.span
+                key={`line-${lineIdx}`}
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 + lineIdx * 0.18, ease: 'easeOut' }}
+                style={{ display: 'block' }}
+              >
+                {highlightHeadline(line, heroContent.highlightText).map((part, i) => (
+                  <span
+                    key={`l${lineIdx}-${i}`}
+                    style={part.highlight ? { color: heroContent.highlightColor } : undefined}
+                  >
+                    {part.text}
+                  </span>
+                ))}
+              </motion.span>
+            ))
+          ) : (
+            headlineParts.map((part, index) => (
+              <span
+                key={`${part.text}-${index}`}
+                className={part.highlight ? highlightClass : undefined}
+                style={
+                  part.highlight
+                    ? copyEffect === 'gradient-flow'
+                      ? { ['--hl-color' as string]: heroContent.highlightColor }
+                      : { color: heroContent.highlightColor }
+                    : undefined
+                }
+              >
+                {part.text}
+              </span>
+            ))
+          )}
         </motion.h1>
 
         <motion.p
@@ -402,6 +452,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           </motion.div>
         </motion.div>
 
+        {showCertBadges && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -447,6 +498,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             </motion.div>
           ))}
         </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -483,6 +535,84 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
       </div>
 
       <style>{`
+        /* ── 메인 카피 효과 ───────────────────────────────────────── */
+        .hero-fx-glow-pulse {
+          animation: heroGlowPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes heroGlowPulse {
+          0%, 100% {
+            text-shadow: 0 0 0 rgba(243,156,18,0), 0 8px 24px rgba(0,0,0,0.22);
+          }
+          50% {
+            text-shadow:
+              0 0 12px rgba(243,156,18,0.55),
+              0 0 28px rgba(243,156,18,0.35),
+              0 8px 24px rgba(0,0,0,0.22);
+          }
+        }
+        .hero-fx-gradient {
+          color: transparent;
+          background: linear-gradient(
+            90deg,
+            var(--hl-color, #F39C12) 0%,
+            #FFD166 25%,
+            var(--hl-color, #F39C12) 50%,
+            #FFD166 75%,
+            var(--hl-color, #F39C12) 100%
+          );
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: heroGradientFlow 3.6s linear infinite;
+        }
+        @keyframes heroGradientFlow {
+          0%   { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+        .hero-fx-shimmer {
+          position: relative;
+          display: inline-block;
+        }
+        .hero-fx-shimmer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 35%,
+            rgba(255,255,255,0.55) 50%,
+            transparent 65%
+          );
+          background-size: 220% 100%;
+          animation: heroShimmer 3.2s ease-in-out infinite;
+          pointer-events: none;
+          mix-blend-mode: screen;
+        }
+        @keyframes heroShimmer {
+          0%   { background-position: 220% 0; }
+          60%  { background-position: -120% 0; }
+          100% { background-position: -120% 0; }
+        }
+        .hero-fx-underline {
+          position: relative;
+          display: inline-block;
+        }
+        .hero-fx-underline::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -4px;
+          height: 3px;
+          background: currentColor;
+          transform-origin: left center;
+          animation: heroUnderlineDraw 1.4s cubic-bezier(0.65,0,0.35,1) 0.5s both;
+        }
+        @keyframes heroUnderlineDraw {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
+        }
+
         @media (max-width: 600px) {
           .hero-main-copy {
             line-height: 1.25 !important;
