@@ -428,7 +428,7 @@ export default function Header() {
                 boxShadow: '0 2px 8px rgba(200,57,43,0.25)',
               }}
             >
-              🚀 견적문의
+              견적문의
             </Link>
           </motion.div>
         </nav>
@@ -597,7 +597,7 @@ export default function Header() {
                   borderRadius: '8px', background: 'var(--red)', color: '#fff', fontWeight: 700, gap: '6px', fontSize: '0.875rem',
                 }}
               >
-                🚀 견적문의
+                견적문의
               </Link>
             </div>
           </motion.div>

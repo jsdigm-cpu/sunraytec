@@ -36,11 +36,13 @@ function KpiCardInner({ item }: { item: typeof KPI_ITEMS[0] }) {
     <div ref={ref}>
       <div
         style={{
-          fontFamily: "'Bebas Neue', sans-serif",
           fontSize: 'clamp(2rem, 4vw, 2.8rem)',
           color: 'var(--blue)',
           lineHeight: 1,
           marginBottom: '6px',
+          fontWeight: 900,
+          letterSpacing: '-0.04em',
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
         {item.prefix}{count}{item.suffix}
@@ -55,7 +57,7 @@ function KpiCardInner({ item }: { item: typeof KPI_ITEMS[0] }) {
 
 export default function KpiSection() {
   return (
-    <section style={{ background: '#fff', padding: '56px 0', borderBottom: '1px solid var(--border)' }}>
+    <section style={{ background: '#fff', padding: '48px 0 52px', borderBottom: '1px solid var(--border)' }}>
       <div className="container">
         <ScrollReveal>
           <p
@@ -65,7 +67,7 @@ export default function KpiSection() {
               letterSpacing: '2px',
               textTransform: 'uppercase',
               color: 'var(--gray)',
-              marginBottom: '24px',
+              marginBottom: '18px',
             }}
           >
             핵심 성능 지표
@@ -77,7 +79,7 @@ export default function KpiSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px' }}
           className="kpi-grid"
         >
           {/* key와 variants는 motion.div에, 카운트업은 KpiCardInner에 */}
@@ -85,12 +87,13 @@ export default function KpiSection() {
             <motion.div
               key={item.label}
               variants={staggerItem}
-              whileHover={{ y: -8, boxShadow: '0 20px 48px rgba(0,0,0,0.15)', transition: { duration: 0.2 } }}
+              whileHover={{ y: -8, boxShadow: '0 20px 48px rgba(15,23,42,0.13)', transition: { duration: 0.25 } }}
               style={{
                 background: 'var(--off)',
-                borderRadius: '12px',
-                padding: '28px 20px',
+                borderRadius: '18px',
+                padding: '24px 18px',
                 textAlign: 'center',
+                border: '1px solid var(--border)',
                 borderTop: '3px solid var(--red)',
                 cursor: 'default',
               }}

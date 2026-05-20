@@ -97,7 +97,7 @@ export default function CalcSection() {
                 marginBottom: '16px',
               }}
             >
-              🧮 무료 난방 용량<br />자동 계산기
+              무료 난방 용량<br />자동 계산기
             </h2>
             <p style={{ color: 'var(--gray)', lineHeight: 1.8, fontSize: '0.9rem', marginBottom: '24px' }}>
               면적과 천장 높이만 입력하면 필요한 난방 용량과 추천 모델을 자동으로 알려드립니다.
@@ -188,7 +188,7 @@ export default function CalcSection() {
                   background: 'var(--red)',
                   color: '#fff',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '999px',
                   padding: '13px',
                   fontWeight: 700,
                   fontSize: '0.95rem',
@@ -196,7 +196,7 @@ export default function CalcSection() {
                   width: '100%',
                 }}
               >
-                🧮 난방 용량 계산하기
+                난방 용량 계산하기
               </motion.button>
             </div>
 
@@ -225,7 +225,6 @@ export default function CalcSection() {
                   <div style={{ textAlign: 'center' }}>
                     <div
                       style={{
-                        fontFamily: "'Bebas Neue', sans-serif",
                         fontSize: '2rem',
                         color: 'var(--amber2)',
                         lineHeight: 1,
@@ -238,7 +237,6 @@ export default function CalcSection() {
                   <div style={{ textAlign: 'center' }}>
                     <div
                       style={{
-                        fontFamily: "'Bebas Neue', sans-serif",
                         fontSize: '1.5rem',
                         color: 'var(--amber2)',
                         lineHeight: 1,
@@ -262,7 +260,7 @@ export default function CalcSection() {
                     fontSize: '0.875rem',
                   }}
                 >
-                  📞 이 결과로 전화 문의하기
+                  이 결과로 전화 문의하기
                 </a>
               </motion.div>
             )}

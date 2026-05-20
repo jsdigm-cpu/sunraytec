@@ -16,7 +16,7 @@ const steps = [
   {
     icon: ClipboardCheck,
     title: '납품요구 / 계약',
-    desc: '구매 금액에 따라 바로납품요구 또는 2단계경쟁 절차를 통해 계약을 진행합니다.'
+    desc: '구매 금액과 수요기관 기준에 따라 납품요구 또는 2단계경쟁 절차가 적용될 수 있습니다.'
   },
   {
     icon: Truck,
@@ -45,7 +45,7 @@ export default function ProcurementGuideSection() {
             transition={{ delay: 0.1 }}
             style={{ fontSize: '1.1rem', color: '#64748b', maxWidth: '700px', margin: '0 auto' }}
           >
-            나라장터 종합쇼핑몰을 통해 쉽고 간편하게 썬레이텍의 우수제품과 MAS 제품을 구매하실 수 있습니다.
+            나라장터 종합쇼핑몰 기준으로 제품 정보와 계약조건을 확인하고, 기관 기준에 맞는 절차를 검토하실 수 있습니다.
           </motion.p>
         </div>
 
@@ -56,13 +56,13 @@ export default function ProcurementGuideSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}
             >
               <div style={{
                 width: '80px',
                 height: '80px',
-                borderRadius: '50%',
+              borderRadius: '22px',
                 background: '#fff',
                 display: 'flex',
                 alignItems: 'center',
@@ -110,7 +110,7 @@ export default function ProcurementGuideSection() {
           }}
         >
           <div>
-            <h4 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px' }}>정확한 조달 절차가 궁금하신가요?</h4>
+            <h4 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '8px' }}>정확한 조달 절차가 궁금하신가요?</h4>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem' }}>구매 금액과 수요기관 기준에 따라 절차가 다를 수 있습니다. 조달 전담팀이 친절히 안내해 드립니다.</p>
           </div>
           <a 
@@ -121,8 +121,8 @@ export default function ProcurementGuideSection() {
               background: 'var(--red)',
               color: '#fff',
               padding: '12px 24px',
-              borderRadius: '8px',
-              fontWeight: 700,
+              borderRadius: '999px',
+              fontWeight: 800,
               textDecoration: 'none',
               fontSize: '0.95rem'
             }}

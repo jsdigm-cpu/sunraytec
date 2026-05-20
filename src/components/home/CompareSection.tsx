@@ -1,437 +1,404 @@
-import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, CloudOff, Gauge, ShieldCheck, VolumeX } from 'lucide-react';
 import ScrollReveal from '../ui/ScrollReveal';
-import { fadeInUp, staggerContainer, staggerItem } from '../../utils/animations';
+import { fadeInUp } from '../../utils/animations';
 
-const COMPARE_ROWS = [
-  { label: '에너지 비용',     sunray: '난방비 약 57% 절감 (실증 사례)',  conv: '기준 제품 대비 매우 높음' },
-  { label: '열 전달 방식',    sunray: '원적외선 복사 (태양광 방식)', conv: '공기 가열 대류 (송풍)' },
-  { label: '미세먼지·분진',   sunray: '기류 무발생 (분진 비산 Zero)', conv: '강제 송풍 (먼지 확산)' },
-  { label: '항균·탈취',       sunray: '99.9% 항균 / 88% 탈취',         conv: '필터 내 세균 증식 가능' },
-  { label: '고천장 (8m↑)',    sunray: '바닥 및 인체 직접 도달', conv: '더운 공기가 천장에 정체' },
-  { label: '야간 보안',       sunray: '빛 무발생 (군 GOP 최적)', conv: '히터 가열 시 붉은 빛 발생' },
-  { label: '소음',            sunray: '35dB 이하 (속삭임 수준)', conv: '팬 가동 소음 지속 발생' },
-  { label: '유지보수',        sunray: '필터 및 소모품 교체 불필요', conv: '정기적인 필터 청소/교체' },
-];
-
-// ── 좌측(복사난방) 하강 열선 좌표 ──────────────────────────────────
-// viewBox="0 0 840 310" 기준, 패널 중심 cx≈215, cy≈42
-const RADIANT_RAYS = [
-  { x1: 196, y1: 56, x2: 68,  y2: 255, delay: 0.00 },
-  { x1: 205, y1: 56, x2: 148, y2: 258, delay: 0.20 },
-  { x1: 214, y1: 56, x2: 214, y2: 260, delay: 0.05 },
-  { x1: 223, y1: 56, x2: 282, y2: 258, delay: 0.30 },
-  { x1: 232, y1: 56, x2: 362, y2: 255, delay: 0.15 },
-];
-
-// ── 우측(대류난방) 대류 경로 ────────────────────────────────────────
-// 큰 루프: 바닥 가열 → 좌측 상승 → 천장 이동 → 우측 하강
-const CONVECTION_PATHS = [
+const POINTS = [
   {
-    d: 'M 490 252 Q 470 190 478 130 Q 486 70 545 46 Q 640 28 720 46 Q 790 68 782 150 Q 774 235 730 252',
-    delay: 0.00,
+    icon: Gauge,
+    title: '높은 천장과 넓은 공간',
+    body: '열이 천장에 머무르기 쉬운 공간에서는 필요한 위치의 체감 온도를 안정적으로 만드는 것이 중요합니다.',
   },
   {
-    d: 'M 535 246 Q 520 195 528 148 Q 536 100 580 80 Q 638 62 692 82 Q 740 104 732 165 Q 724 228 695 246',
-    delay: 0.30,
+    icon: CloudOff,
+    title: '바람과 분진 관리',
+    body: '팬 바람을 전제로 하지 않아 급식실, 교실, 정밀 작업장처럼 공기 흐름이 민감한 공간에서 검토하기 좋습니다.',
   },
-];
-
-// ── 우측 먼지·열기 파티클 위치 ──────────────────────────────────────
-const DUST = [
-  { cx: 518, startY: 235, endY: 85,  r: 2.2, delay: 0.0  },
-  { cx: 560, startY: 240, endY: 70,  r: 1.8, delay: 0.6  },
-  { cx: 612, startY: 244, endY: 60,  r: 2.5, delay: 1.1  },
-  { cx: 660, startY: 238, endY: 72,  r: 1.6, delay: 0.3  },
-  { cx: 710, startY: 235, endY: 80,  r: 2.0, delay: 0.8  },
-  { cx: 748, startY: 240, endY: 90,  r: 1.4, delay: 0.4  },
-];
-
-// ── 복사난방 낙하 파티클 ────────────────────────────────────────────
-const HEAT_PARTICLES = [
-  { cx: 214, startY: 60, endY: 245, delay: 0.0  },
-  { cx: 178, startY: 60, endY: 232, delay: 0.65 },
-  { cx: 250, startY: 60, endY: 232, delay: 1.20 },
+  {
+    icon: VolumeX,
+    title: '소음과 빛 부담',
+    body: '난방 중 붉은 발광을 전제로 하지 않는 방식이라 수업, 근무, 야간 보안 환경에서 오해 없이 사용할 수 있습니다.',
+  },
+  {
+    icon: ShieldCheck,
+    title: '자료 기반 검토',
+    body: '방사율, 항균·탈취, 방폭, 방진·방수 등 필요한 자료를 확인하고 현장 조건에 맞춰 비교할 수 있습니다.',
+  },
 ];
 
 export default function CompareSection() {
   return (
     <section style={{ background: 'var(--off)', padding: '72px 0' }}>
       <div className="container">
-
-        {/* 섹션 헤더 */}
-        <ScrollReveal variants={fadeInUp} style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <p
-            style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: 'var(--red)',
-              marginBottom: '12px',
-            }}
-          >
-            Why Sunraytec
-          </p>
-          <h2
-            style={{
-              fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
-              fontWeight: 900,
-              color: 'var(--navy)',
-              lineHeight: 1.2,
-            }}
-          >
-            복사난방 vs 대류난방<br />
-            <span style={{ color: 'var(--red)' }}>한눈에 비교</span>
-          </h2>
-        </ScrollReveal>
-
-        {/* ── 이미지 + 애니메이션 오버레이 ──────────────────────────── */}
-        <ScrollReveal variants={fadeInUp} style={{ marginBottom: '40px' }}>
-          <motion.div
-            style={{
-              position: 'relative',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
-              cursor: 'default',
-            }}
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            {/* 베이스 이미지 */}
-            <img
-              src="/images/comparison.png"
-              alt="복사난방 vs 대류난방 비교"
-              style={{ width: '100%', display: 'block' }}
-            />
-
-            {/* ── SVG 애니메이션 오버레이 ── */}
-            <svg
-              viewBox="0 0 840 310"
-              preserveAspectRatio="none"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                pointerEvents: 'none',
-              }}
-            >
-              {/* ════ 왼쪽: 복사난방 ════ */}
-
-              {/* 패널 아래 warm glow */}
-              <motion.ellipse
-                cx="214" cy="52" rx="60" ry="9"
-                fill="rgba(220,75,45,0)"
-                animate={{ fill: ['rgba(220,75,45,0)', 'rgba(220,75,45,0.32)', 'rgba(220,75,45,0)'] }}
-                transition={{ duration: 2.0, repeat: Infinity, ease: 'easeInOut' }}
-              />
-
-              {/* 하강 열선 */}
-              {RADIANT_RAYS.map((ray, i) => (
-                <motion.line
-                  key={`ray-${i}`}
-                  x1={ray.x1} y1={ray.y1}
-                  x2={ray.x2} y2={ray.y2}
-                  stroke="rgba(218,72,42,0.55)"
-                  strokeWidth="2"
-                  strokeDasharray="8 5"
-                  strokeLinecap="round"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  animate={{ strokeDashoffset: [0, -13] }}
-                  transition={{
-                    opacity: { duration: 0.5, delay: ray.delay },
-                    strokeDashoffset: {
-                      duration: 0.95,
-                      repeat: Infinity,
-                      ease: 'linear',
-                      delay: ray.delay,
-                    },
-                  }}
-                />
-              ))}
-
-              {/* 낙하 열 파티클 */}
-              {HEAT_PARTICLES.map((p, i) => (
-                <motion.circle
-                  key={`hp-${i}`}
-                  cx={p.cx}
-                  cy={p.startY}
-                  r={3}
-                  fill="rgba(225,90,55,0.85)"
-                  initial={{ cy: p.startY, opacity: 0.9 }}
-                  animate={{ cy: [p.startY, p.endY], opacity: [0.9, 0] }}
-                  transition={{
-                    duration: 1.7,
-                    repeat: Infinity,
-                    ease: 'easeIn',
-                    delay: p.delay,
-                    repeatDelay: 0.5,
-                  }}
-                />
-              ))}
-
-              {/* 바닥 온기 글로우 */}
-              <motion.ellipse
-                cx="214" cy="258" rx="72" ry="9"
-                fill="rgba(210,60,40,0)"
-                animate={{ fill: ['rgba(210,60,40,0)', 'rgba(210,60,40,0.22)', 'rgba(210,60,40,0)'] }}
-                transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              />
-
-              {/* ════ 오른쪽: 대류난방 ════ */}
-
-              {/* 천장 열기 축적 펄스 */}
-              <motion.rect
-                x="450" y="25" width="370" height="32" rx="5"
-                fill="rgba(160,120,70,0)"
-                animate={{ fill: ['rgba(160,120,70,0)', 'rgba(160,120,70,0.16)', 'rgba(160,120,70,0)'] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-              />
-
-              {/* 대류 순환 경로 */}
-              {CONVECTION_PATHS.map((p, i) => (
-                <motion.path
-                  key={`cp-${i}`}
-                  d={p.d}
-                  stroke="rgba(90,170,235,0.72)"
-                  strokeWidth="2.4"
-                  strokeDasharray="10 6"
-                  strokeLinecap="round"
-                  fill="none"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  animate={{ strokeDashoffset: [0, 16] }}
-                  transition={{
-                    opacity: { duration: 0.6, delay: p.delay },
-                    strokeDashoffset: {
-                      duration: 1.3,
-                      repeat: Infinity,
-                      ease: 'linear',
-                      delay: p.delay,
-                    },
-                  }}
-                />
-              ))}
-
-              {/* 먼지·세균 상승 파티클 */}
-              {DUST.map((p, i) => (
-                <motion.circle
-                  key={`dust-${i}`}
-                  cx={p.cx}
-                  cy={p.startY}
-                  r={p.r}
-                  fill="rgba(155,140,115,0.75)"
-                  initial={{ cx: p.cx, cy: p.startY, opacity: 0.85 }}
-                  animate={{
-                    cy: [p.startY, p.endY],
-                    opacity: [0.85, 0],
-                    cx: [p.cx, p.cx + (i % 2 === 0 ? 14 : -14)],
-                  }}
-                  transition={{
-                    duration: 2.4,
-                    repeat: Infinity,
-                    ease: 'easeOut',
-                    delay: p.delay,
-                    repeatDelay: 0.3,
-                  }}
-                />
-              ))}
-
-              {/* 중앙 구분선 — 부드러운 글로우 */}
-              <motion.line
-                x1="422" y1="18" x2="422" y2="292"
-                stroke="rgba(255,255,255,0.3)"
-                strokeWidth="1.5"
-                animate={{ opacity: [0.3, 0.7, 0.3] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </svg>
-
-            {/* 좌하단 뱃지 */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '12px',
-                left: '14px',
-                background: 'rgba(200,57,43,0.88)',
-                color: '#fff',
-                fontSize: '11px',
-                fontWeight: 700,
-                padding: '4px 10px',
-                borderRadius: '6px',
-                backdropFilter: 'blur(4px)',
-                letterSpacing: '0.3px',
-              }}
-            >
-              ✅ 썬레이텍 복사난방
-            </div>
-
-            {/* 우하단 뱃지 */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '12px',
-                right: '14px',
-                background: 'rgba(44,62,80,0.82)',
-                color: 'rgba(255,255,255,0.75)',
-                fontSize: '11px',
-                fontWeight: 600,
-                padding: '4px 10px',
-                borderRadius: '6px',
-                backdropFilter: 'blur(4px)',
-              }}
-            >
-              ❌ 일반 대류난방
-            </div>
-          </motion.div>
-        </ScrollReveal>
-
-        {/* ── 비교 테이블 ──────────────────────────────────────────── */}
         <ScrollReveal variants={fadeInUp}>
-          <div
-            style={{
-              borderRadius: '16px',
-              overflow: 'hidden',
-              boxShadow: 'var(--sh-lg)',
-            }}
-          >
-            {/* 헤더 행 */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1.2fr 1.2fr',
-                background: 'var(--navy)',
-                color: '#fff',
-              }}
-            >
-              <div style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,.5)' }}>
-                비교 항목
-              </div>
-              <div
-                style={{
-                  padding: '16px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  color: 'var(--amber2)',
-                  borderLeft: '1px solid rgba(255,255,255,.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                ☀️ 원적외선 복사난방
-                <span style={{ fontSize: '11px', background: 'var(--red)', padding: '2px 8px', borderRadius: '4px', color: '#fff' }}>
-                  썬레이텍
-                </span>
-              </div>
-              <div
-                style={{
-                  padding: '16px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  color: 'rgba(255,255,255,.7)',
-                  borderLeft: '1px solid rgba(255,255,255,.1)',
-                }}
-              >
-                💨 일반 대류난방
-              </div>
+          <div className="compare-intro">
+            <div>
+              <p className="section-eyebrow">핵심 차이</p>
+              <h2>복사난방과 대류난방은 열이 움직이는 방식이 다릅니다</h2>
             </div>
-
-            {/* 데이터 행 */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              {COMPARE_ROWS.map((row, i) => (
-                <motion.div
-                  key={row.label}
-                  variants={staggerItem}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1.2fr 1.2fr',
-                    background: i % 2 === 0 ? '#fff' : 'var(--off)',
-                    borderBottom: '1px solid var(--border)',
-                  }}
-                >
-                  <div style={{ padding: '14px 20px', fontSize: '13.5px', fontWeight: 600, color: 'var(--text)' }}>
-                    {row.label}
-                  </div>
-                  <div
-                    style={{
-                      padding: '14px 20px',
-                      fontSize: '13.5px',
-                      fontWeight: 700,
-                      color: 'var(--red)',
-                      borderLeft: '1px solid var(--border)',
-                    }}
-                  >
-                    ✅ {row.sunray}
-                  </div>
-                  <div
-                    style={{
-                      padding: '14px 20px',
-                      fontSize: '13.5px',
-                      color: 'var(--gray)',
-                      borderLeft: '1px solid var(--border)',
-                    }}
-                  >
-                    {row.conv}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </ScrollReveal>
-
-        {/* ── 실증 사례 하이라이트 ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{
-            marginTop: '48px',
-            padding: '32px',
-            background: 'var(--navy)',
-            borderRadius: '24px',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '24px',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          <div style={{ flex: '1', minWidth: '300px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <span style={{ background: 'var(--red)', color: '#fff', fontSize: '11px', fontWeight: 800, padding: '3px 8px', borderRadius: '4px' }}>CASE STUDY</span>
-              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', fontWeight: 600 }}>㈜가나에너지 산업현장</span>
-            </div>
-            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '12px' }}>기존 EHP 대비 난방비 <span style={{ color: 'var(--amber2)' }}>57.1% 절감</span> 확인</h3>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.6 }}>
-              200평 규모, 천장 높이 5m 공장에서 5개월간 실측한 결과, 월 약 115만원의 비용 절감 효과를 거두었습니다. 
-              고천장 공간일수록 복사난방의 효율은 극대화됩니다.
+            <p>
+              모든 난방 방식에는 맞는 현장이 있습니다. 썬레이텍은 높은 천장, 바람과 분진, 소음과 빛 부담이
+              중요한 공간에서 복사난방이 왜 검토되는지 차분하게 설명합니다.
             </p>
           </div>
-          <div style={{ 
-            background: 'rgba(255,255,255,0.05)', 
-            padding: '24px 32px', 
-            borderRadius: '16px', 
-            textAlign: 'center',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}>
-            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px' }}>연간 예상 절감액</div>
-            <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--red-light)' }}>약 5,500,000원</div>
-            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>(200평 공장 기준)</div>
+
+          <div className="compare-diagram" aria-label="복사난방과 대류난방 열 전달 방식 비교">
+            <article className="diagram-panel radiant">
+              <div className="panel-heading">
+                <span>복사난방</span>
+                <strong>필요한 위치로 직접 전달</strong>
+              </div>
+              <div className="room">
+                <div className="ceiling-panel" />
+                <div className="radiant-rays">
+                  <i style={{ ['--x' as string]: '18%', ['--r' as string]: '-18deg' }} />
+                  <i style={{ ['--x' as string]: '36%', ['--r' as string]: '-8deg' }} />
+                  <i style={{ ['--x' as string]: '50%', ['--r' as string]: '0deg' }} />
+                  <i style={{ ['--x' as string]: '64%', ['--r' as string]: '8deg' }} />
+                  <i style={{ ['--x' as string]: '82%', ['--r' as string]: '18deg' }} />
+                </div>
+                <div className="comfort-zone">
+                  <span>작업자·학생이 머무는 영역</span>
+                </div>
+              </div>
+              <p>바람보다 체감 온도와 공간 조건에 집중합니다.</p>
+            </article>
+
+            <article className="diagram-panel convection">
+              <div className="panel-heading">
+                <span>대류난방</span>
+                <strong>공기를 순환시켜 데우는 방식</strong>
+              </div>
+              <div className="room">
+                <div className="air-unit" />
+                <div className="air-loop loop-one" />
+                <div className="air-loop loop-two" />
+                <div className="warm-layer">따뜻한 공기 상승</div>
+                <div className="floor-note">체감 영역까지 도달하려면 조건 검토 필요</div>
+              </div>
+              <p>공간 구조와 층고에 따라 효율 차이가 생길 수 있습니다.</p>
+            </article>
           </div>
-        </motion.div>
+
+          <div className="compare-points">
+            {POINTS.map((point) => (
+              <article key={point.title}>
+                <span>
+                  <point.icon size={18} />
+                </span>
+                <div>
+                  <h3>{point.title}</h3>
+                  <p>{point.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <Link to="/technology/principle" className="summary-link">
+            복사난방 원리 자세히 보기 <ArrowRight size={17} />
+          </Link>
+        </ScrollReveal>
       </div>
+
+      <style>{`
+        .compare-intro {
+          display: grid;
+          grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.75fr);
+          gap: clamp(24px, 4vw, 56px);
+          align-items: end;
+          margin-bottom: 32px;
+        }
+
+        .section-eyebrow {
+          margin-bottom: 10px;
+          color: var(--red);
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        .compare-intro h2 {
+          max-width: 760px;
+          color: var(--navy);
+          font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+          font-weight: 900;
+          letter-spacing: -0.045em;
+          line-height: 1.18;
+          text-wrap: balance;
+        }
+
+        .compare-intro p {
+          color: #475569;
+          font-size: 0.98rem;
+          line-height: 1.82;
+        }
+
+        .compare-diagram {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 18px;
+        }
+
+        .diagram-panel {
+          overflow: hidden;
+          border-radius: 26px;
+          background: #fff;
+          border: 1px solid var(--border);
+          box-shadow: 0 22px 64px rgba(15,23,42,0.1);
+        }
+
+        .panel-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 20px 22px 0;
+        }
+
+        .panel-heading span {
+          display: inline-flex;
+          border-radius: 999px;
+          padding: 6px 11px;
+          font-size: 12px;
+          font-weight: 850;
+        }
+
+        .radiant .panel-heading span {
+          background: rgba(220,38,38,0.08);
+          color: var(--red);
+        }
+
+        .convection .panel-heading span {
+          background: rgba(37,99,235,0.08);
+          color: var(--blue);
+        }
+
+        .panel-heading strong {
+          color: var(--navy);
+          font-size: 1rem;
+          font-weight: 850;
+          line-height: 1.35;
+          text-align: right;
+        }
+
+        .room {
+          height: 300px;
+          position: relative;
+          margin: 20px 22px 18px;
+          border-radius: 22px;
+          border: 1px solid rgba(15,23,42,0.08);
+          background:
+            linear-gradient(180deg, rgba(248,250,252,0.98), rgba(255,255,255,0.96)),
+            linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px);
+          background-size: auto, 58px 58px;
+        }
+
+        .diagram-panel > p {
+          min-height: 48px;
+          padding: 0 22px 22px;
+          color: #64748b;
+          font-size: 0.9rem;
+          line-height: 1.7;
+        }
+
+        .ceiling-panel {
+          position: absolute;
+          left: 50%;
+          top: 30px;
+          width: min(220px, 58%);
+          height: 16px;
+          transform: translateX(-50%);
+          border-radius: 999px;
+          background: #cbd5e1;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+        }
+
+        .radiant-rays {
+          position: absolute;
+          inset: 62px 11% 82px;
+        }
+
+        .radiant-rays i {
+          --x: 50%;
+          --r: 0deg;
+          position: absolute;
+          top: 0;
+          left: var(--x);
+          width: 2px;
+          height: 150px;
+          transform-origin: top center;
+          transform: translateX(-50%) rotate(var(--r));
+          background: linear-gradient(180deg, rgba(245,158,11,0.22), rgba(220,38,38,0.36), rgba(245,158,11,0.04));
+          border-radius: 999px;
+        }
+
+        .radiant-rays i::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 8px;
+          width: 8px;
+          height: 8px;
+          border-radius: 999px;
+          transform: translateX(-50%);
+          background: rgba(245,158,11,0.45);
+        }
+
+        .comfort-zone {
+          position: absolute;
+          left: 12%;
+          right: 12%;
+          bottom: 36px;
+          height: 54px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, rgba(245,158,11,0.18), rgba(220,38,38,0.18));
+          border: 1px solid rgba(245,158,11,0.22);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #7f1d1d;
+          font-size: 13px;
+          font-weight: 850;
+        }
+
+        .air-unit {
+          position: absolute;
+          left: 50%;
+          top: 34px;
+          width: 88px;
+          height: 38px;
+          transform: translateX(-50%);
+          border-radius: 14px;
+          background: #e2e8f0;
+          border: 1px solid #cbd5e1;
+        }
+
+        .air-unit::after {
+          content: '';
+          position: absolute;
+          left: 18px;
+          right: 18px;
+          bottom: 8px;
+          height: 4px;
+          border-radius: 999px;
+          background: #94a3b8;
+        }
+
+        .air-loop {
+          position: absolute;
+          border: 3px dashed rgba(37,99,235,0.38);
+          border-radius: 999px;
+        }
+
+        .loop-one {
+          left: 12%;
+          top: 76px;
+          width: 46%;
+          height: 140px;
+          transform: rotate(-18deg);
+        }
+
+        .loop-two {
+          right: 12%;
+          top: 76px;
+          width: 46%;
+          height: 140px;
+          transform: rotate(18deg);
+        }
+
+        .warm-layer {
+          position: absolute;
+          left: 10%;
+          right: 10%;
+          top: 92px;
+          border-radius: 999px;
+          padding: 10px 14px;
+          background: rgba(37,99,235,0.08);
+          color: var(--blue);
+          text-align: center;
+          font-size: 13px;
+          font-weight: 850;
+        }
+
+        .floor-note {
+          position: absolute;
+          left: 12%;
+          right: 12%;
+          bottom: 36px;
+          border-radius: 18px;
+          padding: 14px 16px;
+          background: rgba(15,23,42,0.86);
+          color: rgba(255,255,255,0.82);
+          text-align: center;
+          font-size: 12px;
+          line-height: 1.55;
+          font-weight: 700;
+        }
+
+        .compare-points {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 14px;
+          margin-top: 20px;
+        }
+
+        .compare-points article {
+          display: grid;
+          grid-template-columns: 38px minmax(0, 1fr);
+          gap: 12px;
+          padding: 18px;
+          border-radius: 18px;
+          background: rgba(255,255,255,0.72);
+          border: 1px solid var(--border);
+        }
+
+        .compare-points article > span {
+          width: 38px;
+          height: 38px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 14px;
+          background: rgba(220,38,38,0.08);
+          color: var(--red);
+        }
+
+        .compare-points h3 {
+          margin-bottom: 5px;
+          color: var(--navy);
+          font-size: 0.94rem;
+          font-weight: 850;
+          line-height: 1.4;
+        }
+
+        .compare-points p {
+          color: #64748b;
+          font-size: 0.84rem;
+          line-height: 1.65;
+        }
+
+        .summary-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 24px;
+          color: var(--red);
+          font-weight: 850;
+        }
+
+        @media (max-width: 980px) {
+          .compare-intro,
+          .compare-diagram,
+          .compare-points {
+            grid-template-columns: 1fr;
+          }
+
+          .room {
+            height: 260px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

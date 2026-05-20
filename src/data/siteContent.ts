@@ -2,12 +2,12 @@ import type { SiteContent } from '../types/cms';
 
 export const initialSiteContent: SiteContent = {
   hero: {
-    headline: '대한민국 복사난방의 기준,\n양지처럼 따스한 기술로\n내일의 환경을 설계합니다!',
+    headline: '공공·산업 현장의\n열 손실을 줄이는\n원적외선 복사난방',
     subcopy:
-      '공공기관·교육시설·산업현장에서 검증된 원적외선 복사난방 기술로, 쾌적하고 안전한 열환경을 제공합니다.',
-    primaryCta: '견적 문의',
-    secondaryCta: '우수제품 보기',
-    highlightText: '양지처럼',
+      '학교 급식실, 물류센터, 군 특수시설처럼 바람과 분진, 높은 천장 때문에 난방 효율이 떨어지는 공간에 검증된 패널형 복사난방 솔루션을 제안합니다.',
+    primaryCta: '견적 상담하기',
+    secondaryCta: '조달 제품 보기',
+    highlightText: '열 손실',
     highlightColor: '#F39C12',
     headlineFontFamily: 'display',
     headlineFontSize: 'xl',

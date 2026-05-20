@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { School, Factory, PenTool, ArrowRight } from 'lucide-react';
@@ -38,25 +37,25 @@ const segments = [
 
 export default function SegmentEntrySection() {
   return (
-    <section style={{ padding: '100px 0', background: '#fff' }}>
+    <section style={{ padding: '66px 0 72px', background: '#fff' }}>
       <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, marginBottom: '20px', color: 'var(--navy)' }}
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 850, marginBottom: '14px', color: 'var(--navy)', letterSpacing: '-0.04em' }}
           >
-            누구에게나 꼭 맞는 <span style={{ color: 'var(--red)' }}>난방 솔루션</span>
+            방문 목적에 맞춰 바로 확인하세요
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            style={{ fontSize: '1.1rem', color: '#64748b', maxWidth: '700px', margin: '0 auto' }}
+            style={{ fontSize: '1rem', color: '#64748b', maxWidth: '700px', margin: '0 auto', lineHeight: 1.75 }}
           >
-            방문하신 목적에 따라 최적화된 기술 정보와 조달 가이드를 제공해 드립니다.
+            공공기관, 산업현장, 설계·파트너가 가장 먼저 확인해야 할 자료를 나눠 정리했습니다.
           </motion.p>
         </div>
 
@@ -71,12 +70,12 @@ export default function SegmentEntrySection() {
               whileHover={{ y: -10 }}
               style={{
                 background: '#F8FAFC',
-                borderRadius: '24px',
-                padding: '40px',
+                borderRadius: '20px',
+                padding: '30px',
                 display: 'flex',
                 flexDirection: 'column',
                 border: '1px solid #E2E8F0',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                 cursor: 'pointer',
                 position: 'relative',
                 overflow: 'hidden'
@@ -90,7 +89,7 @@ export default function SegmentEntrySection() {
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                marginBottom: '32px'
+                marginBottom: '22px'
               }}>
                 <segment.icon size={32} color={segment.color} />
               </div>
@@ -110,10 +109,10 @@ export default function SegmentEntrySection() {
                 {segment.badge}
               </div>
 
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '8px', color: 'var(--navy)' }}>{segment.title}</h3>
-              <p style={{ fontSize: '1rem', fontWeight: 600, color: segment.color, marginBottom: '20px' }}>{segment.subtitle}</p>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: 850, marginBottom: '8px', color: 'var(--navy)', letterSpacing: '-0.025em' }}>{segment.title}</h3>
+              <p style={{ fontSize: '0.95rem', fontWeight: 650, color: segment.color, marginBottom: '14px' }}>{segment.subtitle}</p>
               
-              <p style={{ fontSize: '0.95rem', color: '#475569', lineHeight: 1.6, marginBottom: '32px', flex: 1 }}>
+              <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: 1.65, marginBottom: '22px', flex: 1 }}>
                 {segment.desc}
               </p>
 
@@ -129,7 +128,7 @@ export default function SegmentEntrySection() {
                   fontSize: '1rem'
                 }}
               >
-                자세히 보기 <ArrowRight size={18} />
+                필요한 자료 보기 <ArrowRight size={18} />
               </Link>
             </motion.div>
           ))}

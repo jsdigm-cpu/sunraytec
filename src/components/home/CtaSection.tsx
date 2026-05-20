@@ -7,8 +7,9 @@ export default function CtaSection() {
   return (
     <section
       style={{
-        background: 'linear-gradient(90deg, var(--red-dark) 0%, var(--red) 100%)',
-        padding: '64px 0',
+        background:
+          'radial-gradient(circle at 18% 12%, rgba(251,191,36,0.22), transparent 30%), linear-gradient(135deg, var(--red-dark) 0%, #7F1D1D 100%)',
+        padding: '68px 0',
       }}
     >
       <div className="container">
@@ -32,10 +33,10 @@ export default function CtaSection() {
                   marginBottom: '8px',
                 }}
               >
-                지금 바로 무료 상담 · 견적 문의
+                현장 조건에 맞는 모델부터 확인해 드립니다
               </h2>
               <p style={{ fontSize: '14px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7 }}>
-                면적과 용도만 알려주시면 최적 모델과 견적을 빠르게 제안해 드립니다.
+                면적, 천장 높이, 설치 환경을 알려주시면 적정 용량과 조달 검토 방향을 함께 안내해 드립니다.
               </p>
             </div>
 
@@ -47,8 +48,8 @@ export default function CtaSection() {
                     background: '#fff',
                     color: 'var(--red)',
                     padding: '13px 26px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
+                    borderRadius: '999px',
+                    fontWeight: 800,
                     fontSize: '0.95rem',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -56,7 +57,7 @@ export default function CtaSection() {
                     boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
                   }}
                 >
-                  📦 우수제품 보기
+                  우수제품 보기
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
@@ -67,15 +68,15 @@ export default function CtaSection() {
                     color: '#fff',
                     border: '1px solid rgba(255,255,255,.35)',
                     padding: '13px 26px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
+                    borderRadius: '999px',
+                    fontWeight: 800,
                     fontSize: '0.95rem',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
                   }}
                 >
-                  📞 1688-2520
+                  1688-2520
                 </a>
               </motion.div>
             </div>

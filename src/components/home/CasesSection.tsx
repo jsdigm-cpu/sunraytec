@@ -58,7 +58,7 @@ export default function CasesSection() {
         .from('case_studies')
         .select('id,title,category,location,image_url,images,summary,featured,sort_order')
         .order('sort_order', { ascending: true })
-        .limit(6);
+        .limit(3);
 
       if (!isMounted) return;
       if (!error && data && data.length > 0) {
@@ -75,7 +75,7 @@ export default function CasesSection() {
   }, []);
 
   return (
-    <section style={{ background: 'linear-gradient(135deg, #111827 0%, #0F172A 100%)', padding: '80px 0' }}>
+    <section style={{ background: 'linear-gradient(135deg, #111827 0%, #0F172A 100%)', padding: '72px 0' }}>
       <div className="container">
         <ScrollReveal variants={fadeInUp}>
           <div
@@ -83,7 +83,7 @@ export default function CasesSection() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-end',
-              marginBottom: '40px',
+              marginBottom: '30px',
               flexWrap: 'wrap',
               gap: '16px',
             }}
@@ -128,7 +128,7 @@ export default function CasesSection() {
           style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}
           className="cases-grid"
         >
-          {cases.map((c, index) => {
+          {cases.slice(0, 3).map((c, index) => {
             const imageUrl = getCaseImage(c);
             const detailTo = c.id.startsWith('fallback-') ? '/cases' : `/cases/${c.id}`;
 

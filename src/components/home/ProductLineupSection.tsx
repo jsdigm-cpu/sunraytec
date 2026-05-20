@@ -5,19 +5,15 @@ import ScrollReveal from '../ui/ScrollReveal';
 import { fadeInUp } from '../../utils/animations';
 
 const PRODUCTS = [
-  { model: 'SUR-3600D',  watt: '3,600W',    desc: '대형 물류창고·격납고·체육관', badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가', '방폭 옵션'] },
-  { model: 'SUR-2400T/D', watt: '2,400W',   desc: '중대형 공장·창고·군 시설',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가', '특수환경 검토'] },
-  { model: 'SUR-1800T/D', watt: '1,800W',   desc: '중형 작업장·학교·공공시설',   badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가'] },
-  { model: 'SUR-1200T/D', watt: '1,200W',   desc: '소·중형 사무실·매장·식당',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['조달청 3자단가'] },
-  { model: 'SUR-600T',    watt: '600W',      desc: '소형 공간·개인 사무실',       badge: 'MAS',      badgeColor: 'var(--blue)',  tags: ['MAS 계약'] },
+  { model: 'SUR-3600D',  watt: '3,600W',    desc: '대형 물류창고·격납고·체육관', badge: '우수제품', badgeColor: 'var(--red)',   tags: ['나라장터 검토', '방폭 옵션'] },
+  { model: 'SUR-2400T/D', watt: '2,400W',   desc: '중대형 공장·창고·군 시설',    badge: '우수제품', badgeColor: 'var(--red)',   tags: ['나라장터 검토', '특수환경'] },
+  { model: 'SUR-1800T/D', watt: '1,800W',   desc: '중형 작업장·학교·공공시설',   badge: '우수제품', badgeColor: 'var(--red)',   tags: ['나라장터 검토'] },
   { model: 'SUR-D300A',   watt: '300W',      desc: '책상형 개인용·욕실형',        badge: 'MAS',      badgeColor: 'var(--blue)',  tags: ['MAS 계약', '개인용'] },
-  { model: '방폭형 EX',   watt: '최대 3,600W', desc: '위험물 취급 산업 현장',     badge: '특수',     badgeColor: 'var(--amber)', tags: ['Ex e mb Ⅱ T1', 'KTR IP65 시험'] },
-  { model: '스마트 컨트롤', watt: '—',       desc: 'WiFi 원격조절 · 128회로 중앙제어', badge: 'IoT', badgeColor: '#2E7D32',   tags: ['WiFi 제어', '중앙관리'] },
 ];
 
 export default function ProductLineupSection() {
   return (
-    <section style={{ background: 'var(--off)', padding: '72px 0' }}>
+    <section style={{ background: '#fff', padding: '72px 0' }}>
       <div className="container">
         <ScrollReveal variants={fadeInUp}>
           <div
@@ -25,28 +21,28 @@ export default function ProductLineupSection() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-end',
-              marginBottom: '40px',
+              marginBottom: '30px',
               flexWrap: 'wrap',
               gap: '16px',
             }}
           >
             <div>
               <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
-                Products
+                대표 제품
               </p>
               <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 900, color: 'var(--navy)', lineHeight: 1.2 }}>
-                SUR 시리즈 제품 라인업
+                공간 규모에 따라 먼저 검토하는 모델
               </h2>
-              <p style={{ color: 'var(--gray)', marginTop: '6px', fontSize: '0.9rem' }}>
-                용량·용도에 맞는 모델을 선택하세요
+              <p style={{ color: 'var(--gray)', marginTop: '6px', fontSize: '0.95rem', maxWidth: '560px', lineHeight: 1.7 }}>
+                홈에서는 전체 목록을 다 보여주기보다, 자주 검토되는 대표 모델만 먼저 안내합니다.
               </p>
             </div>
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 to="/products"
                 style={{
-                  padding: '10px 20px',
-                  borderRadius: '8px',
+                  padding: '12px 20px',
+                  borderRadius: '999px',
                   border: '1.5px solid var(--red)',
                   color: 'var(--red)',
                   fontWeight: 700,
@@ -55,7 +51,7 @@ export default function ProductLineupSection() {
                   display: 'inline-block',
                 }}
               >
-                전체 제품 보기 →
+                  전체 제품 보기
               </Link>
             </motion.div>
           </div>
@@ -66,7 +62,7 @@ export default function ProductLineupSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px' }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}
           className="product-grid"
         >
           {PRODUCTS.map((p) => (
@@ -78,7 +74,7 @@ export default function ProductLineupSection() {
                 background: '#fff',
                 borderRadius: '12px',
                 padding: '20px',
-                boxShadow: 'var(--sh)',
+                boxShadow: '0 18px 46px rgba(15,23,42,0.08)',
                 border: '1px solid var(--border)',
                 position: 'relative',
                 cursor: 'default',
@@ -99,7 +95,7 @@ export default function ProductLineupSection() {
               >
                 {p.badge}
               </span>
-              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: '1px', color: 'var(--red)', marginBottom: '2px' }}>
+              <div style={{ fontSize: '1.25rem', letterSpacing: '-0.02em', color: 'var(--red)', marginBottom: '2px', fontWeight: 900, fontVariantNumeric: 'tabular-nums' }}>
                 {p.model}
               </div>
               <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--amber)', marginBottom: '8px' }}>

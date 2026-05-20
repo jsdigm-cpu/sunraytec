@@ -16,7 +16,7 @@ const SEGMENTS = [
     benefits: [
       '항균 99.9% · 탈취 88% 성적서 보유 (급식실 최적)',
       '팬 소음 없는 정숙한 수업 환경 구현',
-      '조달청 우수제품 · MAS 등록으로 직접 도달 구매 가능',
+      '나라장터 기준에 따른 납품요구 절차 안내 가능',
     ],
     metric: { value: '3회', label: '우수제품 지정' },
     link: '/solutions/public-edu',
@@ -84,10 +84,10 @@ export default function SolutionSection() {
               lineHeight: 1.2,
             }}
           >
-            누가 썬레이텍을 찾는가?
+            현장별로 다른 난방 문제를 해결합니다
           </h2>
           <p style={{ color: 'var(--gray)', marginTop: '8px', fontSize: '1rem', maxWidth: '600px', margin: '12px auto 0' }}>
-            단순한 난방기 판매가 아닌, 현장의 고질적인 문제를 해결하는 맞춤형 설득력을 제공합니다.
+            구매 절차보다 먼저 확인해야 할 것은 공간의 조건입니다. 천장 높이, 분진, 소음, 결로 위험에 맞춰 검토하세요.
           </p>
         </ScrollReveal>
 
@@ -113,7 +113,7 @@ export default function SolutionSection() {
                 fontWeight: 700,
                 fontSize: '15px',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
@@ -202,7 +202,7 @@ export default function SolutionSection() {
                   borderRadius: '12px',
                   fontWeight: 700,
                   textDecoration: 'none',
-                  transition: 'all 0.2s'
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = activeData.color; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--navy)'; e.currentTarget.style.transform = 'translateY(0)'; }}

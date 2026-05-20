@@ -8,6 +8,8 @@ export default function FastTrackBanner() {
     <section
       style={{
         background: 'linear-gradient(135deg, #3B0764 0%, #1A3A6B 100%)',
+        backgroundImage:
+          'radial-gradient(circle at 12% 20%, rgba(245,158,11,0.18), transparent 32%), linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
         padding: '56px 0',
       }}
     >
@@ -40,7 +42,7 @@ export default function FastTrackBanner() {
                 marginBottom: '16px',
               }}
             >
-              🔐 공공기관 전용
+              공공기관 전용
             </div>
             <h2
               style={{
@@ -91,7 +93,7 @@ export default function FastTrackBanner() {
                 textDecoration: 'none',
               }}
             >
-              🚀 라운지 입장하기
+              라운지 입장하기
               </Link>
             </motion.div>
           </ScrollReveal>

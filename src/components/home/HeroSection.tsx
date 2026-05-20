@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { Award, ExternalLink, MapPin, PackageSearch, Phone, ShieldCheck } from 'lucide-react';
 import type { HeroContent, HeroOverlayStrength } from '../../types/cms';
 
 const BADGES = [
@@ -32,16 +33,16 @@ const HERO_IMAGES = [
 ];
 
 const SLIDE_INFO = [
-  { location: '수원 연무초등학교', desc: '학생식당 복사난방', icon: '🎓' },
-  { location: '영월 동강시스타 리조트', desc: '사무실 복사난방', icon: '🏨' },
-  { location: '서울 양재 하나로마트', desc: '계산대 국소 복사난방', icon: '🛒' },
-  { location: '광주시 퇴촌읍 토마토카페', desc: '카페 실내 복사난방', icon: '☕' },
-  { location: '천안시청 실내 배드민턴장', desc: '관중석 복사난방', icon: '🏸' },
-  { location: '함안군청 자동차 거점소독시설', desc: '동파방지 복사난방', icon: '🚗' },
-  { location: '2018 평창 동계올림픽', desc: 'VIP 라운지 복사난방', icon: '🏅' },
-  { location: '부천 샹그릴라 옥상 화원', desc: '온실 복사난방', icon: '🌿' },
-  { location: '영종도 인천공항 FedEx 물류센터', desc: '작업자 복사난방', icon: '🏭' },
-  { location: '포항 해병대 정비대 정비창', desc: '작업자 복사난방', icon: '🔧' },
+  { location: '수원 연무초등학교', desc: '학생식당 복사난방' },
+  { location: '영월 동강시스타 리조트', desc: '사무실 복사난방' },
+  { location: '서울 양재 하나로마트', desc: '계산대 국소 복사난방' },
+  { location: '광주시 퇴촌읍 토마토카페', desc: '카페 실내 복사난방' },
+  { location: '천안시청 실내 배드민턴장', desc: '관중석 복사난방' },
+  { location: '함안군청 자동차 거점소독시설', desc: '동파방지 복사난방' },
+  { location: '2018 평창 동계올림픽', desc: 'VIP 라운지 복사난방' },
+  { location: '부천 샹그릴라 옥상 화원', desc: '온실 복사난방' },
+  { location: '영종도 인천공항 FedEx 물류센터', desc: '작업자 복사난방' },
+  { location: '포항 해병대 정비대 정비창', desc: '작업자 복사난방' },
 ];
 
 const PHONE_NUMBER = '1688-2520';
@@ -53,8 +54,8 @@ const OVERLAY_GRADIENTS: Record<HeroOverlayStrength, string> = {
 };
 
 const FONT_FAMILY_MAP = {
-  display: "'Bebas Neue', 'Noto Sans KR', sans-serif",
-  sans: "'Noto Sans KR', sans-serif",
+  display: "'Pretendard', system-ui, sans-serif",
+  sans: "'Pretendard', system-ui, sans-serif",
 } satisfies Record<HeroContent['headlineFontFamily'], string>;
 
 const FONT_SIZE_MAP = {
@@ -76,8 +77,22 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
-  const slideDurationMs = (heroContent.slideDurationSec ?? 6) * 1000;
-  const autoSlide = heroContent.autoSlide ?? true;
+  const isLegacyHero = heroContent.headline.includes('대한민국 복사난방의 기준');
+  const resolvedHeroContent: HeroContent = isLegacyHero
+    ? {
+        ...heroContent,
+        headline: '공공·산업 현장의\n열 손실을 줄이는\n원적외선 복사난방',
+        subcopy:
+          '학교 급식실, 물류센터, 군 특수시설처럼 바람과 분진, 높은 천장 때문에 난방 효율이 떨어지는 공간에 검증된 패널형 복사난방 솔루션을 제안합니다.',
+        primaryCta: '견적 상담하기',
+        secondaryCta: '조달 제품 보기',
+        highlightText: '열 손실',
+        copyEffect: 'none',
+      }
+    : heroContent;
+
+  const slideDurationMs = (resolvedHeroContent.slideDurationSec ?? 6) * 1000;
+  const autoSlide = resolvedHeroContent.autoSlide ?? true;
 
   useEffect(() => {
     if (!autoSlide) return;
@@ -88,27 +103,28 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
     return () => clearInterval(timer);
   }, [currentIndex, autoSlide, slideDurationMs]);
 
-  const headlineParts = highlightHeadline(heroContent.headline, heroContent.highlightText);
-  const copyEffect = heroContent.copyEffect ?? 'none';
-  const overlay = OVERLAY_GRADIENTS[heroContent.overlayStrength ?? 'medium'];
-  const showSiteBadge = heroContent.showSiteBadge ?? true;
-  const showCertBadges = heroContent.showCertBadges ?? true;
+  const headlineParts = highlightHeadline(resolvedHeroContent.headline, resolvedHeroContent.highlightText);
+  const copyEffect = resolvedHeroContent.copyEffect ?? 'none';
+  const overlay = OVERLAY_GRADIENTS[resolvedHeroContent.overlayStrength ?? 'medium'];
+  const showSiteBadge = resolvedHeroContent.showSiteBadge ?? true;
+  const showCertBadges = resolvedHeroContent.showCertBadges ?? true;
   const highlightClass =
     copyEffect === 'glow-pulse'     ? 'hero-fx-glow-pulse'
     : copyEffect === 'gradient-flow' ? 'hero-fx-gradient'
     : copyEffect === 'shimmer'       ? 'hero-fx-shimmer'
     : copyEffect === 'underline-draw'? 'hero-fx-underline'
     : '';
-  const headlineLines = heroContent.headline.split('\n');
+  const headlineLines = resolvedHeroContent.headline.split('\n');
 
   return (
     <section
+      className="home-hero"
       style={{
         color: '#fff',
-        padding: 'clamp(40px, 10vh, 80px) 0 60px',
+        padding: 'clamp(72px, 11vh, 112px) 0 72px',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: 'clamp(480px, 70vh, 560px)',
+        minHeight: 'clamp(620px, 82dvh, 760px)',
       }}
     >
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
@@ -166,68 +182,6 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         />
       </div>
 
-      {/* 고정 시공 현장 배지 + 슬라이드 캡션 */}
-      {showSiteBadge && (
-      <motion.div
-        key={`caption-${currentIndex}`}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        style={{
-          position: 'absolute',
-          top: '16px',
-          left: '16px',
-          zIndex: 3,
-          display: 'flex',
-          pointerEvents: 'none',
-        }}
-      >
-        <div
-          className="hero-site-badge"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'auto minmax(0, 1fr)',
-            gap: '8px',
-            alignItems: 'start',
-            background: 'rgba(10,22,40,0.78)',
-            border: '1px solid rgba(255,255,255,0.28)',
-            borderRadius: '8px',
-            padding: '8px 14px 9px',
-            backdropFilter: 'blur(8px)',
-            maxWidth: '440px',
-          }}
-        >
-          <span style={{ fontSize: '14px', gridRow: '1 / span 2' }}>📍</span>
-          <span
-            style={{
-              fontSize: '11px',
-              fontWeight: 800,
-              color: 'rgba(255,255,255,0.96)',
-              letterSpacing: '0.01em',
-              lineHeight: 1.2,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            실제 납품 · 시공 현장
-          </span>
-          <span
-            style={{
-              fontSize: '11px',
-              fontWeight: 800,
-              color: 'rgba(255,255,255,0.8)',
-              lineHeight: 1.2,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {SLIDE_INFO[currentIndex]?.icon} {SLIDE_INFO[currentIndex]?.location} · {SLIDE_INFO[currentIndex]?.desc}
-          </span>
-        </div>
-      </motion.div>
-      )}
-
       <div
         style={{
           position: 'absolute',
@@ -280,130 +234,129 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         />
       </div>
 
-      <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            border: '1px solid rgba(200,57,43,.8)',
-            background: 'rgba(200,57,43,.45)',
-            borderRadius: '999px',
-            padding: '6px 18px',
-            fontSize: '13px',
-            fontWeight: 800,
-            color: '#FFD166',
-            textShadow: '0 1px 8px rgba(0,0,0,0.35)',
-            marginBottom: '28px',
-          }}
-        >
-          🏆 정부조달 우수제품 지정 (2013·19·25)
-        </motion.div>
+      <div className="container hero-layout" style={{ position: 'relative', zIndex: 2 }}>
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              border: '1px solid rgba(255,255,255,.18)',
+              background: 'rgba(255,255,255,.08)',
+              borderRadius: '999px',
+              padding: '8px 16px',
+              fontSize: '13px',
+              fontWeight: 800,
+              color: 'rgba(255,255,255,0.9)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.12)',
+              backdropFilter: 'blur(14px)',
+              marginBottom: '28px',
+            }}
+          >
+            <Award size={16} color="var(--amber2)" />
+            정부조달 우수제품 3회 지정 · MAS 등록 제품 보유
+          </motion.div>
 
-        <motion.h1
-          initial={copyEffect === 'word-reveal' ? false : { opacity: 0, y: 24 }}
-          animate={copyEffect === 'word-reveal' ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.15, ease: 'easeOut' }}
-          className="hero-main-copy"
-          style={{
-            fontFamily: FONT_FAMILY_MAP[heroContent.headlineFontFamily],
-            fontSize: FONT_SIZE_MAP[heroContent.headlineFontSize],
-            lineHeight: 1.1,
-            letterSpacing: heroContent.headlineFontFamily === 'display' ? '1.5px' : '-0.02em',
-            marginBottom: '16px',
-            whiteSpace: 'pre-line',
-            fontWeight: FONT_WEIGHT_MAP[heroContent.headlineFontWeight],
-            textShadow: '0 8px 24px rgba(0,0,0,0.22)',
-          }}
-        >
-          {copyEffect === 'word-reveal' ? (
-            headlineLines.map((line, lineIdx) => (
-              <motion.span
-                key={`line-${lineIdx}`}
-                initial={{ opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 + lineIdx * 0.18, ease: 'easeOut' }}
-                style={{ display: 'block' }}
-              >
-                {highlightHeadline(line, heroContent.highlightText).map((part, i) => (
-                  <span
-                    key={`l${lineIdx}-${i}`}
-                    style={part.highlight ? { color: heroContent.highlightColor } : undefined}
-                  >
-                    {part.text}
-                  </span>
-                ))}
-              </motion.span>
-            ))
-          ) : (
-            headlineParts.map((part, index) => (
-              <span
-                key={`${part.text}-${index}`}
-                className={part.highlight ? highlightClass : undefined}
-                style={
-                  part.highlight
-                    ? copyEffect === 'gradient-flow'
-                      ? { ['--hl-color' as string]: heroContent.highlightColor }
-                      : { color: heroContent.highlightColor }
-                    : undefined
-                }
-              >
-                {part.text}
-              </span>
-            ))
-          )}
-        </motion.h1>
+          <motion.h1
+            initial={copyEffect === 'word-reveal' ? false : { opacity: 0, y: 24 }}
+            animate={copyEffect === 'word-reveal' ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="hero-main-copy"
+            style={{
+              fontFamily: FONT_FAMILY_MAP[resolvedHeroContent.headlineFontFamily],
+              fontSize: FONT_SIZE_MAP[resolvedHeroContent.headlineFontSize],
+              lineHeight: 1.12,
+              letterSpacing: '-0.045em',
+              marginBottom: '20px',
+              whiteSpace: 'pre-line',
+              fontWeight: FONT_WEIGHT_MAP[resolvedHeroContent.headlineFontWeight],
+              textShadow: '0 10px 28px rgba(0,0,0,0.28)',
+              maxWidth: '820px',
+            }}
+          >
+            {copyEffect === 'word-reveal' ? (
+              headlineLines.map((line, lineIdx) => (
+                <motion.span
+                  key={`line-${lineIdx}`}
+                  initial={{ opacity: 0, y: 22 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + lineIdx * 0.18, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ display: 'block' }}
+                >
+                  {highlightHeadline(line, resolvedHeroContent.highlightText).map((part, i) => (
+                    <span
+                      key={`l${lineIdx}-${i}`}
+                      style={part.highlight ? { color: resolvedHeroContent.highlightColor } : undefined}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </motion.span>
+              ))
+            ) : (
+              headlineParts.map((part, index) => (
+                <span
+                  key={`${part.text}-${index}`}
+                  className={part.highlight ? highlightClass : undefined}
+                  style={
+                    part.highlight
+                      ? copyEffect === 'gradient-flow'
+                        ? { ['--hl-color' as string]: resolvedHeroContent.highlightColor }
+                        : { color: resolvedHeroContent.highlightColor }
+                      : undefined
+                  }
+                >
+                  {part.text}
+                </span>
+              ))
+            )}
+          </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-          style={{
-            fontSize: 'clamp(0.95rem, 2vw, 1.08rem)',
-            opacity: 0.88,
-            maxWidth: '560px',
-            margin: '0 auto 36px',
-            lineHeight: 1.8,
-            whiteSpace: 'pre-line',
-            fontWeight: 500,
-            textShadow: '0 4px 16px rgba(0,0,0,0.18)',
-          }}
-        >
-          {heroContent.subcopy}
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontSize: 'clamp(1rem, 2vw, 1.18rem)',
+              opacity: 0.9,
+              maxWidth: '640px',
+              margin: '0 0 36px',
+              lineHeight: 1.82,
+              whiteSpace: 'pre-line',
+              fontWeight: 500,
+              textShadow: '0 4px 16px rgba(0,0,0,0.18)',
+            }}
+          >
+            {resolvedHeroContent.subcopy}
+          </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
-          style={{
-            display: 'flex',
-            gap: '12px',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            marginBottom: '48px',
-          }}
-        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="hero-cta-row"
+          >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
             <a
               href={`tel:${PHONE_NUMBER.replace(/-/g, '')}`}
               style={{
                 background: 'var(--red)',
                 color: '#fff',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontWeight: 700,
-                fontSize: '0.95rem',
+                padding: '15px 24px',
+                borderRadius: '999px',
+                fontWeight: 800,
+                fontSize: '1rem',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                boxShadow: '0 4px 20px rgba(200,57,43,0.4)',
+                gap: '10px',
+                boxShadow: '0 18px 40px rgba(220,38,38,0.34)',
               }}
             >
-              📋 {heroContent.primaryCta}
+              <Phone size={18} />
+              {resolvedHeroContent.primaryCta}
             </a>
           </motion.div>
 
@@ -411,57 +364,81 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
             <Link
               to="/products/excellence"
               style={{
-                background: 'rgba(255,255,255,.15)',
+                background: 'rgba(255,255,255,.12)',
                 color: '#fff',
-                border: '2px solid rgba(255,255,255,.85)',
-                padding: '11px 24px',
-                borderRadius: '8px',
-                fontWeight: 700,
-                fontSize: '0.95rem',
+                border: '1px solid rgba(255,255,255,.38)',
+                padding: '14px 22px',
+                borderRadius: '999px',
+                fontWeight: 800,
+                fontSize: '1rem',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '10px',
                 textShadow: '0 1px 4px rgba(0,0,0,0.4)',
+                backdropFilter: 'blur(12px)',
               }}
             >
-              📦 {heroContent.secondaryCta}
+              <PackageSearch size={18} />
+              {resolvedHeroContent.secondaryCta}
             </Link>
           </motion.div>
-
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-            <a
-              href="https://shop.g2b.go.kr"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: 'rgba(255,255,255,.15)',
-                color: '#fff',
-                border: '2px solid rgba(255,255,255,.85)',
-                padding: '11px 24px',
-                borderRadius: '8px',
-                fontWeight: 700,
-                fontSize: '0.95rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
-              }}
-            >
-              🏛️ 나라장터 바로가기
-            </a>
           </motion.div>
-        </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="hero-proof-row"
+          >
+            {[
+              ['57.1%', '산업현장 난방비 절감 실증'],
+              ['91.2%', '원적외선 방사율'],
+              ['99.9%', '항균 성능 시험'],
+            ].map(([value, label]) => (
+              <div key={label} className="hero-proof-item">
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {showSiteBadge && (
+          <motion.aside
+            key={`caption-${currentIndex}`}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="hero-case-card"
+          >
+            <div className="hero-case-image">
+              <img src={HERO_IMAGES[currentIndex]} alt={`${SLIDE_INFO[currentIndex]?.location} 시공 현장`} />
+            </div>
+            <div className="hero-case-body">
+              <span className="hero-case-eyebrow">
+                <MapPin size={14} />
+                실제 납품·시공 현장
+              </span>
+              <h2>{SLIDE_INFO[currentIndex]?.location}</h2>
+              <p>{SLIDE_INFO[currentIndex]?.desc}</p>
+              <div className="hero-case-meta">
+                <span><ShieldCheck size={14} /> 검증 사례</span>
+                <a href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer">
+                  나라장터 확인 <ExternalLink size={13} />
+                </a>
+              </div>
+            </div>
+          </motion.aside>
+        )}
 
         {showCertBadges && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
+          className="hero-cert-strip"
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: '10px',
+            gridColumn: '1 / -1',
           }}
         >
           {BADGES.map((badge, index) => (
@@ -472,29 +449,27 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
               transition={{ duration: 0.4, delay: 0.65 + index * 0.07 }}
               whileHover={{ y: -3, background: 'rgba(10,22,40,0.88)' }}
               style={{
-                background: 'rgba(10,22,40,0.72)',
-                border: '1px solid rgba(230,126,34,0.55)',
-                borderRadius: '8px',
-                padding: '8px 16px',
-                textAlign: 'center',
-                minWidth: '90px',
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '14px',
+                padding: '12px 16px',
+                minWidth: '120px',
                 cursor: 'default',
-                transition: 'background 0.2s',
-                backdropFilter: 'blur(4px)',
+                transition: 'background 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                backdropFilter: 'blur(14px)',
               }}
             >
               <strong
                 style={{
                   display: 'block',
-                  color: '#FFB23F',
+                  color: '#fff',
                   fontSize: '13px',
                   fontWeight: 900,
-                  textShadow: '0 1px 7px rgba(0,0,0,0.32)',
                 }}
               >
                 {badge.label}
               </strong>
-              <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.75)' }}>{badge.sub}</span>
+              <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.58)' }}>{badge.sub}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -506,10 +481,10 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="hero-slide-dots"
           style={{
-            display: 'flex',
-            justifyContent: 'center',
+            display: 'none',
+            justifyContent: 'flex-start',
             gap: '8px',
-            marginTop: '46px',
+            marginTop: '24px',
           }}
         >
           {HERO_IMAGES.map((_, index) => (
@@ -527,7 +502,7 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
                 border: 'none',
                 cursor: 'pointer',
                 padding: 0,
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             />
           ))}
@@ -614,6 +589,10 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
         }
 
         @media (max-width: 600px) {
+          .home-hero {
+            min-height: auto !important;
+            padding-top: 56px !important;
+          }
           .hero-main-copy {
             line-height: 1.25 !important;
             letter-spacing: -0.5px !important;
@@ -626,6 +605,164 @@ export default function HeroSection({ heroContent }: HeroSectionProps) {
           }
           .hero-slide-dots {
             margin-top: 40px !important;
+          }
+        }
+
+        .hero-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.72fr);
+          gap: clamp(28px, 5vw, 64px);
+          align-items: center;
+        }
+
+        .hero-cta-row {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-bottom: 34px;
+        }
+
+        .hero-proof-row {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          max-width: 620px;
+        }
+
+        .hero-proof-item {
+          border-left: 1px solid rgba(255,255,255,0.18);
+          padding-left: 16px;
+        }
+
+        .hero-proof-item strong {
+          display: block;
+          font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+          line-height: 1;
+          color: var(--amber2);
+          font-weight: 900;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .hero-proof-item span {
+          display: block;
+          margin-top: 7px;
+          font-size: 12px;
+          color: rgba(255,255,255,0.68);
+          line-height: 1.45;
+        }
+
+        .hero-case-card {
+          overflow: hidden;
+          border-radius: 28px;
+          background: rgba(7,13,28,0.62);
+          border: 1px solid rgba(255,255,255,0.14);
+          box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.14),
+            0 28px 80px rgba(0,0,0,0.34);
+          backdrop-filter: blur(18px);
+        }
+
+        .hero-case-image {
+          height: 260px;
+          overflow: hidden;
+        }
+
+        .hero-case-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          filter: saturate(0.92) contrast(1.04);
+        }
+
+        .hero-case-body {
+          padding: 24px;
+        }
+
+        .hero-case-eyebrow,
+        .hero-case-meta,
+        .hero-case-meta span,
+        .hero-case-meta a {
+          display: flex;
+          align-items: center;
+        }
+
+        .hero-case-eyebrow {
+          gap: 7px;
+          color: var(--amber2);
+          font-size: 12px;
+          font-weight: 800;
+          margin-bottom: 14px;
+        }
+
+        .hero-case-body h2 {
+          font-size: 1.35rem;
+          font-weight: 900;
+          line-height: 1.25;
+          margin-bottom: 8px;
+        }
+
+        .hero-case-body p {
+          color: rgba(255,255,255,0.68);
+          font-size: 14px;
+          line-height: 1.65;
+        }
+
+        .hero-case-meta {
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 22px;
+          padding-top: 16px;
+          border-top: 1px solid rgba(255,255,255,0.1);
+          font-size: 12px;
+          color: rgba(255,255,255,0.66);
+        }
+
+        .hero-case-meta span,
+        .hero-case-meta a {
+          gap: 6px;
+        }
+
+        .hero-case-meta a {
+          color: #fff;
+          font-weight: 800;
+        }
+
+        .hero-cert-strip {
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 44px;
+        }
+
+        @media (max-width: 980px) {
+          .hero-layout {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-case-card {
+            max-width: 620px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .hero-proof-row {
+            grid-template-columns: 1fr;
+            gap: 14px;
+          }
+
+          .hero-cta-row a {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .hero-case-image {
+            height: 190px;
+          }
+
+          .hero-cert-strip {
+            margin-top: 30px;
           }
         }
 
